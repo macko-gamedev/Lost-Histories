@@ -18,5 +18,6 @@ public:
 	int getDialogueIndex();
 	bool isEvent();
 	void increaseDialogueIndex();
+	void endOfDialogue();
 };
 

@@ -21,11 +21,6 @@ Player::Player(string name, int weak_element, int resist_element)
 	this->elements = { "-", "-", "-", "-", "-", "-" };
 	this->elements[weak_element] = "Wk";
 	this->elements[resist_element] = "Rst";
-
-	this->skills.push_back(Skill("Flamao"));
-	this->skills.push_back(Skill("Meflamadia"));
-	this->skills.push_back(Skill("Hexaon"));
-	this->skills.push_back(Skill("Blightaon"));
 }
 
 void Player::getPlayerStats()

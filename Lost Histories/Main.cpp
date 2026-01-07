@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Skill.h"
+#include "Story.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -59,6 +60,11 @@ void battle(Player &player, Enemy enemy)
 				cout << "--> Melee\n--> Skill\n--> Item\n--> Guard\n\n>> ";
 				getline(cin, player_page);
 				player_page = convert_string_tolower(player_page);
+				if (player.getSkills().empty() && player_page == "skill")
+				{
+					cout << "! You have no skills currently." << endl;
+					player_page = "";
+				}
 			}
 			// Page : Skill
 			while (player_page == "skill")
@@ -133,14 +139,28 @@ int main()
 {
 	// Setup
 	string player_name;
+	char emptyVar; //This is just used to take player input temporarily
 	int weak_element = -1;
 	int resist_element = -1;
 	cout << "Your Character Name: "; 
 	getline(cin, player_name);
 	set_starting_elements(weak_element, resist_element);
 	Player player = Player(player_name, weak_element, resist_element);
-	/*Enemy newEnemy = Enemy("Ice Monster", 18);
-	battle(player, newEnemy);*/
+	Story story = Story(player_name);
+	system("CLS");
+	cout << ">>>> TO PLAY THROUGH DIALOGUE, TYPE n OR next <<<<" << endl << endl;
+	while (!story.isEvent())
+	{
+		cout << story.getDialogue() << endl;
+		story.increaseDialogueIndex();
+		if (story.getDialogue() == "END DIALOGUE")
+		{
+			story.endOfDialogue();
+		}
+		cin >> emptyVar;
+	}
+	Enemy newEnemy = Enemy("Ice Monster", 1);
+	battle(player, newEnemy);
 }
 
 

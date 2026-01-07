@@ -15,7 +15,12 @@ Story::Story(string player)
 		{ "> Why hello brave adventurer!" },
 		{ "> You can see we have problem here don't ya?" },
 		{ "> You shouldn't be here." },
-		{ "> Maybe take a look around and see what you can do." },
+		{ "> ...." },
+		{ "> Enough chitter chatter, looks like someone, or something is approaching." },
+		{ "A moving block of ice? No. An ice monster?" },
+		{ "You look around quickly for any sort of weapon." },
+		{ "+ Received Melee: Sharp Stick" },
+		{ ("> Here it comes " + player_name + "!") },
 		{ "END DIALOGUE" }
 	};
 	this->dialogueIndex = 1;
@@ -40,4 +45,9 @@ bool Story::isEvent()
 void Story::increaseDialogueIndex()
 {
 	this->dialogueIndex++;
+}
+
+void Story::endOfDialogue()
+{
+	this->event = true;
 }
