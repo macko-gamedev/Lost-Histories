@@ -23,7 +23,7 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	this->equippedMelee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 
 	// Skills: Player starts with no skills, so just declaring the vector here
-	this->skills = { Skill("Flame"), Skill("Meflame") };
+	this->skills = { };
 }
 
 void Player::getPlayerStats()

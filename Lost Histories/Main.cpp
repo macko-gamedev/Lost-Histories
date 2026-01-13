@@ -12,12 +12,22 @@ using namespace std;
 /* 
 
 ###### LOST HISTORIES ######
-Last Updated: 15/12/25
+Last Updated: 13/01/26
 
---- Class ---
-. Player	: 
-. Enemy		: 
-. Location	: 
+--- Parent Classes ---
+. BattleStat	: Contains key variables to battles such as health and stamina values
+				# Player, Enemy
+. Item			: Contains name, description and rarity of an item
+                # ItemMelee
+
+--- Child Classes ---
+. Enemy		    : Inherits BattleStat
+. ItemMelee     : Inherits Item, is the player's current melee weapon
+. Player        : Inherits BattleStat, contains all things the player can do and their stats
+
+--- Classes ---
+. Skill			: Contains name, description, type, damage/healing value and stamina cost of a skill
+. Story			: Contains a vector which has all story dialogue and functions which alter the pathing
 
 ############################
 
@@ -170,58 +180,60 @@ int main()
 	int resist_element = -1;
 	cout << "Your Character Name: "; 
 	getline(cin, player_name);
-	set_starting_elements(weak_element, resist_element);
-	Player player = Player(player_name, weak_element, resist_element, 1, 70, 42);
-	Story story = Story(player_name);
+	set_starting_elements(weak_element, resist_element); // Player chooeses their starting elements
+	Player player = Player(player_name, weak_element, resist_element, 1, 70, 42); // Instantiates object of type Player
+	Story story = Story(player_name); // Instantiates object of type Story
 	system("CLS");
 	cout << ">>> TYPE /help TO VIEW ALL POSSIBLE COMMANDS <<<" << endl << endl;
-	while (!story.isEvent())
+	while (true)
 	{
-		cout << story.getDialogue() << endl;
-		story.increaseDialogueIndex();
-		if (story.getDialogue() == "END DIALOGUE")
+		while (!story.isEvent())
 		{
-			story.endOfDialogue();
-		}
-		cin >> dialogue_choice;
-		if (dialogue_choice == "/help")
-		{
-			system("CLS");
-			cout <<
-				  "/help  : Displays this menu!" <<
-				"\n/items : Displays all of your items + melee weapon" <<
-				"\n/stats : Displays your player stats" << endl;
-			system("pause");
-			cout << "\033[A" << "\33[2K\r" << endl;
-		}
-		if (dialogue_choice == "/items")
-		{
-			system("CLS");
-			for (int i = 0; i < player.getItems().size(); i++)
+			cout << story.getDialogue() << endl;
+			story.increaseDialogueIndex();
+			if (story.getDialogue() == "END DIALOGUE")
 			{
-				cout << player.getItems()[i].toString() << endl << endl;
+				story.endOfDialogue();
 			}
-			cout << player.getMeleeWeapon().toString() << endl << endl;
-			system("pause");
-			cout << "\033[A" << "\33[2K\r" << endl;
+			cin >> dialogue_choice;
+			if (dialogue_choice == "/help") // Displays full list of commands
+			{
+				system("CLS");
+				cout <<
+					"/help  : Displays this menu!" <<
+					"\n/items : Displays all of your items + melee weapon" <<
+					"\n/stats : Displays your player stats" << endl;
+				system("pause");
+				cout << "\033[A" << "\33[2K\r" << endl;
+			}
+			if (dialogue_choice == "/items") // Displays all items the player has
+			{
+				system("CLS");
+				for (int i = 0; i < player.getItems().size(); i++)
+				{
+					cout << player.getItems()[i].toString() << endl << endl;
+				}
+				cout << player.getMeleeWeapon().toString() << endl << endl;
+				system("pause");
+				cout << "\033[A" << "\33[2K\r" << endl;
+			}
+			if (dialogue_choice == "/stats") // Displays the players levelling stats
+			{
+				system("CLS");
+				player.getPlayerStats();
+				cout << endl;
+				system("pause");
+				cout << "\033[A" << "\33[2K\r" << endl;
+			}
+			else
+			{
+				cout << "\033[A" << "\33[2K\r" << endl;
+			}
 		}
-		if (dialogue_choice == "/stats")
-		{
-			system("CLS");
-			player.getPlayerStats();
-			cout << endl;
-			system("pause");
-			cout << "\033[A" << "\33[2K\r" << endl;
-		}
-		else
-		{
-			cout << "\033[A" << "\33[2K\r" << endl;
-		}
+		Enemy newEnemy = Enemy("Ice Monster", 1, 16, 5);
+		battle(player, newEnemy);
 	}
-	Enemy newEnemy = Enemy("Ice Monster", 1, 50, 20);
-	battle(player, newEnemy);
 }
-
 
 string convert_string_tolower(string text)
 {
