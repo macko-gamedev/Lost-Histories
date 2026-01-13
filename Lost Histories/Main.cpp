@@ -124,6 +124,13 @@ void battle(Player &player, Enemy enemy)
 				}
 				
 			}
+			while (player_page == "melee")
+			{
+				enemy.takeDamage(skillSelected.getBaseDamage());
+				player.changeStamina(-skillSelected.getStaminaCost());
+				player_turn = false;
+				break;
+			}
 		}
 		while (!player_turn)
 		{
