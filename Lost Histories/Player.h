@@ -2,41 +2,27 @@
 #include <string>
 #include <vector>
 #include "Skill.h"
+#include "BattleStat.h"
 
 using namespace std;
 
-class Player
+class Player : public BattleStat
 {
 private:
-	string name;
 	string status;
 	string location;
 	vector<string> elements;
 	vector<Skill> skills;
-	int level;
-	int health;
-	int max_health;
-	int stamina;
-	int max_stamina;
 	float curr_exp;
 	float next_exp;
 
 public:
-	Player(string name, int weak_element, int resist_element);
-	string getName();
+	Player(string name, int weak_element, int resist_element, int level, int health, int stamina);
 	string getStatus();
 	string getLocation();
 	vector<string> getElements();
 	vector<Skill> getSkills();
-	int getHealth();
-	int getMaxHealth();
-	int getStamina();
-	int getMaxStamina();
 	int getLevelStats();
-	void fullHealth();
-	void fullStamina();
-	void changeHealth(int amount);
-	void changeStamina(int amount);
 	void increaseExp(int amount);
 	void getPlayerStats();
 };

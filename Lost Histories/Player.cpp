@@ -4,16 +4,12 @@
 
 using namespace std;
 
-Player::Player(string name, int weak_element, int resist_element)
+Player::Player(string name, int weak_element, int resist_element, int level, int health, int stamina) : BattleStat(name, level, health, stamina)
 {
-	system("CLS");
-	this->name = name;
+	//system("CLS");
 	this->status = "Great";
-	this->health = 70;
-	this->max_health = 70;
-	this->stamina = 42;
-	this->max_stamina = 42;
-	this->level = 1;
+	this->max_health = health;
+	this->max_stamina = stamina;
 	this->curr_exp = 0;
 	this->next_exp = 167;
 
@@ -38,11 +34,6 @@ void Player::getPlayerStats()
 	} 
 }
 
-string Player::getName()
-{
-	return this->name;
-}
-
 string Player::getStatus()
 {
 	return this->status;
@@ -61,54 +52,6 @@ vector<string> Player::getElements()
 vector<Skill> Player::getSkills()
 {
 	return this->skills;
-}
-
-int Player::getHealth()
-{
-	return this->health;
-}
-
-int Player::getMaxHealth()
-{
-	return this->max_health;
-}
-
-int Player::getStamina()
-{
-	return this->stamina;
-}
-
-int Player::getMaxStamina()
-{
-	return this->max_stamina;
-}
-
-void Player::fullHealth()
-{
-	this->health = this->max_health;
-}
-
-void Player::fullStamina()
-{
-	this->stamina = this->max_stamina;
-}
-
-void Player::changeHealth(int amount)
-{
-	this->health += amount;
-	if (this ->health > this->max_health)
-	{
-		fullHealth();
-	}
-}
-
-void Player::changeStamina(int amount)
-{
-	this->stamina += amount;
-	if (this->stamina > this->max_stamina)
-	{
-		fullStamina();
-	}
 }
 
 int Player::getLevelStats()

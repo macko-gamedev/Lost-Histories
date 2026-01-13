@@ -139,16 +139,14 @@ int main()
 {
 	// Setup
 	string player_name;
-	char emptyVar; //This is just used to take player input temporarily
 	int weak_element = -1;
 	int resist_element = -1;
 	cout << "Your Character Name: "; 
 	getline(cin, player_name);
 	set_starting_elements(weak_element, resist_element);
-	Player player = Player(player_name, weak_element, resist_element);
+	Player player = Player(player_name, weak_element, resist_element, 1, 70, 42);
 	Story story = Story(player_name);
 	system("CLS");
-	cout << ">>>> TO PLAY THROUGH DIALOGUE, TYPE n OR next <<<<" << endl << endl;
 	while (!story.isEvent())
 	{
 		cout << story.getDialogue() << endl;
@@ -157,9 +155,10 @@ int main()
 		{
 			story.endOfDialogue();
 		}
-		cin >> emptyVar;
+		system("pause");
+		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	Enemy newEnemy = Enemy("Ice Monster", 1);
+	Enemy newEnemy = Enemy("Ice Monster", 1, 50, 20);
 	battle(player, newEnemy);
 }
 

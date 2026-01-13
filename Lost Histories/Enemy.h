@@ -1,23 +1,16 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "BattleStat.h"
 
 using namespace std;
 
-class Enemy
+class Enemy : public BattleStat
 {
 private:
-	string name;
 	vector<string> elements;
-	int level;
-	int health;
-	int stamina;
 public:
-	Enemy(string name, int level);
-	string getName();
+	Enemy(string name, int level, int health, int stamina);
 	vector<string> getElements();
-	int getLevel();
-	int getHealth();
-	int getStamina();
 	void takeDamage(int amount);
 };
