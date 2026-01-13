@@ -20,6 +20,7 @@ private:
 	vector<Item> items;
 	float curr_exp;
 	float next_exp;
+	bool guard;
 
 public:
 	Player(string name, int weak_element, int resist_element, int level, int health, int stamina);
@@ -30,7 +31,10 @@ public:
 	vector<Skill> getSkills();
 	vector<Item> getItems();
 	int getLevelStats();
+	bool isGuard();
 	void increaseExp(int amount);
+	void setGuard(bool guardState);
 	void getPlayerStats();
+	void getPlayerElements();
 };
 

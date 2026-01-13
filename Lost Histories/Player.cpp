@@ -11,6 +11,7 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	this->max_stamina = stamina;
 	this->curr_exp = 0;
 	this->next_exp = 167;
+	this->guard = false;
 
 	// Elements : Fire, Ice, Electric, Wind, Curse, Bless
 	this->elements = { "-", "-", "-", "-", "-", "-" };
@@ -28,13 +29,15 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 
 void Player::getPlayerStats()
 {
-	cout << this->name << "'s Stats" << endl << endl;
 	cout << ">> Battle <<" << endl;
 	cout << "Level " << this->level << endl;
 	cout << "EXP Next: " << (this->next_exp - this->curr_exp) << endl;
 	cout << "HP: " << this->health << " / " << this->max_health << endl;
 	cout << "STA: " << this->stamina << " / " << this->max_stamina << endl << endl;
+}
 
+void Player::getPlayerElements()
+{
 	cout << ">> Elements <<" << endl;
 	int elementIndex = 0;
 	while (elementIndex < 6)
@@ -42,7 +45,6 @@ void Player::getPlayerStats()
 		cout << ". " << elementNames[elementIndex] << ": " << elements[elementIndex] << endl;
 		elementIndex++;
 	}
-	
 }
 
 ItemMelee Player::getMeleeWeapon()
@@ -77,7 +79,12 @@ vector<Item> Player::getItems()
 
 int Player::getLevelStats()
 {
-	return level, curr_exp, next_exp;
+	return this->level, this->curr_exp, this->next_exp;
+}
+
+bool Player::isGuard()
+{
+	return this->guard;
 }
 
 void Player::increaseExp(int amount)
@@ -90,4 +97,9 @@ void Player::increaseExp(int amount)
 		this->curr_exp = -tempVal;
 		this->next_exp = int(((float)this->next_exp) * 1.1);
 	}
+}
+
+void Player::setGuard(bool guardState)
+{
+	this->guard = guardState;
 }

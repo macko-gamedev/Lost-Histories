@@ -163,12 +163,54 @@ void battle(Player &player, Enemy enemy)
 					break;
 				}
 			}
+			// Page : Guard
+			while (player_page == "guard")
+			{
+				system("CLS");
+				show_battle_stats(player);
+				cout << "Reduce incoming damage by 33% and negates weaknesses";
+				cout << "\n\n--> Guard\n--> Return\n\n>> ";
+				getline(cin, choice);
+				choice = convert_string_tolower(choice);
+
+				// If choice is "gaurd", guards against incoming attack
+				if (choice == "guard" || choice == "g")
+				{
+					system("CLS");
+					player.setGuard(true);
+					cout << "You have guarded yourself\n\n";
+					player_turn = false;
+					break;
+				}
+				// If choice is "return", take the player back to the main battle menu
+				else if (choice == "return" || choice == "r")
+				{
+					player_page = "";
+					break;
+				}
+			}
 		}
-		while (!player_turn)
+		if (enemy.getHealth() <= 0)
 		{
-			show_enemy_stats(enemy);
-			cin >> player_turn;
+			system("CLS");
+			player.increaseExp(int(enemy.getMaxHealth() * 2));
+			cout << "You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
+			player.getPlayerStats();
+			system("pause");
+			system("CLS");
+			battle = false;
 		}
+		else
+		{
+			while (!player_turn)
+			{
+				show_enemy_stats(enemy);
+				cin >> player_turn;
+			}
+		}
+
+		if (!battle) break;
+		
 		//system("CLS");
 	}
 }
@@ -223,7 +265,9 @@ int main()
 			if (dialogue_choice == "/stats") // Displays the players levelling stats
 			{
 				system("CLS");
+				cout << player.getName() << "'s Stats" << endl << endl;
 				player.getPlayerStats();
+				player.getPlayerElements();
 				cout << endl;
 				system("pause");
 				cout << "\033[A" << "\33[2K\r" << endl;
@@ -235,6 +279,8 @@ int main()
 		}
 		Enemy newEnemy = Enemy("Ice Monster", 1, 16, 5);
 		battle(player, newEnemy);
+		cout << "DEBUG";
+		system("pause");
 	}
 }
 
