@@ -1,5 +1,7 @@
 #include "BattleStat.h"
 
+BattleStat::BattleStat() { }
+
 BattleStat::BattleStat(string nName, int nLevel, int nHealth, int nStamina)
 {
 	this->name = nName;

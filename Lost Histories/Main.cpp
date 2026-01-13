@@ -67,6 +67,7 @@ void battle(Player &player, Enemy enemy)
 		while (player_turn)
 		{
 			// Starts the player's turn
+			player.setGuard(false);
 			while ((player_page != "melee") && (player_page != "skill") && (player_page != "item") && (player_page != "guard"))
 			{
 				show_battle_stats(player);
@@ -104,7 +105,7 @@ void battle(Player &player, Enemy enemy)
 						{
 							cout << "You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " damage each\n\n";
 						}
-						enemy.takeDamage(skillSelected.getBaseDamage());
+						enemy.changeHealth(-(skillSelected.getBaseDamage()));
 						player.changeStamina(-skillSelected.getStaminaCost());
 						player_turn = false;
 						break;
@@ -152,7 +153,7 @@ void battle(Player &player, Enemy enemy)
 				{
 					system("CLS");
 					cout << "You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " dealing " << player.getMeleeWeapon().getDamage() << " damage\n\n";
-					enemy.takeDamage(player.getMeleeWeapon().getDamage());
+					enemy.changeHealth(-(player.getMeleeWeapon().getDamage()));
 					player_turn = false;
 					break;
 				}
@@ -204,14 +205,22 @@ void battle(Player &player, Enemy enemy)
 		{
 			while (!player_turn)
 			{
+				if (player.isGuard())
+				{
+					player.changeHealth(-int((enemy.getSkills()[0].getBaseDamage() * 0.67)));
+					cout << enemy.getName() << " casted " << enemy.getSkills()[0].getName() << " dealing " << to_string(int((enemy.getSkills()[0].getBaseDamage() * 0.67))) << " damage";
+				}
+				else
+				{
+					player.changeHealth(-(enemy.getSkills()[0].getBaseDamage()));
+					cout << enemy.getName() << " casted " << enemy.getSkills()[0].getName() << " dealing " << to_string(enemy.getSkills()[0].getBaseDamage()) << " damage";
+				}
 				show_enemy_stats(enemy);
 				cin >> player_turn;
 			}
 		}
 
 		if (!battle) break;
-		
-		//system("CLS");
 	}
 }
 
@@ -277,7 +286,8 @@ int main()
 				cout << "\033[A" << "\33[2K\r" << endl;
 			}
 		}
-		Enemy newEnemy = Enemy("Ice Monster", 1, 16, 5);
+		vector<Skill> enemySkills = { Skill("Freeze") };
+		Enemy newEnemy = Enemy("Ice Monster", 1, 16, 5, enemySkills);
 		battle(player, newEnemy);
 		cout << "DEBUG";
 		system("pause");

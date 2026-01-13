@@ -1,13 +1,11 @@
 #include "Enemy.h"
-#include <iostream>
-#include <string>
-#include <vector>
 
-using namespace std;
+Enemy::Enemy() { }
 
-Enemy::Enemy(string name, int level, int health, int stamina) : BattleStat(name, level, health, stamina)
+Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills) : BattleStat(nName, nLevel, nHealth, nStamina)
 {
 	this->elements = { "-", "-", "-", "-", "-", "-" };
+	this->skills = nSkills;
 }
 
 vector<string> Enemy::getElements()
@@ -15,8 +13,7 @@ vector<string> Enemy::getElements()
 	return this->elements;
 }
 
-
-void Enemy::takeDamage(int amount)
+vector<Skill> Enemy::getSkills()
 {
-	this->health -= amount;
+	return this->skills;
 }
