@@ -68,10 +68,10 @@ void battle(Player &player, Enemy enemy)
 		{
 			// Starts the player's turn
 			player.setGuard(false);
-			while ((player_page != "melee") && (player_page != "skill") && (player_page != "item") && (player_page != "guard"))
+			while ((player_page != "melee") && (player_page != "skill") && (player_page != "item") && (player_page != "guard") && (player_page != "analyse"))
 			{
 				show_battle_stats(player);
-				cout << "--> Melee\n--> Skill\n--> Item\n--> Guard\n\n>> ";
+				cout << "--> Melee\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n>> ";
 				getline(cin, player_page);
 				player_page = convert_string_tolower(player_page);
 				if (player.getSkills().empty() && player_page == "skill")
@@ -174,7 +174,7 @@ void battle(Player &player, Enemy enemy)
 				getline(cin, choice);
 				choice = convert_string_tolower(choice);
 
-				// If choice is "gaurd", guards against incoming attack
+				// If choice is "guard", guards against incoming attack
 				if (choice == "guard" || choice == "g")
 				{
 					system("CLS");
@@ -185,6 +185,22 @@ void battle(Player &player, Enemy enemy)
 				}
 				// If choice is "return", take the player back to the main battle menu
 				else if (choice == "return" || choice == "r")
+				{
+					player_page = "";
+					break;
+				}
+			}
+			// Page : Analyse
+			while (player_page == "analyse")
+			{
+				system("CLS");
+				show_enemy_stats(enemy);
+				cout << "\n\n--> Return\n\n>> ";
+				getline(cin, choice);
+				choice = convert_string_tolower(choice);
+
+				// If choice is "return", take the player back to the main battle menu
+				if (choice == "return" || choice == "r")
 				{
 					player_page = "";
 					break;
@@ -208,15 +224,17 @@ void battle(Player &player, Enemy enemy)
 				if (player.isGuard())
 				{
 					player.changeHealth(-int((enemy.getSkills()[0].getBaseDamage() * 0.67)));
-					cout << enemy.getName() << " casted " << enemy.getSkills()[0].getName() << " dealing " << to_string(int((enemy.getSkills()[0].getBaseDamage() * 0.67))) << " damage";
+					cout << enemy.getName() << " casted " << enemy.getSkills()[0].getName() << " dealing " << to_string(int((enemy.getSkills()[0].getBaseDamage() * 0.67))) << " damage" << endl;
 				}
 				else
 				{
 					player.changeHealth(-(enemy.getSkills()[0].getBaseDamage()));
-					cout << enemy.getName() << " casted " << enemy.getSkills()[0].getName() << " dealing " << to_string(enemy.getSkills()[0].getBaseDamage()) << " damage";
+					cout << enemy.getName() << " casted " << enemy.getSkills()[0].getName() << " dealing " << to_string(enemy.getSkills()[0].getBaseDamage()) << " damage" << endl;
 				}
-				show_enemy_stats(enemy);
-				cin >> player_turn;
+				enemy.changeStamina(-(enemy.getSkills()[0].getStaminaCost()));
+				system("pause");
+				player_turn = true;
+				break;
 			}
 		}
 
@@ -235,7 +253,7 @@ int main()
 	cout << "Your Character Name: "; 
 	getline(cin, player_name);
 	set_starting_elements(weak_element, resist_element); // Player chooeses their starting elements
-	Player player = Player(player_name, weak_element, resist_element, 1, 70, 42); // Instantiates object of type Player
+	Player player = Player(player_name, weak_element, resist_element, 1, 140, 62); // Instantiates object of type Player
 	Story story = Story(player_name); // Instantiates object of type Story
 	system("CLS");
 	cout << ">>> TYPE /help TO VIEW ALL POSSIBLE COMMANDS <<<" << endl << endl;
@@ -287,7 +305,7 @@ int main()
 			}
 		}
 		vector<Skill> enemySkills = { Skill("Freeze") };
-		Enemy newEnemy = Enemy("Ice Monster", 1, 16, 5, enemySkills);
+		Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, enemySkills);
 		battle(player, newEnemy);
 		cout << "DEBUG";
 		system("pause");
@@ -402,12 +420,12 @@ void set_starting_elements(int& weak_element, int& resist_element)
 
 void show_enemy_stats(Enemy enemy)
 {
-	cout << convert_string_toupper(enemy.getName()) << "'s TURN" << endl << endl;
-	for (string element : enemy.getElements())
+	cout << convert_string_toupper(enemy.getName()) << endl << endl;
+	/*for (string element : enemy.getElements())
 	{
 		cout << element << " ";
-	}
-	cout << "\n\nHP: " << enemy.getHealth();
+	}*/
+	cout << "HP: " << enemy.getHealth();
 	cout << "\nSTA: " << enemy.getStamina() << endl << endl;
 }
 
