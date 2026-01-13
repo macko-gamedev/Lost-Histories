@@ -2,6 +2,8 @@
 #include "Enemy.h"
 #include "Skill.h"
 #include "Story.h"
+#include "Item.h"
+#include "ItemSkill.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -15,14 +17,15 @@ using namespace std;
 Last Updated: 13/01/26
 
 --- Parent Classes ---
-. BattleStat	: Contains key variables to battles such as health and stamina values
-				# Player, Enemy
-. Item			: Contains name, description and rarity of an item
-                # ItemMelee
+. BattleStat	# Contains key variables to battles such as health and stamina values
+				: Player, Enemy
+. Item			# Contains name, description and rarity of an item
+                : ItemMelee, ItemSkill
 
 --- Child Classes ---
 . Enemy		    : Inherits BattleStat
 . ItemMelee     : Inherits Item, is the player's current melee weapon
+. ItemSkill     : Inherits Item, an item which contains a skill the player can inherit
 . Player        : Inherits BattleStat, contains all things the player can do and their stats
 
 --- Classes ---

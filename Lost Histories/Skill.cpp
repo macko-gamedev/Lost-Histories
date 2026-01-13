@@ -1,7 +1,6 @@
 #include "Skill.h"
-#include <string>
 
-using namespace std;
+Skill::Skill() { }
 
 Skill::Skill(string name)
 {

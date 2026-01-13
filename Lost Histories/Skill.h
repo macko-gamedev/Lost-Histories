@@ -16,6 +16,7 @@ private:
 	bool single_target;
 
 public:
+	Skill();
 	Skill(string name);
 	string getName();
 	string getDesc();
