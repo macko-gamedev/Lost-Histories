@@ -165,6 +165,7 @@ int main()
 {
 	// Setup
 	string player_name;
+	string dialogue_choice;
 	int weak_element = -1;
 	int resist_element = -1;
 	cout << "Your Character Name: "; 
@@ -173,6 +174,7 @@ int main()
 	Player player = Player(player_name, weak_element, resist_element, 1, 70, 42);
 	Story story = Story(player_name);
 	system("CLS");
+	cout << ">>> TYPE /help TO VIEW ALL POSSIBLE COMMANDS <<<" << endl << endl;
 	while (!story.isEvent())
 	{
 		cout << story.getDialogue() << endl;
@@ -181,8 +183,40 @@ int main()
 		{
 			story.endOfDialogue();
 		}
-		system("pause");
-		cout << "\033[A" << "\33[2K\r" << endl;
+		cin >> dialogue_choice;
+		if (dialogue_choice == "/help")
+		{
+			system("CLS");
+			cout <<
+				  "/help  : Displays this menu!" <<
+				"\n/items : Displays all of your items + melee weapon" <<
+				"\n/stats : Displays your player stats" << endl;
+			system("pause");
+			cout << "\033[A" << "\33[2K\r" << endl;
+		}
+		if (dialogue_choice == "/items")
+		{
+			system("CLS");
+			for (int i = 0; i < player.getItems().size(); i++)
+			{
+				cout << player.getItems()[i].toString() << endl << endl;
+			}
+			cout << player.getMeleeWeapon().toString() << endl << endl;
+			system("pause");
+			cout << "\033[A" << "\33[2K\r" << endl;
+		}
+		if (dialogue_choice == "/stats")
+		{
+			system("CLS");
+			player.getPlayerStats();
+			cout << endl;
+			system("pause");
+			cout << "\033[A" << "\33[2K\r" << endl;
+		}
+		else
+		{
+			cout << "\033[A" << "\33[2K\r" << endl;
+		}
 	}
 	Enemy newEnemy = Enemy("Ice Monster", 1, 50, 20);
 	battle(player, newEnemy);
@@ -309,13 +343,9 @@ void show_enemy_stats(Enemy enemy)
 void show_battle_stats(Player player)
 {
 	system("CLS");
-	cout << "\nYOUR TURN" << endl << endl;
-	for (string element : player.getElements())
-	{
-		cout << element << " ";
-	}
-	cout << "\n\nHP: " << player.getHealth() << " / " << player.getMaxHealth();
-	cout << "\nSTA: " << player.getStamina() << " / " << player.getMaxStamina() << endl << endl;
+	cout << "YOUR TURN" << endl << endl;
+	cout << "HP: " << player.getHealth() << " / " << player.getMaxHealth() << endl;
+	cout << "STA: " << player.getStamina() << " / " << player.getMaxStamina() << endl << endl;
 }
 
 void show_skill(Player player, int index)

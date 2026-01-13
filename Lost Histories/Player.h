@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Skill.h"
+#include "Item.h"
 #include "ItemMelee.h"
 #include "BattleStat.h"
 
@@ -14,7 +15,9 @@ private:
 	string status;
 	string location;
 	vector<string> elements;
+	vector<string> elementNames;
 	vector<Skill> skills;
+	vector<Item> items;
 	float curr_exp;
 	float next_exp;
 
@@ -25,6 +28,7 @@ public:
 	string getLocation();
 	vector<string> getElements();
 	vector<Skill> getSkills();
+	vector<Item> getItems();
 	int getLevelStats();
 	void increaseExp(int amount);
 	void getPlayerStats();

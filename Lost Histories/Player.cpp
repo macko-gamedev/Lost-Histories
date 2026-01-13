@@ -6,8 +6,6 @@ using namespace std;
 
 Player::Player(string name, int weak_element, int resist_element, int level, int health, int stamina) : BattleStat(name, level, health, stamina)
 {
-	//system("CLS");
-	this->equippedMelee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 	this->status = "Great";
 	this->max_health = health;
 	this->max_stamina = stamina;
@@ -16,23 +14,35 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 
 	// Elements : Fire, Ice, Electric, Wind, Curse, Bless
 	this->elements = { "-", "-", "-", "-", "-", "-" };
+	this->elementNames = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
 	this->elements[weak_element] = "Wk";
 	this->elements[resist_element] = "Rst";
+
+	// Items: Giving the player a backpack by default and equipping the player with a basic melee weapon
+	this->items = { (Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1)) };
+	this->equippedMelee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
+
+	// Skills: Player starts with no skills, so just declaring the vector here
+	this->skills = { Skill("Flame"), Skill("Meflame") };
 }
 
 void Player::getPlayerStats()
 {
-	cout << this->name << "'s Stats : " << endl << endl;
+	cout << this->name << "'s Stats" << endl << endl;
+	cout << ">> Battle <<" << endl;
 	cout << "Level " << this->level << endl;
-	cout << "EXP Next: " << (this->next_exp - this->curr_exp) << endl << endl;
-
+	cout << "EXP Next: " << (this->next_exp - this->curr_exp) << endl;
 	cout << "HP: " << this->health << " / " << this->max_health << endl;
 	cout << "STA: " << this->stamina << " / " << this->max_stamina << endl << endl;
-	cout << "Elements:" << endl;
-	for (string element : this->elements)
+
+	cout << ">> Elements <<" << endl;
+	int elementIndex = 0;
+	while (elementIndex < 6)
 	{
-		cout << element << " ";
-	} 
+		cout << ". " << elementNames[elementIndex] << ": " << elements[elementIndex] << endl;
+		elementIndex++;
+	}
+	
 }
 
 ItemMelee Player::getMeleeWeapon()
@@ -58,6 +68,11 @@ vector<string> Player::getElements()
 vector<Skill> Player::getSkills()
 {
 	return this->skills;
+}
+
+vector<Item> Player::getItems()
+{
+	return this->items;
 }
 
 int Player::getLevelStats()
