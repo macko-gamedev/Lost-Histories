@@ -9,7 +9,7 @@ ItemMelee::ItemMelee(string nName, string nDesc, int nRarity, int nDamage) : Ite
 
 string ItemMelee::toString()
 {
-	string convertedText = "Item: " + this->name + "\*" + to_string(this->rarity) + "\nDMG: " + this->damage + "\nDesc: " + this->desc;
+	string convertedText = "Item: " + this->name + " (" + to_string(this->rarity) + "*)\nDMG: " + to_string(this->damage) + "\nDesc: " + this->desc;
 	return convertedText;
 }
 

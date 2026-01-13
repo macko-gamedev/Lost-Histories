@@ -85,11 +85,11 @@ void battle(Player &player, Enemy enemy)
 						system("CLS");
 						if (skillSelected.isSingleTarget())
 						{
-							cout << "You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " dmg\n\n";
+							cout << "You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
 						}
 						else
 						{
-							cout << "You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " dmg each\n\n";
+							cout << "You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " damage each\n\n";
 						}
 						enemy.takeDamage(skillSelected.getBaseDamage());
 						player.changeStamina(-skillSelected.getStaminaCost());
@@ -124,12 +124,31 @@ void battle(Player &player, Enemy enemy)
 				}
 				
 			}
+			// Page : Melee
 			while (player_page == "melee")
 			{
-				enemy.takeDamage(skillSelected.getBaseDamage());
-				player.changeStamina(-skillSelected.getStaminaCost());
-				player_turn = false;
-				break;
+				system("CLS");
+				show_battle_stats(player);
+				cout << player.getMeleeWeapon().toString();
+				cout << "\n\n--> Use\n--> Return\n\n>> ";
+				getline(cin, choice);
+				choice = convert_string_tolower(choice);
+
+				// If choice is "use", attack the enemy with melee weapon
+				if (choice == "use" || choice == "u")
+				{
+					system("CLS");
+					cout << "You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " dealing " << player.getMeleeWeapon().getDamage() << " damage\n\n";
+					enemy.takeDamage(player.getMeleeWeapon().getDamage());
+					player_turn = false;
+					break;
+				}
+				// If choice is "return", take the player back to the main battle menu
+				else if (choice == "return" || choice == "r")
+				{
+					player_page = "";
+					break;
+				}
 			}
 		}
 		while (!player_turn)

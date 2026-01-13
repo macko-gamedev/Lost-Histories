@@ -7,6 +7,7 @@ using namespace std;
 Player::Player(string name, int weak_element, int resist_element, int level, int health, int stamina) : BattleStat(name, level, health, stamina)
 {
 	//system("CLS");
+	this->equippedMelee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 	this->status = "Great";
 	this->max_health = health;
 	this->max_stamina = stamina;
@@ -32,6 +33,11 @@ void Player::getPlayerStats()
 	{
 		cout << element << " ";
 	} 
+}
+
+ItemMelee Player::getMeleeWeapon()
+{
+	return this->equippedMelee;
 }
 
 string Player::getStatus()

@@ -11,7 +11,7 @@ Item::Item(string nName, string nDesc, int nRarity)
 
 string Item::toString()
 {
-	string convertedText = "Item: " + this->name + "\*" + to_string(this->rarity) + "\nDesc: " + this->desc;
+	string convertedText = "Item: " + this->name + " (" + to_string(this->rarity) + "*)\nDesc: " + this->desc;
 	return convertedText;
 }
 
