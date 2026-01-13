@@ -1,5 +1,4 @@
 #include "Item.h"
-#include <string>
 
 Item::Item() { }
 
