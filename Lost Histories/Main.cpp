@@ -221,18 +221,8 @@ void battle(Player &player, Enemy enemy)
 		{
 			while (!player_turn)
 			{
-				if (player.isGuard())
-				{
-					player.changeHealth(-int((enemy.getSkills()[0].getBaseDamage() * 0.67)));
-					cout << enemy.getName() << " casted " << enemy.getSkills()[0].getName() << " dealing " << to_string(int((enemy.getSkills()[0].getBaseDamage() * 0.67))) << " damage" << endl;
-				}
-				else
-				{
-					player.changeHealth(-(enemy.getSkills()[0].getBaseDamage()));
-					cout << enemy.getName() << " casted " << enemy.getSkills()[0].getName() << " dealing " << to_string(enemy.getSkills()[0].getBaseDamage()) << " damage" << endl;
-				}
-				enemy.changeStamina(-(enemy.getSkills()[0].getStaminaCost()));
-				system("pause");
+				enemy.update(player);
+				this_thread::sleep_for(chrono::seconds(2));
 				player_turn = true;
 				break;
 			}

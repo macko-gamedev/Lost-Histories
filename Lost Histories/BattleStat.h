@@ -1,5 +1,10 @@
 #pragma once
 #include <iostream>
+#include <chrono>
+#include <thread>
+#include <cstdlib>
+#include <ctime>
+#include "Player.h"
 
 using namespace std;
 
@@ -23,5 +28,6 @@ public:
 	int getMaxStamina();
 	void changeHealth(int amount);
 	void changeStamina(int amount);
+	virtual void update(Player& player);
 };
 

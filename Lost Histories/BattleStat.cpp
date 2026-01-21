@@ -59,3 +59,9 @@ void BattleStat::changeStamina(int amount)
 		this->stamina = this->max_stamina;
 	}
 }
+
+void BattleStat::update(Player& player)
+{
+	cout << "Joey is a smelly poo poo head";
+}
+
