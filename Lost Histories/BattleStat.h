@@ -4,9 +4,10 @@
 #include <thread>
 #include <cstdlib>
 #include <ctime>
-#include "Player.h"
 
 using namespace std;
+
+class Player;
 
 class BattleStat
 {

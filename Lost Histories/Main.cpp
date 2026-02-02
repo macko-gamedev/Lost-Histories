@@ -221,6 +221,7 @@ void battle(Player &player, Enemy enemy)
 		{
 			while (!player_turn)
 			{
+				this_thread::sleep_for(chrono::seconds(2));
 				enemy.update(player);
 				this_thread::sleep_for(chrono::seconds(2));
 				player_turn = true;

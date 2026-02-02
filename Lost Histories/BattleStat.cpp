@@ -1,4 +1,5 @@
 #include "BattleStat.h"
+#include "Player.h"
 
 BattleStat::BattleStat() { }
 

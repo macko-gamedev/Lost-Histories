@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Player.h"
 
 Enemy::Enemy() { }
 
@@ -25,8 +26,8 @@ bool Enemy::isAlive()
 
 void Enemy::update(Player& player)
 {
-	if (this->alive)
-	{
+	//if (this->alive)
+	//{
 		system("CLS");
 		if (this->state == battleState::WAITING)
 		{
@@ -35,7 +36,7 @@ void Enemy::update(Player& player)
 		}
 		else if (this->state == battleState::ATTACKING)
 		{
-			if (this->skills.size() != 0)
+			if (!this->skills.empty())
 			{
 				Skill useSkill = this->skills[rand() % (this->skills.size() - 1)];
 				if (player.isGuard())
@@ -50,7 +51,11 @@ void Enemy::update(Player& player)
 				}
 				this->stamina -= useSkill.getStaminaCost();
 			}
+			else
+			{
+
+			}
 			this->state = battleState::WAITING;
 		}
-	}
+	//}
 }
