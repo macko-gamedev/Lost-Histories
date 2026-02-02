@@ -30,8 +30,7 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 void Player::getPlayerStats()
 {
 	cout << ">> Battle <<" << endl;
-	cout << "Level " << this->level << endl;
-	cout << "EXP Next: " << (this->next_exp - this->curr_exp) << endl;
+	cout << "Level " << this->level << " | (" << curr_exp << "/" << next_exp << ")" << endl << endl;
 	cout << "HP: " << this->health << " / " << this->max_health << endl;
 	cout << "STA: " << this->stamina << " / " << this->max_stamina << endl << endl;
 }

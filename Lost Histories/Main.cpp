@@ -14,7 +14,7 @@ using namespace std;
 /* 
 
 ###### LOST HISTORIES ######
-Last Updated: 13/01/26
+Last Updated: 02/02/26
 
 --- Parent Classes ---
 . BattleStat	# Contains key variables to battles such as health and stamina values
@@ -76,7 +76,16 @@ void battle(Player &player, Enemy enemy)
 				player_page = convert_string_tolower(player_page);
 				if (player.getSkills().empty() && player_page == "skill")
 				{
-					cout << "! You have no skills currently." << endl;
+					system("CLS");
+					cout << "You have no skills currently." << endl;
+					this_thread::sleep_for(chrono::seconds(2));
+					player_page = "";
+				}
+				if (/*player.getSkills().empty() &&*/ player_page == "item")
+				{
+					system("CLS");
+					cout << "You have no useable items currently." << endl;
+					this_thread::sleep_for(chrono::seconds(2));
 					player_page = "";
 				}
 			}
@@ -295,8 +304,8 @@ int main()
 				cout << "\033[A" << "\33[2K\r" << endl;
 			}
 		}
-		vector<Skill> enemySkills = { Skill("Freeze") };
-		Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, enemySkills);
+		//vector<Skill> enemySkills = { Skill("Freeze"), Skill("Mefreeze") };
+		Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") });
 		battle(player, newEnemy);
 		cout << "DEBUG";
 		system("pause");

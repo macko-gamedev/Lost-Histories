@@ -38,7 +38,16 @@ void Enemy::update(Player& player)
 		{
 			if (!this->skills.empty())
 			{
-				Skill useSkill = this->skills[rand() % (this->skills.size() - 1)];
+				Skill useSkill;
+				if (this->skills.size() == 1)
+				{
+					useSkill = this->skills[0];
+				}
+				else
+				{
+					useSkill = this->skills[rand() % (this->skills.size() - 1)];
+				}
+
 				if (player.isGuard())
 				{
 					cout << this->name << " casted " << useSkill.getName() << " dealing " << to_string(int(useSkill.getBaseDamage() * 0.67)) << " damage" << endl;
@@ -53,7 +62,7 @@ void Enemy::update(Player& player)
 			}
 			else
 			{
-
+				cout << this->name << " attacked you dealing _(not set yet)_ damage" << endl;
 			}
 			this->state = battleState::WAITING;
 		}
