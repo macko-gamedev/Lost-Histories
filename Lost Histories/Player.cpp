@@ -71,6 +71,16 @@ vector<Skill> Player::getSkills()
 	return this->skills;
 }
 
+void Player::setSkills(vector<Skill> nSkills)
+{
+	this->skills = nSkills;
+}
+
+void Player::setMelee(ItemMelee nMelee)
+{
+	this->equippedMelee = nMelee;
+}
+
 vector<Item> Player::getItems()
 {
 	return this->items;
@@ -91,10 +101,17 @@ void Player::increaseExp(int amount)
 	this->curr_exp += amount;
 	if (curr_exp >= next_exp)
 	{
-		int tempVal = this->curr_exp - this->next_exp;
-		this->level++;
-		this->curr_exp = -tempVal;
-		this->next_exp = int(((float)this->next_exp) * 1.1);
+		if (this->level < 99)
+		{
+			int tempVal = this->curr_exp - this->next_exp;
+			this->level++;
+			this->max_health += 6;
+			this->max_stamina += 2;
+			this->health = this->max_health;
+			this->stamina = this->max_stamina;
+			this->curr_exp = tempVal;
+			this->next_exp = int(((float)this->next_exp) * 1.075);
+		}
 	}
 }
 

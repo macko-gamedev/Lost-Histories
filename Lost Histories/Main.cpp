@@ -4,6 +4,7 @@
 #include "Story.h"
 #include "Item.h"
 #include "ItemSkill.h"
+#include "ItemMelee.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -59,6 +60,7 @@ void battle(Player &player, Enemy enemy)
 	string player_page; // Battle menu page
 	int skillIndex = 0; // Selected skill index (to display)
 	cout << "You have encountered " << enemy.getName() << endl;
+	this_thread::sleep_for(chrono::seconds(3));
 	// Battle Loop
 	while (battle)
 	{
@@ -104,17 +106,27 @@ void battle(Player &player, Enemy enemy)
 					if ((choice == convert_string_tolower(skill.getName())) && (player.getStamina() >= skill.getStaminaCost()))
 					{
 						Skill skillSelected = skill;
-						// Damage the enemy
 						system("CLS");
-						if (skillSelected.isSingleTarget())
+						// Determines what the skill does
+						if (skillSelected.getType() == "support")
 						{
-							cout << "You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+							// Heal the player
+							player.changeHealth(skillSelected.getHPGain());
+							cout << "You have healed yourself restoring " << skillSelected.getHPGain() << " health\n\n";
 						}
 						else
 						{
-							cout << "You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " damage each\n\n";
+							// Damage the enemy
+							if (skillSelected.isSingleTarget())
+							{
+								cout << "You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+							}
+							else
+							{
+								cout << "You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " damage each\n\n";
+							}
+							enemy.changeHealth(-(skillSelected.getBaseDamage()));
 						}
-						enemy.changeHealth(-(skillSelected.getBaseDamage()));
 						player.changeStamina(-skillSelected.getStaminaCost());
 						player_turn = false;
 						break;
@@ -299,6 +311,19 @@ int main()
 				system("pause");
 				cout << "\033[A" << "\33[2K\r" << endl;
 			}
+			if (dialogue_choice == "/debugfight") // Initiates a secret fight against the creator
+			{
+				Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm")});
+				player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
+				player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
+				for (int i = 0; i < 99; i++)
+				{
+					player.increaseExp(9999999);
+				}
+				cout << "player level: " << player.getLevel();
+				system("pause");
+				battle(player, newEnemy);
+			}
 			else
 			{
 				cout << "\033[A" << "\33[2K\r" << endl;
@@ -440,10 +465,17 @@ void show_battle_stats(Player player)
 void show_skill(Player player, int index)
 {
 	vector<Skill> tempSkills = player.getSkills();
-	cout << endl << "--> " << convert_string_toupper(tempSkills[index].getName()) << endl;
+	cout << "--> " << convert_string_toupper(tempSkills[index].getName()) << endl;
 	cout << "Type: " << tempSkills[index].getType() << endl;
 	cout << "Desc: " << tempSkills[index].getDesc() << endl;
 	cout << "STA: " << tempSkills[index].getStaminaCost() << endl;
-	cout << "DMG: " << tempSkills[index].getBaseDamage() << endl;
+	if (tempSkills[index].getName() == "Heal" || tempSkills[index].getName() == "Healan" || tempSkills[index].getName() == "Healadia")
+	{
+		cout << "HP+: " << tempSkills[index].getHPGain() << endl;
+	}
+	else
+	{
+		cout << "DMG: " << tempSkills[index].getBaseDamage() << endl;
+	}
 	cout << "[Skill " << (index + 1) << " of " << tempSkills.size() << "]";
 }

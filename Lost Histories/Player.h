@@ -29,6 +29,8 @@ public:
 	string getLocation();
 	vector<string> getElements();
 	vector<Skill> getSkills();
+	void setSkills(vector<Skill> nSkills);
+	void setMelee(ItemMelee nMelee);
 	vector<Item> getItems();
 	int getLevelStats();
 	bool isGuard();
