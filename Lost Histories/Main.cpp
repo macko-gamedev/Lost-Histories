@@ -46,6 +46,12 @@ void show_skill(Player player, int index); // Shows the player's current skill
 int main_menu(); // Main menu when the game is executed
 void battle(Player& player, Enemy enemy); // Battle sequence
 
+enum storyStatus
+{
+	TUTORIAL,
+	ACT_ONE_EXPLORE,
+};
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 // MAIN PROGRAM
@@ -55,6 +61,7 @@ int main()
 	// Setup
 	string player_name;
 	string dialogue_choice;
+	storyStatus story_status = storyStatus::TUTORIAL;
 	int weak_element = -1;
 	int resist_element = -1;
 	cout << "Your Character Name: "; 
@@ -117,8 +124,6 @@ int main()
 				{
 					player.increaseExp(9999999);
 				}
-				cout << "player level: " << player.getLevel();
-				system("pause");
 				battle(player, newEnemy);
 			}
 			else
@@ -126,11 +131,10 @@ int main()
 				cout << "\033[A" << "\33[2K\r" << endl;
 			}
 		}
-		//vector<Skill> enemySkills = { Skill("Freeze"), Skill("Mefreeze") };
 		Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")));
 		battle(player, newEnemy);
-		cout << "DEBUG";
-		system("pause");
+		story.increaseDialogueIndex();
+		story_status = storyStatus::ACT_ONE_EXPLORE;
 	}
 }
 

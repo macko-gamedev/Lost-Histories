@@ -7,6 +7,7 @@ Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> 
 {
 	this->elements = { "-", "-", "-", "-", "-", "-" };
 	this->skills = nSkills;
+	this->droppedItem = nDroppedItem;
 }
 
 vector<string> Enemy::getElements()

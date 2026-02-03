@@ -21,6 +21,9 @@ Story::Story(string player)
 		{ "You look around quickly for any sort of weapon." },
 		{ "+ Received Melee: Sharp Stick" },
 		{ ("> Here it comes " + player_name + "!") },
+		{ "END DIALOGUE" },
+		{ "> Never doubted you once kid" },
+		{ "> Maybe you should spend some time exploring" },
 		{ "END DIALOGUE" }
 	};
 	this->dialogueIndex = 1;
