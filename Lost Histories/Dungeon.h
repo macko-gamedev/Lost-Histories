@@ -7,15 +7,15 @@ using namespace std;
 
 class Dungeon
 {
-private:
-	char dungeon_layout[21][21];
-	vector<char> dungeon_map;
+protected:
+	//char dungeon_map[21][21];
+	vector<vector<char>> dungeon_map;
 	int pos_x;
 	int pos_y;
 public:
 	Dungeon();
 	Dungeon(Player& player);
-	vector<char> getDungeonMap();
+	vector<vector<char>> getDungeonMap();
 	int getPosX();
 	int getPosY();
 	void changePosX(int amount);

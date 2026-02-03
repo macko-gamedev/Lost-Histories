@@ -5,6 +5,7 @@
 #include "Item.h"
 #include "ItemSkill.h"
 #include "ItemMelee.h"
+#include "DungeonGlacier.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -140,6 +141,17 @@ int main()
 
 int main_menu()
 {
+	DungeonGlacier current_dungeon = DungeonGlacier();
+	for (int i = 0; i < 15; i++)
+	{
+		cout << "   ";
+		for (int j = 0; j < 15; j++)
+		{
+			cout << current_dungeon.getDungeonMap()[i][j] << " ";
+		}
+		cout << endl;
+	}
+	exit(0);
 	string menu_choice;
 	while (menu_choice != "new game" && menu_choice != "load game" && menu_choice != "settings" && menu_choice != "quit")
 	{

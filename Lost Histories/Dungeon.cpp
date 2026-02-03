@@ -8,7 +8,7 @@ Dungeon::Dungeon(Player& player)
 	this->pos_y = 0;
 }
 
-vector<char> Dungeon::getDungeonMap()
+vector<vector<char>> Dungeon::getDungeonMap()
 {
 	return this->dungeon_map;
 }
