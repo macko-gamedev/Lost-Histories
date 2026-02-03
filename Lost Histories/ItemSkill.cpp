@@ -2,9 +2,9 @@
 
 ItemSkill::ItemSkill() { }
 
-ItemSkill::ItemSkill(string nName, string nDesc, int nRarity, string nSkill) : Item(nName, nDesc, nRarity)
+ItemSkill::ItemSkill(string nName, string nDesc, int nRarity, Skill nSkill) : Item(nName, nDesc, nRarity)
 {
-	this->inherit_skill = Skill(nSkill);
+	this->inherit_skill = nSkill;
 }
 
 string ItemSkill::toString()

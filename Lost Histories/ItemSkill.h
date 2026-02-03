@@ -11,7 +11,7 @@ private:
 	Skill inherit_skill;
 public:
 	ItemSkill();
-	ItemSkill(string nName, string nDesc, int nRarity, string nSkill);
+	ItemSkill(string nName, string nDesc, int nRarity, Skill nSkill);
 	Skill getSkill();
 	string toString() override;
 };

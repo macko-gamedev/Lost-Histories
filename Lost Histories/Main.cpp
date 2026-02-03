@@ -64,6 +64,7 @@ int main()
 	Story story = Story(player_name); // Instantiates object of type Story
 	system("CLS");
 	cout << ">>> TYPE /help TO VIEW ALL POSSIBLE COMMANDS <<<" << endl << endl;
+
 	while (true)
 	{
 		while (!story.isEvent())
@@ -79,9 +80,10 @@ int main()
 			{
 				system("CLS");
 				cout <<
-					"/help  : Displays this menu!" <<
+				   	  "/help  : Displays this menu!" <<
 					"\n/items : Displays all of your items + melee weapon" <<
-					"\n/stats : Displays your player stats" << endl;
+					"\n/stats : Displays your player stats" <<
+					"\n/debugfight : Initiate a fight at Lv 99 for testing purposes" << endl;
 				system("pause");
 				cout << "\033[A" << "\33[2K\r" << endl;
 			}
@@ -108,7 +110,7 @@ int main()
 			}
 			if (dialogue_choice == "/debugfight") // Initiates a secret fight against the creator
 			{
-				Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm")});
+				Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm")}, ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")));
 				player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
 				player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
 				for (int i = 0; i < 99; i++)
@@ -125,7 +127,7 @@ int main()
 			}
 		}
 		//vector<Skill> enemySkills = { Skill("Freeze"), Skill("Mefreeze") };
-		Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") });
+		Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")));
 		battle(player, newEnemy);
 		cout << "DEBUG";
 		system("pause");
@@ -338,6 +340,7 @@ void battle(Player &player, Enemy enemy)
 			{
 				system("CLS");
 				show_enemy_stats(enemy);
+				cout << "\nItem: " << enemy.getDroppedItem().getName();
 				cout << "\n\n--> Return\n\n>> ";
 				getline(cin, choice);
 				choice = convert_string_tolower(choice);
@@ -355,6 +358,9 @@ void battle(Player &player, Enemy enemy)
 			system("CLS");
 			player.increaseExp(int(enemy.getMaxHealth() * 2));
 			cout << "You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
+			ItemSkill enemyDrop = enemy.getDroppedItem();
+			cout << enemy.getName() << " dropped " << enemyDrop.getName() << "!" << endl;
+			cout << "+ Unlocked Skill: " << enemyDrop.getSkill().getName() << endl << endl;
 			player.getPlayerStats();
 			system("pause");
 			system("CLS");
