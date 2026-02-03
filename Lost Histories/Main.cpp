@@ -15,7 +15,7 @@ using namespace std;
 /* 
 
 ###### LOST HISTORIES ######
-Last Updated: 02/02/26
+Last Updated: 03/02/26 (15:40)
 
 --- Parent Classes ---
 . BattleStat	# Contains key variables to battles such as health and stamina values
@@ -37,20 +37,142 @@ Last Updated: 02/02/26
 
  */
 
-// Quite obvious 1
-string convert_string_tolower(string text);
-// Quite obvious 2
-string convert_string_toupper(string text);
-// Sets the starting elements (weakness and resistant)
-void set_starting_elements(int& weak_element, int& resist_element);
-// Shows the enemy's battle stats
-void show_enemy_stats(Enemy enemy);
-// Shows the player's battle stats (name, hp, sta)
-void show_battle_stats(Player player);
-// Shows the player's current skill
-void show_skill(Player player, int index);
+string convert_string_tolower(string text); // Quite obvious 1
+string convert_string_toupper(string text); // Quite obvious 2
+void set_starting_elements(int& weak_element, int& resist_element); // Sets the starting elements (weakness and resistant)
+void show_enemy_stats(Enemy enemy); // Shows the enemy's battle stats
+void show_battle_stats(Player player); // Shows the player's battle stats (name, hp, sta)
+void show_skill(Player player, int index); // Shows the player's current skill
+int main_menu(); // Main menu when the game is executed
+void battle(Player& player, Enemy enemy); // Battle sequence
 
-// BATTLE
+/* ---------------------------------------------------------------------------------------------------- */
+
+// MAIN PROGRAM
+int main()
+{
+	main_menu();
+	// Setup
+	string player_name;
+	string dialogue_choice;
+	int weak_element = -1;
+	int resist_element = -1;
+	cout << "Your Character Name: "; 
+	getline(cin, player_name);
+	set_starting_elements(weak_element, resist_element); // Player chooeses their starting elements
+	Player player = Player(player_name, weak_element, resist_element, 1, 140, 62); // Instantiates object of type Player
+	Story story = Story(player_name); // Instantiates object of type Story
+	system("CLS");
+	cout << ">>> TYPE /help TO VIEW ALL POSSIBLE COMMANDS <<<" << endl << endl;
+	while (true)
+	{
+		while (!story.isEvent())
+		{
+			cout << story.getDialogue() << endl;
+			story.increaseDialogueIndex();
+			if (story.getDialogue() == "END DIALOGUE")
+			{
+				story.endOfDialogue();
+			}
+			cin >> dialogue_choice;
+			if (dialogue_choice == "/help") // Displays full list of commands
+			{
+				system("CLS");
+				cout <<
+					"/help  : Displays this menu!" <<
+					"\n/items : Displays all of your items + melee weapon" <<
+					"\n/stats : Displays your player stats" << endl;
+				system("pause");
+				cout << "\033[A" << "\33[2K\r" << endl;
+			}
+			if (dialogue_choice == "/items") // Displays all items the player has
+			{
+				system("CLS");
+				for (int i = 0; i < player.getItems().size(); i++)
+				{
+					cout << player.getItems()[i].toString() << endl << endl;
+				}
+				cout << player.getMeleeWeapon().toString() << endl << endl;
+				system("pause");
+				cout << "\033[A" << "\33[2K\r" << endl;
+			}
+			if (dialogue_choice == "/stats") // Displays the players levelling stats
+			{
+				system("CLS");
+				cout << player.getName() << "'s Stats" << endl << endl;
+				player.getPlayerStats();
+				player.getPlayerElements();
+				cout << endl;
+				system("pause");
+				cout << "\033[A" << "\33[2K\r" << endl;
+			}
+			if (dialogue_choice == "/debugfight") // Initiates a secret fight against the creator
+			{
+				Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm")});
+				player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
+				player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
+				for (int i = 0; i < 99; i++)
+				{
+					player.increaseExp(9999999);
+				}
+				cout << "player level: " << player.getLevel();
+				system("pause");
+				battle(player, newEnemy);
+			}
+			else
+			{
+				cout << "\033[A" << "\33[2K\r" << endl;
+			}
+		}
+		//vector<Skill> enemySkills = { Skill("Freeze"), Skill("Mefreeze") };
+		Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") });
+		battle(player, newEnemy);
+		cout << "DEBUG";
+		system("pause");
+	}
+}
+
+int main_menu()
+{
+	string menu_choice;
+	while (menu_choice != "new game" && menu_choice != "load game" && menu_choice != "settings" && menu_choice != "quit")
+	{
+		system("CLS");
+		cout << "\n\n";
+		cout << "   #        ###     ####   ##### " << endl;
+		cout << "   #       #   #   #         #   " << endl;
+		cout << "   #       #   #    ###      #   " << endl;
+		cout << "   #       #   #       #     #   " << endl;
+		cout << "   #####    ###    ####      #   " << endl;
+		cout << "\n";
+		cout << "         H I S T O R I E S       " << endl;
+		cout << "\n\n";
+		cout << "--> New Game\n--> Load Game\n--> Settings\n--> Quit\n\n> ";
+		getline(cin, menu_choice);
+		menu_choice = convert_string_tolower(menu_choice);
+	}
+	system("CLS");
+	if (menu_choice == "new game")
+	{
+		return 0;
+	}
+	if (menu_choice == "load game")
+	{
+		cout << "Sorry but this feature doesn't exist yet, please restart the game\n";
+		exit(0);
+	}
+	if (menu_choice == "settings")
+	{
+		cout << "Sorry but this feature doesn't exist yet, please restart the game\n";
+		exit(0);
+	}
+	if (menu_choice == "quit")
+	{
+		exit(0);
+	}
+	return 0;
+}
+
 void battle(Player &player, Enemy enemy)
 {
 	system("CLS");
@@ -251,89 +373,6 @@ void battle(Player &player, Enemy enemy)
 		}
 
 		if (!battle) break;
-	}
-}
-
-// MAIN PROGRAM
-int main()
-{
-	// Setup
-	string player_name;
-	string dialogue_choice;
-	int weak_element = -1;
-	int resist_element = -1;
-	cout << "Your Character Name: "; 
-	getline(cin, player_name);
-	set_starting_elements(weak_element, resist_element); // Player chooeses their starting elements
-	Player player = Player(player_name, weak_element, resist_element, 1, 140, 62); // Instantiates object of type Player
-	Story story = Story(player_name); // Instantiates object of type Story
-	system("CLS");
-	cout << ">>> TYPE /help TO VIEW ALL POSSIBLE COMMANDS <<<" << endl << endl;
-	while (true)
-	{
-		while (!story.isEvent())
-		{
-			cout << story.getDialogue() << endl;
-			story.increaseDialogueIndex();
-			if (story.getDialogue() == "END DIALOGUE")
-			{
-				story.endOfDialogue();
-			}
-			cin >> dialogue_choice;
-			if (dialogue_choice == "/help") // Displays full list of commands
-			{
-				system("CLS");
-				cout <<
-					"/help  : Displays this menu!" <<
-					"\n/items : Displays all of your items + melee weapon" <<
-					"\n/stats : Displays your player stats" << endl;
-				system("pause");
-				cout << "\033[A" << "\33[2K\r" << endl;
-			}
-			if (dialogue_choice == "/items") // Displays all items the player has
-			{
-				system("CLS");
-				for (int i = 0; i < player.getItems().size(); i++)
-				{
-					cout << player.getItems()[i].toString() << endl << endl;
-				}
-				cout << player.getMeleeWeapon().toString() << endl << endl;
-				system("pause");
-				cout << "\033[A" << "\33[2K\r" << endl;
-			}
-			if (dialogue_choice == "/stats") // Displays the players levelling stats
-			{
-				system("CLS");
-				cout << player.getName() << "'s Stats" << endl << endl;
-				player.getPlayerStats();
-				player.getPlayerElements();
-				cout << endl;
-				system("pause");
-				cout << "\033[A" << "\33[2K\r" << endl;
-			}
-			if (dialogue_choice == "/debugfight") // Initiates a secret fight against the creator
-			{
-				Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm")});
-				player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
-				player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
-				for (int i = 0; i < 99; i++)
-				{
-					player.increaseExp(9999999);
-				}
-				cout << "player level: " << player.getLevel();
-				system("pause");
-				battle(player, newEnemy);
-			}
-			else
-			{
-				cout << "\033[A" << "\33[2K\r" << endl;
-			}
-		}
-		//vector<Skill> enemySkills = { Skill("Freeze"), Skill("Mefreeze") };
-		Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") });
-		battle(player, newEnemy);
-		cout << "DEBUG";
-		system("pause");
 	}
 }
 
