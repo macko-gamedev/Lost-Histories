@@ -75,7 +75,7 @@ int main()
 
 	while (true)
 	{
-		while (!story.isEvent())
+		while (story_status == storyStatus::TUTORIAL && !story.isEvent())
 		{
 			cout << story.getDialogue() << endl;
 			story.increaseDialogueIndex();
@@ -84,53 +84,7 @@ int main()
 				story.endOfDialogue();
 			}
 			cin >> dialogue_choice;
-			if (dialogue_choice == "/help") // Displays full list of commands
-			{
-				system("CLS");
-				cout <<
-				   	  "/help  : Displays this menu!" <<
-					"\n/items : Displays all of your items + melee weapon" <<
-					"\n/stats : Displays your player stats" <<
-					"\n/debugfight : Initiate a fight at Lv 99 for testing purposes" << endl;
-				system("pause");
-				cout << "\033[A" << "\33[2K\r" << endl;
-			}
-			if (dialogue_choice == "/items") // Displays all items the player has
-			{
-				system("CLS");
-				for (int i = 0; i < player.getItems().size(); i++)
-				{
-					cout << player.getItems()[i].toString() << endl << endl;
-				}
-				cout << player.getMeleeWeapon().toString() << endl << endl;
-				system("pause");
-				cout << "\033[A" << "\33[2K\r" << endl;
-			}
-			if (dialogue_choice == "/stats") // Displays the players levelling stats
-			{
-				system("CLS");
-				cout << player.getName() << "'s Stats" << endl << endl;
-				player.getPlayerStats();
-				player.getPlayerElements();
-				cout << endl;
-				system("pause");
-				cout << "\033[A" << "\33[2K\r" << endl;
-			}
-			if (dialogue_choice == "/debugfight") // Initiates a secret fight against the creator
-			{
-				Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm")}, ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")));
-				player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
-				player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
-				for (int i = 0; i < 99; i++)
-				{
-					player.increaseExp(9999999);
-				}
-				battle(player, newEnemy);
-			}
-			else
-			{
-				cout << "\033[A" << "\33[2K\r" << endl;
-			}
+			dialogue_input(player, dialogue_choice);
 		}
 		Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")));
 		battle(player, newEnemy);
@@ -141,7 +95,7 @@ int main()
 
 int main_menu()
 {
-	DungeonGlacier current_dungeon = DungeonGlacier();
+	/*DungeonGlacier current_dungeon = DungeonGlacier();
 	for (int i = 0; i < 15; i++)
 	{
 		cout << "   ";
@@ -151,7 +105,7 @@ int main_menu()
 		}
 		cout << endl;
 	}
-	exit(0);
+	exit(0);*/
 	string menu_choice;
 	while (menu_choice != "new game" && menu_choice != "load game" && menu_choice != "settings" && menu_choice != "quit")
 	{
@@ -418,6 +372,57 @@ string convert_string_toupper(string text)
 		converted_text += c;
 	}
 	return converted_text;
+}
+
+void dialogue_input(Player player, string dialogue_choice)
+{
+	if (dialogue_choice == "/help") // Displays full list of commands
+	{
+		system("CLS");
+		cout <<
+			"/help  : Displays this menu!" <<
+			"\n/items : Displays all of your items + melee weapon" <<
+			"\n/stats : Displays your player stats" <<
+			"\n/debugfight : Initiate a fight at Lv 99 for testing purposes" << endl;
+		system("pause");
+		cout << "\033[A" << "\33[2K\r" << endl;
+	}
+	if (dialogue_choice == "/items") // Displays all items the player has
+	{
+		system("CLS");
+		for (int i = 0; i < player.getItems().size(); i++)
+		{
+			cout << player.getItems()[i].toString() << endl << endl;
+		}
+		cout << player.getMeleeWeapon().toString() << endl << endl;
+		system("pause");
+		cout << "\033[A" << "\33[2K\r" << endl;
+	}
+	if (dialogue_choice == "/stats") // Displays the players levelling stats
+	{
+		system("CLS");
+		cout << player.getName() << "'s Stats" << endl << endl;
+		player.getPlayerStats();
+		player.getPlayerElements();
+		cout << endl;
+		system("pause");
+		cout << "\033[A" << "\33[2K\r" << endl;
+	}
+	if (dialogue_choice == "/debugfight") // Initiates a secret fight against the creator
+	{
+		Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")));
+		player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
+		player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
+		for (int i = 0; i < 99; i++)
+		{
+			player.increaseExp(9999999);
+		}
+		battle(player, newEnemy);
+	}
+	else
+	{
+		cout << "\033[A" << "\33[2K\r" << endl;
+	}
 }
 
 void set_starting_elements(int& weak_element, int& resist_element)
