@@ -18,6 +18,11 @@ string Dungeon::getDungeonName()
 	return this->dungeon_name;
 }
 
+char Dungeon::getPosition(int x, int y)
+{
+	return this->dungeon_map[x][y];
+}
+
 int Dungeon::getDungeonRoom()
 {
 	return this->dungeon_room;
@@ -31,6 +36,11 @@ int Dungeon::getPosX()
 int Dungeon::getPosY()
 {
 	return this->pos_y;
+}
+
+void Dungeon::setPosition(int x, int y, char icon)
+{
+	this->dungeon_map[x][y] == icon;
 }
 
 void Dungeon::changePosX(int amount)

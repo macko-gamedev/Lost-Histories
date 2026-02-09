@@ -19,9 +19,11 @@ public:
 	Dungeon(Player& player);
 	vector<vector<char>> getDungeonMap();
 	string getDungeonName();
+	char getPosition(int x, int y);
 	int getDungeonRoom();
 	int getPosX();
 	int getPosY();
+	void setPosition(int x, int y, char icon);
 	void changePosX(int amount);
 	void changePosY(int amount);
 };

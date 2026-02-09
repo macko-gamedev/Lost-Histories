@@ -23,6 +23,8 @@ Last Updated: 03/02/26 (15:40)
 				: Player, Enemy
 . Item			# Contains name, description and rarity of an item
                 : ItemMelee, ItemSkill
+. Dungeon       # Contains name, floor number
+				: DungeonGlacier
 
 --- Child Classes ---
 . Enemy		    : Inherits BattleStat
@@ -76,7 +78,7 @@ int main()
 
 	while (story_status == storyStatus::TUTORIAL && !story.isEvent())
 	{
-		cout << story.getDialogue() << endl;
+		cout << "   " << story.getDialogue() << endl;
 		story.increaseDialogueIndex();
 		if (story.getDialogue() == "END DIALOGUE")
 		{
@@ -144,6 +146,10 @@ int main()
 					{
 						cout << "          <: Prev Floor";
 					}
+					if (i == 13 && j == 14)
+					{
+						cout << "          X: " << current_dungeon.getPosX() << " | Y: " << current_dungeon.getPosY();
+					}
 				}
 			}
 			cout << endl;
@@ -151,15 +157,56 @@ int main()
 		cout << "\n\n\n";
 		if (!story.isEvent())
 		{
-			cout << story.getDialogue() << endl;
+			cout << "   " << story.getDialogue() << endl;
 			story.increaseDialogueIndex();
 			if (story.getDialogue() == "END DIALOGUE")
 			{
 				story.endOfDialogue();
 			}
 		}
+		else
+		{
+			cout << "   > ";
+		}
 		cin >> dialogue_choice;
+		dialogue_choice = convert_string_tolower(dialogue_choice);
 		dialogue_input(player, dialogue_choice);
+		if (dialogue_choice == "d")
+		{
+			if (current_dungeon.getPosition((current_dungeon.getPosX() + 1), current_dungeon.getPosY()) == ' ')
+			{
+				current_dungeon.setPosition(current_dungeon.getPosX(), current_dungeon.getPosY(), ' ');
+				current_dungeon.setPosition((current_dungeon.getPosX() + 1), current_dungeon.getPosY(), 'P');
+				current_dungeon.changePosX(1);
+			}
+		}
+		if (dialogue_choice == "a")
+		{
+			if (current_dungeon.getPosition((current_dungeon.getPosX() - 1), current_dungeon.getPosY()) == ' ')
+			{
+				current_dungeon.setPosition(current_dungeon.getPosX(), current_dungeon.getPosY(), ' ');
+				current_dungeon.setPosition((current_dungeon.getPosX() - 1), current_dungeon.getPosY(), 'P');
+				current_dungeon.changePosX(-1);
+			}
+		}
+		if (dialogue_choice == "w")
+		{
+			if (current_dungeon.getPosition(current_dungeon.getPosX(), (current_dungeon.getPosY() - 1)) == ' ')
+			{
+				current_dungeon.setPosition(current_dungeon.getPosX(), current_dungeon.getPosY(), ' ');
+				current_dungeon.setPosition(current_dungeon.getPosX(), (current_dungeon.getPosY() - 1), 'P');
+				current_dungeon.changePosY(-1);
+			}
+		}
+		if (dialogue_choice == "s")
+		{
+			if (current_dungeon.getPosition(current_dungeon.getPosX(), (current_dungeon.getPosY() + 1)) == ' ')
+			{
+				current_dungeon.setPosition(current_dungeon.getPosX(), current_dungeon.getPosY(), ' ');
+				current_dungeon.setPosition(current_dungeon.getPosX(), (current_dungeon.getPosY() + 1), 'P');
+				current_dungeon.changePosY(1);
+			}
+		}
 	}
 }
 
