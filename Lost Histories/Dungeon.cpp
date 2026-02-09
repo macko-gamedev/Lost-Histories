@@ -43,6 +43,16 @@ void Dungeon::setPosition(int x, int y, char icon)
 	this->dungeon_map[x][y] == icon;
 }
 
+void Dungeon::setPosX(int x)
+{
+	this->pos_x = x;
+}
+
+void Dungeon::setPosY(int y)
+{
+	this->pos_y = y;
+}
+
 void Dungeon::changePosX(int amount)
 {
 	this->pos_x += amount;

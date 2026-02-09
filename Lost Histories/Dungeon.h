@@ -24,6 +24,8 @@ public:
 	int getPosX();
 	int getPosY();
 	void setPosition(int x, int y, char icon);
+	void setPosX(int x);
+	void setPosY(int y);
 	void changePosX(int amount);
 	void changePosY(int amount);
 };

@@ -104,6 +104,11 @@ int main()
 			for (int j = 0; j < 15; j++)
 			{
 				cout << current_dungeon.getDungeonMap()[i][j] << " ";
+				if (current_dungeon.getDungeonMap()[i][j] == 'P')
+				{
+					current_dungeon.setPosX(j);
+					current_dungeon.setPosY(i);
+				}
 				if (story.isEvent())
 				{
 					if (i == 1 && j == 14)
@@ -179,6 +184,11 @@ int main()
 				current_dungeon.setPosition((current_dungeon.getPosX() + 1), current_dungeon.getPosY(), 'P');
 				current_dungeon.changePosX(1);
 			}
+			cout << "\n\n";
+			cout << "current tile: " << current_dungeon.getPosition((current_dungeon.getPosX() + 1), current_dungeon.getPosY()) << endl;
+			cout << "current pos: " << current_dungeon.getPosX() << "," << current_dungeon.getPosY();
+			system("pause");
+
 		}
 		if (dialogue_choice == "a")
 		{
