@@ -50,6 +50,11 @@ void Story::increaseDialogueIndex()
 	this->dialogueIndex++;
 }
 
+void Story::startOfDialogue()
+{
+	this->event = false;
+}
+
 void Story::endOfDialogue()
 {
 	this->event = true;

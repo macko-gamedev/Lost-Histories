@@ -44,6 +44,7 @@ void set_starting_elements(int& weak_element, int& resist_element); // Sets the 
 void show_enemy_stats(Enemy enemy); // Shows the enemy's battle stats
 void show_battle_stats(Player player); // Shows the player's battle stats (name, hp, sta)
 void show_skill(Player player, int index); // Shows the player's current skill
+void dialogue_input(Player player, string dialogue_choice); // Story player input
 int main_menu(); // Main menu when the game is executed
 void battle(Player& player, Enemy enemy); // Battle sequence
 
@@ -73,9 +74,82 @@ int main()
 	system("CLS");
 	cout << ">>> TYPE /help TO VIEW ALL POSSIBLE COMMANDS <<<" << endl << endl;
 
-	while (true)
+	while (story_status == storyStatus::TUTORIAL && !story.isEvent())
 	{
-		while (story_status == storyStatus::TUTORIAL && !story.isEvent())
+		cout << story.getDialogue() << endl;
+		story.increaseDialogueIndex();
+		if (story.getDialogue() == "END DIALOGUE")
+		{
+			story.endOfDialogue();
+		}
+		cin >> dialogue_choice;
+		dialogue_input(player, dialogue_choice);
+	}		
+	Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")));
+	battle(player, newEnemy);
+	story.startOfDialogue();
+	story.increaseDialogueIndex();
+	story_status = storyStatus::ACT_ONE_EXPLORE;
+
+	DungeonGlacier current_dungeon = DungeonGlacier();
+	while (story_status == storyStatus::ACT_ONE_EXPLORE)
+	{
+		system("CLS");
+		cout << "\n   " << current_dungeon.getDungeonName() << " " << current_dungeon.getDungeonRoom() << "F\n\n";
+		for (int i = 0; i < 15; i++)
+		{
+			cout << "   ";
+			for (int j = 0; j < 15; j++)
+			{
+				cout << current_dungeon.getDungeonMap()[i][j] << " ";
+				if (story.isEvent())
+				{
+					if (i == 1 && j == 14)
+					{
+						cout << "          Controls";
+					}
+					if (i == 2 && j == 14)
+					{
+						cout << "          W: Up";
+					}
+					if (i == 3 && j == 14)
+					{
+						cout << "          A: Left";
+					}
+					if (i == 4 && j == 14)
+					{
+						cout << "          S: Down";
+					}
+					if (i == 5 && j == 14)
+					{
+						cout << "          D: Right";
+					}
+					if (i == 7 && j == 14)
+					{
+						cout << "          Key";
+					}
+					if (i == 8 && j == 14)
+					{
+						cout << "          P: Player";
+					}
+					if (i == 9 && j == 14)
+					{
+						cout << "          E: Enemy";
+					}
+					if (i == 10 && j == 14)
+					{
+						cout << "          >: Next Floor";
+					}
+					if (i == 11 && j == 14)
+					{
+						cout << "          <: Prev Floor";
+					}
+				}
+			}
+			cout << endl;
+		}
+		cout << "\n\n\n";
+		if (!story.isEvent())
 		{
 			cout << story.getDialogue() << endl;
 			story.increaseDialogueIndex();
@@ -83,29 +157,14 @@ int main()
 			{
 				story.endOfDialogue();
 			}
-			cin >> dialogue_choice;
-			dialogue_input(player, dialogue_choice);
 		}
-		Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")));
-		battle(player, newEnemy);
-		story.increaseDialogueIndex();
-		story_status = storyStatus::ACT_ONE_EXPLORE;
+		cin >> dialogue_choice;
+		dialogue_input(player, dialogue_choice);
 	}
 }
 
 int main_menu()
 {
-	/*DungeonGlacier current_dungeon = DungeonGlacier();
-	for (int i = 0; i < 15; i++)
-	{
-		cout << "   ";
-		for (int j = 0; j < 15; j++)
-		{
-			cout << current_dungeon.getDungeonMap()[i][j] << " ";
-		}
-		cout << endl;
-	}
-	exit(0);*/
 	string menu_choice;
 	while (menu_choice != "new game" && menu_choice != "load game" && menu_choice != "settings" && menu_choice != "quit")
 	{
@@ -152,6 +211,7 @@ void battle(Player &player, Enemy enemy)
 	bool battle = true; // Whilst the battle is in play
 	string choice; // Selecting a skill
 	string player_page; // Battle menu page
+	ItemSkill* enemyDrop = enemy.getDroppedItem();
 	int skillIndex = 0; // Selected skill index (to display)
 	cout << "You have encountered " << enemy.getName() << endl;
 	this_thread::sleep_for(chrono::seconds(3));
@@ -310,7 +370,7 @@ void battle(Player &player, Enemy enemy)
 			{
 				system("CLS");
 				show_enemy_stats(enemy);
-				cout << "\nItem: " << enemy.getDroppedItem().getName();
+				cout << "\nItem: " << enemyDrop->getName();
 				cout << "\n\n--> Return\n\n>> ";
 				getline(cin, choice);
 				choice = convert_string_tolower(choice);
@@ -328,9 +388,9 @@ void battle(Player &player, Enemy enemy)
 			system("CLS");
 			player.increaseExp(int(enemy.getMaxHealth() * 2));
 			cout << "You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
-			ItemSkill enemyDrop = enemy.getDroppedItem();
-			cout << enemy.getName() << " dropped " << enemyDrop.getName() << "!" << endl;
-			cout << "+ Unlocked Skill: " << enemyDrop.getSkill().getName() << endl << endl;
+			player.addItem(enemyDrop);
+			cout << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
+			cout << "+ Unlocked Skill: " << enemyDrop->getSkill().getName() << endl << endl;
 			player.getPlayerStats();
 			system("pause");
 			system("CLS");
@@ -390,11 +450,10 @@ void dialogue_input(Player player, string dialogue_choice)
 	if (dialogue_choice == "/items") // Displays all items the player has
 	{
 		system("CLS");
-		for (int i = 0; i < player.getItems().size(); i++)
+		for (Item* item : player.getItems())
 		{
-			cout << player.getItems()[i].toString() << endl << endl;
+			cout << item->toString() << endl << endl;
 		}
-		cout << player.getMeleeWeapon().toString() << endl << endl;
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
@@ -410,7 +469,7 @@ void dialogue_input(Player player, string dialogue_choice)
 	}
 	if (dialogue_choice == "/debugfight") // Initiates a secret fight against the creator
 	{
-		Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")));
+		Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")));
 		player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
 		player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
 		for (int i = 0; i < 99; i++)

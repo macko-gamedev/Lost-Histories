@@ -13,6 +13,16 @@ vector<vector<char>> Dungeon::getDungeonMap()
 	return this->dungeon_map;
 }
 
+string Dungeon::getDungeonName()
+{
+	return this->dungeon_name;
+}
+
+int Dungeon::getDungeonRoom()
+{
+	return this->dungeon_room;
+}
+
 int Dungeon::getPosX()
 {
 	return this->pos_x;

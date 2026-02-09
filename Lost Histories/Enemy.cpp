@@ -3,7 +3,7 @@
 
 Enemy::Enemy() { }
 
-Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, ItemSkill nDroppedItem) : BattleStat(nName, nLevel, nHealth, nStamina)
+Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, ItemSkill* nDroppedItem) : BattleStat(nName, nLevel, nHealth, nStamina)
 {
 	this->elements = { "-", "-", "-", "-", "-", "-" };
 	this->skills = nSkills;
@@ -20,7 +20,7 @@ vector<Skill> Enemy::getSkills()
 	return this->skills;
 }
 
-ItemSkill Enemy::getDroppedItem()
+ItemSkill* Enemy::getDroppedItem()
 {
 	return this->droppedItem;
 }

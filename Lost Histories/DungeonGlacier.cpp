@@ -6,6 +6,8 @@
 
 DungeonGlacier::DungeonGlacier()
 {
+	this->dungeon_name = "Glacier Wasteland";
+	this->dungeon_room = 1;
 	this->dungeon_map =
 	{
 	{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }, //       XXXXXXXX

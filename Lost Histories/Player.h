@@ -17,7 +17,7 @@ private:
 	vector<string> elements;
 	vector<string> elementNames;
 	vector<Skill> skills;
-	vector<Item> items;
+	vector<Item*> items;
 	float curr_exp;
 	float next_exp;
 	bool guard;
@@ -31,12 +31,13 @@ public:
 	vector<Skill> getSkills();
 	void setSkills(vector<Skill> nSkills);
 	void setMelee(ItemMelee nMelee);
-	vector<Item> getItems();
+	vector<Item*> getItems();
 	int getLevelStats();
 	bool isGuard();
 	void increaseExp(int amount);
 	void setGuard(bool guardState);
 	void getPlayerStats();
 	void getPlayerElements();
+	void addItem(Item* item);
 };
 
