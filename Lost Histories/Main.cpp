@@ -16,7 +16,7 @@ using namespace std;
 /* 
 
 ###### LOST HISTORIES ######
-Last Updated: 03/02/26 (15:40)
+Last Updated: 10/02/26 (15:49)
 
 --- Parent Classes ---
 . BattleStat	# Contains key variables to battles such as health and stamina values
@@ -178,43 +178,38 @@ int main()
 		dialogue_input(player, dialogue_choice);
 		if (dialogue_choice == "d")
 		{
-			if (current_dungeon.getPosition((current_dungeon.getPosX() + 1), current_dungeon.getPosY()) == ' ')
+			if (current_dungeon.getPosition(current_dungeon.getPosY(), (current_dungeon.getPosX() + 1)) == ' ')
 			{
-				current_dungeon.setPosition(current_dungeon.getPosX(), current_dungeon.getPosY(), ' ');
-				current_dungeon.setPosition((current_dungeon.getPosX() + 1), current_dungeon.getPosY(), 'P');
-				current_dungeon.changePosX(1);
+				current_dungeon.setPosition(current_dungeon.getPosY(), current_dungeon.getPosX(), ' ');
+				current_dungeon.setPosition(current_dungeon.getPosY(), (current_dungeon.getPosX() + 1), 'P');
+				current_dungeon.changePosY(1);
 			}
-			cout << "\n\n";
-			cout << "current tile: " << current_dungeon.getPosition((current_dungeon.getPosX() + 1), current_dungeon.getPosY()) << endl;
-			cout << "current pos: " << current_dungeon.getPosX() << "," << current_dungeon.getPosY();
-			system("pause");
-
 		}
 		if (dialogue_choice == "a")
 		{
-			if (current_dungeon.getPosition((current_dungeon.getPosX() - 1), current_dungeon.getPosY()) == ' ')
+			if (current_dungeon.getPosition(current_dungeon.getPosY(), (current_dungeon.getPosX() - 1)) == ' ')
 			{
-				current_dungeon.setPosition(current_dungeon.getPosX(), current_dungeon.getPosY(), ' ');
-				current_dungeon.setPosition((current_dungeon.getPosX() - 1), current_dungeon.getPosY(), 'P');
-				current_dungeon.changePosX(-1);
+				current_dungeon.setPosition(current_dungeon.getPosY(), current_dungeon.getPosX(), ' ');
+				current_dungeon.setPosition(current_dungeon.getPosY(), (current_dungeon.getPosX() - 1), 'P');
+				current_dungeon.changePosY(-1);
 			}
 		}
 		if (dialogue_choice == "w")
 		{
-			if (current_dungeon.getPosition(current_dungeon.getPosX(), (current_dungeon.getPosY() - 1)) == ' ')
+			if (current_dungeon.getPosition((current_dungeon.getPosY() - 1), current_dungeon.getPosX()) == ' ')
 			{
-				current_dungeon.setPosition(current_dungeon.getPosX(), current_dungeon.getPosY(), ' ');
-				current_dungeon.setPosition(current_dungeon.getPosX(), (current_dungeon.getPosY() - 1), 'P');
-				current_dungeon.changePosY(-1);
+				current_dungeon.setPosition(current_dungeon.getPosY(), current_dungeon.getPosX(), ' ');
+				current_dungeon.setPosition((current_dungeon.getPosY() - 1), current_dungeon.getPosX(), 'P');
+				current_dungeon.changePosX(-1);
 			}
 		}
 		if (dialogue_choice == "s")
 		{
-			if (current_dungeon.getPosition(current_dungeon.getPosX(), (current_dungeon.getPosY() + 1)) == ' ')
+			if (current_dungeon.getPosition((current_dungeon.getPosY() + 1), current_dungeon.getPosX()) == ' ')
 			{
-				current_dungeon.setPosition(current_dungeon.getPosX(), current_dungeon.getPosY(), ' ');
-				current_dungeon.setPosition(current_dungeon.getPosX(), (current_dungeon.getPosY() + 1), 'P');
-				current_dungeon.changePosY(1);
+				current_dungeon.setPosition(current_dungeon.getPosY(), current_dungeon.getPosX(), ' ');
+				current_dungeon.setPosition((current_dungeon.getPosY() + 1), current_dungeon.getPosX(), 'P');
+				current_dungeon.changePosX(1);
 			}
 		}
 	}
@@ -661,3 +656,4 @@ void show_skill(Player player, int index)
 	}
 	cout << "[Skill " << (index + 1) << " of " << tempSkills.size() << "]";
 }
+

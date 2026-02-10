@@ -40,7 +40,7 @@ int Dungeon::getPosY()
 
 void Dungeon::setPosition(int x, int y, char icon)
 {
-	this->dungeon_map[x][y] == icon;
+	this->dungeon_map[x][y] = icon;
 }
 
 void Dungeon::setPosX(int x)
