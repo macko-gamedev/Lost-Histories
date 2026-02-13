@@ -29,5 +29,6 @@ public:
 	vector<string> getElements();
 	vector<Skill> getSkills();
 	ItemSkill* getDroppedItem();
+	void setElements(vector<string> nElements);
 	void update(Player& player) override;
 };

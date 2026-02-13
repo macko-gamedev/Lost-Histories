@@ -94,6 +94,20 @@ int main()
 	story_status = storyStatus::ACT_ONE_EXPLORE;
 
 	DungeonGlacier current_dungeon = DungeonGlacier();
+	for (int i = 0; i < 15; i++)
+	{
+		for (int j = 0; j < 15; j++)
+		{
+			if (current_dungeon.getDungeonMap()[i][j] == ' ')
+			{
+				int spawnChance = (rand() % 100) + 1;
+				if (spawnChance > 74)
+				{
+					current_dungeon.setPosition(i, j, 'E');
+				}
+			}
+		}
+	}
 	while (story_status == storyStatus::ACT_ONE_EXPLORE)
 	{
 		system("CLS");
@@ -103,7 +117,14 @@ int main()
 			cout << "   ";
 			for (int j = 0; j < 15; j++)
 			{
-				cout << current_dungeon.getDungeonMap()[i][j] << " ";
+				if (current_dungeon.getDungeonMap()[i][j] == 'O')
+				{
+					cout << "  ";
+				}
+				else
+				{
+					cout << current_dungeon.getDungeonMap()[i][j] << " ";
+				}
 				if (current_dungeon.getDungeonMap()[i][j] == 'P')
 				{
 					current_dungeon.setPosX(j);

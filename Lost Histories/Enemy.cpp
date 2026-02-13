@@ -34,6 +34,11 @@ bool Enemy::isAlive()
 	return this->alive;
 }
 
+void Enemy::setElements(vector<string> nElements)
+{
+	this->elements = nElements;
+}
+
 void Enemy::update(Player& player)
 {
 	//if (this->alive)
