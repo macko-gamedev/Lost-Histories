@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "Player.h"
+#include "Enemy.h"
 
 using namespace std;
 
@@ -28,5 +29,6 @@ public:
 	void setPosY(int y);
 	void changePosX(int amount);
 	void changePosY(int amount);
+	Enemy newEnemy(Dungeon* curr_dungeon);
 };
 

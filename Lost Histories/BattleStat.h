@@ -29,6 +29,7 @@ public:
 	int getMaxStamina();
 	void changeHealth(int amount);
 	void changeStamina(int amount);
+	void setElements(vector<string> nElements);
 	virtual void update(Player& player);
 };
 

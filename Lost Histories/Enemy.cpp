@@ -1,10 +1,14 @@
 #include "Enemy.h"
 #include "Player.h"
+#include <ctime>
+#include <cstdlib>
 
 Enemy::Enemy() { }
 
 Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, ItemSkill* nDroppedItem) : BattleStat(nName, nLevel, nHealth, nStamina)
 {
+	this->health = int(nHealth + (nLevel * 1.6));
+	this->max_health = int(nHealth + (nLevel * 1.6));
 	this->elements = { "-", "-", "-", "-", "-", "-" };
 	this->skills = nSkills;
 	this->droppedItem = nDroppedItem;
@@ -35,6 +39,7 @@ void Enemy::update(Player& player)
 	//if (this->alive)
 	//{
 		system("CLS");
+		srand(time(0));
 		if (this->state == battleState::WAITING)
 		{
 			cout << this->name << " is waiting...";
@@ -51,7 +56,7 @@ void Enemy::update(Player& player)
 				}
 				else
 				{
-					useSkill = this->skills[rand() % (this->skills.size() - 1)];
+					useSkill = this->skills[(rand() % this->skills.size())];
 				}
 
 				if (player.isGuard())
