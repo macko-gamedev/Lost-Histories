@@ -318,7 +318,7 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 
 		if (current_dungeon->getDungeonName() == "Glacier Wasteland")
 		{
-			if (current_dungeon->getDungeonRoom() == 3)
+			if (current_dungeon->getDungeonRoom() == 3) // Snow Golem Mini Boss, drops key used to advance
 			{
 				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '?')
 				{
@@ -376,6 +376,33 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 				newEnemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
 			}
 			battle(player, newEnemy);
+		}
+	}
+}
+
+Item* open_chest(Player&, Dungeon* current_dungeon)
+{
+	if (current_dungeon->getDungeonName() == "Glacier Wasteland")
+	{
+		vector<Item*> chestLoot =
+		{
+			new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
+			new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, 17),
+			new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, 29),
+			new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")),
+			new ItemSkill("Old Cross", "An old church cross emitting a blessing aura", 3, Skill("Blightan"))
+		};
+		if (current_dungeon->getDungeonRoom() >= 3)
+		{
+			chestLoot.push_back(new ItemMelee("Ice Crossbow", "Icified crossbow which fires icicles", 3, 46));
+		}
+		if (current_dungeon->getDungeonRoom() >= 4)
+		{
+			chestLoot.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
+		}
+		if (current_dungeon->getDungeonRoom() >= 5)
+		{
+			chestLoot.push_back(new ItemSkill("Electrical Wire", "Exposed electric wire that still packs some spark", 3, Skill("Zapao")));
 		}
 	}
 }
