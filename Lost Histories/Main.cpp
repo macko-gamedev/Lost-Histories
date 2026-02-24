@@ -16,7 +16,7 @@ using namespace std;
 /* 
 
 ###### LOST HISTORIES ######
-Last Updated: 10/02/26 (15:49)
+Last Updated: 24/02/26 (15:37)
 
 --- Parent Classes ---
 . BattleStat	# Contains key variables to battles such as health and stamina values
@@ -27,10 +27,11 @@ Last Updated: 10/02/26 (15:49)
 				: DungeonGlacier
 
 --- Child Classes ---
-. Enemy		    : Inherits BattleStat
-. ItemMelee     : Inherits Item, is the player's current melee weapon
-. ItemSkill     : Inherits Item, an item which contains a skill the player can inherit
-. Player        : Inherits BattleStat, contains all things the player can do and their stats
+. Enemy		     : Inherits BattleStat
+. DungeonGlacier : Inherits Dungeon, dungeon 1 of the game
+. ItemMelee      : Inherits Item, is the player's current melee weapon
+. ItemSkill      : Inherits Item, an item which contains a skill the player can inherit
+. Player         : Inherits BattleStat, contains all things the player can do and their stats
 
 --- Classes ---
 . Skill			: Contains name, description, type, damage/healing value and stamina cost of a skill
