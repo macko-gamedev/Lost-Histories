@@ -6,6 +6,7 @@ class DungeonGlacier : public Dungeon
 private:
 public:
 	DungeonGlacier();
+	void fillWithEnemies() override;
 	//DungeonGlacier(Player& player);
 };
 

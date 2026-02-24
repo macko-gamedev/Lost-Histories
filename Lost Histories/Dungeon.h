@@ -9,8 +9,7 @@ using namespace std;
 class Dungeon
 {
 protected:
-	//char dungeon_map[21][21];
-	vector<vector<char>> dungeon_map;
+	vector<vector<vector<char>>> dungeon_map;
 	string dungeon_name;
 	int dungeon_room;
 	int pos_x;
@@ -18,17 +17,19 @@ protected:
 public:
 	Dungeon();
 	Dungeon(Player& player);
-	vector<vector<char>> getDungeonMap();
+	vector<vector<vector<char>>> getDungeonMap();
 	string getDungeonName();
-	char getPosition(int x, int y);
+	char getPosition(int room, int x, int y);
 	int getDungeonRoom();
 	int getPosX();
 	int getPosY();
-	void setPosition(int x, int y, char icon);
+	void changeDungeonRoom(int value);
+	void setPosition(int room, int x, int y, char icon);
 	void setPosX(int x);
 	void setPosY(int y);
 	void changePosX(int amount);
 	void changePosY(int amount);
+	void virtual fillWithEnemies();
 	Enemy newEnemy(Dungeon* curr_dungeon);
 };
 

@@ -8,7 +8,7 @@ Dungeon::Dungeon(Player& player)
 	this->pos_y = 0;
 }
 
-vector<vector<char>> Dungeon::getDungeonMap()
+vector<vector<vector<char>>> Dungeon::getDungeonMap()
 {
 	return this->dungeon_map;
 }
@@ -18,9 +18,9 @@ string Dungeon::getDungeonName()
 	return this->dungeon_name;
 }
 
-char Dungeon::getPosition(int x, int y)
+char Dungeon::getPosition(int room, int x, int y)
 {
-	return this->dungeon_map[x][y];
+	return this->dungeon_map[room][x][y];
 }
 
 int Dungeon::getDungeonRoom()
@@ -38,9 +38,14 @@ int Dungeon::getPosY()
 	return this->pos_y;
 }
 
-void Dungeon::setPosition(int x, int y, char icon)
+void Dungeon::changeDungeonRoom(int value)
 {
-	this->dungeon_map[x][y] = icon;
+	this->dungeon_room += value;
+}
+
+void Dungeon::setPosition(int room, int x, int y, char icon)
+{
+	this->dungeon_map[room][x][y] = icon;
 }
 
 void Dungeon::setPosX(int x)
@@ -61,6 +66,11 @@ void Dungeon::changePosX(int amount)
 void Dungeon::changePosY(int amount)
 {
 	this->pos_y += amount;
+}
+
+void Dungeon::fillWithEnemies()
+{
+
 }
 
 Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)

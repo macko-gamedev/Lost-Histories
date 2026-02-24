@@ -97,21 +97,7 @@ int main()
 
 	// DUNGEON 1: GLACIER WASTELAND
 	DungeonGlacier current_dungeon = DungeonGlacier();
-	Enemy newEnemy;
-	for (int i = 0; i < 15; i++)
-	{
-		for (int j = 0; j < 15; j++)
-		{
-			if (current_dungeon.getDungeonMap()[i][j] == ' ')
-			{
-				int spawnChance = (rand() % 100) + 1;
-				if (spawnChance > 74)
-				{
-					current_dungeon.setPosition(i, j, 'E');
-				}
-			}
-		}
-	}
+	current_dungeon.fillWithEnemies();
 	while (story_status == storyStatus::ACT_ONE_EXPLORE)
 	{
 		system("CLS");
@@ -121,15 +107,15 @@ int main()
 			cout << "   ";
 			for (int j = 0; j < 15; j++)
 			{
-				if (current_dungeon.getDungeonMap()[i][j] == 'O')
+				if (current_dungeon.getDungeonMap()[(current_dungeon.getDungeonRoom() - 1)][i][j] == 'O')
 				{
 					cout << "  ";
 				}
 				else
 				{
-					cout << current_dungeon.getDungeonMap()[i][j] << " ";
+					cout << current_dungeon.getDungeonMap()[(current_dungeon.getDungeonRoom() - 1)][i][j] << " ";
 				}
-				if (current_dungeon.getDungeonMap()[i][j] == 'P')
+				if (current_dungeon.getDungeonMap()[(current_dungeon.getDungeonRoom() - 1)][i][j] == '+')
 				{
 					current_dungeon.setPosX(j);
 					current_dungeon.setPosY(i);
@@ -162,11 +148,11 @@ int main()
 					}
 					if (i == 8 && j == 14)
 					{
-						cout << "          P: Player";
+						cout << "          +: Player";
 					}
 					if (i == 9 && j == 14)
 					{
-						cout << "          E: Enemy";
+						cout << "          !: Enemy";
 					}
 					if (i == 10 && j == 14)
 					{
@@ -250,36 +236,43 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 {
 	if (dialogue_choice == "d")
 	{
-		if (current_dungeon->getPosition(current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == ' ')
+		if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == ' ')
 		{
-			current_dungeon->setPosition(current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition(current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), 'P');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
 			current_dungeon->changePosY(1);
 		}
-		else if (current_dungeon->getPosition(current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == 'E')
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '!')
 		{
-			current_dungeon->setPosition(current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition(current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), 'P');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
+			current_dungeon->changePosY(1);
 			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
 			if (current_dungeon->getDungeonName() == "Glacier Wasteland")
 			{
 				newEnemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
 			}
 			battle(player, newEnemy);
+		}
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '>')
+		{
+			current_dungeon->changeDungeonRoom(1);
+			current_dungeon->fillWithEnemies();
+
 		}
 	}
 	if (dialogue_choice == "a")
 	{
-		if (current_dungeon->getPosition(current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == ' ')
+		if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == ' ')
 		{
-			current_dungeon->setPosition(current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition(current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), 'P');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
 			current_dungeon->changePosY(-1);
 		}
-		if (current_dungeon->getPosition(current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == 'E')
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '!')
 		{
-			current_dungeon->setPosition(current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition(current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), 'P');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
 			current_dungeon->changePosY(-1);
 			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
 			if (current_dungeon->getDungeonName() == "Glacier Wasteland")
@@ -288,19 +281,23 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			}
 			battle(player, newEnemy);
 		}
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '<')
+		{
+			current_dungeon->changeDungeonRoom(-1);
+		}
 	}
 	if (dialogue_choice == "w")
 	{
-		if (current_dungeon->getPosition((current_dungeon->getPosY() - 1), current_dungeon->getPosX()) == ' ')
+		if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX()) == ' ')
 		{
-			current_dungeon->setPosition(current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getPosY() - 1), current_dungeon->getPosX(), 'P');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX(), '+');
 			current_dungeon->changePosX(-1);
 		}
-		if (current_dungeon->getPosition((current_dungeon->getPosY() - 1), current_dungeon->getPosX()) == 'E')
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX()) == '!')
 		{
-			current_dungeon->setPosition(current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getPosY() - 1), current_dungeon->getPosX(), 'P');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX(), '+');
 			current_dungeon->changePosX(-1);
 			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
 			if (current_dungeon->getDungeonName() == "Glacier Wasteland")
@@ -312,16 +309,16 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 	}
 	if (dialogue_choice == "s")
 	{
-		if (current_dungeon->getPosition((current_dungeon->getPosY() + 1), current_dungeon->getPosX()) == ' ')
+		if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX()) == ' ')
 		{
-			current_dungeon->setPosition(current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getPosY() + 1), current_dungeon->getPosX(), 'P');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX(), '+');
 			current_dungeon->changePosX(1);
 		}
-		if (current_dungeon->getPosition((current_dungeon->getPosY() + 1), current_dungeon->getPosX()) == 'E')
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX()) == '!')
 		{
-			current_dungeon->setPosition(current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getPosY() + 1), current_dungeon->getPosX(), 'P');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX(), '+');
 			current_dungeon->changePosX(1);
 			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
 			if (current_dungeon->getDungeonName() == "Glacier Wasteland")
