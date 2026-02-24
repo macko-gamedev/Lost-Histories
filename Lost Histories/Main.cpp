@@ -261,6 +261,35 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			current_dungeon->fillWithEnemies();
 
 		}
+
+		if (current_dungeon->getDungeonName() == "Glacier Wasteland")
+		{
+			if (current_dungeon->getDungeonRoom() == 3)
+			{
+				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '|')
+				{
+					bool hasKey = false;
+					for (Item* item : player.getItems())
+					{
+						if (item->getName() == "Glacier F3 Key")
+						{
+							hasKey = true;
+						}
+					}
+					if (hasKey)
+					{
+						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
+						current_dungeon->changePosY(1);
+					}
+					else
+					{
+						cout << "   Requires Glacier F3 Key";
+						this_thread::sleep_for(chrono::seconds(2));
+					}
+				}
+			}
+		}
 	}
 	if (dialogue_choice == "a")
 	{
@@ -286,6 +315,26 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 		{
 			current_dungeon->changeDungeonRoom(-1);
 		}
+
+		if (current_dungeon->getDungeonName() == "Glacier Wasteland")
+		{
+			if (current_dungeon->getDungeonRoom() == 3)
+			{
+				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '?')
+				{
+					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
+					current_dungeon->changePosY(-1);
+					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexaon") }, new ItemSkill("Glacier F3 Key","Frozen key lost in time, maybe can be used for something?", 3, Skill("")));
+					if (current_dungeon->getDungeonName() == "Glacier Wasteland")
+					{
+						newEnemy.setElements({ "Wk", "Rst", "-", "-", "Wk", "Rst" });
+					}
+					battle(player, newEnemy);
+				}
+			}
+		}
+
 	}
 	if (dialogue_choice == "w")
 	{

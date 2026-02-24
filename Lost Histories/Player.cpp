@@ -25,7 +25,8 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	this->addItem(&equippedMelee);
 
 	// Skills: Player starts with no skills, so just declaring the vector here
-	this->skills = { Skill("Flame") };
+	this->skills = { Skill("Flamadia") };
+	this->max_stamina = 999;
 }
 
 void Player::getPlayerStats()

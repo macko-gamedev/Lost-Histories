@@ -7,7 +7,7 @@
 DungeonGlacier::DungeonGlacier()
 {
 	this->dungeon_name = "Glacier Wasteland";
-	this->dungeon_room = 1;
+	this->dungeon_room = 3;
 	this->pos_x = 3;
 	this->pos_y = 10;
 	this->dungeon_map =
@@ -48,7 +48,7 @@ DungeonGlacier::DungeonGlacier()
 		},
 		{                                                                                  // --------------
 			{ 'O', 'X', 'X', 'X', 'X', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }, // XXXX  XXXXXXXX 
-			{ 'O', 'X', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', 'X' }, // X  XXXX   X  X
+			{ 'O', 'X', '?', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', 'X' }, // X? XXXX   X  X
 			{ 'O', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X' }, // XX  X   X X XX 
 			{ 'O', 'O', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'O' }, //  X  X XXX X X 
 			{ 'O', 'O', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O' }, //  X  X   X   X 
