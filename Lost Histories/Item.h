@@ -10,6 +10,7 @@ protected:
 	string name;
 	string desc;
 	int rarity;
+	int quantity;
 public:
 	Item();
 	Item(string nName, string nDesc, int nRarity);
@@ -17,5 +18,7 @@ public:
 	string getName();
 	string getDesc();
 	int getRarity();
+	int getQuantity();
+	void increaseQuantity();
 };
 

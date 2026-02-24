@@ -564,9 +564,22 @@ void battle(Player &player, Enemy enemy)
 			system("CLS");
 			player.increaseExp(int(enemy.getMaxHealth() * 2));
 			cout << "You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
-			player.addItem(enemyDrop);
 			cout << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
-			cout << "+ Unlocked Skill: " << enemyDrop->getSkill().getName() << endl << endl;
+			bool itemDupe = false;
+			for (Item* item : player.getItems())
+			{
+				if (enemyDrop->getName() == item->getName())
+				{
+					item->increaseQuantity();
+					itemDupe = true;
+				}
+			}
+			if (!itemDupe)
+			{
+				player.addItem(enemyDrop);
+				cout << "+ Unlocked Skill: " << enemyDrop->getSkill().getName() << endl;
+			}
+			cout << endl;
 			player.getPlayerStats();
 			system("pause");
 			system("CLS");

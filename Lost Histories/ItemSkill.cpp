@@ -9,7 +9,7 @@ ItemSkill::ItemSkill(string nName, string nDesc, int nRarity, Skill nSkill) : It
 
 string ItemSkill::toString()
 {
-	string convertedText = "Item: " + this->name + " (" + to_string(this->rarity) + "*)\nDesc: " + this->desc + "\nInherit: " + this->inherit_skill.getName();
+	string convertedText = "x" + to_string(this->getQuantity()) + " " + this->name + " (" + to_string(this->rarity) + "*)\nDesc: " + this->desc + "\nInherit: " + this->inherit_skill.getName();
 	return convertedText;
 }
 
