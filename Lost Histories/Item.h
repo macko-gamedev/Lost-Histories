@@ -12,7 +12,9 @@ protected:
 	string desc;
 	int rarity;
 	int quantity;
+	bool meleeItem;
 	bool skillInheritance;
+	int damage;
 	Skill inherit_skill;
 public:
 	Item();
@@ -22,7 +24,9 @@ public:
 	string getDesc();
 	int getRarity();
 	int getQuantity();
+	bool isMeleeWeapon();
 	bool canInheritSkill();
+	int getMeleeDamage();
 	Skill getSkill();
 	void increaseQuantity();
 };

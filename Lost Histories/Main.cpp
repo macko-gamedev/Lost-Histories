@@ -159,13 +159,17 @@ int main()
 					}
 					if (i == 10 && j == 14)
 					{
-						cout << "          >: Next Floor";
+						cout << "          *: Item";
 					}
 					if (i == 11 && j == 14)
 					{
+						cout << "          >: Next Floor";
+					}
+					if (i == 12 && j == 14)
+					{
 						cout << "          <: Prev Floor";
 					}
-					if (i == 13 && j == 14)
+					if (i == 14 && j == 14)
 					{
 						cout << "          X: " << current_dungeon.getPosX() << " | Y: " << current_dungeon.getPosY();
 					}
@@ -344,7 +348,7 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
 					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
 					current_dungeon->changePosY(-1);
-					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexaon") }, new ItemSkill("Glacier F3 Key","Frozen key lost in time, maybe can be used for something?", 3, Skill("")));
+					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new ItemSkill("Glacier F3 Key","Frozen key lost in time, maybe can be used for something?", 3, Skill("")));
 					if (current_dungeon->getDungeonName() == "Glacier Wasteland")
 					{
 						newEnemy.setElements({ "Wk", "Rst", "-", "-", "Wk", "Rst" });
@@ -428,7 +432,7 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 			new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, 17),
 			new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, 29),
 			new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")),
-			new ItemSkill("Old Cross", "An old church cross emitting a blessing aura", 3, Skill("Blightan"))
+			new ItemSkill("Old Cross", "An old church cross emitting a blessing aura", 3, Skill("Blighta"))
 		};
 		if (current_dungeon->getDungeonRoom() >= 3)
 		{
@@ -444,13 +448,52 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 		}
 	}
 	Item* newItem = chestLoot[rand() % (chestLoot.size() - 1)];
-	cout << "   Opening chest...\n\n";
+	bool itemDupe = false;
+	for (Item* item : player.getItems())
+	{
+		if (newItem->getName() == item->getName())
+		{
+			item->increaseQuantity();
+			itemDupe = true;
+		}
+	}
+	if (!itemDupe)
+	{
+		player.addItem(newItem);
+	}
+	cout << "   Something is shining on the ground...\n\n";
 	this_thread::sleep_for(chrono::seconds(2));
-	cout << "   You found " << newItem->getName() << "!\n";
+	cout << "   You found " << newItem->getName() << "!";
+	if (!itemDupe)
+	{
+		cout << " (NEW)";
+	}
+	cout << "\n\n";
 	cout << newItem->toString();
-	player.addItem(newItem);
 	player.update();
 	this_thread::sleep_for(chrono::seconds(2));
+	if (newItem->isMeleeWeapon() && !itemDupe)
+	{
+		cout << "\n\n   You currently have " << player.getMeleeWeapon().getName() << " equipped.\n   Would you like to replace it with " << newItem->getName() << "? [y] or [n]\n\n   Atk: " << player.getMeleeWeapon().getMeleeDamage() << " --> " << newItem->getMeleeDamage() << "\n\n>";
+		string choice;
+		getline(cin, choice);
+		while (convert_string_tolower(choice) != "y" && convert_string_tolower(choice) != "n")
+		{
+			cout << "   [!] Please choose 'y' or 'n': ";
+			getline(cin, choice);
+		}
+		if (convert_string_tolower(choice) == "y")
+		{
+			ItemMelee newPlayerMelee = ItemMelee(newItem->getName(), newItem->getDesc(), newItem->getRarity(), newItem->getMeleeDamage());
+			player.setMelee(newPlayerMelee);
+			cout << "\n\n   You equipped " << player.getMeleeWeapon().getName();
+		}
+		else
+		{
+			cout << "\n\n   You decided to keep " << player.getMeleeWeapon().getName() << " equipped";
+		}
+		this_thread::sleep_for(chrono::seconds(2));
+	}
 }
 
 void battle(Player &player, Enemy enemy)
@@ -576,8 +619,8 @@ void battle(Player &player, Enemy enemy)
 				if (choice == "use" || choice == "u")
 				{
 					system("CLS");
-					cout << "You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " dealing " << player.getMeleeWeapon().getDamage() << " damage\n\n";
-					enemy.changeHealth(-(player.getMeleeWeapon().getDamage()));
+					cout << "You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " dealing " << player.getMeleeWeapon().getMeleeDamage() << " damage\n\n";
+					enemy.changeHealth(-(player.getMeleeWeapon().getMeleeDamage()));
 					player_turn = false;
 					break;
 				}

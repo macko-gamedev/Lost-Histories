@@ -8,6 +8,7 @@ Item::Item(string nName, string nDesc, int nRarity)
 	this->desc = nDesc;
 	this->rarity = nRarity;
 	this->quantity = 1;
+	this->meleeItem = false;
 	this->skillInheritance = false;
 }
 
@@ -37,9 +38,19 @@ int Item::getQuantity()
 	return this->quantity;
 }
 
+bool Item::isMeleeWeapon()
+{
+	return this->meleeItem;
+}
+
 bool Item::canInheritSkill()
 {
 	return this->skillInheritance;
+}
+
+int Item::getMeleeDamage()
+{
+	return this->damage;
 }
 
 Skill Item::getSkill()

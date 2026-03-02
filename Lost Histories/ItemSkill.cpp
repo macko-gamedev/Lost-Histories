@@ -5,6 +5,7 @@ ItemSkill::ItemSkill() { }
 ItemSkill::ItemSkill(string nName, string nDesc, int nRarity, Skill nSkill) : Item(nName, nDesc, nRarity)
 {
 	this->inherit_skill = nSkill;
+	this->meleeItem = false;
 	this->skillInheritance = true;
 }
 
