@@ -304,6 +304,31 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					}
 				}
 			}
+			else if (current_dungeon->getDungeonRoom() == 5)
+			{
+				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '|')
+				{
+					bool hasKey = false;
+					for (Item* item : player.getItems())
+					{
+						if (item->getName() == "Glacier F5 Key")
+						{
+							hasKey = true;
+						}
+					}
+					if (hasKey)
+					{
+						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
+						current_dungeon->changePosY(1);
+					}
+					else
+					{
+						cout << "   Requires Glacier F5 Key";
+						this_thread::sleep_for(chrono::seconds(2));
+					}
+				}
+			}
 		}
 	}
 	if (dialogue_choice == "a")
@@ -339,21 +364,23 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			cout << "\n\n";
 			system("pause");
 		}
-
-		if (current_dungeon->getDungeonName() == "Glacier Wasteland")
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '?')
 		{
-			if (current_dungeon->getDungeonRoom() == 3) // Snow Golem Mini Boss, drops key used to advance
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
+			current_dungeon->changePosY(-1);
+			if (current_dungeon->getDungeonName() == "Glacier Wasteland")
 			{
-				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '?')
+				if (current_dungeon->getDungeonRoom() == 3) // Snow Golem Mini Boss, drops key used to advance
 				{
-					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
-					current_dungeon->changePosY(-1);
-					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new ItemSkill("Glacier F3 Key","Frozen key lost in time, maybe can be used for something?", 3, Skill("")));
-					if (current_dungeon->getDungeonName() == "Glacier Wasteland")
-					{
-						newEnemy.setElements({ "Wk", "Rst", "-", "-", "Wk", "Rst" });
-					}
+					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new ItemSkill("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3, Skill("")));
+					newEnemy.setElements({ "Wk", "Rst", "-", "-", "Wk", "Rst" });
+					battle(player, newEnemy);
+				}
+				else if (current_dungeon->getDungeonRoom() == 5) // Duty Soldier Mini Boss, drops key used to advance
+				{
+					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Zap"), Skill("Flamao"), Skill("Zapao"), Skill("Meflamao")}, new ItemSkill("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3, Skill("")));
+					newEnemy.setElements({ "Wk", "Rst", "Wk", "Rst", "-", "-" });
 					battle(player, newEnemy);
 				}
 			}
@@ -430,6 +457,8 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 		chestLoot =
 		{
 			new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
+			new Item("Ripped Shoes", "A pair of ripped shoes", 1),
+			new Item("Foreign Coin", "A coin which you don't recognise", 2),
 			new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, 17),
 			new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, 29),
 			new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")),
@@ -442,10 +471,13 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 		if (current_dungeon->getDungeonRoom() >= 4)
 		{
 			chestLoot.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
+			chestLoot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 97));
 		}
 		if (current_dungeon->getDungeonRoom() >= 5)
 		{
+			chestLoot.push_back(new Item("Chipped Diamond", "Exposed diamond which appears chipped and frozen over, might still carry some value", 4));
 			chestLoot.push_back(new ItemSkill("Electrical Wire", "Exposed electric wire that still packs some spark", 3, Skill("Zapao")));
+			chestLoot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
 		}
 	}
 	Item* newItem = chestLoot[rand() % (chestLoot.size() - 1)];
@@ -477,11 +509,12 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 	{
 		cout << "\n\n   You currently have " << player.getMeleeWeapon().getName() << " equipped.\n   Would you like to replace it with " << newItem->getName() << "? [y] or [n]\n\n   Atk: " << player.getMeleeWeapon().getMeleeDamage() << " --> " << newItem->getMeleeDamage() << "\n\n>";
 		string choice;
-		getline(cin, choice);
+		cin >> choice;
 		while (convert_string_tolower(choice) != "y" && convert_string_tolower(choice) != "n")
 		{
+			if (convert_string_tolower(choice) == "y" || convert_string_tolower(choice) == "n") break;
 			cout << "   [!] Please choose 'y' or 'n': ";
-			getline(cin, choice);
+			cin >> choice;
 		}
 		if (convert_string_tolower(choice) == "y")
 		{
@@ -544,7 +577,7 @@ void battle(Player &player, Enemy enemy)
 				system("CLS");
 				show_battle_stats(player);
 				show_skill(player, skillIndex);
-				cout << "\n\n--> Next\n--> Back\n--> Return\n\n>> ";
+				cout << "\n\n--> Next\n--> Back\n--> Return\n\n  > ";
 				getline(cin, choice);
 				choice = convert_string_tolower(choice);
 				// Validates if the skill selected exists
@@ -638,7 +671,7 @@ void battle(Player &player, Enemy enemy)
 				system("CLS");
 				show_battle_stats(player);
 				cout << "   Reduce incoming damage by 33% and negates weaknesses";
-				cout << "\n\n--> Guard\n--> Return\n\n>> ";
+				cout << "\n\n--> Guard\n--> Return\n\n  > ";
 				getline(cin, choice);
 				choice = convert_string_tolower(choice);
 
@@ -664,7 +697,7 @@ void battle(Player &player, Enemy enemy)
 				system("CLS");
 				show_enemy_stats(enemy);
 				cout << "\n   Item: " << enemyDrop->getName();
-				cout << "\n\n--> Return\n\n>> ";
+				cout << "\n\n--> Return\n\n  > ";
 				getline(cin, choice);
 				choice = convert_string_tolower(choice);
 
@@ -680,8 +713,8 @@ void battle(Player &player, Enemy enemy)
 		{
 			system("CLS");
 			player.increaseExp(int(enemy.getMaxHealth() * 2));
-			cout << "   You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
-			cout << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
+			cout << "\n   You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
+			cout << "   " << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
 			bool itemDupe = false;
 			for (Item* item : player.getItems())
 			{
@@ -883,7 +916,7 @@ void show_enemy_stats(Enemy enemy)
 	vector<string> element_names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
 	for (int i = 0; i < 6; i++)
 	{
-		cout << "   " << element_names[i] << ": " << enemy.getElements()[i] << "\n";
+		cout << ".  " << element_names[i] << ": " << enemy.getElements()[i] << "\n";
 	}
 }
 
@@ -898,17 +931,17 @@ void show_skill(Player player, int index)
 {
 	vector<Skill> tempSkills = player.getSkills();
 	cout << "--> " << convert_string_toupper(tempSkills[index].getName()) << endl;
-	cout << "Type: " << tempSkills[index].getType() << endl;
-	cout << "Desc: " << tempSkills[index].getDesc() << endl;
-	cout << "STA: " << tempSkills[index].getStaminaCost() << endl;
+	cout << "    Type: " << tempSkills[index].getType() << endl;
+	cout << "    Desc: " << tempSkills[index].getDesc() << endl;
+	cout << "    STA: " << tempSkills[index].getStaminaCost() << endl;
 	if (tempSkills[index].getName() == "Heal" || tempSkills[index].getName() == "Healan" || tempSkills[index].getName() == "Healadia")
 	{
-		cout << "HP+: " << tempSkills[index].getHPGain() << endl;
+		cout << "    HP+: " << tempSkills[index].getHPGain() << endl;
 	}
 	else
 	{
-		cout << "DMG: " << tempSkills[index].getBaseDamage() << endl;
+		cout << "    DMG: " << tempSkills[index].getBaseDamage() << endl;
 	}
-	cout << "[Skill " << (index + 1) << " of " << tempSkills.size() << "]";
+	cout << "    [Skill " << (index + 1) << " of " << tempSkills.size() << "]";
 }
 

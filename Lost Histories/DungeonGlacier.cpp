@@ -7,7 +7,7 @@
 DungeonGlacier::DungeonGlacier()
 {
 	this->dungeon_name = "Glacier Wasteland";
-	this->dungeon_room = 1;
+	this->dungeon_room = 3;
 	this->pos_x = 3;
 	this->pos_y = 10;
 	this->dungeon_map =
@@ -46,7 +46,7 @@ DungeonGlacier::DungeonGlacier()
 			{ 'O', 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '>' }, //  XXX         >
 			{ 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }  //    XXXXXXXXXXX
 		},
-		{                                                                                  // --------------
+		{                                                                                  
 			{ 'O', 'X', 'X', 'X', 'X', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }, // XXXX  XXXXXXXX 
 			{ 'O', 'X', '?', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', 'X' }, // X? XXXX   X  X
 			{ 'O', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X' }, // XX  X   X X XX 
@@ -60,8 +60,42 @@ DungeonGlacier::DungeonGlacier()
 			{ 'O', 'O', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'O' }, //  X X XX X X X  
 			{ 'O', 'O', 'X', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'O' }, //  X X    X X X
 			{ 'O', 'O', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X' }, //  XXX XX X X XX
-			{ 'O', 'O', '<', '+', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X' }, //  <      X   *X
+			{ 'O', 'O', '<', '+', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X' }, //  <      X    X
 			{ 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }  //  XXXXXXXXXXXXX
+		},
+		{                                                                                  // --------------
+			{ 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'O', 'O', 'O', 'O' }, //     XXXXXX 
+			{ 'O', 'O', 'O', 'O', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'O', 'O', 'O' }, //    XX    XX
+			{ 'O', 'O', 'O', 'X', 'X', ' ', ' ', 'X', 'X', ' ', ' ', 'X', 'X', 'O', 'O' }, //   XX  XX  XX  
+			{ 'O', 'O', 'X', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'O' }, //  XX   XX   XX
+			{ 'O', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' }, // XX          XX
+			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, // X            X
+			{ 'O', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', '>' }, // X  XX    XX  >
+			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, // X            X
+			{ 'O', '<', '+', ' ', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X' }, // <+   XXXX    X 
+			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, // X            X
+			{ 'O', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X' }, // X   XXXXXX   X
+			{ 'O', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' }, // XX          XX
+			{ 'O', 'O', 'X', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'O' }, //  XX   XX   XX 
+			{ 'O', 'O', 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O', 'O' }, //   XXX    XXX
+			{ 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'O', 'O', 'O', 'O' }  //     XXXXXX
+		},
+		{                                                                                  // --------------
+			{ 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O' }, //   XXXXXXXXXXX 
+			{ 'O', 'O', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' }, //  XX         XX
+			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, //  X           X
+			{ 'O', 'O', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X' }, //  XXX X   X XXX
+			{ 'O', 'O', 'O', 'O', 'X', ' ', 'X', '?', ' ', ' ', 'X', ' ', 'X', 'O', 'O' }, //    X X ? X X
+			{ 'O', 'X', 'X', 'X', 'X', '!', 'X', 'X', 'X', 'X', 'X', '!', 'X', 'X', 'X' }, // XXXX!XXXXX!XXX
+			{ 'O', '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|', '>' }, // <           |>
+			{ 'O', 'X', 'X', 'X', 'X', '!', 'X', ' ', ' ', ' ', 'X', '!', 'X', 'X', 'X' }, // XXXX!X   X!XXX
+			{ 'O', 'O', 'O', 'O', 'X', '*', 'X', ' ', ' ', ' ', 'X', ' ', 'X', 'O', 'O' }, //    X X   X X
+			{ 'O', 'O', 'O', 'X', 'X', '*', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'O' }, //   XX XX XX XX
+			{ 'O', 'O', 'X', 'X', '*', '*', '*', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X' }, //  XX   XXX   XX
+			{ 'O', 'O', 'X', '*', '*', '*', '*', '*', 'X', ' ', ' ', ' ', ' ', ' ', 'X' }, //  X     X     X
+			{ 'O', 'O', 'X', 'X', '*', '*', '*', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X' }, //  XX   XXX   XX
+			{ 'O', 'O', 'O', 'X', 'X', '*', 'X', 'X', 'O', 'X', 'X', '*', 'X', 'X', 'O' }, //   XX*XX XX*XX
+			{ 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'X', 'X', 'X', 'O', 'O' }  //    XXX   XXX
 		}
 	};
 }
@@ -69,7 +103,7 @@ DungeonGlacier::DungeonGlacier()
 void DungeonGlacier::fillWithEnemies()
 {
 	// 15% chance for each tile to have an enemy
-	for (int r = 0; r < 3; r++)
+	for (int r = 0; r < 5; r++)
 	{
 		for (int i = 0; i < 15; i++)
 		{
@@ -91,7 +125,7 @@ void DungeonGlacier::fillWithEnemies()
 void DungeonGlacier::fillWithChests()
 {
 	// 5% chance for each tile to have an enemy
-	for (int r = 0; r < 3; r++)
+	for (int r = 0; r < 5; r++)
 	{
 		for (int i = 0; i < 15; i++)
 		{

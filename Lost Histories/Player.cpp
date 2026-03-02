@@ -20,9 +20,8 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	this->elements[resist_element] = "Rst";
 
 	// Items: Giving the player a backpack by default and equipping the player with a basic melee weapon
-	this->items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1) };
-	this->equippedMelee = ItemMelee(items[1]->getName(), items[1]->getDesc(), items[1]->getRarity(), items[1]->getMeleeDamage()); // Name, Desc, Rarity 1-5, Damage
-	this->addItem(&equippedMelee);
+	this->items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4) };
+	this->equippedMelee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 
 	// Skills: Player starts with no skills, so just declaring the vector here
 	this->skills = { Skill("Flamadia") };
@@ -32,19 +31,17 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 
 void Player::getPlayerStats()
 {
-	cout << ">> Battle <<" << endl;
-	cout << "Level " << this->level << " | (" << curr_exp << "/" << next_exp << ")" << endl << endl;
-	cout << "HP: " << this->health << " / " << this->max_health << endl;
-	cout << "STA: " << this->stamina << " / " << this->max_stamina << endl << endl;
+	cout << "   Level " << this->level << " | (" << curr_exp << "/" << next_exp << ")" << endl << endl;
+	cout << "   HP: " << this->health << " / " << this->max_health << endl;
+	cout << "   STA: " << this->stamina << " / " << this->max_stamina << endl << endl;
 }
 
 void Player::getPlayerElements()
 {
-	cout << ">> Elements <<" << endl;
 	int elementIndex = 0;
 	while (elementIndex < 6)
 	{
-		cout << ". " << elementNames[elementIndex] << ": " << elements[elementIndex] << endl;
+		cout << ".  " << elementNames[elementIndex] << ": " << elements[elementIndex] << endl;
 		elementIndex++;
 	}
 }
