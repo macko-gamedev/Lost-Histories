@@ -20,7 +20,7 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	this->elements[resist_element] = "Rst";
 
 	// Items: Giving the player a backpack by default and equipping the player with a basic melee weapon
-	this->items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4) };
+	this->items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1) };
 	this->equippedMelee = ItemMelee(items[1]->getName(), items[1]->getDesc(), items[1]->getRarity(), items[1]->getMeleeDamage()); // Name, Desc, Rarity 1-5, Damage
 	this->addItem(&equippedMelee);
 

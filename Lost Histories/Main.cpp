@@ -64,6 +64,7 @@ enum storyStatus
 // MAIN PROGRAM
 int main()
 {
+	srand(static_cast<unsigned int>(time(nullptr)));
 	main_menu();
 	// Setup
 	string player_name;
@@ -505,7 +506,7 @@ void battle(Player &player, Enemy enemy)
 	string player_page; // Battle menu page
 	ItemSkill* enemyDrop = enemy.getDroppedItem();
 	int skillIndex = 0; // Selected skill index (to display)
-	cout << "You have encountered " << enemy.getName() << endl;
+	cout << "\n   You have encountered " << enemy.getName() << endl;
 	this_thread::sleep_for(chrono::seconds(3));
 	// Battle Loop
 	while (battle)
@@ -519,20 +520,20 @@ void battle(Player &player, Enemy enemy)
 			while ((player_page != "melee") && (player_page != "skill") && (player_page != "item") && (player_page != "guard") && (player_page != "analyse"))
 			{
 				show_battle_stats(player);
-				cout << "--> Melee\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n>> ";
+				cout << "--> Melee\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n  > ";
 				getline(cin, player_page);
 				player_page = convert_string_tolower(player_page);
 				if (player.getSkills().empty() && player_page == "skill")
 				{
 					system("CLS");
-					cout << "You have no skills currently." << endl;
+					cout << "\n   You have no skills currently." << endl;
 					this_thread::sleep_for(chrono::seconds(2));
 					player_page = "";
 				}
 				if (/*player.getSkills().empty() &&*/ player_page == "item")
 				{
 					system("CLS");
-					cout << "You have no useable items currently." << endl;
+					cout << "\n   You have no useable items currently." << endl;
 					this_thread::sleep_for(chrono::seconds(2));
 					player_page = "";
 				}
@@ -558,18 +559,18 @@ void battle(Player &player, Enemy enemy)
 						{
 							// Heal the player
 							player.changeHealth(skillSelected.getHPGain());
-							cout << "You have healed yourself restoring " << skillSelected.getHPGain() << " health\n\n";
+							cout << "\n   You have healed yourself restoring " << skillSelected.getHPGain() << " health\n\n";
 						}
 						else
 						{
 							// Damage the enemy
 							if (skillSelected.isSingleTarget())
 							{
-								cout << "You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+								cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
 							}
 							else
 							{
-								cout << "You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " damage each\n\n";
+								cout << "\n   You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " damage each\n\n";
 							}
 							enemy.changeHealth(-(skillSelected.getBaseDamage()));
 						}
@@ -611,7 +612,7 @@ void battle(Player &player, Enemy enemy)
 				system("CLS");
 				show_battle_stats(player);
 				cout << player.getMeleeWeapon().toString();
-				cout << "\n\n--> Use\n--> Return\n\n>> ";
+				cout << "\n\n--> Use\n--> Return\n\n  > ";
 				getline(cin, choice);
 				choice = convert_string_tolower(choice);
 
@@ -619,7 +620,7 @@ void battle(Player &player, Enemy enemy)
 				if (choice == "use" || choice == "u")
 				{
 					system("CLS");
-					cout << "You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " dealing " << player.getMeleeWeapon().getMeleeDamage() << " damage\n\n";
+					cout << "\n   You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " dealing " << player.getMeleeWeapon().getMeleeDamage() << " damage\n\n";
 					enemy.changeHealth(-(player.getMeleeWeapon().getMeleeDamage()));
 					player_turn = false;
 					break;
@@ -636,7 +637,7 @@ void battle(Player &player, Enemy enemy)
 			{
 				system("CLS");
 				show_battle_stats(player);
-				cout << "Reduce incoming damage by 33% and negates weaknesses";
+				cout << "   Reduce incoming damage by 33% and negates weaknesses";
 				cout << "\n\n--> Guard\n--> Return\n\n>> ";
 				getline(cin, choice);
 				choice = convert_string_tolower(choice);
@@ -646,7 +647,7 @@ void battle(Player &player, Enemy enemy)
 				{
 					system("CLS");
 					player.setGuard(true);
-					cout << "You have guarded yourself\n\n";
+					cout << "\n   You have guarded yourself\n\n";
 					player_turn = false;
 					break;
 				}
@@ -662,7 +663,7 @@ void battle(Player &player, Enemy enemy)
 			{
 				system("CLS");
 				show_enemy_stats(enemy);
-				cout << "\nItem: " << enemyDrop->getName();
+				cout << "\n   Item: " << enemyDrop->getName();
 				cout << "\n\n--> Return\n\n>> ";
 				getline(cin, choice);
 				choice = convert_string_tolower(choice);
@@ -679,7 +680,7 @@ void battle(Player &player, Enemy enemy)
 		{
 			system("CLS");
 			player.increaseExp(int(enemy.getMaxHealth() * 2));
-			cout << "You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
+			cout << "   You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
 			cout << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
 			bool itemDupe = false;
 			for (Item* item : player.getItems())
@@ -693,7 +694,7 @@ void battle(Player &player, Enemy enemy)
 			if (!itemDupe)
 			{
 				player.addItem(enemyDrop);
-				cout << "+ Unlocked Skill: " << enemyDrop->getSkill().getName() << endl;
+				cout << "   + Unlocked Skill: " << enemyDrop->getSkill().getName() << endl;
 			}
 			cout << endl;
 			player.getPlayerStats();
@@ -746,16 +747,17 @@ void dialogue_input(Player player, string dialogue_choice)
 	{
 		system("CLS");
 		cout <<
-			"/help  : Displays this menu!" <<
-			"\n/items : Displays all of your items + melee weapon" <<
-			"\n/stats : Displays your player stats" <<
-			"\n/debugfight : Initiate a fight at Lv 99 for testing purposes" << endl;
+			"\n   /help  : Displays this menu!" <<
+			"\n\n   /items : Displays all of your items + melee weapon" <<
+			"\n\n   /stats : Displays your player stats" <<
+			"\n\n   /debugfight : Initiate a fight at Lv 99 for testing purposes" << endl;
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
 	if (dialogue_choice == "/items") // Displays all items the player has
 	{
 		system("CLS");
+		cout << "\n   " << player.getName() << "'s Inventory\n\n";
 		for (Item* item : player.getItems())
 		{
 			cout << item->toString() << endl << endl;
@@ -766,7 +768,7 @@ void dialogue_input(Player player, string dialogue_choice)
 	if (dialogue_choice == "/stats") // Displays the players levelling stats
 	{
 		system("CLS");
-		cout << player.getName() << "'s Stats" << endl << endl;
+		cout << "\n   " << player.getName() << "'s Stats\n\n";
 		player.getPlayerStats();
 		player.getPlayerElements();
 		cout << endl;
@@ -876,21 +878,20 @@ void set_starting_elements(int& weak_element, int& resist_element)
 
 void show_enemy_stats(Enemy enemy)
 {
-	cout << convert_string_toupper(enemy.getName()) << " | Lv " << enemy.getLevel() << endl << endl;
-	/*for (string element : enemy.getElements())
+	cout << "   " << convert_string_toupper(enemy.getName()) << " | Lv " << enemy.getLevel() << endl << endl;
+	cout << "   HP: " << enemy.getHealth() << " | STA: " << enemy.getStamina() << endl << endl;
+	vector<string> element_names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
+	for (int i = 0; i < 6; i++)
 	{
-		cout << element << " ";
-	}*/
-	cout << "HP: " << enemy.getHealth();
-	cout << "\nSTA: " << enemy.getStamina() << endl << endl;
+		cout << "   " << element_names[i] << ": " << enemy.getElements()[i] << "\n";
+	}
 }
 
 void show_battle_stats(Player player)
 {
 	system("CLS");
-	cout << "YOUR TURN" << endl << endl;
-	cout << "HP: " << player.getHealth() << " / " << player.getMaxHealth() << endl;
-	cout << "STA: " << player.getStamina() << " / " << player.getMaxStamina() << endl << endl;
+	cout << "\n   YOUR TURN\n\n";
+	cout << "   HP: " << player.getHealth() << " / " << player.getMaxHealth() << " | STA: " << player.getStamina() << " / " << player.getMaxStamina() << endl << endl;
 }
 
 void show_skill(Player player, int index)
