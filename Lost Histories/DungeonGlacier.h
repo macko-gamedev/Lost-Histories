@@ -7,6 +7,7 @@ private:
 public:
 	DungeonGlacier();
 	void fillWithEnemies() override;
+	void fillWithChests() override;
 	//DungeonGlacier(Player& player);
 };
 

@@ -51,6 +51,7 @@ void dialogue_input(Player player, string dialogue_choice); // Story player inpu
 int main_menu(); // Main menu when the game is executed
 void battle(Player& player, Enemy enemy); // Battle sequence
 void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dungeon* current_dungeon); // Map Movement
+void open_chest(Player& player, Dungeon* current_dungeon); // Open chests
 
 enum storyStatus
 {
@@ -99,6 +100,7 @@ int main()
 	// DUNGEON 1: GLACIER WASTELAND
 	DungeonGlacier current_dungeon = DungeonGlacier();
 	current_dungeon.fillWithEnemies();
+	current_dungeon.fillWithChests();
 	while (story_status == storyStatus::ACT_ONE_EXPLORE)
 	{
 		system("CLS");
@@ -258,8 +260,16 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '>')
 		{
 			current_dungeon->changeDungeonRoom(1);
-			current_dungeon->fillWithEnemies();
 
+		}
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '*')
+		{
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
+			current_dungeon->changePosY(1);
+			open_chest(player, current_dungeon);
+			cout << "\n\n";
+			system("pause");
 		}
 
 		if (current_dungeon->getDungeonName() == "Glacier Wasteland")
@@ -315,6 +325,15 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 		{
 			current_dungeon->changeDungeonRoom(-1);
 		}
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '*')
+		{
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
+			current_dungeon->changePosY(-1);
+			open_chest(player, current_dungeon);
+			cout << "\n\n";
+			system("pause");
+		}
 
 		if (current_dungeon->getDungeonName() == "Glacier Wasteland")
 		{
@@ -356,6 +375,15 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			}
 			battle(player, newEnemy);
 		}
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX()) == '*')
+		{
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX(), '+');
+			current_dungeon->changePosX(-1);
+			open_chest(player, current_dungeon);
+			cout << "\n\n";
+			system("pause");
+		}
 	}
 	if (dialogue_choice == "s")
 	{
@@ -377,14 +405,24 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			}
 			battle(player, newEnemy);
 		}
+		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX()) == '*')
+		{
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX(), '+');
+			current_dungeon->changePosX(1);
+			open_chest(player, current_dungeon);
+			cout << "\n\n";
+			system("pause");
+		}
 	}
 }
 
-Item* open_chest(Player&, Dungeon* current_dungeon)
+void open_chest(Player& player, Dungeon* current_dungeon)
 {
+	vector<Item*> chestLoot;
 	if (current_dungeon->getDungeonName() == "Glacier Wasteland")
 	{
-		vector<Item*> chestLoot =
+		chestLoot =
 		{
 			new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
 			new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, 17),
@@ -405,6 +443,14 @@ Item* open_chest(Player&, Dungeon* current_dungeon)
 			chestLoot.push_back(new ItemSkill("Electrical Wire", "Exposed electric wire that still packs some spark", 3, Skill("Zapao")));
 		}
 	}
+	Item* newItem = chestLoot[rand() % (chestLoot.size() - 1)];
+	cout << "   Opening chest...\n\n";
+	this_thread::sleep_for(chrono::seconds(2));
+	cout << "   You found " << newItem->getName() << "!\n";
+	cout << newItem->toString();
+	player.addItem(newItem);
+	player.update();
+	this_thread::sleep_for(chrono::seconds(2));
 }
 
 void battle(Player &player, Enemy enemy)
@@ -608,6 +654,7 @@ void battle(Player &player, Enemy enemy)
 			}
 			cout << endl;
 			player.getPlayerStats();
+			player.update();
 			system("pause");
 			system("CLS");
 			battle = false;

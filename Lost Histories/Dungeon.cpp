@@ -73,6 +73,11 @@ void Dungeon::fillWithEnemies()
 
 }
 
+void Dungeon::fillWithChests()
+{
+
+}
+
 Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 {
 	// Similar to Skill.h, cycles through each possible dungeon to determine which enemy is encountered

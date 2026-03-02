@@ -7,7 +7,7 @@
 DungeonGlacier::DungeonGlacier()
 {
 	this->dungeon_name = "Glacier Wasteland";
-	this->dungeon_room = 3;
+	this->dungeon_room = 1;
 	this->pos_x = 3;
 	this->pos_y = 10;
 	this->dungeon_map =
@@ -60,7 +60,7 @@ DungeonGlacier::DungeonGlacier()
 			{ 'O', 'O', 'X', ' ', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'O' }, //  X X XX X X X  
 			{ 'O', 'O', 'X', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'O' }, //  X X    X X X
 			{ 'O', 'O', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X', 'X' }, //  XXX XX X X XX
-			{ 'O', 'O', '<', '+', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', '*', 'X' }, //  <      X   *X
+			{ 'O', 'O', '<', '+', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X' }, //  <      X   *X
 			{ 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }  //  XXXXXXXXXXXXX
 		}
 	};
@@ -68,16 +68,42 @@ DungeonGlacier::DungeonGlacier()
 
 void DungeonGlacier::fillWithEnemies()
 {
-	for (int i = 0; i < 15; i++)
+	// 15% chance for each tile to have an enemy
+	for (int r = 0; r < 3; r++)
 	{
-		for (int j = 0; j < 15; j++)
+		for (int i = 0; i < 15; i++)
 		{
-			if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == ' ')
+			for (int j = 0; j < 15; j++)
 			{
-				int spawnChance = (rand() % 100) + 1;
-				if (spawnChance > 74)
+				if (this->getDungeonMap()[r][i][j] == ' ')
 				{
-					this->setPosition((this->getDungeonRoom() - 1), i, j, '!');
+					int spawnChance = (rand() % 100) + 1;
+					if (spawnChance > 84)
+					{
+						this->setPosition(r, i, j, '!');
+					}
+				}
+			}
+		}
+	}
+}
+
+void DungeonGlacier::fillWithChests()
+{
+	// 5% chance for each tile to have an enemy
+	for (int r = 0; r < 3; r++)
+	{
+		for (int i = 0; i < 15; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+				if (this->getDungeonMap()[r][i][j] == ' ')
+				{
+					int spawnChance = (rand() % 100) + 1;
+					if (spawnChance > 94)
+					{
+						this->setPosition(r, i, j, '*');
+					}
 				}
 			}
 		}

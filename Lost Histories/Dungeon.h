@@ -30,6 +30,7 @@ public:
 	void changePosX(int amount);
 	void changePosY(int amount);
 	void virtual fillWithEnemies();
+	void virtual fillWithChests();
 	Enemy newEnemy(Dungeon* curr_dungeon);
 };
 

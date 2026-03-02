@@ -3,6 +3,7 @@
 #include <vector>
 #include "Skill.h"
 #include "Item.h"
+#include "ItemSkill.h"
 #include "ItemMelee.h"
 #include "BattleStat.h"
 
@@ -39,5 +40,6 @@ public:
 	void getPlayerStats();
 	void getPlayerElements();
 	void addItem(Item* item);
+	void update();
 };
 

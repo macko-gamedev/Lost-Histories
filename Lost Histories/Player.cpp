@@ -127,3 +127,17 @@ void Player::addItem(Item* item)
 {
 	this->items.push_back(item);
 }
+
+void Player::update()
+{
+	this->setSkills({ });
+	vector<Skill> items_with_skill = { };
+	for (Item* item : this->getItems())
+	{
+		if (item->canInheritSkill())
+		{
+			items_with_skill.push_back(item->getSkill());
+		}
+	}
+	this->setSkills(items_with_skill);
+}
