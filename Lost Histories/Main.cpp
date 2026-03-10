@@ -10,6 +10,9 @@
 #include <algorithm>
 #include <iostream>
 #include <cctype>
+#include <Windows.h>
+#include "mmsystem.h"
+#pragma comment(lib, "winmm.lib")
 
 using namespace std;
 
@@ -49,9 +52,10 @@ void show_battle_stats(Player player); // Shows the player's battle stats (name,
 void show_skill(Player player, int index); // Shows the player's current skill
 void dialogue_input(Player player, string dialogue_choice); // Story player input
 int main_menu(); // Main menu when the game is executed
-void battle(Player& player, Enemy enemy); // Battle sequence
+void battle(Player& player, Dungeon* current_dungeon, Enemy enemy); // Battle sequence
 void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dungeon* current_dungeon); // Map Movement
 void open_chest(Player& player, Dungeon* current_dungeon); // Open chests
+void play_audio(string to_play); // Plays music
 
 enum storyStatus
 {
@@ -91,17 +95,19 @@ int main()
 		}
 		cin >> dialogue_choice;
 		dialogue_input(player, dialogue_choice);
-	}		
+	}
+	DungeonGlacier current_dungeon = DungeonGlacier();
 	Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")));
-	battle(player, newEnemy);
+	play_audio("Dungeon Battle");
+	battle(player, &current_dungeon, newEnemy);
 	story.startOfDialogue();
 	story.increaseDialogueIndex();
 	story_status = storyStatus::ACT_ONE_EXPLORE;
 
 	// DUNGEON 1: GLACIER WASTELAND
-	DungeonGlacier current_dungeon = DungeonGlacier();
 	current_dungeon.fillWithEnemies();
 	current_dungeon.fillWithChests();
+	play_audio("Glacier Wasteland F1");
 	while (story_status == storyStatus::ACT_ONE_EXPLORE)
 	{
 		system("CLS");
@@ -214,7 +220,7 @@ int main_menu()
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
 		cout << "\n\n";
-		cout << "--> New Game\n--> Load Game\n--> Settings\n--> Quit\n\n> ";
+		cout << "--> New Game\n--> Load Game\n--> Settings\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, menu_choice);
 		menu_choice = convert_string_tolower(menu_choice);
 	}
@@ -229,6 +235,11 @@ int main_menu()
 		exit(0);
 	}
 	if (menu_choice == "settings")
+	{
+		cout << "Sorry but this feature doesn't exist yet, please restart the game\n";
+		exit(0);
+	}
+	if (menu_choice == "credits")
 	{
 		cout << "Sorry but this feature doesn't exist yet, please restart the game\n";
 		exit(0);
@@ -260,11 +271,13 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			{
 				newEnemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
 			}
-			battle(player, newEnemy);
+			play_audio("Dungeon Battle");
+			battle(player, current_dungeon, newEnemy);
 		}
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '>')
 		{
 			current_dungeon->changeDungeonRoom(1);
+			play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
 
 		}
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '*')
@@ -338,7 +351,8 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					current_dungeon->changePosY(1);
 					Enemy newEnemy = Enemy("??? Sergeant", 18, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Zapadia")));
 					newEnemy.setElements({ "-", "Rst", "Wk", "-", "Wk", "-" });
-					battle(player, newEnemy);
+					play_audio("Dungeon Main Boss");
+					battle(player, current_dungeon, newEnemy);
 				}
 			}
 		}
@@ -361,11 +375,13 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			{
 				newEnemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
 			}
-			battle(player, newEnemy);
+			play_audio("Dungeon Battle");
+			battle(player, current_dungeon, newEnemy);
 		}
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '<')
 		{
 			current_dungeon->changeDungeonRoom(-1);
+			play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
 		}
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '*')
 		{
@@ -387,13 +403,16 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 				{
 					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3));
 					newEnemy.setElements({ "Wk", "Rst", "-", "-", "Wk", "Rst" });
-					battle(player, newEnemy);
+					play_audio("Dungeon Mini Boss");
+					battle(player, current_dungeon, newEnemy);
 				}
 				else if (current_dungeon->getDungeonRoom() == 5) // Duty Soldier Mini Boss, drops key used to advance
 				{
 					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Zap"), Skill("Flamao"), Skill("Zapao"), Skill("Meflamao")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3));
 					newEnemy.setElements({ "Wk", "Rst", "Wk", "Rst", "-", "-" });
-					battle(player, newEnemy);
+					play_audio("Dungeon Mini Boss");
+					battle(player, current_dungeon, newEnemy);
+
 				}
 			}
 		}
@@ -417,7 +436,8 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			{
 				newEnemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
 			}
-			battle(player, newEnemy);
+			play_audio("Dungeon Battle");
+			battle(player, current_dungeon, newEnemy);
 		}
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX()) == '*')
 		{
@@ -447,7 +467,8 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			{
 				newEnemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
 			}
-			battle(player, newEnemy);
+			play_audio("Dungeon Battle");
+			battle(player, current_dungeon, newEnemy);
 		}
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX()) == '*')
 		{
@@ -542,7 +563,7 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 	}
 }
 
-void battle(Player &player, Enemy enemy)
+void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
 {
 	system("CLS");
 	bool player_turn = true; // Is it player turn or enemy turn?
@@ -750,6 +771,7 @@ void battle(Player &player, Enemy enemy)
 			system("pause");
 			system("CLS");
 			battle = false;
+			play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
 		}
 		else
 		{
@@ -764,6 +786,46 @@ void battle(Player &player, Enemy enemy)
 		}
 
 		if (!battle) break;
+	}
+}
+
+void play_audio(string to_play)
+{
+	if (to_play == "Glacier Wasteland F1")
+	{
+		PlaySound(TEXT("music/glacier_floor_1.wav"), NULL, SND_ASYNC);
+	}
+	else if (to_play == "Glacier Wasteland F2")
+	{
+		PlaySound(TEXT("music/glacier_floor_2.wav"), NULL, SND_ASYNC);
+	}
+	else if (to_play == "Glacier Wasteland F3")
+	{
+		PlaySound(TEXT("music/glacier_floor_3.wav"), NULL, SND_ASYNC);
+	}
+	else if (to_play == "Glacier Wasteland F4")
+	{
+		PlaySound(TEXT("music/glacier_floor_4.wav"), NULL, SND_ASYNC);
+	}
+	else if (to_play == "Glacier Wasteland F5")
+	{
+		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC);
+	}
+	else if (to_play == "Glacier Wasteland F6")
+	{
+		PlaySound(TEXT("music/glacier_floor_6.wav"), NULL, SND_ASYNC);
+	}
+	else if (to_play == "Dungeon Battle")
+	{
+		PlaySound(TEXT("music/dungeon_battle.wav"), NULL, SND_ASYNC);
+	}
+	else if (to_play == "Dungeon Mini Boss")
+	{
+		PlaySound(TEXT("music/dungeon_mini_boss.wav"), NULL, SND_ASYNC);
+	}
+	else if (to_play == "Dungeon Main Boss")
+	{
+		PlaySound(TEXT("music/dungeon_main_boss.wav"), NULL, SND_ASYNC);
 	}
 }
 
@@ -832,7 +894,8 @@ void dialogue_input(Player player, string dialogue_choice)
 		{
 			player.increaseExp(9999999);
 		}
-		battle(player, newEnemy);
+		DungeonGlacier current_dungeon = DungeonGlacier();
+		battle(player, &current_dungeon, newEnemy);
 	}
 	else
 	{

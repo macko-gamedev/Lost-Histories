@@ -174,7 +174,7 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 				}
 				else
 				{
-					return Enemy("Ice Fiend", ((rand() % 5) + 9), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new Item("Scratched Coin", "A corn coated in scratches, the date on it says 2026", 2));
+					return Enemy("Ice Fiend", ((rand() % 5) + 9), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
 				}
 			}
 			else
@@ -186,7 +186,7 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 		else if (curr_dungeon->getDungeonRoom() == 6)
 		{
 			// Enemy Level for this floor: 15		Patrol Soldier: 15
-			return Enemy("Patrol Soldier", 12, 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, new Item("Gun Fragment", "A piece of fragment from a Soldiers gun.", 3));
+			return Enemy("Patrol Soldier", 15, 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, new Item("Gun Fragment", "A piece of fragment from a Soldiers gun.", 3));
 		}
 	}
 }
