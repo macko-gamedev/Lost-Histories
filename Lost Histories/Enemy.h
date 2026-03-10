@@ -20,15 +20,15 @@ private:
 	battleState state;
 	vector<string> elements;
 	vector<Skill> skills;
-	ItemSkill* droppedItem;
+	Item* droppedItem;
 	bool alive;
 public:
 	Enemy();
-	Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, ItemSkill* nDroppedItem);
+	Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, Item* nDroppedItem);
 	bool isAlive();
 	vector<string> getElements();
 	vector<Skill> getSkills();
-	ItemSkill* getDroppedItem();
+	Item* getDroppedItem();
 	void setElements(vector<string> nElements);
 	void update(Player& player) override;
 };

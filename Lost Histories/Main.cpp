@@ -329,6 +329,18 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					}
 				}
 			}
+			else if (current_dungeon->getDungeonRoom() == 6)
+			{
+				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '?')
+				{
+					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
+					current_dungeon->changePosY(1);
+					Enemy newEnemy = Enemy("??? Sergeant", 18, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Zapadia")));
+					newEnemy.setElements({ "-", "Rst", "Wk", "-", "Wk", "-" });
+					battle(player, newEnemy);
+				}
+			}
 		}
 	}
 	if (dialogue_choice == "a")
@@ -373,13 +385,13 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			{
 				if (current_dungeon->getDungeonRoom() == 3) // Snow Golem Mini Boss, drops key used to advance
 				{
-					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new ItemSkill("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3, Skill("")));
+					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3));
 					newEnemy.setElements({ "Wk", "Rst", "-", "-", "Wk", "Rst" });
 					battle(player, newEnemy);
 				}
 				else if (current_dungeon->getDungeonRoom() == 5) // Duty Soldier Mini Boss, drops key used to advance
 				{
-					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Zap"), Skill("Flamao"), Skill("Zapao"), Skill("Meflamao")}, new ItemSkill("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3, Skill("")));
+					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Zap"), Skill("Flamao"), Skill("Zapao"), Skill("Meflamao")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3));
 					newEnemy.setElements({ "Wk", "Rst", "Wk", "Rst", "-", "-" });
 					battle(player, newEnemy);
 				}
@@ -537,7 +549,7 @@ void battle(Player &player, Enemy enemy)
 	bool battle = true; // Whilst the battle is in play
 	string choice; // Selecting a skill
 	string player_page; // Battle menu page
-	ItemSkill* enemyDrop = enemy.getDroppedItem();
+	Item* enemyDrop = enemy.getDroppedItem();
 	int skillIndex = 0; // Selected skill index (to display)
 	cout << "\n   You have encountered " << enemy.getName() << endl;
 	this_thread::sleep_for(chrono::seconds(3));
@@ -727,7 +739,10 @@ void battle(Player &player, Enemy enemy)
 			if (!itemDupe)
 			{
 				player.addItem(enemyDrop);
-				cout << "   + Unlocked Skill: " << enemyDrop->getSkill().getName() << endl;
+				if (enemyDrop->canInheritSkill())
+				{
+					cout << "   + Unlocked Skill: " << enemyDrop->getSkill().getName() << endl;
+				}
 			}
 			cout << endl;
 			player.getPlayerStats();

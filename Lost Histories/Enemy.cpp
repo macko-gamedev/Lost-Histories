@@ -5,7 +5,7 @@
 
 Enemy::Enemy() { }
 
-Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, ItemSkill* nDroppedItem) : BattleStat(nName, nLevel, nHealth, nStamina)
+Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, Item* nDroppedItem) : BattleStat(nName, nLevel, nHealth, nStamina)
 {
 	this->health = int(nHealth + (nLevel * 1.6));
 	this->max_health = int(nHealth + (nLevel * 1.6));
@@ -24,7 +24,7 @@ vector<Skill> Enemy::getSkills()
 	return this->skills;
 }
 
-ItemSkill* Enemy::getDroppedItem()
+Item* Enemy::getDroppedItem()
 {
 	return this->droppedItem;
 }
