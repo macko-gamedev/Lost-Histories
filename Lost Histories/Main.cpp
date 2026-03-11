@@ -98,7 +98,7 @@ int main()
 		dialogue_input(player, dialogue_choice);
 	}
 	DungeonGlacier current_dungeon = DungeonGlacier();
-	Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false);
+	Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 12);
 	play_audio("Dungeon Battle");
 	battle(player, &current_dungeon, newEnemy);
 	story.startOfDialogue();
@@ -268,10 +268,6 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
 			current_dungeon->changePosY(1);
 			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
-			if (current_dungeon->getDungeonName() == "Glacier Wasteland")
-			{
-				newEnemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
-			}
 			play_audio("Dungeon Battle");
 			battle(player, current_dungeon, newEnemy);
 		}
@@ -350,8 +346,7 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
 					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
 					current_dungeon->changePosY(1);
-					Enemy newEnemy = Enemy("??? Sergeant", 18, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Zapadia")), true);
-					newEnemy.setElements({ "-", "Rst", "Wk", "-", "Wk", "-" });
+					Enemy newEnemy = Enemy("Russian Sergeant", 18, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Zapadia")), true, 56);
 					play_audio("Dungeon Main Boss");
 					battle(player, current_dungeon, newEnemy);
 				}
@@ -371,11 +366,6 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
 			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
 			current_dungeon->changePosY(-1);
-			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
-			if (current_dungeon->getDungeonName() == "Glacier Wasteland")
-			{
-				newEnemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
-			}
 			play_audio("Dungeon Battle");
 			battle(player, current_dungeon, newEnemy);
 		}
@@ -402,18 +392,15 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			{
 				if (current_dungeon->getDungeonRoom() == 3) // Snow Golem Mini Boss, drops key used to advance
 				{
-					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3), true);
-					newEnemy.setElements({ "Wk", "Rst", "-", "-", "Wk", "Rst" });
+					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 31);
 					play_audio("Dungeon Mini Boss");
 					battle(player, current_dungeon, newEnemy);
 				}
 				else if (current_dungeon->getDungeonRoom() == 5) // Duty Soldier Mini Boss, drops key used to advance
 				{
-					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Zap"), Skill("Flamao"), Skill("Zapao"), Skill("Meflamao")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3), true);
-					newEnemy.setElements({ "Wk", "Rst", "Wk", "Rst", "-", "-" });
+					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Zap"), Skill("Flamao"), Skill("Zapao"), Skill("Meflamao")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 37);
 					play_audio("Dungeon Mini Boss");
 					battle(player, current_dungeon, newEnemy);
-
 				}
 			}
 		}
@@ -433,10 +420,6 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX(), '+');
 			current_dungeon->changePosX(-1);
 			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
-			if (current_dungeon->getDungeonName() == "Glacier Wasteland")
-			{
-				newEnemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
-			}
 			play_audio("Dungeon Battle");
 			battle(player, current_dungeon, newEnemy);
 		}
@@ -464,10 +447,6 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX(), '+');
 			current_dungeon->changePosX(1);
 			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
-			if (current_dungeon->getDungeonName() == "Glacier Wasteland")
-			{
-				newEnemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
-			}
 			play_audio("Dungeon Battle");
 			battle(player, current_dungeon, newEnemy);
 		}
@@ -572,6 +551,8 @@ void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
 	string choice; // Selecting a skill
 	string player_page; // Battle menu page
 	Item* enemyDrop = enemy.getDroppedItem();
+	current_dungeon->elementSetter(enemy);
+	enemy.setHealth();
 	int skillIndex = 0; // Selected skill index (to display)
 	cout << "\n   You have encountered " << enemy.getName() << endl;
 	this_thread::sleep_for(chrono::seconds(3));
@@ -633,13 +614,130 @@ void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
 							// Damage the enemy
 							if (skillSelected.isSingleTarget())
 							{
-								cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+								if (skillSelected.getType() == "fire")
+								{
+									if (enemy.getElements()[0] == "Wk")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+									}
+									else if (enemy.getElements()[0] == "Rst")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+									}
+									else
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+										enemy.changeHealth(-(skillSelected.getBaseDamage()));
+									}
+								}
+								else if (skillSelected.getType() == "ice")
+								{
+									if (enemy.getElements()[1] == "Wk")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+									}
+									else if (enemy.getElements()[1] == "Rst")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+									}
+									else
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+										enemy.changeHealth(-(skillSelected.getBaseDamage()));
+									}
+								}
+								else if (skillSelected.getType() == "electric")
+								{
+									if (enemy.getElements()[2] == "Wk")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+									}
+									else if (enemy.getElements()[2] == "Rst")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+									}
+									else
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+										enemy.changeHealth(-(skillSelected.getBaseDamage()));
+									}
+								}
+								else if (skillSelected.getType() == "wind")
+								{
+									if (enemy.getElements()[3] == "Wk")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+									}
+									else if (enemy.getElements()[3] == "Rst")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+									}
+									else
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+										enemy.changeHealth(-(skillSelected.getBaseDamage()));
+									}
+								}
+								else if (skillSelected.getType() == "curse")
+								{
+									if (enemy.getElements()[4] == "Wk")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+									}
+									else if (enemy.getElements()[4] == "Rst")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+									}
+									else
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+										enemy.changeHealth(-(skillSelected.getBaseDamage()));
+									}
+								}
+								else if (skillSelected.getType() == "bless")
+								{
+									if (enemy.getElements()[5] == "Wk")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+									}
+									else if (enemy.getElements()[5] == "Rst")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+									}
+									else
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+										enemy.changeHealth(-(skillSelected.getBaseDamage()));
+									}
+								}
+								else if (skillSelected.getType() == "nuclear")
+								{
+									cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+									enemy.changeHealth(-(skillSelected.getBaseDamage()));
+								}
 							}
 							else
 							{
 								cout << "\n   You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " damage each\n\n";
 							}
-							enemy.changeHealth(-(skillSelected.getBaseDamage()));
 						}
 						player.changeStamina(-skillSelected.getStaminaCost());
 						player_turn = false;
@@ -690,7 +788,7 @@ void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
 					system("CLS");
 					if (critical_chance > 79)
 					{
-						cout << "\n   You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " landing a CRITICAL hit dealing " << (player.getMeleeWeapon().getMeleeDamage() * 2) << " damage\n\n";
+						cout << "\n   You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " landing a CRITICAL HIT dealing " << (player.getMeleeWeapon().getMeleeDamage() * 2) << " damage\n\n";
 						enemy.changeHealth(-(player.getMeleeWeapon().getMeleeDamage() * 2));
 					}
 					else
@@ -804,43 +902,43 @@ void play_audio(string to_play)
 {
 	if (to_play == "Glacier Wasteland F1")
 	{
-		PlaySound(TEXT("music/glacier_floor_1.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("music/glacier_floor_1.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Glacier Wasteland F2")
 	{
-		PlaySound(TEXT("music/glacier_floor_2.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("music/glacier_floor_2.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Glacier Wasteland F3")
 	{
-		PlaySound(TEXT("music/glacier_floor_3.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("music/glacier_floor_3.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Glacier Wasteland F4")
 	{
-		PlaySound(TEXT("music/glacier_floor_4.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("music/glacier_floor_4.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Glacier Wasteland F5")
 	{
-		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Glacier Wasteland F6")
 	{
-		PlaySound(TEXT("music/glacier_floor_6.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("music/glacier_floor_6.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Battle")
 	{
-		PlaySound(TEXT("music/dungeon_battle.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("music/dungeon_battle.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Mini Boss")
 	{
-		PlaySound(TEXT("music/dungeon_mini_boss.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("music/dungeon_mini_boss.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Main Boss")
 	{
-		PlaySound(TEXT("music/dungeon_main_boss.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("music/dungeon_main_boss.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Victory")
 	{
-		PlaySound(TEXT("music/victory.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("music/victory.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 }
 
@@ -873,13 +971,13 @@ void dialogue_input(Player player, string dialogue_choice)
 		system("CLS");
 		cout <<
 			"\n   /help  : Displays this menu!" <<
-			"\n\n   /items : Displays all of your items + melee weapon" <<
-			"\n\n   /stats : Displays your player stats" <<
-			"\n\n   /debugfight : Initiate a fight at Lv 99 for testing purposes" << endl;
+			"\n\n   items : Displays all of your items + melee weapon" <<
+			"\n\n   stats : Displays your player stats" <<
+			"\n\n   debugfight : Initiate a fight at Lv 99 for testing purposes" << endl;
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	if (dialogue_choice == "/items") // Displays all items the player has
+	if (dialogue_choice == "items") // Displays all items the player has
 	{
 		system("CLS");
 		cout << "\n   " << player.getName() << "'s Inventory\n\n";
@@ -890,7 +988,7 @@ void dialogue_input(Player player, string dialogue_choice)
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	if (dialogue_choice == "/stats") // Displays the players levelling stats
+	if (dialogue_choice == "stats") // Displays the players levelling stats
 	{
 		system("CLS");
 		cout << "\n   " << player.getName() << "'s Stats\n\n";
@@ -900,9 +998,9 @@ void dialogue_input(Player player, string dialogue_choice)
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	if (dialogue_choice == "/debugfight") // Initiates a secret fight against the creator
+	if (dialogue_choice == "debugfight") // Initiates a secret fight against the creator
 	{
-		Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true);
+		Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true, 218);
 		player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
 		player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
 		for (int i = 0; i < 99; i++)

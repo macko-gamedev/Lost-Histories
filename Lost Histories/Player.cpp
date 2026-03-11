@@ -7,6 +7,7 @@ using namespace std;
 Player::Player(string name, int weak_element, int resist_element, int level, int health, int stamina) : BattleStat(name, level, health, stamina)
 {
 	this->status = "Great";
+	this->health = health;
 	this->max_health = health;
 	this->max_stamina = stamina;
 	this->curr_exp = 0;
@@ -110,7 +111,18 @@ void Player::increaseExp(int amount)
 			this->health = this->max_health;
 			this->stamina = this->max_stamina;
 			this->curr_exp = tempVal;
-			this->next_exp = int(((float)this->next_exp) * 1.4);
+			if (this->level > 49)
+			{
+				this->next_exp = int(((float)this->next_exp) * 1.05);
+			}
+			else if (this->level > 19)
+			{
+				this->next_exp = int(((float)this->next_exp) * 1.025);
+			}
+			else
+			{
+				this->next_exp = int(((float)this->next_exp) * 1.4);
+			}
 		}
 	}
 }

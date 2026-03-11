@@ -1,18 +1,17 @@
+#include "player.h"
 #include "Enemy.h"
-#include "Player.h"
 #include <ctime>
 #include <cstdlib>
 
 Enemy::Enemy() { }
 
-Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, Item* nDroppedItem, bool nBoss) : BattleStat(nName, nLevel, nHealth, nStamina)
+Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, Item* nDroppedItem, bool nBoss, int nDamage) : BattleStat(nName, nLevel, nHealth, nStamina)
 {
-	this->health = int(nHealth * (nLevel/10 + 1));
-	this->max_health = int(nHealth * (nLevel / 10 + 1));
 	this->elements = { "-", "-", "-", "-", "-", "-" };
 	this->skills = nSkills;
 	this->droppedItem = nDroppedItem;
 	this->boss = nBoss;
+	this->damage = nDamage;
 }
 
 vector<string> Enemy::getElements()
@@ -38,6 +37,17 @@ bool Enemy::isAlive()
 bool Enemy::isBoss()
 {
 	return this->boss;
+}
+
+int Enemy::getDamage()
+{
+	return this->damage;
+}
+
+void Enemy::setHealth()
+{
+	this->health = int(float(this->health) * ((float(level) / 10) + 1));
+	this->max_health = this->health;
 }
 
 void Enemy::setElements(vector<string> nElements)
@@ -73,21 +83,189 @@ void Enemy::update(Player& player)
 			{
 				useSkill = this->skills[(rand() % this->skills.size())];
 			}
+			//
+			float guardMultiplier;
 			if (player.isGuard())
 			{
-				cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << to_string(int(useSkill.getBaseDamage() * 0.67)) << " damage" << endl;
-				player.changeHealth(-(int(useSkill.getBaseDamage() * 0.67)));
+				guardMultiplier = 0.67;
 			}
 			else
 			{
-				cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << to_string(useSkill.getBaseDamage()) << " damage" << endl;
-				player.changeHealth(-(useSkill.getBaseDamage()));
+				guardMultiplier = 1;
 			}
-			this->stamina -= useSkill.getStaminaCost();
-		}
-		else
-		{
-			cout << "\n   " << this->name << " attacked you dealing _(not set yet)_ damage" << endl;
+
+			int skillChance = (rand() % 10) + 1;
+			if (this->getStamina() >= useSkill.getStaminaCost() && skillChance > 3)
+			{
+				if (useSkill.getType() == "fire")
+				{
+					if (player.getElements()[0] == "Wk")
+					{
+						if (player.isGuard())
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+						}
+						else
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+						}
+
+					}
+					else if (player.getElements()[0] == "Rst")
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+					}
+					else
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+					}
+				}
+				else if (useSkill.getType() == "ice")
+				{
+					if (player.getElements()[1] == "Wk")
+					{
+						if (player.isGuard())
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+						}
+						else
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+						}
+					}
+					else if (player.getElements()[1] == "Rst")
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+					}
+					else
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+					}
+				}
+				else if (useSkill.getType() == "electric")
+				{
+					if (player.getElements()[2] == "Wk")
+					{
+						if (player.isGuard())
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+						}
+						else
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+						}
+					}
+					else if (player.getElements()[2] == "Rst")
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+					}
+					else
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+					}
+				}
+				else if (useSkill.getType() == "wind")
+				{
+					if (player.getElements()[3] == "Wk")
+					{
+						if (player.isGuard())
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+						}
+						else
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+						}
+					}
+					else if (player.getElements()[3] == "Rst")
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+					}
+					else
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+					}
+				}
+				else if (useSkill.getType() == "curse")
+				{
+					if (player.getElements()[4] == "Wk")
+					{
+						if (player.isGuard())
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+						}
+						else
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+						}
+					}
+					else if (player.getElements()[4] == "Rst")
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+					}
+					else
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+					}
+				}
+				else if (useSkill.getType() == "bless")
+				{
+					if (player.getElements()[5] == "Wk")
+					{
+						if (player.isGuard())
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+						}
+						else
+						{
+							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+						}
+					}
+					else if (player.getElements()[5] == "Rst")
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+					}
+					else
+					{
+						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+					}
+				}
+				else if (useSkill.getType() == "nuclear")
+				{
+					cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << to_string(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+					player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+				}
+				this->stamina -= useSkill.getStaminaCost();
+			}
+			else
+			{
+				cout << "\n   " << this->name << " attacked you dealing " << int(this->getDamage() * guardMultiplier) << " damage" << endl;
+				player.changeHealth(-int(this->getDamage() * guardMultiplier));
+			}
 		}
 		this->state = battleState::WAITING;
 	}

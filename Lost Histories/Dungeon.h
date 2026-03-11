@@ -29,6 +29,7 @@ public:
 	void setPosY(int y);
 	void changePosX(int amount);
 	void changePosY(int amount);
+	void elementSetter(Enemy& enemy);
 	void virtual fillWithEnemies();
 	void virtual fillWithChests();
 	Enemy newEnemy(Dungeon* curr_dungeon);

@@ -78,6 +78,42 @@ void Dungeon::fillWithChests()
 
 }
 
+void Dungeon::elementSetter(Enemy& enemy)
+{
+	if (enemy.getName() == "Ice Monster")
+	{
+		enemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
+	}
+	else if (enemy.getName() == "Ice Fiend")
+	{
+		enemy.setElements({ "Rst", "Rst", "-", "-", "-", "-" });
+	}
+	else if (enemy.getName() == "Snow Golem")
+	{
+		enemy.setElements({ "Wk", "Rst", "-", "Rst", "-", "-" });
+	}
+	else if (enemy.getName() == "Bergmite")
+	{
+		enemy.setElements({ "Wk", "-", "-", "Rst", "-", "-" });
+	}
+	else if (enemy.getName() == "Wasteland Spirit")
+	{
+		enemy.setElements({ "Wk", "Rst", "Rst", "-", "-", "Wk" });
+	}
+	else if (enemy.getName() == "Patrol Soldier")
+	{
+		enemy.setElements({ "-", "Rst", "Wk", "Rst", "-", "-" });
+	}
+	else if (enemy.getName() == "Duty Soldier")
+	{
+		enemy.setElements({ "-", "Rst", "Wk", "Rst", "-", "-" });
+	}
+	else if (enemy.getName() == "Russian Sergeant")
+	{
+		enemy.setElements({ "Rst", "Rst", "Wk", "Rst", "Wk", "Wk" });
+	}
+}
+
 Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 {
 	// Similar to Skill.h, cycles through each possible dungeon to determine which enemy is encountered
@@ -86,12 +122,12 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 		if (curr_dungeon->getDungeonRoom() == 1)
 		{
 			// Enemy level for this floor: 1-3		Ice Monster: 1-3
-			return Enemy("Ice Monster", ((rand() % 3) + 1), 30, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false);
+			return Enemy("Ice Monster", ((rand() % 3) + 1), 30, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 14);
 		}
 		else if (curr_dungeon->getDungeonRoom() == 2)
 		{
 			// Enemy Level for this floor: 2-5		Ice Monster: 2-5
-			return Enemy("Ice Monster", ((rand() % 4) + 2), 30, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false);
+			return Enemy("Ice Monster", ((rand() % 4) + 2), 30, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 14);
 		}
 		else if (curr_dungeon->getDungeonRoom() == 3)
 		{
@@ -101,16 +137,16 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 			{
 				if (dropChance > 89)
 				{
-					return Enemy("Ice Fiend", ((rand() % 4) + 4), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new ItemSkill("Ice Shard", "A sharp ended icicle", 2, Skill("Freezan")), false);
+					return Enemy("Ice Fiend", ((rand() % 4) + 4), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new ItemSkill("Ice Shard", "A sharp ended icicle", 2, Skill("Freezan")), false, 21);
 				}
 				else
 				{
-					return Enemy("Ice Fiend", ((rand() % 4) + 4), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2), false);
+					return Enemy("Ice Fiend", ((rand() % 4) + 4), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2), false, 21);
 				}
 			}
 			else
 			{
-				return Enemy("Ice Monster", ((rand() % 4) + 3), 30, 24, { Skill("Freeze") }, new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1), false);
+				return Enemy("Ice Monster", ((rand() % 4) + 3), 30, 24, { Skill("Freeze") }, new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1), false, 14);
 			}
 		}
 		else if (curr_dungeon->getDungeonRoom() == 4)
@@ -120,22 +156,22 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 			int dropChance = (rand() % 100) + 1;
 			if (enemySpawnChance > 7)
 			{
-				return Enemy("Bergmite", ((rand() % 5) + 5), 62, 27, { Skill("Freezan"), Skill("Gust") }, new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")), false);
+				return Enemy("Bergmite", ((rand() % 5) + 5), 62, 27, { Skill("Freezan"), Skill("Gust") }, new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")), false, 26);
 			}
 			else if (enemySpawnChance > 3)
 			{
 				if (dropChance > 64)
 				{
-					return Enemy("Ice Fiend", ((rand() % 4) + 5), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new ItemSkill("Ice Shard", "A sharp ended icicle", 2, Skill("Freezan")), false);
+					return Enemy("Ice Fiend", ((rand() % 4) + 5), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new ItemSkill("Ice Shard", "A sharp ended icicle", 2, Skill("Freezan")), false, 21);
 				}
 				else
 				{
-					return Enemy("Ice Fiend", ((rand() % 4) + 5), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2), false);
+					return Enemy("Ice Fiend", ((rand() % 4) + 5), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2), false, 21);
 				}
 			}
 			else
 			{
-				return Enemy("Ice Monster", ((rand() % 5) + 4), 30, 24, { Skill("Freeze") }, new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1), false);
+				return Enemy("Ice Monster", ((rand() % 5) + 4), 30, 24, { Skill("Freeze") }, new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1), false, 14);
 			}
 		}
 		else if (curr_dungeon->getDungeonRoom() == 5)
@@ -145,48 +181,48 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 			int dropChance = (rand() % 100) + 1;
 			if (enemySpawnChance > 17)
 			{
-				return Enemy("Wasteland Spirit", ((rand() % 4) + 12), 79, 41, { Skill("Flame"), Skill("Freeze"), Skill("Zap"), Skill("Gust") }, new ItemSkill("Power Cord", "Unfrozen exposed power cable. Wonder if it still sparks?", 2, Skill("Zapao")), false);
+				return Enemy("Wasteland Spirit", ((rand() % 4) + 12), 79, 41, { Skill("Flame"), Skill("Freeze"), Skill("Zap"), Skill("Gust") }, new ItemSkill("Power Cord", "Unfrozen exposed power cable. Wonder if it still sparks?", 2, Skill("Zapao")), false, 34);
 			}
 			if (enemySpawnChance > 11)
 			{
 				if (dropChance > 84)
 				{
-					return Enemy("Bergmite", ((rand() % 6) + 10), 62, 27, { Skill("Freezan"), Skill("Gust") }, new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 2, Skill("Gustan")), false);
+					return Enemy("Bergmite", ((rand() % 6) + 10), 62, 27, { Skill("Freezan"), Skill("Gust") }, new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 2, Skill("Gustan")), false, 26);
 				}
 				else if (dropChance > 59)
 				{
-					return Enemy("Bergmite", ((rand() % 6) + 10), 62, 27, { Skill("Freezan"), Skill("Gust") }, new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")), false);
+					return Enemy("Bergmite", ((rand() % 6) + 10), 62, 27, { Skill("Freezan"), Skill("Gust") }, new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")), false, 26);
 				}
 				else
 				{
-					return Enemy("Bergmite", ((rand() % 6) + 10), 62, 27, { Skill("Freezan"), Skill("Gust") }, new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2), false);
+					return Enemy("Bergmite", ((rand() % 6) + 10), 62, 27, { Skill("Freezan"), Skill("Gust") }, new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2), false, 26);
 				}
 			}
 			else if (enemySpawnChance > 6)
 			{
 				if (dropChance > 89)
 				{
-					return Enemy("Ice Fiend", ((rand() % 5) + 9), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new ItemSkill("Ice Crystal", "Crysalised ice emitting a strong frosty aura", 3, Skill("Mefreezan")), false);
+					return Enemy("Ice Fiend", ((rand() % 5) + 9), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new ItemSkill("Ice Crystal", "Crysalised ice emitting a strong frosty aura", 3, Skill("Mefreezan")), false, 21);
 				}
 				else if (dropChance > 49)
 				{
-					return Enemy("Ice Fiend", ((rand() % 5) + 9), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new ItemSkill("Ice Shard", "A sharp ended icicle", 2, Skill("Freezan")), false);
+					return Enemy("Ice Fiend", ((rand() % 5) + 9), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new ItemSkill("Ice Shard", "A sharp ended icicle", 2, Skill("Freezan")), false, 21);
 				}
 				else
 				{
-					return Enemy("Ice Fiend", ((rand() % 5) + 9), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2), false);
+					return Enemy("Ice Fiend", ((rand() % 5) + 9), 45, 18, { Skill("Freeze"), Skill("Freezan") }, new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2), false, 21);
 				}
 			}
 			else
 			{
-				return Enemy("Ice Monster", ((rand() % 5) + 8), 30, 24, { Skill("Freeze") }, new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1), false);
+				return Enemy("Ice Monster", ((rand() % 5) + 8), 30, 24, { Skill("Freeze") }, new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1), false, 14);
 			}
 		}
 
 		else if (curr_dungeon->getDungeonRoom() == 6)
 		{
 			// Enemy Level for this floor: 15		Patrol Soldier: 15
-			return Enemy("Patrol Soldier", 15, 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, new Item("Gun Fragment", "A piece of fragment from a Soldiers gun.", 3), false);
+			return Enemy("Patrol Soldier", 15, 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, new Item("Gun Fragment", "A piece of fragment from a Soldiers gun.", 3), false, 48);
 		}
 	}
 }
