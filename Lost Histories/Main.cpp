@@ -61,6 +61,7 @@ enum storyStatus
 {
 	TUTORIAL,
 	ACT_ONE_EXPLORE,
+	ACT_TWO_EXPLORE,
 };
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -97,7 +98,7 @@ int main()
 		dialogue_input(player, dialogue_choice);
 	}
 	DungeonGlacier current_dungeon = DungeonGlacier();
-	Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")));
+	Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false);
 	play_audio("Dungeon Battle");
 	battle(player, &current_dungeon, newEnemy);
 	story.startOfDialogue();
@@ -349,7 +350,7 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
 					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
 					current_dungeon->changePosY(1);
-					Enemy newEnemy = Enemy("??? Sergeant", 18, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Zapadia")));
+					Enemy newEnemy = Enemy("??? Sergeant", 18, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Zapadia")), true);
 					newEnemy.setElements({ "-", "Rst", "Wk", "-", "Wk", "-" });
 					play_audio("Dungeon Main Boss");
 					battle(player, current_dungeon, newEnemy);
@@ -401,14 +402,14 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			{
 				if (current_dungeon->getDungeonRoom() == 3) // Snow Golem Mini Boss, drops key used to advance
 				{
-					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3));
+					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3), true);
 					newEnemy.setElements({ "Wk", "Rst", "-", "-", "Wk", "Rst" });
 					play_audio("Dungeon Mini Boss");
 					battle(player, current_dungeon, newEnemy);
 				}
 				else if (current_dungeon->getDungeonRoom() == 5) // Duty Soldier Mini Boss, drops key used to advance
 				{
-					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Zap"), Skill("Flamao"), Skill("Zapao"), Skill("Meflamao")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3));
+					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Zap"), Skill("Flamao"), Skill("Zapao"), Skill("Meflamao")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3), true);
 					newEnemy.setElements({ "Wk", "Rst", "Wk", "Rst", "-", "-" });
 					play_audio("Dungeon Mini Boss");
 					battle(player, current_dungeon, newEnemy);
@@ -685,9 +686,18 @@ void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
 				// If choice is "use", attack the enemy with melee weapon
 				if (choice == "use" || choice == "u")
 				{
+					int critical_chance = (rand() % 100) + 1;
 					system("CLS");
-					cout << "\n   You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " dealing " << player.getMeleeWeapon().getMeleeDamage() << " damage\n\n";
-					enemy.changeHealth(-(player.getMeleeWeapon().getMeleeDamage()));
+					if (critical_chance > 79)
+					{
+						cout << "\n   You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " landing a CRITICAL hit dealing " << (player.getMeleeWeapon().getMeleeDamage() * 2) << " damage\n\n";
+						enemy.changeHealth(-(player.getMeleeWeapon().getMeleeDamage() * 2));
+					}
+					else
+					{
+						cout << "\n   You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " dealing " << player.getMeleeWeapon().getMeleeDamage() << " damage\n\n";
+						enemy.changeHealth(-(player.getMeleeWeapon().getMeleeDamage()));
+					}
 					player_turn = false;
 					break;
 				}
@@ -745,6 +755,7 @@ void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
 		if (enemy.getHealth() <= 0)
 		{
 			system("CLS");
+			play_audio("Victory");
 			player.increaseExp(int(enemy.getMaxHealth() * 2));
 			cout << "\n   You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
 			cout << "   " << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
@@ -827,6 +838,10 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/dungeon_main_boss.wav"), NULL, SND_ASYNC);
 	}
+	else if (to_play == "Victory")
+	{
+		PlaySound(TEXT("music/victory.wav"), NULL, SND_ASYNC);
+	}
 }
 
 string convert_string_tolower(string text)
@@ -887,7 +902,7 @@ void dialogue_input(Player player, string dialogue_choice)
 	}
 	if (dialogue_choice == "/debugfight") // Initiates a secret fight against the creator
 	{
-		Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")));
+		Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true);
 		player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
 		player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
 		for (int i = 0; i < 99; i++)
@@ -989,7 +1004,7 @@ void set_starting_elements(int& weak_element, int& resist_element)
 
 void show_enemy_stats(Enemy enemy)
 {
-	cout << "   " << convert_string_toupper(enemy.getName()) << " | Lv " << enemy.getLevel() << endl << endl;
+	cout << "\n   " << convert_string_toupper(enemy.getName()) << " | Lv " << enemy.getLevel() << endl << endl;
 	cout << "   HP: " << enemy.getHealth() << " | STA: " << enemy.getStamina() << endl << endl;
 	vector<string> element_names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
 	for (int i = 0; i < 6; i++)

@@ -10,7 +10,7 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	this->max_health = health;
 	this->max_stamina = stamina;
 	this->curr_exp = 0;
-	this->next_exp = 167;
+	this->next_exp = 22;
 	this->guard = false;
 
 	// Elements : Fire, Ice, Electric, Wind, Curse, Bless
@@ -24,9 +24,9 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	this->equippedMelee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 
 	// Skills: Player starts with no skills, so just declaring the vector here
-	this->skills = { Skill("Flamadia") };
-	this->stamina = 999;
-	this->max_stamina = 999;
+	this->skills = { };
+	this->stamina = 52;
+	this->max_stamina = 52;
 }
 
 void Player::getPlayerStats()
@@ -99,7 +99,7 @@ bool Player::isGuard()
 void Player::increaseExp(int amount)
 {
 	this->curr_exp += amount;
-	if (curr_exp >= next_exp)
+	while (curr_exp >= next_exp)
 	{
 		if (this->level < 99)
 		{
@@ -110,7 +110,7 @@ void Player::increaseExp(int amount)
 			this->health = this->max_health;
 			this->stamina = this->max_stamina;
 			this->curr_exp = tempVal;
-			this->next_exp = int(((float)this->next_exp) * 1.075);
+			this->next_exp = int(((float)this->next_exp) * 1.4);
 		}
 	}
 }
