@@ -571,13 +571,6 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 				cout << "--> Melee\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n  > ";
 				getline(cin, player_page);
 				player_page = convert_string_tolower(player_page);
-				if (player.getSkills().empty() && player_page == "skill")
-				{
-					system("CLS");
-					cout << "\n   You have no skills currently." << endl;
-					this_thread::sleep_for(chrono::seconds(2));
-					player_page = "";
-				}
 			}
 			while (player_page == "item" && player_turn)
 			{
@@ -614,6 +607,22 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 						if (convert_string_tolower(item->getName()) == choice && item->isConsumable())
 						{
 							system("CLS");
+							if (item->getType() == "HP")
+							{
+								player.changeHealth(item->getAmount());
+								if (player.getHealth() > player.getMaxHealth())
+								{
+									player.fullHealth();
+								}
+							}
+							else if (item->getType() == "STA")
+							{
+								player.changeStamina(item->getAmount());
+								if (player.getStamina() > player.getMaxStamina())
+								{
+									player.fullStamina();
+								}
+							}
 							cout << "\n   You used " << item->getName() << " restoring " << item->getAmount() << " " << item->getType();
 							item->increaseQuantity(-1);
 							if (item->getQuantity() == 0)
@@ -638,183 +647,192 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 			{
 				system("CLS");
 				show_battle_stats(player);
-				show_skill(player, skillIndex);
-				cout << "\n\n--> Next\n--> Back\n--> Return\n\n  > ";
-				getline(cin, choice);
-				choice = convert_string_tolower(choice);
-				// Validates if the skill selected exists
-				for (Skill skill : player.getSkills())
+				if (player.getSkills().empty())
 				{
-					if ((choice == convert_string_tolower(skill.getName())) && (player.getStamina() >= skill.getStaminaCost()))
+					cout << "\n   You have no useable items currently." << endl;
+					this_thread::sleep_for(chrono::seconds(2));
+					player_page = "";
+				}
+				else
+				{
+					show_skill(player, skillIndex);
+					cout << "\n\n--> Next\n--> Back\n--> Return\n\n  > ";
+					getline(cin, choice);
+					choice = convert_string_tolower(choice);
+					// Validates if the skill selected exists
+					for (Skill skill : player.getSkills())
 					{
-						Skill skillSelected = skill;
-						system("CLS");
-						// Determines what the skill does
-						if (skillSelected.getType() == "support")
+						if ((choice == convert_string_tolower(skill.getName())) && (player.getStamina() >= skill.getStaminaCost()))
 						{
-							// Heal the player
-							player.changeHealth(skillSelected.getHPGain());
-							cout << "\n   You have healed yourself restoring " << skillSelected.getHPGain() << " health\n\n";
-						}
-						else
-						{
-							// Damage the enemy
-							if (skillSelected.isSingleTarget())
+							Skill skillSelected = skill;
+							system("CLS");
+							// Determines what the skill does
+							if (skillSelected.getType() == "support")
 							{
-								if (skillSelected.getType() == "fire")
-								{
-									if (enemy.getElements()[0] == "Wk")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-									}
-									else if (enemy.getElements()[0] == "Rst")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-									}
-									else
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-										enemy.changeHealth(-(skillSelected.getBaseDamage()));
-									}
-								}
-								else if (skillSelected.getType() == "ice")
-								{
-									if (enemy.getElements()[1] == "Wk")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-									}
-									else if (enemy.getElements()[1] == "Rst")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-									}
-									else
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-										enemy.changeHealth(-(skillSelected.getBaseDamage()));
-									}
-								}
-								else if (skillSelected.getType() == "electric")
-								{
-									if (enemy.getElements()[2] == "Wk")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-									}
-									else if (enemy.getElements()[2] == "Rst")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-									}
-									else
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-										enemy.changeHealth(-(skillSelected.getBaseDamage()));
-									}
-								}
-								else if (skillSelected.getType() == "wind")
-								{
-									if (enemy.getElements()[3] == "Wk")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-									}
-									else if (enemy.getElements()[3] == "Rst")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-									}
-									else
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-										enemy.changeHealth(-(skillSelected.getBaseDamage()));
-									}
-								}
-								else if (skillSelected.getType() == "curse")
-								{
-									if (enemy.getElements()[4] == "Wk")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-									}
-									else if (enemy.getElements()[4] == "Rst")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-									}
-									else
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-										enemy.changeHealth(-(skillSelected.getBaseDamage()));
-									}
-								}
-								else if (skillSelected.getType() == "bless")
-								{
-									if (enemy.getElements()[5] == "Wk")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-									}
-									else if (enemy.getElements()[5] == "Rst")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-										enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-									}
-									else
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-										enemy.changeHealth(-(skillSelected.getBaseDamage()));
-									}
-								}
-								else if (skillSelected.getType() == "nuclear")
-								{
-									cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-									enemy.changeHealth(-(skillSelected.getBaseDamage()));
-								}
+								// Heal the player
+								player.changeHealth(skillSelected.getHPGain());
+								cout << "\n   You have healed yourself restoring " << skillSelected.getHPGain() << " health\n\n";
 							}
 							else
 							{
-								cout << "\n   You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " damage each\n\n";
+								// Damage the enemy
+								if (skillSelected.isSingleTarget())
+								{
+									if (skillSelected.getType() == "fire")
+									{
+										if (enemy.getElements()[0] == "Wk")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+										}
+										else if (enemy.getElements()[0] == "Rst")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+										}
+										else
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+											enemy.changeHealth(-(skillSelected.getBaseDamage()));
+										}
+									}
+									else if (skillSelected.getType() == "ice")
+									{
+										if (enemy.getElements()[1] == "Wk")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+										}
+										else if (enemy.getElements()[1] == "Rst")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+										}
+										else
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+											enemy.changeHealth(-(skillSelected.getBaseDamage()));
+										}
+									}
+									else if (skillSelected.getType() == "electric")
+									{
+										if (enemy.getElements()[2] == "Wk")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+										}
+										else if (enemy.getElements()[2] == "Rst")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+										}
+										else
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+											enemy.changeHealth(-(skillSelected.getBaseDamage()));
+										}
+									}
+									else if (skillSelected.getType() == "wind")
+									{
+										if (enemy.getElements()[3] == "Wk")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+										}
+										else if (enemy.getElements()[3] == "Rst")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+										}
+										else
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+											enemy.changeHealth(-(skillSelected.getBaseDamage()));
+										}
+									}
+									else if (skillSelected.getType() == "curse")
+									{
+										if (enemy.getElements()[4] == "Wk")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+										}
+										else if (enemy.getElements()[4] == "Rst")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+										}
+										else
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+											enemy.changeHealth(-(skillSelected.getBaseDamage()));
+										}
+									}
+									else if (skillSelected.getType() == "bless")
+									{
+										if (enemy.getElements()[5] == "Wk")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
+
+										}
+										else if (enemy.getElements()[5] == "Rst")
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
+											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
+										}
+										else
+										{
+											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+											enemy.changeHealth(-(skillSelected.getBaseDamage()));
+										}
+									}
+									else if (skillSelected.getType() == "nuclear")
+									{
+										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
+										enemy.changeHealth(-(skillSelected.getBaseDamage()));
+									}
+								}
+								else
+								{
+									cout << "\n   You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " damage each\n\n";
+								}
 							}
+							player.changeStamina(-skillSelected.getStaminaCost());
+							player_turn = false;
+							break;
 						}
-						player.changeStamina(-skillSelected.getStaminaCost());
-						player_turn = false;
+					}
+					if (!player_turn) break;
+					// If choice is "next", show the player their next skill
+					if (choice == "next" || choice == "n" || choice == ">")
+					{
+						skillIndex++;
+						if (skillIndex > player.getSkills().size() - 1)
+						{
+							skillIndex = 0;
+						}
+					}
+					// If choice is "back", show the player their previous skill
+					else if (choice == "back" || choice == "b" || choice == "<")
+					{
+						skillIndex--;
+						if (skillIndex < 0)
+						{
+							skillIndex = player.getSkills().size() - 1;
+						}
+					}
+					// If choice is "return", take the player back to the main battle menu
+					else if (choice == "return" || choice == "r")
+					{
+						player_page = "";
 						break;
 					}
-				}
-				if (!player_turn) break;
-				// If choice is "next", show the player their next skill
-				if (choice == "next" || choice == "n" || choice == ">")
-				{
-					skillIndex++;
-					if (skillIndex > player.getSkills().size() - 1)
-					{
-						skillIndex = 0;
-					}
-				}
-				// If choice is "back", show the player their previous skill
-				else if (choice == "back" || choice == "b" || choice == "<")
-				{
-					skillIndex--;
-					if (skillIndex < 0)
-					{
-						skillIndex = player.getSkills().size() - 1;
-					}
-				}
-				// If choice is "return", take the player back to the main battle menu
-				else if (choice == "return" || choice == "r")
-				{
-					player_page = "";
-					break;
 				}
 			}
 			// Page : Melee

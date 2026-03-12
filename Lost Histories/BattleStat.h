@@ -29,6 +29,8 @@ public:
 	int getMaxStamina();
 	void changeHealth(int amount);
 	void changeStamina(int amount);
+	void fullHealth();
+	void fullStamina();
 	virtual void update(Player& player);
 };
 
