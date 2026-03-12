@@ -7,6 +7,7 @@ ItemSkill::ItemSkill(string nName, string nDesc, int nRarity, Skill nSkill) : It
 	this->inherit_skill = nSkill;
 	this->meleeItem = false;
 	this->skillInheritance = true;
+	this->consumable = false;
 }
 
 string ItemSkill::toString()

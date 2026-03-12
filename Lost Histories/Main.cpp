@@ -499,7 +499,7 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 	{
 		if (newItem->getName() == item->getName())
 		{
-			item->increaseQuantity();
+			item->increaseQuantity(1);
 			itemDupe = true;
 		}
 	}
@@ -543,7 +543,7 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 	}
 }
 
-void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
+void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 {
 	system("CLS");
 	bool player_turn = true; // Is it player turn or enemy turn?
@@ -578,12 +578,59 @@ void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
 					this_thread::sleep_for(chrono::seconds(2));
 					player_page = "";
 				}
-				if (/*player.getSkills().empty() &&*/ player_page == "item")
+			}
+			while (player_page == "item" && player_turn)
+			{
+				system("CLS");
+				show_battle_stats(player);
+				bool hasItems = false;
+				for (Item* item : player.getItems())
 				{
-					system("CLS");
+					if (item->isConsumable() && item->getQuantity() > 0)
+					{
+						hasItems = true;
+					}
+				}
+				if (!hasItems)
+				{
 					cout << "\n   You have no useable items currently." << endl;
 					this_thread::sleep_for(chrono::seconds(2));
 					player_page = "";
+				}
+				else
+				{
+					for (Item* item : player.getItems())
+					{
+						if (item->isConsumable())
+						{
+							cout << item->toString() << endl << endl;
+						}
+					}
+					cout << "--> Return\n\n  > ";
+					getline(cin, choice);
+					choice = convert_string_tolower(choice);
+					for (Item* item : player.getItems())
+					{
+						if (convert_string_tolower(item->getName()) == choice && item->isConsumable())
+						{
+							system("CLS");
+							cout << "\n   You used " << item->getName() << " restoring " << item->getAmount() << " " << item->getType();
+							item->increaseQuantity(-1);
+							if (item->getQuantity() == 0)
+							{
+								vector<Item*> temp_player_items = player.getItems();
+								temp_player_items.erase(find(temp_player_items.begin(), temp_player_items.end(), item));
+								player.setItems(temp_player_items);
+							}
+							player_turn = false;
+							break;
+						}
+					}
+					if (choice == "return" || choice == "r")
+					{
+						player_page = "";
+						break;
+					}
 				}
 			}
 			// Page : Skill
@@ -769,7 +816,6 @@ void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
 					player_page = "";
 					break;
 				}
-				
 			}
 			// Page : Melee
 			while (player_page == "melee")
@@ -862,7 +908,7 @@ void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
 			{
 				if (enemyDrop->getName() == item->getName())
 				{
-					item->increaseQuantity();
+					item->increaseQuantity(1);
 					itemDupe = true;
 				}
 			}
@@ -893,10 +939,10 @@ void battle(Player &player, Dungeon* current_dungeon, Enemy enemy)
 				break;
 			}
 		}
-
 		if (!battle) break;
 	}
 }
+
 
 void play_audio(string to_play)
 {

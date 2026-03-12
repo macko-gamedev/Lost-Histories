@@ -10,6 +10,7 @@ Item::Item(string nName, string nDesc, int nRarity)
 	this->quantity = 1;
 	this->meleeItem = false;
 	this->skillInheritance = false;
+	this->consumable = false;
 }
 
 string Item::toString()
@@ -43,6 +44,11 @@ bool Item::isMeleeWeapon()
 	return this->meleeItem;
 }
 
+bool Item::isConsumable()
+{
+	return this->consumable;
+}
+
 bool Item::canInheritSkill()
 {
 	return this->skillInheritance;
@@ -53,12 +59,23 @@ int Item::getMeleeDamage()
 	return this->damage;
 }
 
+int Item::getAmount()
+{
+	return this->amount;
+}
+
+string Item::getType()
+{
+	return this->type;
+}
+
+
 Skill Item::getSkill()
 {
 	return this->inherit_skill;
 }
 
-void Item::increaseQuantity()
+void Item::increaseQuantity(int amount)
 {
-	this->quantity++;
+	this->quantity += amount;
 }

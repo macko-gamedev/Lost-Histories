@@ -5,6 +5,7 @@
 #include "Item.h"
 #include "ItemSkill.h"
 #include "ItemMelee.h"
+#include "ItemConsumable.h"
 #include "BattleStat.h"
 
 using namespace std;
@@ -40,6 +41,7 @@ public:
 	void getPlayerStats();
 	void getPlayerElements();
 	void addItem(Item* item);
+	void setItems(vector<Item*> nItems);
 	void update();
 };
 

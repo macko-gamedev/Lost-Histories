@@ -21,7 +21,7 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	this->elements[resist_element] = "Rst";
 
 	// Items: Giving the player a backpack by default and equipping the player with a basic melee weapon
-	this->items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4) };
+	this->items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4), new ItemConsumable("Test Item", "Testing item consumables", 1, "STA", 5)};
 	this->equippedMelee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 
 	// Skills: Player starts with no skills, so just declaring the vector here
@@ -135,6 +135,11 @@ void Player::setGuard(bool guardState)
 void Player::addItem(Item* item)
 {
 	this->items.push_back(item);
+}
+
+void Player::setItems(vector<Item*> nItems)
+{
+	this->items = nItems;
 }
 
 void Player::update()

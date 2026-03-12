@@ -7,6 +7,7 @@ ItemMelee::ItemMelee(string nName, string nDesc, int nRarity, int nDamage) : Ite
 	this->damage = nDamage;
 	this->meleeItem = true;
 	this->skillInheritance = false;
+	this->consumable = false;
 }
 
 string ItemMelee::toString()
