@@ -23,6 +23,7 @@ public:
 	int getDungeonRoom();
 	int getPosX();
 	int getPosY();
+	Item* getItemFromLootTable(string enemyName);
 	void changeDungeonRoom(int value);
 	void setPosition(int room, int x, int y, char icon);
 	void setPosX(int x);
