@@ -76,192 +76,200 @@ void Enemy::update(Player& player)
 	}
 	else if (this->state == battleState::ATTACKING)
 	{
-		if (!this->skills.empty())
+		int missChance = (rand() & 100) + 1;
+		if (missChance > 14) // 15% chance to miss their attack
 		{
-			Skill useSkill;
-			useSkill = this->skills[(rand() % this->skills.size())];
-			float guardMultiplier;
-			if (player.isGuard())
+			if (!this->skills.empty())
 			{
-				guardMultiplier = 0.67;
-			}
-			else
-			{
-				guardMultiplier = 1;
-			}
+				Skill useSkill;
+				useSkill = this->skills[(rand() % this->skills.size())];
+				float guardMultiplier;
+				if (player.isGuard())
+				{
+					guardMultiplier = 0.67;
+				}
+				else
+				{
+					guardMultiplier = 1;
+				}
 
-			int skillChance = (rand() % 10) + 1;
-			if (this->getStamina() >= useSkill.getStaminaCost() && skillChance > 3)
-			{
-				if (useSkill.getType() == "fire")
+				int skillChance = (rand() % 10) + 1;
+				if (this->getStamina() >= useSkill.getStaminaCost() && skillChance > 3)
 				{
-					if (player.getElements()[0] == "Wk")
+					if (useSkill.getType() == "fire")
 					{
-						if (player.isGuard())
+						if (player.getElements()[0] == "Wk")
 						{
-							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
-							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
-						}
-						else
-						{
-							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
-							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
-						}
+							if (player.isGuard())
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
+								player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+							}
+							else
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
+								player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							}
 
-					}
-					else if (player.getElements()[0] == "Rst")
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
-						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
-					}
-					else
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
-						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
-					}
-				}
-				else if (useSkill.getType() == "ice")
-				{
-					if (player.getElements()[1] == "Wk")
-					{
-						if (player.isGuard())
+						}
+						else if (player.getElements()[0] == "Rst")
+						{
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
+							player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+						}
+						else
 						{
 							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
-						else
+					}
+					else if (useSkill.getType() == "ice")
+					{
+						if (player.getElements()[1] == "Wk")
 						{
-							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
-							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							if (player.isGuard())
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
+								player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+							}
+							else
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
+								player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							}
 						}
-					}
-					else if (player.getElements()[1] == "Rst")
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
-						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
-					}
-					else
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
-						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
-					}
-				}
-				else if (useSkill.getType() == "electric")
-				{
-					if (player.getElements()[2] == "Wk")
-					{
-						if (player.isGuard())
+						else if (player.getElements()[1] == "Rst")
+						{
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
+							player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+						}
+						else
 						{
 							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
-						else
+					}
+					else if (useSkill.getType() == "electric")
+					{
+						if (player.getElements()[2] == "Wk")
 						{
-							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
-							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							if (player.isGuard())
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
+								player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+							}
+							else
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
+								player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							}
 						}
-					}
-					else if (player.getElements()[2] == "Rst")
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
-						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
-					}
-					else
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
-						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
-					}
-				}
-				else if (useSkill.getType() == "wind")
-				{
-					if (player.getElements()[3] == "Wk")
-					{
-						if (player.isGuard())
+						else if (player.getElements()[2] == "Rst")
+						{
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
+							player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+						}
+						else
 						{
 							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
-						else
+					}
+					else if (useSkill.getType() == "wind")
+					{
+						if (player.getElements()[3] == "Wk")
 						{
-							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
-							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							if (player.isGuard())
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
+								player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+							}
+							else
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
+								player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							}
 						}
-					}
-					else if (player.getElements()[3] == "Rst")
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
-						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
-					}
-					else
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
-						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
-					}
-				}
-				else if (useSkill.getType() == "curse")
-				{
-					if (player.getElements()[4] == "Wk")
-					{
-						if (player.isGuard())
+						else if (player.getElements()[3] == "Rst")
+						{
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
+							player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+						}
+						else
 						{
 							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
-						else
+					}
+					else if (useSkill.getType() == "curse")
+					{
+						if (player.getElements()[4] == "Wk")
 						{
-							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
-							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							if (player.isGuard())
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
+								player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+							}
+							else
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
+								player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							}
 						}
-					}
-					else if (player.getElements()[4] == "Rst")
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
-						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
-					}
-					else
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
-						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
-					}
-				}
-				else if (useSkill.getType() == "bless")
-				{
-					if (player.getElements()[5] == "Wk")
-					{
-						if (player.isGuard())
+						else if (player.getElements()[4] == "Rst")
+						{
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
+							player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+						}
+						else
 						{
 							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
+					}
+					else if (useSkill.getType() == "bless")
+					{
+						if (player.getElements()[5] == "Wk")
+						{
+							if (player.isGuard())
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
+								player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+							}
+							else
+							{
+								this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
+								player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							}
+						}
+						else if (player.getElements()[5] == "Rst")
+						{
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
+							player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
+						}
 						else
 						{
-							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
-							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
+							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
 					}
-					else if (player.getElements()[5] == "Rst")
-					{
-						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
-						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
-					}
-					else
+					else if (useSkill.getType() == "nuclear")
 					{
 						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 					}
+					this->stamina -= useSkill.getStaminaCost();
 				}
-				else if (useSkill.getType() == "nuclear")
+				else
 				{
-					this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
-					player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
+					this->turnPhrase = "\n   " + this->name + " attacked you dealing " + to_string(int(this->getDamage() * guardMultiplier)) + " damage";
+					player.changeHealth(-int(this->getDamage() * guardMultiplier));
 				}
-				this->stamina -= useSkill.getStaminaCost();
 			}
-			else
-			{
-				this->turnPhrase = "\n   " + this->name + " attacked you dealing " + to_string(int(this->getDamage() * guardMultiplier)) + " damage";
-				player.changeHealth(-int(this->getDamage() * guardMultiplier));
-			}
+		}
+		else
+		{
+			this->turnPhrase = "\n   " + this->name + " missed their attack!";
 		}
 		this->state = battleState::WAITING;
 	}

@@ -142,7 +142,7 @@ void DungeonGlacier::fillWithEnemies()
 void DungeonGlacier::fillWithChests()
 {
 	// 5% chance for each tile to have an enemy
-	for (int r = 0; r < 5; r++)
+	for (int r = 0; r < 6; r++)
 	{
 		for (int i = 0; i < 15; i++)
 		{

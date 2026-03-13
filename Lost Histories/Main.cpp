@@ -346,7 +346,7 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
 					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
 					current_dungeon->changePosY(1);
-					Enemy newEnemy = Enemy("Russian Sergeant", 18, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Zapadia")), true, 56);
+					Enemy newEnemy = Enemy("Russian Sergeant", 18, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Mezapao")), true, 56);
 					play_audio("Dungeon Main Boss");
 					battle(player, current_dungeon, newEnemy);
 				}
@@ -393,13 +393,13 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			{
 				if (current_dungeon->getDungeonRoom() == 3) // Snow Golem Mini Boss, drops key used to advance
 				{
-					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hexo") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 31);
+					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hex") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 31);
 					play_audio("Dungeon Mini Boss");
 					battle(player, current_dungeon, newEnemy);
 				}
 				else if (current_dungeon->getDungeonRoom() == 5) // Duty Soldier Mini Boss, drops key used to advance
 				{
-					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Zap"), Skill("Flamao"), Skill("Zapao"), Skill("Meflamao")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 37);
+					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Flame"), Skill("Zap"), Skill("Zapao"), Skill("Blight")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 37);
 					play_audio("Dungeon Mini Boss");
 					battle(player, current_dungeon, newEnemy);
 				}
@@ -557,6 +557,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 	int skillIndex = 0; // Selected skill index (to display)
 	cout << "\n   You have encountered " << enemy.getName() << endl;
 	this_thread::sleep_for(chrono::seconds(3));
+	player.update();
 	// Battle Loop
 	while (battle)
 	{
@@ -609,6 +610,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 						if (convert_string_tolower(item->getName()) == choice && item->isConsumable())
 						{
 							system("CLS");
+							show_battle_stats(player);
 							if (item->getType() == "HP")
 							{
 								player.changeHealth(item->getAmount());
@@ -680,7 +682,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 							else
 							{
 								// Damage the enemy
-								if (skillSelected.isSingleTarget())
+								if (true)
 								{
 									if (skillSelected.getType() == "fire")
 									{
@@ -882,7 +884,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 				system("CLS");
 				show_battle_stats(player);
 				cout << endl;
-				cout << "   Reduce incoming damage by 33% and negates weaknesses";
+				cout << "   Reduce incoming damage by 33% and negates weaknesses\n   (Does stack if resistant)";
 				cout << "\n\n--> Guard\n--> Return\n\n  > ";
 				getline(cin, choice);
 				choice = convert_string_tolower(choice);
@@ -891,6 +893,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 				if (choice == "guard" || choice == "g")
 				{
 					system("CLS");
+					show_battle_stats(player);
 					player.setGuard(true);
 					cout << "\n   You have guarded yourself\n\n";
 					player_turn = false;
@@ -928,12 +931,13 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 			if (enemy.isBoss())
 			{
 				player.increaseExp(int(enemy.getMaxHealth() * 3));
+				cout << "\n   You gained " << to_string(int(enemy.getMaxHealth() * 3)) << " experience" << endl << endl;
 			}
 			else
 			{
 				player.increaseExp(int(enemy.getMaxHealth() * 2));
+				cout << "\n   You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
 			}
-			cout << "\n   You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
 			cout << "   " << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
 			bool itemDupe = false;
 			for (Item* item : player.getItems())
@@ -985,7 +989,6 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 		if (!battle) break;
 	}
 }
-
 
 void play_audio(string to_play)
 {
@@ -1069,10 +1072,28 @@ void dialogue_input(Player player, string dialogue_choice)
 	if (dialogue_choice == "items") // Displays all items the player has
 	{
 		system("CLS");
-		cout << "\n   " << player.getName() << "'s Inventory\n\n";
-		for (Item* item : player.getItems())
+		cout << "\n   " << player.getName() << "'s Inventory\n";
+		vector<int> rarityNumbers = { 0, 0, 0, 0, 0 };
+		for (int i = 1; i < 6; i++)
 		{
-			cout << item->toString() << endl << endl;
+			for (Item* item : player.getItems())
+			{
+				if (item->getRarity() == i)
+				{
+					rarityNumbers[(i - 1)] = rarityNumbers[(i - 1)] + item->getQuantity();
+				}
+			}
+		}
+		cout << "   [ " << rarityNumbers[0] << " (1*) | " << rarityNumbers[1] << " (2*) | " << rarityNumbers[2] << " (3*) | " << rarityNumbers[3] << " (4*) | " << rarityNumbers[4] << " (5*) ]\n\n";
+		for (int i = 1; i < 6; i++)
+		{
+			for (Item* item : player.getItems())
+			{
+				if (item->getRarity() == i)
+				{
+					cout << item->toString() << endl << endl;
+				}
+			}
 		}
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
@@ -1080,7 +1101,7 @@ void dialogue_input(Player player, string dialogue_choice)
 	if (dialogue_choice == "stats") // Displays the players levelling stats
 	{
 		system("CLS");
-		cout << "\n   " << player.getName() << "'s Stats\n\n";
+		cout << "\n   " << player.getName() << "\n";
 		player.getPlayerStats();
 		player.getPlayerElements();
 		cout << endl;

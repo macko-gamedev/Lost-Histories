@@ -183,7 +183,7 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 		else if (curr_dungeon->getDungeonRoom() == 6)
 		{
 			// Enemy Level for this floor: 15		Patrol Soldier: 15
-			return Enemy("Patrol Soldier", 15, 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, new Item("Gun Fragment", "A piece of fragment from a Soldiers gun.", 3), false, 48);
+			return Enemy("Patrol Soldier", 15, 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, new Item("Gun Fragment", "A piece of fragment from a Soldiers gun.", 3), true, 48);
 		}
 	}
 }
@@ -201,8 +201,8 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
 			/* 1 STAR */ new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")),
 			/*        */ new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")),
-			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
+			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
+			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
 			/* 2 STAR */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2)
 		};
 	}
@@ -213,15 +213,15 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 			/* 1 STAR */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
 			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
 			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
+			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
+			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
+			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
 			/* 2 STAR */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
 			/*        */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
 			/* 2 STAR */ new ItemSkill("Ice Shard", "A sharp ended icicle which could shatter", 2, Skill("Mefreeze")),
 			/*        */ new ItemSkill("Ice Shard", "A sharp ended icicle which could shatter", 2, Skill("Mefreeze")),
-			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 15),
-			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 15),
+			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
+			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
 			/* 3 STAR */ new ItemSkill("Crystalised Flake", "A snowflake fully crystalised, emitting a frosty aura", 3, Skill("Freezan"))
 		};
 	}
@@ -232,18 +232,18 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 			/* 1 STAR */ new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")),
 			/*        */ new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")),
 			/*        */ new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")),
-			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
-			/* 1 STAR */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 10),
-			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 10),
-			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 10),
+			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
+			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
+			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
+			/* 1 STAR */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
+			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
+			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
 			/* 2 STAR */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
 			/*        */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
-			/* 2 STAR */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 50),
-			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 50),
-			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 15),
-			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 15),
+			/* 2 STAR */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
+			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
+			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
+			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
 			/* 3 STAR */ new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 2, Skill("Gustan"))
 		};
 	}
@@ -257,20 +257,20 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 			/* 1 STAR */ new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")),
 			/*        */ new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")),
 			/*        */ new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")),
-			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
-			/* 1 STAR */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 10),
-			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 10),
-			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 10),
+			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
+			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
+			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
+			/* 1 STAR */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
+			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
+			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
 			/* 2 STAR */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
 			/*        */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
-			/* 2 STAR */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 50),
-			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 50),
-			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 15),
-			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 15),
+			/* 2 STAR */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
+			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
+			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
+			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
 			/* 3 STAR */ new ItemSkill("Power Cord", "Unfrozen exposed power cable. Wonder if it still sparks?", 3, Skill("Zapao")),
-			/* 3 STAR */ new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 150),
+			/* 3 STAR */ new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200),
 		};
 	}
 	return drops[rand() % drops.size()];

@@ -32,9 +32,8 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 
 void Player::getPlayerStats()
 {
-	cout << "   Level " << this->level << " | (" << curr_exp << "/" << next_exp << ")" << endl << endl;
-	cout << "   HP: " << this->health << " / " << this->max_health << endl;
-	cout << "   STA: " << this->stamina << " / " << this->max_stamina << endl << endl;
+	cout << "   HP: " << this->health << " / " << this->max_health << " | STA: " << this->stamina << " / " << this->max_stamina << endl << endl;
+	cout << "   Level " << this->level << "\n   EXP Next: " << this->next_exp << "\n   EXP Total: " << this->tot_exp << endl << endl;
 }
 
 void Player::getPlayerElements()
@@ -100,6 +99,7 @@ bool Player::isGuard()
 void Player::increaseExp(int amount)
 {
 	this->curr_exp += amount;
+	this->tot_exp += amount;
 	while (curr_exp >= next_exp)
 	{
 		if (this->level < 99)
@@ -146,11 +146,18 @@ void Player::update()
 {
 	this->setSkills({ });
 	vector<Skill> items_with_skill = { };
-	for (Item* item : this->getItems())
+	vector<string> temp_element_names = { "fire", "ice", "electric", "wind", "curse", "bless" };
+	for (int i = 0; i < 6; i++)
 	{
-		if (item->canInheritSkill())
+		for (Item* item : this->getItems())
 		{
-			items_with_skill.push_back(item->getSkill());
+			if (item->canInheritSkill())
+			{
+				if (item->getSkill().getType() == temp_element_names[i])
+				{
+					items_with_skill.push_back(item->getSkill());
+				}
+			}
 		}
 	}
 	this->setSkills(items_with_skill);

@@ -22,6 +22,7 @@ private:
 	vector<Item*> items;
 	float curr_exp;
 	float next_exp;
+	int tot_exp;
 	bool guard;
 
 public:
