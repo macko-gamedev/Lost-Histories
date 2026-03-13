@@ -106,8 +106,8 @@ void Player::increaseExp(int amount)
 		{
 			int tempVal = this->curr_exp - this->next_exp;
 			this->level++;
-			this->max_health += 6;
-			this->max_stamina += 2;
+			this->max_health += 7;
+			this->max_stamina += 4;
 			this->health = this->max_health;
 			this->stamina = this->max_stamina;
 			this->curr_exp = tempVal;

@@ -164,7 +164,7 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 			int enemySpawnChance = (rand() % 20) + 1;
 			if (enemySpawnChance > 17)
 			{
-				return Enemy("Wasteland Spirit", ((rand() % 4) + 12), 79, 41, { Skill("Flame"), Skill("Freeze"), Skill("Zap"), Skill("Gust") }, new ItemSkill("Power Cord", "Unfrozen exposed power cable. Wonder if it still sparks?", 2, Skill("Zapao")), false, 34);
+				return Enemy("Wasteland Spirit", ((rand() % 4) + 12), 79, 41, { Skill("Flame"), Skill("Freeze"), Skill("Zap"), Skill("Gust") }, getItemFromLootTable("Wasteland Spirit"), false, 34);
 			}
 			if (enemySpawnChance > 11)
 			{
@@ -190,10 +190,12 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 
 Item* Dungeon::getItemFromLootTable(string enemyName)
 {
-	vector<Item*> drops;
+	vector<Item*> drops = { new Item("Error", "Something went wrong here...", 0) };
+	//cout << "need to be: Ice Monster" << endl << "input: " << enemyName;
+	//system("pause");
 	if (enemyName == "Ice Monster")
 	{
-		vector<Item*> drops =
+		drops =
 		{
 			/* 1 STAR */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
 			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
@@ -206,7 +208,7 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 	}
 	else if (enemyName == "Ice Fiend")
 	{
-		vector<Item*> drops =
+		drops =
 		{
 			/* 1 STAR */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
 			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
@@ -225,7 +227,7 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 	}
 	else if (enemyName == "Bergmite")
 	{
-		vector<Item*> drops =
+		drops =
 		{
 			/* 1 STAR */ new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")),
 			/*        */ new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")),
@@ -243,6 +245,32 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 15),
 			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 15),
 			/* 3 STAR */ new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 2, Skill("Gustan"))
+		};
+	}
+	else if (enemyName == "Wasteland Spirit")
+	{
+		drops =
+		{
+			/* 1 STAR */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
+			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
+			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
+			/* 1 STAR */ new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")),
+			/*        */ new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")),
+			/*        */ new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")),
+			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
+			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
+			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 20),
+			/* 1 STAR */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 10),
+			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 10),
+			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 10),
+			/* 2 STAR */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
+			/*        */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
+			/* 2 STAR */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 50),
+			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 50),
+			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 15),
+			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 15),
+			/* 3 STAR */ new ItemSkill("Power Cord", "Unfrozen exposed power cable. Wonder if it still sparks?", 3, Skill("Zapao")),
+			/* 3 STAR */ new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 150),
 		};
 	}
 	return drops[rand() % drops.size()];

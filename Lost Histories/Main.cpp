@@ -77,7 +77,7 @@ int main()
 	storyStatus story_status = storyStatus::TUTORIAL;
 	int weak_element = -1;
 	int resist_element = -1;
-	cout << "Your Character Name: "; 
+	cout << "\n   Your Character Name: "; 
 	getline(cin, player_name);
 	set_starting_elements(weak_element, resist_element); // Player chooeses their starting elements
 	Player player = Player(player_name, weak_element, resist_element, 1, 140, 62); // Instantiates object of type Player
@@ -366,6 +366,7 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
 			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
 			current_dungeon->changePosY(-1);
+			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
 			play_audio("Dungeon Battle");
 			battle(player, current_dungeon, newEnemy);
 		}
@@ -568,7 +569,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 			while ((player_page != "melee") && (player_page != "skill") && (player_page != "item") && (player_page != "guard") && (player_page != "analyse"))
 			{
 				show_battle_stats(player);
-				cout << "--> Melee\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n  > ";
+				cout << "\n--> Melee\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n  > ";
 				getline(cin, player_page);
 				player_page = convert_string_tolower(player_page);
 			}
@@ -576,6 +577,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 			{
 				system("CLS");
 				show_battle_stats(player);
+				cout << endl;
 				bool hasItems = false;
 				for (Item* item : player.getItems())
 				{
@@ -586,7 +588,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 				}
 				if (!hasItems)
 				{
-					cout << "\n   You have no useable items currently." << endl;
+					cout << "   You have no useable items currently." << endl;
 					this_thread::sleep_for(chrono::seconds(2));
 					player_page = "";
 				}
@@ -647,9 +649,10 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 			{
 				system("CLS");
 				show_battle_stats(player);
+				cout << endl;
 				if (player.getSkills().empty())
 				{
-					cout << "\n   You have no useable items currently." << endl;
+					cout << "   You have no skills currently." << endl;
 					this_thread::sleep_for(chrono::seconds(2));
 					player_page = "";
 				}
@@ -666,6 +669,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 						{
 							Skill skillSelected = skill;
 							system("CLS");
+							show_battle_stats(player);
 							// Determines what the skill does
 							if (skillSelected.getType() == "support")
 							{
@@ -840,6 +844,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 			{
 				system("CLS");
 				show_battle_stats(player);
+				cout << endl;
 				cout << player.getMeleeWeapon().toString();
 				cout << "\n\n--> Use\n--> Return\n\n  > ";
 				getline(cin, choice);
@@ -850,6 +855,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 				{
 					int critical_chance = (rand() % 100) + 1;
 					system("CLS");
+					show_battle_stats(player);
 					if (critical_chance > 79)
 					{
 						cout << "\n   You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " landing a CRITICAL HIT dealing " << (player.getMeleeWeapon().getMeleeDamage() * 2) << " damage\n\n";
@@ -875,6 +881,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 			{
 				system("CLS");
 				show_battle_stats(player);
+				cout << endl;
 				cout << "   Reduce incoming damage by 33% and negates weaknesses";
 				cout << "\n\n--> Guard\n--> Return\n\n  > ";
 				getline(cin, choice);
@@ -918,7 +925,14 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 		{
 			system("CLS");
 			play_audio("Victory");
-			player.increaseExp(int(enemy.getMaxHealth() * 2));
+			if (enemy.isBoss())
+			{
+				player.increaseExp(int(enemy.getMaxHealth() * 3));
+			}
+			else
+			{
+				player.increaseExp(int(enemy.getMaxHealth() * 2));
+			}
 			cout << "\n   You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
 			cout << "   " << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
 			bool itemDupe = false;
@@ -950,8 +964,19 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 		{
 			while (!player_turn)
 			{
+				this_thread::sleep_for(chrono::seconds(3));
+				system("CLS");
+				show_battle_stats(player);
+				cout << "\n   " << enemy.getName() << "'s turn...";
 				this_thread::sleep_for(chrono::seconds(2));
+				system("CLS");
+				show_battle_stats(player);
 				enemy.update(player);
+				cout << enemy.getTurnPhrase();
+				this_thread::sleep_for(chrono::seconds(1));
+				system("CLS");
+				show_battle_stats(player);
+				cout << enemy.getTurnPhrase();
 				this_thread::sleep_for(chrono::seconds(2));
 				player_turn = true;
 				break;
@@ -1087,7 +1112,7 @@ void set_starting_elements(int& weak_element, int& resist_element)
 	string inp_we, inp_re;
 	while (true)
 	{
-		cout << "\nChoose an element to be weak to:\nFire, Ice, Electric, Wind, Curse, Bless\n"; cin >> inp_we;
+		cout << "\n   Choose an element to be weak to:\n   Fire, Ice, Electric, Wind, Curse, Bless\n   > "; cin >> inp_we;
 		inp_we = convert_string_tolower(inp_we);
 		for (string element : list_of_elements)
 		{
@@ -1126,7 +1151,7 @@ void set_starting_elements(int& weak_element, int& resist_element)
 	valid_option = false;
 	while (true)
 	{
-		cout << "\nChoose an element to be resistant to:\nFire, Ice, Electric, Wind, Curse, Bless\n"; cin >> inp_re;
+		cout << "\n   Choose an element to be resistant to:\n   Fire, Ice, Electric, Wind, Curse, Bless   \n   > "; cin >> inp_re;
 		inp_re = convert_string_tolower(inp_re);
 		for (string element : list_of_elements)
 		{
@@ -1161,13 +1186,12 @@ void set_starting_elements(int& weak_element, int& resist_element)
 	{
 		resist_element = 5;
 	}
-	//return weak_element, resist_element;
 }
 
 void show_enemy_stats(Enemy enemy)
 {
-	cout << "\n   " << convert_string_toupper(enemy.getName()) << " | Lv " << enemy.getLevel() << endl << endl;
-	cout << "   HP: " << enemy.getHealth() << " | STA: " << enemy.getStamina() << endl << endl;
+	cout << "\n   " << enemy.getName() << " (Lv " << enemy.getLevel() << ")" << endl;
+	cout << "   HP: " << enemy.getHealth() << " | STA: " << enemy.getStamina() << endl << endl << endl;
 	vector<string> element_names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
 	for (int i = 0; i < 6; i++)
 	{
@@ -1178,7 +1202,7 @@ void show_enemy_stats(Enemy enemy)
 void show_battle_stats(Player player)
 {
 	system("CLS");
-	cout << "\n   YOUR TURN\n\n";
+	cout << "\n   " << player.getName() << "\n";
 	cout << "   HP: " << player.getHealth() << " / " << player.getMaxHealth() << " | STA: " << player.getStamina() << " / " << player.getMaxStamina() << endl << endl;
 }
 

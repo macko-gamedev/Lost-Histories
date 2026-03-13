@@ -55,9 +55,13 @@ void Enemy::setElements(vector<string> nElements)
 	this->elements = nElements;
 }
 
+string Enemy::getTurnPhrase()
+{
+	return this->turnPhrase;
+}
+
 void Enemy::update(Player& player)
 {
-	system("CLS");
 	srand(time(0));
 	vector<string> waitingPhases = { (this->name + " is waiting..."), (this->name + " is staring at you intensly..."),  (this->name + " is planning their next move...") };
 	if (this->isBoss() == false)
@@ -67,7 +71,7 @@ void Enemy::update(Player& player)
 	
 	if (this->state == battleState::WAITING)
 	{
-		cout << "\n   " << waitingPhases[rand() % 2];
+		this->turnPhrase = "\n   " + waitingPhases[rand() % 3];
 		this->state = battleState::ATTACKING;
 	}
 	else if (this->state == battleState::ATTACKING)
@@ -75,15 +79,7 @@ void Enemy::update(Player& player)
 		if (!this->skills.empty())
 		{
 			Skill useSkill;
-			if (this->skills.size() == 1)
-			{
-				useSkill = this->skills[0];
-			}
-			else
-			{
-				useSkill = this->skills[(rand() % this->skills.size())];
-			}
-			//
+			useSkill = this->skills[(rand() % this->skills.size())];
 			float guardMultiplier;
 			if (player.isGuard())
 			{
@@ -103,24 +99,24 @@ void Enemy::update(Player& player)
 					{
 						if (player.isGuard())
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
 						else
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
 							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
 						}
 
 					}
 					else if (player.getElements()[0] == "Rst")
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
 						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
 					}
 					else
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 					}
 				}
@@ -130,23 +126,23 @@ void Enemy::update(Player& player)
 					{
 						if (player.isGuard())
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
 						else
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
 							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
 						}
 					}
 					else if (player.getElements()[1] == "Rst")
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
 						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
 					}
 					else
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 					}
 				}
@@ -156,23 +152,23 @@ void Enemy::update(Player& player)
 					{
 						if (player.isGuard())
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
 						else
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
 							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
 						}
 					}
 					else if (player.getElements()[2] == "Rst")
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
 						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
 					}
 					else
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 					}
 				}
@@ -182,23 +178,23 @@ void Enemy::update(Player& player)
 					{
 						if (player.isGuard())
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
 						else
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
 							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
 						}
 					}
 					else if (player.getElements()[3] == "Rst")
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
 						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
 					}
 					else
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 					}
 				}
@@ -208,23 +204,23 @@ void Enemy::update(Player& player)
 					{
 						if (player.isGuard())
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
 						else
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
 							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
 						}
 					}
 					else if (player.getElements()[4] == "Rst")
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
 						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
 					}
 					else
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 					}
 				}
@@ -234,36 +230,36 @@ void Enemy::update(Player& player)
 					{
 						if (player.isGuard())
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 							player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 						}
 						else
 						{
-							cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 1.5 * guardMultiplier) << " damage (WEAK)" << endl;
+							this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 1.5 * guardMultiplier)) + " damage (WEAK)";
 							player.changeHealth(-int(useSkill.getBaseDamage() * 1.5 * guardMultiplier));
 						}
 					}
 					else if (player.getElements()[5] == "Rst")
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * 0.5 * guardMultiplier) << " damage (RESIST)" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * 0.5 * guardMultiplier)) + " damage (RESIST)";
 						player.changeHealth(-int(useSkill.getBaseDamage() * 0.5 * guardMultiplier));
 					}
 					else
 					{
-						cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << int(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+						this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 						player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 					}
 				}
 				else if (useSkill.getType() == "nuclear")
 				{
-					cout << "\n   " << this->name << " casted " << useSkill.getName() << " dealing " << to_string(useSkill.getBaseDamage() * guardMultiplier) << " damage" << endl;
+					this->turnPhrase = "\n   " + this->name + " casted " + useSkill.getName() + " dealing " + to_string(int(useSkill.getBaseDamage() * guardMultiplier)) + " damage";
 					player.changeHealth(-int(useSkill.getBaseDamage() * guardMultiplier));
 				}
 				this->stamina -= useSkill.getStaminaCost();
 			}
 			else
 			{
-				cout << "\n   " << this->name << " attacked you dealing " << int(this->getDamage() * guardMultiplier) << " damage" << endl;
+				this->turnPhrase = "\n   " + this->name + " attacked you dealing " + to_string(int(this->getDamage() * guardMultiplier)) + " damage";
 				player.changeHealth(-int(this->getDamage() * guardMultiplier));
 			}
 		}

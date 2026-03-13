@@ -24,6 +24,7 @@ private:
 	bool alive;
 	bool boss;
 	int damage;
+	string turnPhrase;
 public:
 	Enemy();
 	Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, Item* nDroppedItem, bool nBoss, int nDamage);
@@ -33,6 +34,7 @@ public:
 	vector<Skill> getSkills();
 	int getDamage();
 	Item* getDroppedItem();
+	string getTurnPhrase();
 	void setHealth();
 	void setElements(vector<string> nElements);
 	void update(Player& player) override;
