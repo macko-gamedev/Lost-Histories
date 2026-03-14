@@ -108,7 +108,7 @@ int main()
 	// DUNGEON 1: GLACIER WASTELAND
 	current_dungeon.fillWithEnemies();
 	current_dungeon.fillWithChests();
-	play_audio("Glacier Wasteland F1");
+	play_audio(current_dungeon.getDungeonName() + " F" + to_string(current_dungeon.getDungeonRoom()));
 	while (story_status == storyStatus::ACT_ONE_EXPLORE)
 	{
 		system("CLS");
@@ -926,20 +926,17 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 		}
 		if (enemy.getHealth() <= 0)
 		{
-			system("CLS");
 			play_audio("Victory");
+			float exp_earned;
+			bool itemDupe = false;
 			if (enemy.isBoss())
 			{
-				player.increaseExp(int(enemy.getMaxHealth() * 3));
-				cout << "\n   You gained " << to_string(int(enemy.getMaxHealth() * 3)) << " experience" << endl << endl;
+				exp_earned = enemy.getMaxHealth() * 3;
 			}
 			else
 			{
-				player.increaseExp(int(enemy.getMaxHealth() * 2));
-				cout << "\n   You gained " << to_string(int(enemy.getMaxHealth() * 2)) << " experience" << endl << endl;
+				exp_earned = enemy.getMaxHealth() * 2;
 			}
-			cout << "   " << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
-			bool itemDupe = false;
 			for (Item* item : player.getItems())
 			{
 				if (enemyDrop->getName() == item->getName())
@@ -951,13 +948,25 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 			if (!itemDupe)
 			{
 				player.addItem(enemyDrop);
-				if (enemyDrop->canInheritSkill())
-				{
-					cout << "   + Unlocked Skill: " << enemyDrop->getSkill().getName() << endl;
-				}
 			}
-			cout << endl;
-			player.getPlayerStats();
+			for (int i = 0; i < 20; i++)
+			{
+				Sleep(10);
+				//system("CLS");
+				player.increaseExp(exp_earned/20);
+				cout << "\n   You gained " << exp_earned << " experience" << endl << endl;
+				cout << "   " << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
+				if (!itemDupe)
+				{
+					if (enemyDrop->canInheritSkill())
+					{
+						cout << "   + Unlocked Skill: " << enemyDrop->getSkill().getName() << endl;
+					}
+				}
+				cout << "\n   Level " << player.getLevel() << " | Next EXP: " << int(player.getNextEXP());
+				cout << "\n   HP: " << player.getHealth() << "/" << player.getMaxHealth() << " | STA: " << player.getStamina() << "/" << player.getMaxStamina() << endl << endl;
+				//player.getPlayerStats();
+			}
 			player.update();
 			system("pause");
 			system("CLS");
@@ -1010,11 +1019,11 @@ void play_audio(string to_play)
 	}
 	else if (to_play == "Glacier Wasteland F5")
 	{
-		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/glacier_floor_6.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Glacier Wasteland F6")
 	{
-		PlaySound(TEXT("music/glacier_floor_6.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Battle")
 	{

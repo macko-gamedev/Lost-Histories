@@ -355,6 +355,15 @@ Skill::Skill(string name)
 		this->single_target = true;
 	}
 
+	if (this->skill_name == "Death")
+	{
+		this->skill_type = "nuclear";
+		this->skill_desc = "Instantly kill the enemy";
+		this->base_dmg = 9999;
+		this->stamina_cost = 0;
+		this->single_target = true;
+	}
+
 	// SUPPORT : HEALING
 	if (this->skill_name == "Heal")
 	{

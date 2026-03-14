@@ -21,7 +21,7 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	this->elements[resist_element] = "Rst";
 
 	// Items: Giving the player a backpack by default and equipping the player with a basic melee weapon
-	this->items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4) };
+	this->items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4), new ItemSkill("Insta-Kill","Testing purposes only", 5, Skill("Death"))};
 	this->equippedMelee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 
 	// Skills: Player starts with no skills, so just declaring the vector here
@@ -91,12 +91,17 @@ int Player::getLevelStats()
 	return this->level, this->curr_exp, this->next_exp;
 }
 
+int Player::getNextEXP()
+{
+	return this->next_exp - this->curr_exp;
+}
+
 bool Player::isGuard()
 {
 	return this->guard;
 }
 
-void Player::increaseExp(int amount)
+void Player::increaseExp(float amount)
 {
 	this->curr_exp += amount;
 	this->tot_exp += amount;
@@ -113,15 +118,15 @@ void Player::increaseExp(int amount)
 			this->curr_exp = tempVal;
 			if (this->level > 49)
 			{
-				this->next_exp = int(((float)this->next_exp) * 1.05);
+				this->next_exp = int(((float)this->next_exp) * 1.03);
 			}
 			else if (this->level > 19)
 			{
-				this->next_exp = int(((float)this->next_exp) * 1.025);
+				this->next_exp = int(((float)this->next_exp) * 1.0725);
 			}
 			else
 			{
-				this->next_exp = int(((float)this->next_exp) * 1.4);
+				this->next_exp = int(((float)this->next_exp) * 1.35);
 			}
 		}
 	}
@@ -146,8 +151,8 @@ void Player::update()
 {
 	this->setSkills({ });
 	vector<Skill> items_with_skill = { };
-	vector<string> temp_element_names = { "fire", "ice", "electric", "wind", "curse", "bless" };
-	for (int i = 0; i < 6; i++)
+	vector<string> temp_element_names = { "fire", "ice", "electric", "wind", "curse", "bless", "nuclear", "support"};
+	for (int i = 0; i < temp_element_names.size(); i++)
 	{
 		for (Item* item : this->getItems())
 		{

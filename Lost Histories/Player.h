@@ -36,8 +36,9 @@ public:
 	void setMelee(ItemMelee nMelee);
 	vector<Item*> getItems();
 	int getLevelStats();
+	int getNextEXP();
 	bool isGuard();
-	void increaseExp(int amount);
+	void increaseExp(float amount);
 	void setGuard(bool guardState);
 	void getPlayerStats();
 	void getPlayerElements();
