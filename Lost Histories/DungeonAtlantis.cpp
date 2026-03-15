@@ -65,11 +65,11 @@ void DungeonAtlantis::fillWithChests()
 			{
 				if (this->getDungeonMap()[r][i][j] == ' ')
 				{
-					int spawnChance = (rand() % 100) + 1;
-					if (spawnChance > 94)
-					{
-						this->setPosition(r, i, j, '*');
-					}
+					//int spawnChance = (rand() % 100) + 1;
+					//if (spawnChance > 94)
+					//{
+					//	this->setPosition(r, i, j, '*');
+					//}
 				}
 			}
 		}

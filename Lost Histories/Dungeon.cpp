@@ -183,7 +183,23 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 		else if (curr_dungeon->getDungeonRoom() == 6)
 		{
 			// Enemy Level for this floor: 15		Patrol Soldier: 15
-			return Enemy("Patrol Soldier", 15, 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, new Item("Gun Fragment", "A piece of fragment from a Soldiers gun.", 3), true, 48);
+			return Enemy("Patrol Soldier", 15, 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, new Item("Gun Fragment", "A piece of fragment from a Soldiers gun", 3), true, 48);
+		}
+	}
+	else if (curr_dungeon->getDungeonName() == "Atlantis Ruins")
+	{
+		if (curr_dungeon->getDungeonRoom() == 1)
+		{
+			// Enemy level for this floor: 14-19		Patrol Soldier: 14-17   Lab Fish: 16-19
+			int enemySpawnChance = (rand() % 10) + 1;
+			if (enemySpawnChance > 5)
+			{
+				return Enemy("Lab Fish", ((rand() % 3) + 16), 125, 27, { Skill("Freezan"), Skill("Zapao"), Skill("Mezapao"), Skill("Hex") }, getItemFromLootTable("Lab Fish"), false, 33);
+			}
+			else
+			{
+				return Enemy("Patrol Soldier", ((rand() % 3) + 14), 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, getItemFromLootTable("Patrol Soldier"), false, 48);
+			}
 		}
 	}
 }
@@ -271,6 +287,44 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
 			/* 3 STAR */ new ItemSkill("Power Cord", "Unfrozen exposed power cable. Wonder if it still sparks?", 3, Skill("Zapao")),
 			/* 3 STAR */ new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200),
+		};
+	}
+	else if (enemyName == "Patrol Soldier")
+	{
+		drops =
+		{
+			/* 2 STAR */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
+			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
+			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
+			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
+			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
+			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
+			/* 3 STAR */ new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200),
+			/*        */ new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200),
+			/* 3 STAR */ new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80),
+			/*        */ new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80),
+			/* 3 STAR */ new Item("Gun Fragment", "A piece of fragment from a Soldiers gun", 3),
+			/*        */ new Item("Gun Fragment", "A piece of fragment from a Soldiers gun", 3),
+			/* 4 STAR */ new ItemSkill("Firecracker", "Who loves a little bit of fire play", 4, Skill("Meflamao")),
+		};
+	}
+	else if (enemyName == "Lab Fish")
+	{
+		drops =
+		{
+			/* 1 STAR */ new Item("Seaweed", "Lonely strand of seaweed", 1),
+			/*        */ new Item("Seaweed", "Lonely strand of seaweed", 1),
+			/*        */ new Item("Seaweed", "Lonely strand of seaweed", 1),
+			/*        */ new Item("Seaweed", "Lonely strand of seaweed", 1),
+			/* 2 STAR */ new Item("Fish Tooth", "Caution, may be sharp", 2),
+			/*        */ new Item("Fish Tooth", "Caution, may be sharp", 2),
+			/*        */ new Item("Fish Tooth", "Caution, may be sharp", 2),
+			/* 2 STAR */ new ItemSkill("Squid Head", "Squirts black genetically modified ink", 2, Skill("Mehex")),
+			/*        */ new ItemSkill("Squid Head", "Squirts black genetically modified ink", 2, Skill("Mehex")),
+			/*        */ new ItemSkill("Squid Head", "Squirts black genetically modified ink", 2, Skill("Mehex")),
+			/* 3 STAR */ new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80),
+			/*        */ new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80),
+			/* 4 STAR */ new ItemSkill("Jellyfish Tenticle", "Dead or Alive it still carries some charge", 4, Skill("Zapadia")),
 		};
 	}
 	return drops[rand() % drops.size()];
