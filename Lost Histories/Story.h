@@ -16,6 +16,7 @@ public:
 	Story(string player);
 	string getDialogue();
 	int getDialogueIndex();
+	void setDialogueIndex(int index);
 	bool isEvent();
 	void increaseDialogueIndex();
 	void startOfDialogue();

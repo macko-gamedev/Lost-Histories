@@ -7,7 +7,7 @@
 DungeonGlacier::DungeonGlacier()
 {
 	this->dungeon_name = "Glacier Wasteland";
-	this->dungeon_room = 1;
+	this->dungeon_room = 6;
 	this->pos_x = 3;
 	this->pos_y = 10;
 	this->dungeon_map =
@@ -141,7 +141,7 @@ void DungeonGlacier::fillWithEnemies()
 
 void DungeonGlacier::fillWithChests()
 {
-	// 5% chance for each tile to have an enemy
+	// 5% chance for each tile to have a chest
 	for (int r = 0; r < 6; r++)
 	{
 		for (int i = 0; i < 15; i++)

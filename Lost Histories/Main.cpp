@@ -6,6 +6,7 @@
 #include "ItemSkill.h"
 #include "ItemMelee.h"
 #include "DungeonGlacier.h"
+#include "DungeonAtlantis.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -45,6 +46,20 @@ Last Updated: 24/02/26 (15:37)
 
  */
 
+enum storyStatus
+{
+	INTRO,
+	ACT_ONE,
+	ACT_TWO,
+};
+
+enum gameStatus
+{
+	DIALOGUE,
+	DUNGEON,
+	BATTLE
+};
+
 string convert_string_tolower(string text); // Quite obvious 1
 string convert_string_toupper(string text); // Quite obvious 2
 void set_starting_elements(int& weak_element, int& resist_element); // Sets the starting elements (weakness and resistant)
@@ -54,16 +69,11 @@ void show_skill(Player player, int index); // Shows the player's current skill
 void dialogue_input(Player player, string dialogue_choice); // Story player input
 int main_menu(); // Main menu when the game is executed
 void battle(Player& player, Dungeon* current_dungeon, Enemy enemy); // Battle sequence
-void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dungeon* current_dungeon); // Map Movement
+void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dungeon* current_dungeon, storyStatus& story_status, gameStatus& game_status, Story& story); // Map Movement
 void open_chest(Player& player, Dungeon* current_dungeon); // Open chests
+void output_dungeon(Dungeon* current_dungeon, Story story); // Outputs current dungeon
 void play_audio(string to_play); // Plays music
 
-enum storyStatus
-{
-	TUTORIAL,
-	ACT_ONE_EXPLORE,
-	ACT_TWO_EXPLORE,
-};
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -75,7 +85,11 @@ int main()
 	// Setup
 	string player_name;
 	string dialogue_choice;
-	storyStatus story_status = storyStatus::TUTORIAL;
+	storyStatus story_status = storyStatus::INTRO;
+	gameStatus game_status = gameStatus::DIALOGUE;
+	Dungeon* current_dungeon = NULL;
+	vector<Dungeon*> visited_dungeons = { };
+	Enemy newEnemy;
 	int weak_element = -1;
 	int resist_element = -1;
 	cout << "\n   Your Character Name: "; 
@@ -86,147 +100,111 @@ int main()
 	system("CLS");
 	cout << ">>> TYPE /help TO VIEW ALL POSSIBLE COMMANDS <<<" << endl << endl;
 
-	// INTRO DIALOGUE/TUTORIAL BATTLE
-	while (story_status == storyStatus::TUTORIAL && !story.isEvent())
+	while (true)
 	{
-		clock_t start = clock();
+		// INTRO DIALOGUE/TUTORIAL BATTLE
+		while (story_status == storyStatus::INTRO)
+		{
+			clock_t start = clock();
 
-		cout << "   " << story.getDialogue() << endl << endl;
-		story.increaseDialogueIndex();
-		if (story.getDialogue() == "END DIALOGUE")
-		{
-			story.endOfDialogue();
-		}
-		_getch();
-		clock_t end = clock();
-		int ms_duration = end - start;
-		int ms_remaining = 33 - ms_duration;
-		this_thread::sleep_for(chrono::milliseconds(ms_remaining));
-	}
-	DungeonGlacier current_dungeon = DungeonGlacier();
-	Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 12);
-	play_audio("Dungeon Battle");
-	battle(player, &current_dungeon, newEnemy);
-	story.startOfDialogue();
-	story.increaseDialogueIndex();
-	story_status = storyStatus::ACT_ONE_EXPLORE;
-
-	// DUNGEON 1: GLACIER WASTELAND
-	current_dungeon.fillWithEnemies();
-	current_dungeon.fillWithChests();
-	play_audio(current_dungeon.getDungeonName() + " F" + to_string(current_dungeon.getDungeonRoom()));
-	while (story_status == storyStatus::ACT_ONE_EXPLORE)
-	{
-		clock_t start = clock();
-		system("CLS");
-		cout << "\n   " << current_dungeon.getDungeonName() << " " << current_dungeon.getDungeonRoom() << "F\n\n";
-		for (int i = 0; i < 15; i++)
-		{
-			cout << "   ";
-			for (int j = 0; j < 15; j++)
-			{
-				if (current_dungeon.getDungeonMap()[(current_dungeon.getDungeonRoom() - 1)][i][j] == 'O')
-				{
-					cout << "  ";
-				}
-				else
-				{
-					cout << current_dungeon.getDungeonMap()[(current_dungeon.getDungeonRoom() - 1)][i][j] << " ";
-				}
-				if (current_dungeon.getDungeonMap()[(current_dungeon.getDungeonRoom() - 1)][i][j] == '+')
-				{
-					current_dungeon.setPosX(j);
-					current_dungeon.setPosY(i);
-				}
-				if (story.isEvent())
-				{
-					if (i == 0 && j == 14)
-					{
-						cout << "          Controls";
-					}
-					if (i == 1 && j == 14)
-					{
-						cout << "          SPACE:       Input";
-					}
-					if (i == 2 && j == 14)
-					{
-						cout << "          UP ARROW:    Up";
-					}
-					if (i == 3 && j == 14)
-					{
-						cout << "          LEFT ARROW:  Left";
-					}
-					if (i == 4 && j == 14)
-					{
-						cout << "          DOWN ARROW:  Down";
-					}
-					if (i == 5 && j == 14)
-					{
-						cout << "          RIGHT ARROW: Right";
-					}
-					if (i == 7 && j == 14)
-					{
-						cout << "          Key";
-					}
-					if (i == 8 && j == 14)
-					{
-						cout << "          +: Player";
-					}
-					if (i == 9 && j == 14)
-					{
-						cout << "          !: Enemy";
-					}
-					if (i == 10 && j == 14)
-					{
-						cout << "          *: Item";
-					}
-					if (i == 11 && j == 14)
-					{
-						cout << "          >: Next Floor";
-					}
-					if (i == 12 && j == 14)
-					{
-						cout << "          <: Prev Floor";
-					}
-					if (i == 14 && j == 14)
-					{
-						cout << "          X: " << current_dungeon.getPosX() << " | Y: " << current_dungeon.getPosY();
-					}
-				}
-			}
-			cout << endl;
-		}
-		cout << "\n\n\n";
-		if (!story.isEvent())
-		{
-			cout << "   " << story.getDialogue() << endl;
+			cout << "   " << story.getDialogue() << endl << endl;
 			story.increaseDialogueIndex();
 			if (story.getDialogue() == "END DIALOGUE")
 			{
 				story.endOfDialogue();
 			}
 			_getch();
-		}
-		else
-		{
-			_getch();
-			if (GetAsyncKeyState(VK_SPACE))
+			clock_t end = clock();
+			int ms_duration = end - start;
+			int ms_remaining = 33 - ms_duration;
+			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
+
+			if (story.isEvent())
 			{
-				cout << "   > ";
-				cin >> dialogue_choice;
-				dialogue_choice = convert_string_tolower(dialogue_choice);
-				dialogue_input(player, dialogue_choice);
+				// DUNGEON 1: GLACIER WASTELAND
+				game_status = gameStatus::BATTLE;
+				current_dungeon = new DungeonGlacier();
+				current_dungeon->fillWithEnemies();
+				current_dungeon->fillWithChests();
+				newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 12);
+				play_audio("Dungeon Battle");
+				battle(player, current_dungeon, newEnemy);
+				story.startOfDialogue();
+				story.increaseDialogueIndex();
+				story_status = storyStatus::ACT_ONE;
+				game_status = gameStatus::DUNGEON;
+				break;
 			}
-			else if (GetAsyncKeyState(VK_RIGHT)) map_movement("d", player, newEnemy, &current_dungeon);
-			else if (GetAsyncKeyState(VK_LEFT)) map_movement("a", player, newEnemy, &current_dungeon);
-			else if (GetAsyncKeyState(VK_UP)) map_movement("w", player, newEnemy, &current_dungeon);
-			else if (GetAsyncKeyState(VK_DOWN)) map_movement("s", player, newEnemy, &current_dungeon);
-			//Sleep(100);
 		}
-		clock_t end = clock();
-		int ms_duration = end - start;
-		int ms_remaining = 200 - ms_duration;
-		//this_thread::sleep_for(chrono::milliseconds(ms_remaining));
+
+		while (story_status == storyStatus::ACT_TWO && game_status == gameStatus::DIALOGUE)
+		{
+			clock_t start = clock();
+
+			cout << "\n   " << story.getDialogue() << endl;
+			story.increaseDialogueIndex();
+			if (story.getDialogue() == "END DIALOGUE")
+			{
+				story.endOfDialogue();
+			}
+			_getch();
+			clock_t end = clock();
+			int ms_duration = end - start;
+			int ms_remaining = 33 - ms_duration;
+			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
+
+			if (story.isEvent())
+			{
+				// DUNGEON 2: ATLANTIS RUINS
+				current_dungeon->fillWithEnemies();
+				current_dungeon->fillWithChests();
+				visited_dungeons.push_back(current_dungeon);
+				current_dungeon = new DungeonAtlantis();
+				current_dungeon->fillWithEnemies();
+				current_dungeon->fillWithChests();
+				story.startOfDialogue();
+				story.increaseDialogueIndex();
+				game_status = gameStatus::DUNGEON;
+				break;
+			}
+		}
+		play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
+
+		while (game_status == gameStatus::DUNGEON)
+		{
+			clock_t start = clock();
+			output_dungeon(current_dungeon, story);
+			if (!story.isEvent())
+			{
+				cout << "   " << story.getDialogue() << endl;
+				story.increaseDialogueIndex();
+				if (story.getDialogue() == "END DIALOGUE")
+				{
+					story.endOfDialogue();
+				}
+				_getch();
+			}
+			else
+			{
+				_getch();
+				if (GetAsyncKeyState(VK_SPACE))
+				{
+					cout << "   > ";
+					cin >> dialogue_choice;
+					dialogue_choice = convert_string_tolower(dialogue_choice);
+					dialogue_input(player, dialogue_choice);
+				}
+				else if (GetAsyncKeyState(VK_RIGHT)) map_movement("d", player, newEnemy, current_dungeon, story_status, game_status, story);
+				else if (GetAsyncKeyState(VK_LEFT)) map_movement("a", player, newEnemy, current_dungeon, story_status, game_status, story);
+				else if (GetAsyncKeyState(VK_UP)) map_movement("w", player, newEnemy, current_dungeon, story_status, game_status, story);
+				else if (GetAsyncKeyState(VK_DOWN)) map_movement("s", player, newEnemy, current_dungeon, story_status, game_status, story);
+				//Sleep(100);
+			}
+			clock_t end = clock();
+			int ms_duration = end - start;
+			int ms_remaining = 200 - ms_duration;
+			//this_thread::sleep_for(chrono::milliseconds(ms_remaining));
+		}
 	}
 }
 
@@ -276,7 +254,90 @@ int main_menu()
 	return 0;
 }
 
-void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dungeon* current_dungeon)
+void output_dungeon(Dungeon* current_dungeon, Story story)
+{
+	system("CLS");
+	cout << "\n   " << current_dungeon->getDungeonName() << " " << current_dungeon->getDungeonRoom() << "F\n\n";
+	for (int i = 0; i < 15; i++)
+	{
+		cout << "   ";
+		for (int j = 0; j < 15; j++)
+		{
+			if (current_dungeon->getDungeonMap()[(current_dungeon->getDungeonRoom() - 1)][i][j] == 'O')
+			{
+				cout << "  ";
+			}
+			else
+			{
+				cout << current_dungeon->getDungeonMap()[(current_dungeon->getDungeonRoom() - 1)][i][j] << " ";
+			}
+			if (current_dungeon->getDungeonMap()[(current_dungeon->getDungeonRoom() - 1)][i][j] == '+')
+			{
+				current_dungeon->setPosX(j);
+				current_dungeon->setPosY(i);
+			}
+			if (story.isEvent())
+			{
+				if (i == 0 && j == 14)
+				{
+					cout << "          Controls";
+				}
+				if (i == 1 && j == 14)
+				{
+					cout << "          SPACE:       Input";
+				}
+				if (i == 2 && j == 14)
+				{
+					cout << "          UP ARROW:    Up";
+				}
+				if (i == 3 && j == 14)
+				{
+					cout << "          LEFT ARROW:  Left";
+				}
+				if (i == 4 && j == 14)
+				{
+					cout << "          DOWN ARROW:  Down";
+				}
+				if (i == 5 && j == 14)
+				{
+					cout << "          RIGHT ARROW: Right";
+				}
+				if (i == 7 && j == 14)
+				{
+					cout << "          Key";
+				}
+				if (i == 8 && j == 14)
+				{
+					cout << "          +: Player";
+				}
+				if (i == 9 && j == 14)
+				{
+					cout << "          !: Enemy";
+				}
+				if (i == 10 && j == 14)
+				{
+					cout << "          *: Item";
+				}
+				if (i == 11 && j == 14)
+				{
+					cout << "          >: Next Floor";
+				}
+				if (i == 12 && j == 14)
+				{
+					cout << "          <: Prev Floor";
+				}
+				if (i == 14 && j == 14)
+				{
+					cout << "          X: " << current_dungeon->getPosX() << " | Y: " << current_dungeon->getPosY();
+				}
+			}
+		}
+		cout << endl;
+	}
+	cout << "\n\n\n";
+}
+
+void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dungeon* current_dungeon, storyStatus& story_status, gameStatus& game_status, Story& story)
 {
 	if (dialogue_choice == "d")
 	{
@@ -298,7 +359,7 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '>')
 		{
 			current_dungeon->changeDungeonRoom(1);
-			play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
+			if (story_status == storyStatus::ACT_ONE) play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
 
 		}
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '*')
@@ -401,6 +462,10 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					Enemy newEnemy = Enemy("Russian Sergeant", 15, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Mezapao")), true, 56);
 					play_audio("Dungeon Main Boss");
 					battle(player, current_dungeon, newEnemy);
+					story.startOfDialogue();
+					story.increaseDialogueIndex();
+					story_status = storyStatus::ACT_TWO;
+					game_status = gameStatus::DIALOGUE;
 				}
 			}
 		}
@@ -425,7 +490,7 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '<')
 		{
 			current_dungeon->changeDungeonRoom(-1);
-			play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
+			if (story_status == storyStatus::ACT_ONE) play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
 		}
 		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '*')
 		{
@@ -453,9 +518,9 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   I should probably try grabbing it";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   ??? > *grows angrily*";
+					cout << "   ??? > *growls angrily*";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   ??? > *charges towards " << player.getName() << " *";
+					cout << "   ??? > *charges towards " << player.getName() << "*";
 					_getch(); cout << "\33[2K\r" << flush;;
 					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hex") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 31);
 					play_audio("Dungeon Mini Boss");
@@ -1100,6 +1165,10 @@ void play_audio(string to_play)
 	else if (to_play == "Glacier Wasteland F6")
 	{
 		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Atlantis Ruins F1")
+	{
+		PlaySound(TEXT("music/atlantis_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Battle")
 	{

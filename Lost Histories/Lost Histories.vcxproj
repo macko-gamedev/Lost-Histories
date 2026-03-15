@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="BattleStat.h" />
     <ClInclude Include="Dungeon.h" />
+    <ClInclude Include="DungeonAtlantis.h" />
     <ClInclude Include="DungeonGlacier.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Item.h" />
@@ -142,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="BattleStat.cpp" />
     <ClCompile Include="Dungeon.cpp" />
+    <ClCompile Include="DungeonAtlantis.cpp" />
     <ClCompile Include="DungeonGlacier.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Item.cpp" />
