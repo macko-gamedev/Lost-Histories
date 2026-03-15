@@ -12,6 +12,7 @@
 #include <cctype>
 #include <Windows.h>
 #include "mmsystem.h"
+#include <conio.h>
 #pragma comment(lib, "winmm.lib")
 
 using namespace std;
@@ -88,14 +89,19 @@ int main()
 	// INTRO DIALOGUE/TUTORIAL BATTLE
 	while (story_status == storyStatus::TUTORIAL && !story.isEvent())
 	{
-		cout << "   " << story.getDialogue() << endl;
+		clock_t start = clock();
+
+		cout << "   " << story.getDialogue() << endl << endl;
 		story.increaseDialogueIndex();
 		if (story.getDialogue() == "END DIALOGUE")
 		{
 			story.endOfDialogue();
 		}
-		cin >> dialogue_choice;
-		dialogue_input(player, dialogue_choice);
+		_getch();
+		clock_t end = clock();
+		int ms_duration = end - start;
+		int ms_remaining = 33 - ms_duration;
+		this_thread::sleep_for(chrono::milliseconds(ms_remaining));
 	}
 	DungeonGlacier current_dungeon = DungeonGlacier();
 	Enemy newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 12);
@@ -111,6 +117,7 @@ int main()
 	play_audio(current_dungeon.getDungeonName() + " F" + to_string(current_dungeon.getDungeonRoom()));
 	while (story_status == storyStatus::ACT_ONE_EXPLORE)
 	{
+		clock_t start = clock();
 		system("CLS");
 		cout << "\n   " << current_dungeon.getDungeonName() << " " << current_dungeon.getDungeonRoom() << "F\n\n";
 		for (int i = 0; i < 15; i++)
@@ -133,25 +140,29 @@ int main()
 				}
 				if (story.isEvent())
 				{
-					if (i == 1 && j == 14)
+					if (i == 0 && j == 14)
 					{
 						cout << "          Controls";
 					}
+					if (i == 1 && j == 14)
+					{
+						cout << "          SPACE:       Input";
+					}
 					if (i == 2 && j == 14)
 					{
-						cout << "          W: Up";
+						cout << "          UP ARROW:    Up";
 					}
 					if (i == 3 && j == 14)
 					{
-						cout << "          A: Left";
+						cout << "          LEFT ARROW:  Left";
 					}
 					if (i == 4 && j == 14)
 					{
-						cout << "          S: Down";
+						cout << "          DOWN ARROW:  Down";
 					}
 					if (i == 5 && j == 14)
 					{
-						cout << "          D: Right";
+						cout << "          RIGHT ARROW: Right";
 					}
 					if (i == 7 && j == 14)
 					{
@@ -194,15 +205,28 @@ int main()
 			{
 				story.endOfDialogue();
 			}
+			_getch();
 		}
 		else
 		{
-			cout << "   > ";
+			_getch();
+			if (GetAsyncKeyState(VK_SPACE))
+			{
+				cout << "   > ";
+				cin >> dialogue_choice;
+				dialogue_choice = convert_string_tolower(dialogue_choice);
+				dialogue_input(player, dialogue_choice);
+			}
+			else if (GetAsyncKeyState(VK_RIGHT)) map_movement("d", player, newEnemy, &current_dungeon);
+			else if (GetAsyncKeyState(VK_LEFT)) map_movement("a", player, newEnemy, &current_dungeon);
+			else if (GetAsyncKeyState(VK_UP)) map_movement("w", player, newEnemy, &current_dungeon);
+			else if (GetAsyncKeyState(VK_DOWN)) map_movement("s", player, newEnemy, &current_dungeon);
+			//Sleep(100);
 		}
-		cin >> dialogue_choice;
-		dialogue_choice = convert_string_tolower(dialogue_choice);
-		dialogue_input(player, dialogue_choice);
-		map_movement(dialogue_choice, player, newEnemy, &current_dungeon);
+		clock_t end = clock();
+		int ms_duration = end - start;
+		int ms_remaining = 200 - ms_duration;
+		//this_thread::sleep_for(chrono::milliseconds(ms_remaining));
 	}
 }
 
@@ -346,7 +370,35 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
 					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
 					current_dungeon->changePosY(1);
-					Enemy newEnemy = Enemy("Russian Sergeant", 18, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Mezapao")), true, 56);
+					play_audio("Encounter");
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > Who goes there!?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > Only authorised personal can go enter this unexplored point of interest";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   " << player.getName() << " > What's going on?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   " << player.getName() << " > What year even is it??";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > The year is 2067, the date is the 31st of January. And who are you weakling?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   " << player.getName() << " > " << player.getName() << ".";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > I'm an active sergeant for the russians who currently compromise this area";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Russian Sergeant > State your reason for being here";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   " << player.getName() << " > I want to know what's going on";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Russian Sergeant > I'm afraid I cannot tell you";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Russian Sergeant > If you can prove to me you are capable, I may let you pass";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   " << player.getName() << " > Huh? Prove to you what?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Russian Sergeant > Blyat!!";
+					_getch();
+					Enemy newEnemy = Enemy("Russian Sergeant", 15, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Mezapao")), true, 56);
 					play_audio("Dungeon Main Boss");
 					battle(player, current_dungeon, newEnemy);
 				}
@@ -393,13 +445,37 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 			{
 				if (current_dungeon->getDungeonRoom() == 3) // Snow Golem Mini Boss, drops key used to advance
 				{
+					play_audio("Encounter");
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   What is this creature...";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Regardless, it seems to have a key embedded on it's torso";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   I should probably try grabbing it";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > *grows angrily*";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > *charges towards " << player.getName() << " *";
+					_getch(); cout << "\33[2K\r" << flush;;
 					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hex") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 31);
 					play_audio("Dungeon Mini Boss");
 					battle(player, current_dungeon, newEnemy);
 				}
 				else if (current_dungeon->getDungeonRoom() == 5) // Duty Soldier Mini Boss, drops key used to advance
 				{
-					Enemy newEnemy = Enemy("Duty Soldier", 15, 384, 67, { Skill("Flame"), Skill("Zap"), Skill("Zapao"), Skill("Blight")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 37);
+					play_audio("Encounter");
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Duty Soldier > Aha! Another worthless twat trying to get in our way!";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   There seems to be a key dangling on his belt";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Perhaps I need to grab it by force";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Duty Soldier > Come here little one let me put you out of your misery...";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   " << player.getName() << " > Bring it!";
+					_getch(); cout << "\33[2K\r" << flush;;
+					Enemy newEnemy = Enemy("Duty Soldier", 12, 384, 67, { Skill("Flame"), Skill("Zap"), Skill("Zapao"), Skill("Blight")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 37);
 					play_audio("Dungeon Mini Boss");
 					battle(player, current_dungeon, newEnemy);
 				}
@@ -952,7 +1028,7 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 			for (int i = 0; i < 20; i++)
 			{
 				Sleep(10);
-				//system("CLS");
+				system("CLS");
 				player.increaseExp(exp_earned/20);
 				cout << "\n   You gained " << exp_earned << " experience" << endl << endl;
 				cout << "   " << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
@@ -1040,6 +1116,10 @@ void play_audio(string to_play)
 	else if (to_play == "Victory")
 	{
 		PlaySound(TEXT("music/victory.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Encounter")
+	{
+		PlaySound(TEXT("music/encounter.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 }
 
