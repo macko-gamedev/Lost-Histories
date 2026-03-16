@@ -1265,7 +1265,7 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Atlantis Ruins F1")
+	else if (to_play == "Atlantis Ruins F1" || to_play == "Atlantis Ruins F2")
 	{
 		PlaySound(TEXT("music/atlantis_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
