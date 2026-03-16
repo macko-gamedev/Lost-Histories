@@ -626,7 +626,7 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 		if (current_dungeon->getDungeonRoom() >= 4)
 		{
 			chestLoot.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
-			chestLoot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 97));
+			chestLoot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 67));
 		}
 		if (current_dungeon->getDungeonRoom() >= 5)
 		{
@@ -635,7 +635,35 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 			chestLoot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
 		}
 	}
-	Item* newItem = chestLoot[rand() % (chestLoot.size() - 1)];
+	else if(current_dungeon->getDungeonName() == "Atlantis Ruins")
+	{
+		chestLoot =
+		{
+			new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
+			new Item("Ripped Shoes", "A pair of ripped shoes", 1),
+			new Item("Foreign Coin", "A coin which you don't recognise", 2),
+			new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, 17),
+			new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, 29),
+			new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")),
+			new ItemSkill("Old Cross", "An old church cross emitting a blessing aura", 3, Skill("Blighta"))
+		};
+		if (current_dungeon->getDungeonRoom() >= 3)
+		{
+			chestLoot.push_back(new ItemMelee("Ice Crossbow", "Icified crossbow which fires icicles", 3, 46));
+		}
+		if (current_dungeon->getDungeonRoom() >= 4)
+		{
+			chestLoot.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
+			chestLoot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 67));
+		}
+		if (current_dungeon->getDungeonRoom() >= 5)
+		{
+			chestLoot.push_back(new Item("Chipped Diamond", "Exposed diamond which appears chipped and frozen over, might still carry some value", 4));
+			chestLoot.push_back(new ItemSkill("Electrical Wire", "Exposed electric wire that still packs some spark", 3, Skill("Zapao")));
+			chestLoot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+		}
+	}
+	Item* newItem = chestLoot[rand() % (chestLoot.size())];
 	bool itemDupe = false;
 	for (Item* item : player.getItems())
 	{
