@@ -21,7 +21,7 @@ using namespace std;
 /* 
 
 ###### LOST HISTORIES ######
-Last Updated: 24/02/26 (15:37)
+Last Updated: 16/03/26 (13:30)
 
 --- Parent Classes ---
 . BattleStat	# Contains key variables to battles such as health and stamina values
@@ -162,6 +162,7 @@ int main()
 				current_dungeon = new DungeonAtlantis();
 				current_dungeon->fillWithEnemies();
 				current_dungeon->fillWithChests();
+				visited_dungeons.push_back(current_dungeon);
 				story.startOfDialogue();
 				story.increaseDialogueIndex();
 				game_status = gameStatus::DUNGEON;
@@ -459,13 +460,71 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   Russian Sergeant > Blyat!!";
 					_getch();
-					Enemy newEnemy = Enemy("Russian Sergeant", 15, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex")}, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Mezapao")), true, 56);
+					Enemy newEnemy = Enemy("Russian Sergeant", 15, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex") }, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Mezapao")), true, 56);
 					play_audio("Dungeon Main Boss");
 					battle(player, current_dungeon, newEnemy);
 					story.startOfDialogue();
 					story.increaseDialogueIndex();
 					story_status = storyStatus::ACT_TWO;
 					game_status = gameStatus::DIALOGUE;
+				}
+			}
+		}
+		else if (current_dungeon->getDungeonName() == "Atlantis Ruins")
+		{
+			if (current_dungeon->getDungeonRoom() == 2)
+			{
+				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '|')
+				{
+					bool hasKey = false;
+					for (Item* item : player.getItems())
+					{
+						if (item->getName() == "Atlantis F2 Key")
+						{
+							hasKey = true;
+						}
+					}
+					if (hasKey)
+					{
+						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
+						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
+						current_dungeon->changePosY(1);
+					}
+					else
+					{
+						cout << "   Requires Atlantis F2 Key";
+						this_thread::sleep_for(chrono::seconds(2));
+					}
+				}
+				else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '?')
+				{
+					play_audio("Encounter");
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > Who the fuck are you? What are you doing here!?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Yourself > I beat that Russian Sergeant back in the Glacier Wastelands, and now I am here";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > Russian Sergeant? You mean the russians are here?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Yourself > Uh... yeah...";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > Bloody outrageous! I am a soldier from the UK, how can they be here already!";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > What are your intentions anyway? Can't you see we're busy?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Yourself > I'm not sure... but I want answers, why am I here? I thought I was a goner 41 years ago!";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Yourself > So if I was you I'd hand over that key so I can advance...";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > Christ almighty! Aren't you a tough guy?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > We've been experimenting with reanimations with all this new uncovered knowledge";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > Why don't you fight one of our little subjects?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					Enemy newEnemy = Enemy("Reanimated Mermaid", 20, 586, 126, { Skill("Flame"), Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Hexo"), Skill("Blighta")}, new Item("Atlantis F2 Key", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 53);
+					play_audio("Dungeon Mini Boss");
+					battle(player, current_dungeon, newEnemy);
 				}
 			}
 		}
@@ -606,61 +665,69 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 
 void open_chest(Player& player, Dungeon* current_dungeon)
 {
-	vector<Item*> chestLoot;
+	vector<Item*> chestLoot = { };
 	if (current_dungeon->getDungeonName() == "Glacier Wasteland")
 	{
-		chestLoot =
+		for (int i = 0; i < 5; i++) chestLoot.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
+		for (int i = 0; i < 5; i++) chestLoot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
+		for (int i = 0; i < 5; i++) chestLoot.push_back(new ItemSkill("Old Cross", "An old church cross emitting a blessing aura", 1, Skill("Blight")));
+		for (int i = 0; i < 5; i++) chestLoot.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		for (int i = 0; i < 4; i++) chestLoot.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
+		for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, 17));
+		for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")));
+		for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, 29));
+
+		if (current_dungeon->getDungeonRoom() >= 2)
 		{
-			new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			new Item("Ripped Shoes", "A pair of ripped shoes", 1),
-			new Item("Foreign Coin", "A coin which you don't recognise", 2),
-			new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, 17),
-			new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, 29),
-			new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")),
-			new ItemSkill("Old Cross", "An old church cross emitting a blessing aura", 3, Skill("Blighta"))
-		};
+			for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
+		}
 		if (current_dungeon->getDungeonRoom() >= 3)
 		{
-			chestLoot.push_back(new ItemMelee("Ice Crossbow", "Icified crossbow which fires icicles", 3, 46));
+			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemMelee("Ice Crossbow", "Icified crossbow which fires icicles", 3, 46));
 		}
 		if (current_dungeon->getDungeonRoom() >= 4)
 		{
-			chestLoot.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
-			chestLoot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 67));
+			for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
+			for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
+			for (int i = 0; i < 2; i++) chestLoot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 67));
 		}
 		if (current_dungeon->getDungeonRoom() >= 5)
 		{
-			chestLoot.push_back(new Item("Chipped Diamond", "Exposed diamond which appears chipped and frozen over, might still carry some value", 4));
-			chestLoot.push_back(new ItemSkill("Electrical Wire", "Exposed electric wire that still packs some spark", 3, Skill("Zapao")));
-			chestLoot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemSkill("Electrical Wire", "Exposed electric wire that still packs some spark", 3, Skill("Zapao")));
+			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+			for (int i = 0; i < 2; i++) chestLoot.push_back(new Item("Chipped Diamond", "Exposed diamond which appears chipped and frozen over, might still carry some value", 4));
 		}
 	}
 	else if(current_dungeon->getDungeonName() == "Atlantis Ruins")
 	{
-		chestLoot =
+		for (int i = 0; i < 5; i++) chestLoot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
+		for (int i = 0; i < 5; i++) chestLoot.push_back(new Item("Half Eaten Sandwich", "Some would call it a penguin classic(s)", 1));
+		for (int i = 0; i < 5; i++) chestLoot.push_back(new Item("Crocodile Floaty", "For a nice summers day", 1));
+		for (int i = 0; i < 5; i++) chestLoot.push_back(new ItemSkill("Vial of Ink", "An old vial with ink emitting a curseful aura", 1, Skill("Hex")));
+		for (int i = 0; i < 4; i++) chestLoot.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
+		for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemMelee("Rusty Anchor", "A ship's anchor mainly covered in rust", 2, 56));
+		for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
+		for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemMelee("Trident", "Sharp spike-like ends perfect for impaling", 3, 71));
+		for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+		if (current_dungeon->getDungeonRoom() >= 2)
 		{
-			new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			new Item("Ripped Shoes", "A pair of ripped shoes", 1),
-			new Item("Foreign Coin", "A coin which you don't recognise", 2),
-			new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, 17),
-			new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, 29),
-			new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")),
-			new ItemSkill("Old Cross", "An old church cross emitting a blessing aura", 3, Skill("Blighta"))
-		};
+			for (int i = 0; i < 4; i++) chestLoot.push_back(new Item("Water Balloon", "May annoy some people", 2));
+			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemMelee("Iron Spear", "Has great reach!", 3, 86));
+			for (int i = 0; i < 2; i++) chestLoot.push_back(new ItemSkill("Glass Pendant", "A glass heart pendant emitting a strong healthy aura", 4, Skill("Healan")));
+		}
 		if (current_dungeon->getDungeonRoom() >= 3)
 		{
-			chestLoot.push_back(new ItemMelee("Ice Crossbow", "Icified crossbow which fires icicles", 3, 46));
+			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
+			for (int i = 0; i < 2; i++) chestLoot.push_back(new ItemMelee("Royal Tridant", "Tridant yielded by the Old Royal Gaurds of Atlantis", 4, 103));
 		}
 		if (current_dungeon->getDungeonRoom() >= 4)
 		{
-			chestLoot.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
-			chestLoot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 67));
+			for (int i = 0; i < 3; i++) chestLoot.push_back(new Item("Gold Coin", "Made of real gold!", 3));
+			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
 		}
 		if (current_dungeon->getDungeonRoom() >= 5)
 		{
-			chestLoot.push_back(new Item("Chipped Diamond", "Exposed diamond which appears chipped and frozen over, might still carry some value", 4));
-			chestLoot.push_back(new ItemSkill("Electrical Wire", "Exposed electric wire that still packs some spark", 3, Skill("Zapao")));
-			chestLoot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+			for (int i = 0; i < 2; i++) chestLoot.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
 		}
 	}
 	Item* newItem = chestLoot[rand() % (chestLoot.size())];
@@ -690,13 +757,13 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 	this_thread::sleep_for(chrono::seconds(2));
 	if (newItem->isMeleeWeapon() && !itemDupe)
 	{
-		cout << "\n\n   You currently have " << player.getMeleeWeapon().getName() << " equipped.\n   Would you like to replace it with " << newItem->getName() << "? [y] or [n]\n\n   Atk: " << player.getMeleeWeapon().getMeleeDamage() << " --> " << newItem->getMeleeDamage() << "\n\n>";
+		cout << "\n\n   You currently have " << player.getMeleeWeapon().getName() << " equipped.\n   Would you like to replace it with " << newItem->getName() << "? [y] or [n]\n\n   Atk: " << player.getMeleeWeapon().getMeleeDamage() << " --> " << newItem->getMeleeDamage() << "\n   >";
 		string choice;
 		cin >> choice;
 		while (convert_string_tolower(choice) != "y" && convert_string_tolower(choice) != "n")
 		{
 			if (convert_string_tolower(choice) == "y" || convert_string_tolower(choice) == "n") break;
-			cout << "   [!] Please choose 'y' or 'n': ";
+			cout << "\n   [!] Please choose 'y' or 'n': ";
 			cin >> choice;
 		}
 		if (convert_string_tolower(choice) == "y")
@@ -1098,7 +1165,11 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 			play_audio("Victory");
 			float exp_earned;
 			bool itemDupe = false;
-			if (enemy.isBoss())
+			if (enemy.getName() == "Gold Fish")
+			{
+				exp_earned = enemy.getMaxHealth() * 7.7;
+			}
+			else if (enemy.isBoss())
 			{
 				exp_earned = enemy.getMaxHealth() * 3;
 			}

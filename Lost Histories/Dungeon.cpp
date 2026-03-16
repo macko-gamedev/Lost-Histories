@@ -88,10 +88,6 @@ void Dungeon::elementSetter(Enemy& enemy)
 	{
 		enemy.setElements({ "Rst", "Rst", "-", "-", "-", "-" });
 	}
-	else if (enemy.getName() == "Snow Golem")
-	{
-		enemy.setElements({ "Wk", "Rst", "-", "Rst", "-", "-" });
-	}
 	else if (enemy.getName() == "Bergmite")
 	{
 		enemy.setElements({ "Wk", "-", "-", "Rst", "-", "-" });
@@ -100,14 +96,32 @@ void Dungeon::elementSetter(Enemy& enemy)
 	{
 		enemy.setElements({ "Wk", "Rst", "Rst", "-", "-", "Wk" });
 	}
-	else if (enemy.getName() == "Patrol Soldier")
-	{
-		enemy.setElements({ "-", "Rst", "Wk", "Rst", "-", "-" });
-	}
 	else if (enemy.getName() == "Duty Soldier")
 	{
 		enemy.setElements({ "-", "Rst", "Wk", "Rst", "-", "-" });
 	}
+	else if (enemy.getName() == "Lab Fish")
+	{
+		enemy.setElements({ "-", "-", "Rst", "-", "Rst", "Wk" });
+	}
+	else if (enemy.getName() == "Gold Fish")
+	{
+		enemy.setElements({ "Rst", "Rst", "Rst", "Rst", "Rst", "Rst" });
+	}
+	// Mini Bosses
+	if (enemy.getName() == "Snow Golem")
+	{
+		enemy.setElements({ "Wk", "Rst", "-", "Rst", "-", "-" });
+	}
+	else if (enemy.getName() == "Patrol Soldier")
+	{
+		enemy.setElements({ "-", "Rst", "Wk", "Rst", "-", "-" });
+	}
+	else if (enemy.getName() == "Reanimated Mermaid")
+	{
+		enemy.setElements({ "Rst", "Wk", "-", "-", "Rst", "-" });
+	}
+	// Bosses
 	else if (enemy.getName() == "Russian Sergeant")
 	{
 		enemy.setElements({ "Rst", "Rst", "Wk", "Rst", "Wk", "Wk" });
@@ -190,15 +204,40 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 	{
 		if (curr_dungeon->getDungeonRoom() == 1)
 		{
-			// Enemy level for this floor: 14-19		Patrol Soldier: 14-17   Lab Fish: 16-19
+			// Enemy level for this floor: 14-20		Patrol Soldier: 14-17   Lab Fish: 16-19   Gold Fish: 20
 			int enemySpawnChance = (rand() % 10) + 1;
-			if (enemySpawnChance > 5)
+			if (enemySpawnChance == 10)
 			{
-				return Enemy("Lab Fish", ((rand() % 3) + 16), 125, 27, { Skill("Freezan"), Skill("Zapao"), Skill("Mezapao"), Skill("Hex") }, getItemFromLootTable("Lab Fish"), false, 33);
+				return Enemy("Gold Fish", 20, 150, 0, { }, getItemFromLootTable("Gold Fish"), true, 10);
+			}
+			else if (enemySpawnChance > 5)
+			{
+				return Enemy("Lab Fish", ((rand() % 3) + 16), 125, 109, { Skill("Freezan"), Skill("Zapao"), Skill("Mezapao"), Skill("Hex") }, getItemFromLootTable("Lab Fish"), false, 33);
 			}
 			else
 			{
 				return Enemy("Patrol Soldier", ((rand() % 3) + 14), 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, getItemFromLootTable("Patrol Soldier"), false, 48);
+			}
+		}
+		else if (curr_dungeon->getDungeonRoom() == 2)
+		{
+			// Enemy level for this floor: 17-23		Patrol Soldier: 17-20   Lab Fish: 18-22   Royal Guard: 20-23   Gold Fish: 20
+			int enemySpawnChance = (rand() % 20) + 1;
+			if (enemySpawnChance > 18)
+			{
+				return Enemy("Gold Fish", 20, 150, 0, { }, getItemFromLootTable("Gold Fish"), true, 10);
+			}
+			else if (enemySpawnChance > 14)
+			{
+				return Enemy("Royal Guard", ((rand() % 3) + 20), 173, 69, { Skill("Flamao"), Skill("Freezan"), Skill("Hex"), Skill("Blight") }, getItemFromLootTable("Royal Guard"), false, 67);
+			}
+			else if (enemySpawnChance > 7)
+			{
+				return Enemy("Lab Fish", ((rand() % 4) + 18), 125, 109, { Skill("Freezan"), Skill("Zapao"), Skill("Mezapao"), Skill("Hex") }, getItemFromLootTable("Lab Fish"), false, 33);
+			}
+			else
+			{
+				return Enemy("Patrol Soldier", ((rand() % 3) + 17), 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, getItemFromLootTable("Patrol Soldier"), false, 48);
 			}
 		}
 	}
@@ -206,126 +245,79 @@ Enemy Dungeon::newEnemy(Dungeon* curr_dungeon)
 
 Item* Dungeon::getItemFromLootTable(string enemyName)
 {
-	vector<Item*> drops = { new Item("Error", "Something went wrong here...", 0) };
-	//cout << "need to be: Ice Monster" << endl << "input: " << enemyName;
-	//system("pause");
+	vector<Item*> drops = { };
 	if (enemyName == "Ice Monster")
 	{
-		drops =
-		{
-			/* 1 STAR */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			/* 1 STAR */ new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")),
-			/*        */ new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")),
-			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/* 2 STAR */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2)
-		};
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
 	}
 	else if (enemyName == "Ice Fiend")
 	{
-		drops =
-		{
-			/* 1 STAR */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/* 2 STAR */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
-			/*        */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
-			/* 2 STAR */ new ItemSkill("Ice Shard", "A sharp ended icicle which could shatter", 2, Skill("Mefreeze")),
-			/*        */ new ItemSkill("Ice Shard", "A sharp ended icicle which could shatter", 2, Skill("Mefreeze")),
-			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
-			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
-			/* 3 STAR */ new ItemSkill("Crystalised Flake", "A snowflake fully crystalised, emitting a frosty aura", 3, Skill("Freezan"))
-		};
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Ice Shard", "A sharp ended icicle which could shatter", 2, Skill("Mefreeze")));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemSkill("Crystalised Flake", "A snowflake fully crystalised, emitting a frosty aura", 3, Skill("Freezan")));
 	}
 	else if (enemyName == "Bergmite")
 	{
-		drops =
-		{
-			/* 1 STAR */ new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")),
-			/*        */ new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")),
-			/*        */ new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")),
-			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/* 1 STAR */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
-			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
-			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
-			/* 2 STAR */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
-			/*        */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
-			/* 2 STAR */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
-			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
-			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
-			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
-			/* 3 STAR */ new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 2, Skill("Gustan"))
-		};
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 2, Skill("Gustan")));
 	}
 	else if (enemyName == "Wasteland Spirit")
 	{
-		drops =
-		{
-			/* 1 STAR */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			/*        */ new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1),
-			/* 1 STAR */ new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")),
-			/*        */ new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")),
-			/*        */ new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")),
-			/* 1 STAR */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/*        */ new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40),
-			/* 1 STAR */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
-			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
-			/*        */ new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15),
-			/* 2 STAR */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
-			/*        */ new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2),
-			/* 2 STAR */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
-			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
-			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
-			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
-			/* 3 STAR */ new ItemSkill("Power Cord", "Unfrozen exposed power cable. Wonder if it still sparks?", 3, Skill("Zapao")),
-			/* 3 STAR */ new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200),
-		};
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemSkill("Power Cord", "Unfrozen exposed power cable. Wonder if it still sparks?", 3, Skill("Zapao")));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
 	}
 	else if (enemyName == "Patrol Soldier")
 	{
-		drops =
-		{
-			/* 2 STAR */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
-			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
-			/*        */ new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100),
-			/* 2 STAR */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
-			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
-			/*        */ new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35),
-			/* 3 STAR */ new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200),
-			/*        */ new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200),
-			/* 3 STAR */ new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80),
-			/*        */ new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80),
-			/* 3 STAR */ new Item("Gun Fragment", "A piece of fragment from a Soldiers gun", 3),
-			/*        */ new Item("Gun Fragment", "A piece of fragment from a Soldiers gun", 3),
-			/* 4 STAR */ new ItemSkill("Firecracker", "Who loves a little bit of fire play", 4, Skill("Meflamao")),
-		};
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new Item("Gun Fragment", "A piece of fragment from a Soldiers gun", 3));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) drops.push_back(new ItemSkill("Firecracker", "Who loves a little bit of fire play", 4, Skill("Meflamao")));
 	}
 	else if (enemyName == "Lab Fish")
 	{
-		drops =
-		{
-			/* 1 STAR */ new Item("Seaweed", "Lonely strand of seaweed", 1),
-			/*        */ new Item("Seaweed", "Lonely strand of seaweed", 1),
-			/*        */ new Item("Seaweed", "Lonely strand of seaweed", 1),
-			/*        */ new Item("Seaweed", "Lonely strand of seaweed", 1),
-			/* 2 STAR */ new Item("Fish Tooth", "Caution, may be sharp", 2),
-			/*        */ new Item("Fish Tooth", "Caution, may be sharp", 2),
-			/*        */ new Item("Fish Tooth", "Caution, may be sharp", 2),
-			/* 2 STAR */ new ItemSkill("Squid Head", "Squirts black genetically modified ink", 2, Skill("Mehex")),
-			/*        */ new ItemSkill("Squid Head", "Squirts black genetically modified ink", 2, Skill("Mehex")),
-			/*        */ new ItemSkill("Squid Head", "Squirts black genetically modified ink", 2, Skill("Mehex")),
-			/* 3 STAR */ new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80),
-			/*        */ new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80),
-			/* 4 STAR */ new ItemSkill("Jellyfish Tenticle", "Dead or Alive it still carries some charge", 4, Skill("Zapadia")),
-		};
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new Item("Seaweed", "Lonely strand of seaweed", 1));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new Item("Fish Tooth", "Caution, may be sharp", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Squid Head", "Squirts black genetically modified ink", 2, Skill("Mehex")));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) drops.push_back(new ItemSkill("Jellyfish Tenticle", "Dead or Alive it still carries some charge", 4, Skill("Zapadia")));;
+	}
+	else if (enemyName == "Royal Guard")
+	{
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new Item("Seaweed", "Lonely strand of seaweed", 1));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new Item("Mermaid Tail", "Sadly from a dead mermaid corpse", 2));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new Item("Gold Coin", "Made of real gold!", 3));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+		/* 3 STAR */ for (int i = 0; i < 2; i++) drops.push_back(new ItemConsumable("Bottle o' Holy Water", "500ml of pure holy water!", 4, "STA", 150));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) drops.push_back(new ItemSkill("Dark Staff", "Some foul play is at work here...", 4, Skill("Mehexo")));;
+	}
+	else if (enemyName == "Gold Fish")
+	{
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Ice Shard", "A sharp ended icicle which could shatter", 2, Skill("Mefreeze")));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Live Cables", "A bundle of small exposed cables", 2, Skill("Mezap")));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) drops.push_back(new Item("Diamond", "A natural chunk of diamond from the earth", 5));
 	}
 	return drops[rand() % drops.size()];
 }

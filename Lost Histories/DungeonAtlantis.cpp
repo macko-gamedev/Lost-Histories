@@ -28,6 +28,23 @@ DungeonAtlantis::DungeonAtlantis()
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', 'X', 'O' },
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', 'X', 'O' },
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'X', 'O' }
+		},
+		{
+			{ 'O', 'O', 'X', 'O', 'O', 'X', 'O', 'X', 'X', 'X', 'X', 'O', 'O', 'X', 'O' },
+			{ 'O', 'O', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'O' },
+			{ 'O', 'O', 'X', ' ', ' ', ' ', '!', ' ', ' ', '*', 'X', ' ', ' ', 'X', 'O' },
+			{ 'O', 'O', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'O' },
+			{ 'O', 'O', 'X', ' ', ' ', 'X', 'O', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'O' },
+			{ 'O', 'X', 'X', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'X', ' ', ' ', 'X', 'O' },
+			{ 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|', '>' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'O', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
+			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O' },
+			{ 'O', 'O', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', '?', 'O' },
+			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', '*', 'X', ' ', 'X', 'X' },
+			{ 'O', 'O', 'X', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O' }
 		}
 	};
 }
@@ -35,7 +52,7 @@ DungeonAtlantis::DungeonAtlantis()
 void DungeonAtlantis::fillWithEnemies()
 {
 	// 15% chance for each tile to have an enemy
-	for (int r = 0; r < 1; r++)
+	for (int r = 0; r < 2; r++)
 	{
 		for (int i = 0; i < 15; i++)
 		{
@@ -56,8 +73,8 @@ void DungeonAtlantis::fillWithEnemies()
 
 void DungeonAtlantis::fillWithChests()
 {
-	// 5% chance for each tile to have a chest
-	for (int r = 0; r < 1; r++)
+	// 8% chance for each tile to have a chest
+	for (int r = 0; r < 2; r++)
 	{
 		for (int i = 0; i < 15; i++)
 		{
@@ -65,11 +82,11 @@ void DungeonAtlantis::fillWithChests()
 			{
 				if (this->getDungeonMap()[r][i][j] == ' ')
 				{
-					//int spawnChance = (rand() % 100) + 1;
-					//if (spawnChance > 94)
-					//{
-					//	this->setPosition(r, i, j, '*');
-					//}
+					int spawnChance = (rand() % 100) + 1;
+					if (spawnChance > 92)
+					{
+						this->setPosition(r, i, j, '*');
+					}
 				}
 			}
 		}
