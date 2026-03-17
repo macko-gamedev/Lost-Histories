@@ -12,12 +12,12 @@ class Player;
 class BattleStat
 {
 protected:
-	string name;
-	int health;
-	int stamina;
-	int max_health;
-	int max_stamina;
-	int level;
+	string STR_Name;
+	int INT_Health;
+	int INT_Stamina;
+	int INT_Max_Health;
+	int INT_Max_Stamina;
+	int INT_Level;
 public:
 	BattleStat();
 	BattleStat(string nName, int nLevel, int nHealth, int nStamina);
@@ -27,10 +27,10 @@ public:
 	int getStamina();
 	int getMaxHealth();
 	int getMaxStamina();
-	void changeHealth(int amount);
-	void changeStamina(int amount);
+	void changeHealth(int INT_Amount);
+	void changeStamina(int INT_Amount);
 	void fullHealth();
 	void fullStamina();
-	virtual void update(Player& player);
+	virtual void update(Player& PLAYER_Player);
 };
 

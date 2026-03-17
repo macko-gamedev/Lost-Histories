@@ -5,74 +5,74 @@ BattleStat::BattleStat() { }
 
 BattleStat::BattleStat(string nName, int nLevel, int nHealth, int nStamina)
 {
-	this->name = nName;
-	this->level = nLevel;
-	this->health = nHealth;
-	this->stamina = nStamina;
-	this->max_health = nHealth;
-	this->max_stamina = nStamina;
+	this->STR_Name = nName;
+	this->INT_Level = nLevel;
+	this->INT_Health = nHealth;
+	this->INT_Stamina = nStamina;
+	this->INT_Max_Health = nHealth;
+	this->INT_Max_Stamina = nStamina;
 }
 
 string BattleStat::getName()
 {
-	return this->name;
+	return this->STR_Name;
 }
 
 int BattleStat::getLevel()
 {
-	return this->level;
+	return this->INT_Level;
 }
 
 int BattleStat::getHealth()
 {
-	return this->health;
+	return this->INT_Health;
 }
 
 int BattleStat::getStamina()
 {
-	return this->stamina;
+	return this->INT_Stamina;
 }
 
 int BattleStat::getMaxHealth()
 {
-	return this->max_health;
+	return this->INT_Max_Health;
 }
 
 int BattleStat::getMaxStamina()
 {
-	return this->max_stamina;
+	return this->INT_Max_Stamina;
 }
 
-void BattleStat::changeHealth(int amount)
+void BattleStat::changeHealth(int INT_Amount)
 {
-	this->health += amount;
-	if (this->health > this->max_health)
+	this->INT_Health += INT_Amount;
+	if (this->INT_Health > this->INT_Max_Health)
 	{
-		this->health = this->max_health;
+		this->INT_Health = this->INT_Max_Health;
 	}
 }
 
-void BattleStat::changeStamina(int amount)
+void BattleStat::changeStamina(int INT_Amount)
 {
-	this->stamina += amount;
-	if (this->stamina > this->max_stamina)
+	this->INT_Stamina += INT_Amount;
+	if (this->INT_Stamina > this->INT_Max_Stamina)
 	{
-		this->stamina = this->max_stamina;
+		this->INT_Stamina = this->INT_Max_Stamina;
 	}
 }
 
 void BattleStat::fullHealth()
 {
-	this->health = this->max_health;
+	this->INT_Health = this->INT_Max_Health;
 }
 
 void BattleStat::fullStamina()
 {
-	this->stamina = this->max_stamina;
+	this->INT_Stamina = this->INT_Max_Stamina;
 }
 
-void BattleStat::update(Player& player)
+void BattleStat::update(Player& PLAYER_Player)
 {
-	cout << "Joey is a smelly poo poo head";
+
 }
 

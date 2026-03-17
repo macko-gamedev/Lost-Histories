@@ -68,7 +68,7 @@ string convert_string_toupper(string text); // Quite obvious 2
 void set_starting_elements(int& weak_element, int& resist_element); // Sets the starting elements (weakness and resistant)
 void show_enemy_stats(Enemy ENEMY_Enemy); // Shows the ENEMY_Enemy's battle stats
 void show_battle_stats(Player PLAYER_Player); // Shows the PLAYER_Player's battle stats (name, hp, sta)
-void show_skill(Player PLAYER_Player, int index); // Shows the PLAYER_Player's current skill
+void show_skill(Player PLAYER_Player, int INDEX_Skill); // Shows the PLAYER_Player's current skill
 void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice); // Story PLAYER_Player input
 int main_menu(); // Main menu when the game is executed
 void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY_Enemy); // Battle sequence
@@ -797,7 +797,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 	Item* enemyDrop = ENEMY_Enemy.getDroppedItem();
 	DUNGEON_Current_Dungeon->elementSetter(ENEMY_Enemy);
 	ENEMY_Enemy.setHealth();
-	int INT_Skill_Index = 0; // Selected skill index (to display)
+	int INT_Skill_Index = 0; // Selected skill INDEX_Skill (to display)
 	cout << "\n   You have encountered " << ENEMY_Enemy.getName() << endl;
 	this_thread::sleep_for(chrono::seconds(3));
 	PLAYER_Player.update();
@@ -916,7 +916,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 							system("CLS");
 							show_battle_stats(PLAYER_Player);
 							// Determines what the skill does
-							if (SKILL_Skill_Selected.getType() == "support")
+							if (SKILL_Skill_Selected.getType() == "Support")
 							{
 								// Heal the PLAYER_Player
 								PLAYER_Player.changeHealth(SKILL_Skill_Selected.getHPGain());
@@ -1398,21 +1398,21 @@ void show_battle_stats(Player PLAYER_Player)
 	cout << "   HP: " << PLAYER_Player.getHealth() << " / " << PLAYER_Player.getMaxHealth() << " | STA: " << PLAYER_Player.getStamina() << " / " << PLAYER_Player.getMaxStamina() << endl << endl;
 }
 
-void show_skill(Player PLAYER_Player, int index)
+void show_skill(Player PLAYER_Player, int INDEX_Skill)
 {
 	vector<Skill> TEMP_Player_Skills = PLAYER_Player.getSkills();
-	cout << "--> " << convert_string_toupper(TEMP_Player_Skills[index].getName()) << endl;
-	cout << "    Type: " << TEMP_Player_Skills[index].getType() << endl;
-	cout << "    Desc: " << TEMP_Player_Skills[index].getDesc() << endl;
-	cout << "    STA: " << TEMP_Player_Skills[index].getStaminaCost() << endl;
-	if (TEMP_Player_Skills[index].getName() == "Heal" || TEMP_Player_Skills[index].getName() == "Healan" || TEMP_Player_Skills[index].getName() == "Healadia")
+	cout << "--> " << convert_string_toupper(TEMP_Player_Skills[INDEX_Skill].getName()) << endl;
+	cout << "    Type: " << TEMP_Player_Skills[INDEX_Skill].getType() << endl;
+	cout << "    Desc: " << TEMP_Player_Skills[INDEX_Skill].getDesc() << endl;
+	cout << "    STA: " << TEMP_Player_Skills[INDEX_Skill].getStaminaCost() << endl;
+	if (TEMP_Player_Skills[INDEX_Skill].getName() == "Heal" || TEMP_Player_Skills[INDEX_Skill].getName() == "Healan" || TEMP_Player_Skills[INDEX_Skill].getName() == "Healadia")
 	{
-		cout << "    HP+: " << TEMP_Player_Skills[index].getHPGain() << endl;
+		cout << "    HP+: " << TEMP_Player_Skills[INDEX_Skill].getHPGain() << endl;
 	}
 	else
 	{
-		cout << "    DMG: " << TEMP_Player_Skills[index].getBaseDamage() << endl;
+		cout << "    DMG: " << TEMP_Player_Skills[INDEX_Skill].getBaseDamage() << endl;
 	}
-	cout << "    [Skill " << (index + 1) << " of " << TEMP_Player_Skills.size() << "]";
+	cout << "    [Skill " << (INDEX_Skill + 1) << " of " << TEMP_Player_Skills.size() << "]";
 }
 

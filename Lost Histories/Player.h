@@ -14,35 +14,35 @@ using namespace std;
 class Player : public BattleStat
 {
 private:
-	ItemMelee equippedMelee;
-	string status;
-	string location;
-	vector<string> elements;
-	vector<string> elementNames;
-	vector<Skill> skills;
-	vector<Item*> items;
-	map<string, int> playerAttributes;
-	float curr_exp;
-	float next_exp;
-	int tot_exp;
-	bool guard;
+	ItemMelee ITEM_MELEE_Equipped_Melee;
+	string STR_Status;
+	string STR_Location;
+	vector<string> VEC_Element_Names;
+	vector<Skill> VEC_Skills;
+	vector<Item*> VEC_Items;
+	map<string, int> MAP_Player_Attributes;
+	map<string, string> MAP_Elements;
+	float FLT_Curr_EXP;
+	float FLT_Next_EXP;
+	int INT_Total_EXP;
+	bool BOOL_Guard;
 
 public:
 	Player(string name, int weak_element, int resist_element, int level, int health, int stamina);
 	ItemMelee getMeleeWeapon();
 	string getStatus();
 	string getLocation();
-	vector<string> getElements();
 	vector<Skill> getSkills();
 	void setSkills(vector<Skill> nSkills);
 	void setMelee(ItemMelee nMelee);
 	vector<Item*> getItems();
 	map<string, int> getPlayerAttributes();
+	map<string, string> getElements();
 	int getLevelStats();
 	int getNextEXP();
 	bool isGuard();
-	void increaseExp(float amount);
-	void setGuard(bool guardState);
+	void increaseExp(float INT_Amount);
+	void setGuard(bool BOOL_Guard_State);
 	void getPlayerStats();
 	void getPlayerElements();
 	void addItem(Item* ITEM_Item);

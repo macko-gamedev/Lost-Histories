@@ -4,17 +4,17 @@
 
 using namespace std;
 
-Player::Player(string name, int weak_element, int resist_element, int level, int health, int stamina) : BattleStat(name, level, health, stamina)
+Player::Player(string name, int weak_element, int resist_element, int INT_Level, int INT_Health, int INT_Stamina) : BattleStat(name, INT_Level, INT_Health, INT_Stamina)
 {
 	// EXP : Granted after battles
-	this->curr_exp = 0;
-	this->next_exp = 22;
+	this->FLT_Curr_EXP = 0;
+	this->FLT_Next_EXP = 22;
 
 	// Guard : Reduces incoming damage by 33% and sets element to -/Rst
-	this->guard = false;
+	this->BOOL_Guard = false;
 
 	// Status : Effects Player in battle
-	this->status = "Great";
+	this->STR_Status = "Great";
 
 	// Attributes : On levelling up, Player can choose to increase one of these
 	/*
@@ -22,7 +22,7 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	Magic     - Increases Skill Damage by (1 + (magic value / 10))x
 	Endurance - Decreases Incoming Damage by (1 + (endurance value / 10))x
 	*/
-	this->playerAttributes = { { "Strength", 1 }, { "Magic", 1 }, { "Endurance", 1 } };
+	this->MAP_Player_Attributes = { { "Strength", 1 }, { "Magic", 1 }, { "Endurance", 1 } };
 
 	// Elements : Fire, Ice, Electric, Wind, Curse, Bless
 	/*
@@ -32,121 +32,122 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 	Nul - Deals 0.0x damage
 	Rpl - Attacks self
 	*/
-	this->elements = { "-", "-", "-", "-", "-", "-" };
-	this->elementNames = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
-	this->elements[weak_element] = "Wk";
-	this->elements[resist_element] = "Rst";
+	this->MAP_Elements = { {"Fire", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} };
+	this->VEC_Element_Names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
+	this->MAP_Elements.find(VEC_Element_Names[weak_element])->second = "Wk";
+	this->MAP_Elements.find(VEC_Element_Names[weak_element])->second = "Rst";
 
 	// Items: Giving the player a backpack by default and equipping the player with a basic melee weapon
-	this->items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4), new ItemSkill("Insta-Kill","Testing purposes only", 5, Skill("Death"))};
-	this->equippedMelee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
+	this->VEC_Items = { new Item("Torn Backpack", "Your trusty backpack for storing VEC_Items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4), new ItemSkill("Insta-Kill","Testing purposes only", 5, Skill("Death"))};
+	this->ITEM_MELEE_Equipped_Melee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 
-	// Skills: Player starts with no skills, so just declaring the vector here
-	this->skills = { };
+	// Skills: Player starts with no VEC_Skills, so just declaring the vector here
+	this->VEC_Skills = { };
 }
 
 void Player::getPlayerStats()
 {
-	cout << "   HP: " << this->health << " / " << this->max_health << " | STA: " << this->stamina << " / " << this->max_stamina << endl << endl;
-	cout << "   Level " << this->level << "\n   EXP Next: " << int(this->getNextEXP()) << "\n   EXP Total: " << this->tot_exp << endl << endl;
+	cout << "   HP: " << this->INT_Health << " / " << this->INT_Max_Health << " | STA: " << this->INT_Stamina << " / " << this->INT_Max_Stamina << endl << endl;
+	cout << "   Level " << this->INT_Level << "\n   EXP Next: " << int(this->getNextEXP()) << "\n   EXP Total: " << this->INT_Total_EXP << endl << endl;
 }
 
 void Player::getPlayerElements()
 {
-	int elementIndex = 0;
-	while (elementIndex < 6)
+	int INDEX_Element = 0;
+	while (INDEX_Element < 6)
 	{
-		cout << ".  " << elementNames[elementIndex] << ": " << elements[elementIndex] << endl;
-		elementIndex++;
+		cout << ".  " << VEC_Element_Names[INDEX_Element] << ": " << MAP_Elements.find(VEC_Element_Names[INDEX_Element])->second << endl;
+		INDEX_Element++;
 	}
 }
 
 ItemMelee Player::getMeleeWeapon()
 {
-	return this->equippedMelee;
+	return this->ITEM_MELEE_Equipped_Melee;
 }
 
 string Player::getStatus()
 {
-	return this->status;
+	return this->STR_Status;
 }
 
 string Player::getLocation()
 {
-	return this->location;
+	return this->STR_Location;
 }
 
-vector<string> Player::getElements()
+
+map<string, string> Player::getElements()
 {
-	return this->elements;
+	return this->MAP_Elements;
 }
 
 vector<Skill> Player::getSkills()
 {
-	return this->skills;
+	return this->VEC_Skills;
 }
 
 void Player::setSkills(vector<Skill> nSkills)
 {
-	this->skills = nSkills;
+	this->VEC_Skills = nSkills;
 }
 
 void Player::setMelee(ItemMelee nMelee)
 {
-	this->equippedMelee = nMelee;
+	this->ITEM_MELEE_Equipped_Melee = nMelee;
 }
 
 vector<Item*> Player::getItems()
 {
-	return this->items;
+	return this->VEC_Items;
 }
 
 map<string, int> Player::getPlayerAttributes()
 {
-	return this->playerAttributes;
+	return this->MAP_Player_Attributes;
 }
 
 int Player::getLevelStats()
 {
-	return this->level, this->curr_exp, this->next_exp;
+	return this->INT_Level, this->FLT_Curr_EXP, this->FLT_Next_EXP;
 }
 
 int Player::getNextEXP()
 {
-	return this->next_exp - this->curr_exp;
+	return this->FLT_Next_EXP - this->FLT_Curr_EXP;
 }
 
 bool Player::isGuard()
 {
-	return this->guard;
+	return this->BOOL_Guard;
 }
 
-void Player::increaseExp(float amount)
+void Player::increaseExp(float INT_Amount)
 {
-	this->curr_exp += amount;
-	this->tot_exp += amount;
-	while (curr_exp >= next_exp)
+	this->FLT_Curr_EXP += INT_Amount;
+	this->INT_Total_EXP += INT_Amount;
+	while (FLT_Curr_EXP >= FLT_Next_EXP)
 	{
-		if (this->level < 99)
+		if (this->INT_Level < 99)
 		{
-			int tempVal = this->curr_exp - this->next_exp;
-			this->level++;
-			this->max_health += 7;
-			this->max_stamina += 4;
-			this->health = this->max_health;
-			this->stamina = this->max_stamina;
-			this->curr_exp = tempVal;
-			if (this->level > 49)
+			int tempVal = this->FLT_Curr_EXP - this->FLT_Next_EXP;
+			this->INT_Level++;
+			this->INT_Max_Health += 7;
+			this->INT_Max_Stamina += 4;
+			this->INT_Health = this->INT_Max_Health;
+			this->INT_Stamina = this->INT_Max_Stamina;
+			this->FLT_Curr_EXP = tempVal;
+			if (this->INT_Level > 49)
 			{
-				this->next_exp = int(((float)this->next_exp) * 1.03);
+				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.03);
 			}
-			else if (this->level > 19)
+			else if (this->INT_Level > 19)
 			{
-				this->next_exp = int(((float)this->next_exp) * 1.0725);
+				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.0725);
 			}
 			else
 			{
-				this->next_exp = int(((float)this->next_exp) * 1.35);
+				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.35);
 			}
 		}
 	}
@@ -154,17 +155,17 @@ void Player::increaseExp(float amount)
 
 void Player::setGuard(bool guardState)
 {
-	this->guard = guardState;
+	this->BOOL_Guard = guardState;
 }
 
 void Player::addItem(Item* ITEM_Item)
 {
-	this->items.push_back(item);
+	this->VEC_Items.push_back(ITEM_Item);
 }
 
 void Player::setItems(vector<Item*> nItems)
 {
-	this->items = nItems;
+	this->VEC_Items = nItems;
 }
 
 void Player::update()

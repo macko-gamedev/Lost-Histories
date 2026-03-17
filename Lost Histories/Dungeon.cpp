@@ -82,49 +82,49 @@ void Dungeon::elementSetter(Enemy& enemy)
 {
 	if (enemy.getName() == "Ice Monster")
 	{
-		enemy.setElements({ {"fire", "Wk"}, {"ice", "Rst"}, {"electric", "-"}, {"wind", "-"}, {"curse", "-"}, {"bless", "-"} });
+		enemy.setElements({ {"Fire", "Wk"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (enemy.getName() == "Ice Fiend")
 	{
-		enemy.setElements({ {"fire", "Rst"}, {"ice", "Rst"}, {"electric", "-"}, {"wind", "-"}, {"curse", "-"}, {"bless", "-"} });
+		enemy.setElements({ {"Fire", "Rst"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (enemy.getName() == "Bergmite")
 	{
-		enemy.setElements({ {"fire", "Wk"}, {"ice", "-"}, {"electric", "-"}, {"wind", "Rst"}, {"curse", "-"}, {"bless", "-"} });
+		enemy.setElements({ {"Fire", "Wk"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (enemy.getName() == "Wasteland Spirit")
 	{
-		enemy.setElements({ {"fire", "Wk"}, {"ice", "Rst"}, {"electric", "Rst"}, {"wind", "-"}, {"curse", "-"}, {"bless", "Wk"} });
+		enemy.setElements({ {"Fire", "Wk"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Wk"} });
 	}
 	else if (enemy.getName() == "Duty Soldier")
 	{
-		enemy.setElements({ {"fire", "-"}, {"ice", "Rst"}, {"electric", "Wk"}, {"wind", "Rst"}, {"curse", "-"}, {"bless", "-"} });
+		enemy.setElements({ {"Fire", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (enemy.getName() == "Lab Fish")
 	{
-		enemy.setElements({ {"fire", "-"}, {"ice", "-"}, {"electric", "Rst"}, {"wind", "-"}, {"curse", "Rst"}, {"bless", "Wk"} });
+		enemy.setElements({ {"Fire", "-"}, {"Ice", "-"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Wk"} });
 	}
 	else if (enemy.getName() == "Gold Fish")
 	{
-		enemy.setElements({ {"fire", "Rst"}, {"ice", "Rst"}, {"electric", "Rst"}, {"wind", "Rst"}, {"curse", "Rst"}, {"bless", "Rst"} });
+		enemy.setElements({ {"Fire", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 	}
 	// Mini Bosses
 	if (enemy.getName() == "Snow Golem")
 	{
-		enemy.setElements({ {"fire", "Wk"}, {"ice", "Nul"}, {"electric", "-"}, {"wind", "Rst"}, {"curse", "-"}, {"bless", "-"} });
+		enemy.setElements({ {"Fire", "Wk"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (enemy.getName() == "Patrol Soldier")
 	{
-		enemy.setElements({ {"fire", "-"}, {"ice", "Rst"}, {"electric", "Wk"}, {"wind", "Rst"}, {"curse", "-"}, {"bless", "-"} });
+		enemy.setElements({ {"Fire", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (enemy.getName() == "Reanimated Mermaid")
 	{
-		enemy.setElements({ {"fire", "Nul"}, {"ice", "Wk"}, {"electric", "-"}, {"wind", "-"}, {"curse", "Rst"}, {"bless", "-"} });
+		enemy.setElements({ {"Fire", "Nul"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "-"} });
 	}
 	// Bosses
 	else if (enemy.getName() == "Russian Sergeant")
 	{
-		enemy.setElements({ {"fire", "Rst"}, {"ice", "Rst"}, {"electric", "Wk"}, {"wind", "Rst"}, {"curse", "Wk"}, {"bless", "Wk"} });
+		enemy.setElements({ {"Fire", "Rst"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
 	}
 }
 
@@ -249,7 +249,7 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 	if (enemyName == "Ice Monster")
 	{
 		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
-		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemSkill("Ice Core", "A strange looking block of Ice", 1, Skill("Freeze")));
 		/* 1 STAR */ for (int i = 0; i < 5; i++) drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
 	}
@@ -291,7 +291,7 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) drops.push_back(new Item("Gun Fragment", "A piece of fragment from a Soldiers gun", 3));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) drops.push_back(new ItemSkill("Firecracker", "Who loves a little bit of fire play", 4, Skill("Meflamao")));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) drops.push_back(new ItemSkill("Firecracker", "Who loves a little bit of Fire play", 4, Skill("Meflamao")));
 	}
 	else if (enemyName == "Lab Fish")
 	{
@@ -313,7 +313,7 @@ Item* Dungeon::getItemFromLootTable(string enemyName)
 	}
 	else if (enemyName == "Gold Fish")
 	{
-		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Box of Matches", "Withered box of Fire matches, can they still alight?", 2, Skill("Meflame")));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Ice Shard", "A sharp ended icicle which could shatter", 2, Skill("Mefreeze")));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Live Cables", "A bundle of small exposed cables", 2, Skill("Mezap")));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) drops.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));

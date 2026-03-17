@@ -18,14 +18,14 @@ enum battleState
 class Enemy : public BattleStat
 {
 private:
-	battleState state;
-	vector<Skill> skills;
-	map<string, string> elements;
-	Item* droppedItem;
-	bool alive;
-	bool boss;
-	int damage;
-	string turnPhrase;
+	battleState ENUM_State;
+	vector<Skill> VEC_Skills;
+	map<string, string> MAP_Elements;
+	Item* ITEM_Dropped_Item;
+	bool BOOL_Alive;
+	bool BOOL_Boss;
+	int INT_Damage;
+	string STR_Turn_Phrase;
 public:
 	Enemy();
 	Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, Item* nDroppedItem, bool nBoss, int nDamage);
@@ -38,5 +38,5 @@ public:
 	string getTurnPhrase();
 	void setHealth();
 	void setElements(map<string, string>  nElements);
-	void update(Player& player) override;
+	void update(Player& PLAYER_Player) override;
 };
