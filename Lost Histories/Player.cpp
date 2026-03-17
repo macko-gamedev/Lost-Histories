@@ -6,15 +6,32 @@ using namespace std;
 
 Player::Player(string name, int weak_element, int resist_element, int level, int health, int stamina) : BattleStat(name, level, health, stamina)
 {
-	this->status = "Great";
-	this->health = health;
-	this->max_health = health;
-	this->max_stamina = stamina;
+	// EXP : Granted after battles
 	this->curr_exp = 0;
 	this->next_exp = 22;
+
+	// Guard : Reduces incoming damage by 33% and sets element to -/Rst
 	this->guard = false;
 
+	// Status : Effects Player in battle
+	this->status = "Great";
+
+	// Attributes : On levelling up, Player can choose to increase one of these
+	/*
+	Strength  - Increases Melee Damage by (1 + (melee value / 10))x
+	Magic     - Increases Skill Damage by (1 + (magic value / 10))x
+	Endurance - Decreases Incoming Damage by (1 + (endurance value / 10))x
+	*/
+	this->playerAttributes = { { "Strength", 1 }, { "Magic", 1 }, { "Endurance", 1 } };
+
 	// Elements : Fire, Ice, Electric, Wind, Curse, Bless
+	/*
+	-   - No effect
+	Wk  - Deals 1.5x damage
+	Rst - Deals 0.5x damage
+	Nul - Deals 0.0x damage
+	Rpl - Attacks self
+	*/
 	this->elements = { "-", "-", "-", "-", "-", "-" };
 	this->elementNames = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
 	this->elements[weak_element] = "Wk";
@@ -26,8 +43,6 @@ Player::Player(string name, int weak_element, int resist_element, int level, int
 
 	// Skills: Player starts with no skills, so just declaring the vector here
 	this->skills = { };
-	this->stamina = 52;
-	this->max_stamina = 52;
 }
 
 void Player::getPlayerStats()
@@ -86,6 +101,11 @@ vector<Item*> Player::getItems()
 	return this->items;
 }
 
+map<string, int> Player::getPlayerAttributes()
+{
+	return this->playerAttributes;
+}
+
 int Player::getLevelStats()
 {
 	return this->level, this->curr_exp, this->next_exp;
@@ -137,7 +157,7 @@ void Player::setGuard(bool guardState)
 	this->guard = guardState;
 }
 
-void Player::addItem(Item* item)
+void Player::addItem(Item* ITEM_Item)
 {
 	this->items.push_back(item);
 }
@@ -154,13 +174,13 @@ void Player::update()
 	vector<string> temp_element_names = { "fire", "ice", "electric", "wind", "curse", "bless", "nuclear", "support"};
 	for (int i = 0; i < temp_element_names.size(); i++)
 	{
-		for (Item* item : this->getItems())
+		for (Item* ITEM_Item : this->getItems())
 		{
-			if (item->canInheritSkill())
+			if (ITEM_Item->canInheritSkill())
 			{
-				if (item->getSkill().getType() == temp_element_names[i])
+				if (ITEM_Item->getSkill().getType() == temp_element_names[i])
 				{
-					items_with_skill.push_back(item->getSkill());
+					items_with_skill.push_back(ITEM_Item->getSkill());
 				}
 			}
 		}

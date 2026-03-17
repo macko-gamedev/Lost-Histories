@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 #include "Skill.h"
 #include "Item.h"
 #include "ItemSkill.h"
@@ -20,6 +21,7 @@ private:
 	vector<string> elementNames;
 	vector<Skill> skills;
 	vector<Item*> items;
+	map<string, int> playerAttributes;
 	float curr_exp;
 	float next_exp;
 	int tot_exp;
@@ -35,6 +37,7 @@ public:
 	void setSkills(vector<Skill> nSkills);
 	void setMelee(ItemMelee nMelee);
 	vector<Item*> getItems();
+	map<string, int> getPlayerAttributes();
 	int getLevelStats();
 	int getNextEXP();
 	bool isGuard();
@@ -42,7 +45,7 @@ public:
 	void setGuard(bool guardState);
 	void getPlayerStats();
 	void getPlayerElements();
-	void addItem(Item* item);
+	void addItem(Item* ITEM_Item);
 	void setItems(vector<Item*> nItems);
 	void update();
 };

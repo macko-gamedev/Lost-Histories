@@ -14,6 +14,7 @@
 #include <Windows.h>
 #include "mmsystem.h"
 #include <conio.h>
+#include <map>
 #pragma comment(lib, "winmm.lib")
 
 using namespace std;
@@ -21,26 +22,28 @@ using namespace std;
 /* 
 
 ###### LOST HISTORIES ######
-Last Updated: 16/03/26 (13:30)
+Last Updated: 17/03/26 (14:30)
 
 --- Parent Classes ---
-. BattleStat	# Contains key variables to battles such as health and stamina values
-				: Player, Enemy
-. Item			# Contains name, description and rarity of an item
-                : ItemMelee, ItemSkill
-. Dungeon       # Contains name, floor number
-				: DungeonGlacier
+. BattleStat	 # Contains key variables to battles such as health and stamina values
+				 : Player, Enemy
+. Item			 # Contains name, description and rarity of an item
+                 : ItemMelee, ItemSkill, ItemConsumable
+. Dungeon        # Contains name, floor number
+				 : DungeonGlacier, DungeonAtlantis
 
 --- Child Classes ---
-. Enemy		     : Inherits BattleStat
-. DungeonGlacier : Inherits Dungeon, dungeon 1 of the game
-. ItemMelee      : Inherits Item, is the player's current melee weapon
-. ItemSkill      : Inherits Item, an item which contains a skill the player can inherit
-. Player         : Inherits BattleStat, contains all things the player can do and their stats
+. Enemy		      : Inherits BattleStat
+. DungeonAtlantis : Inherits Dungeon, dungeon 2 of the game
+. DungeonGlacier  : Inherits Dungeon, dungeon 1 of the game
+. ItemConsumable  : Inherits Item, an item which can be used in battle
+. ItemMelee       : Inherits Item, an item which can be equipped as a Melee
+. ItemSkill       : Inherits Item, an item which contains a skill the PLAYER_Player can inherit
+. Player          : Inherits BattleStat, contains all things the PLAYER_Player can do and their stats
 
 --- Classes ---
-. Skill			: Contains name, description, type, damage/healing value and stamina cost of a skill
-. Story			: Contains a vector which has all story dialogue and functions which alter the pathing
+. Skill			 : Contains name, description, type, damage/healing value and stamina cost of a skill
+. Story			 : Contains a vector which has all STORY_Story dialogue and functions which alter the pathing
 
 ############################
 
@@ -63,15 +66,15 @@ enum gameStatus
 string convert_string_tolower(string text); // Quite obvious 1
 string convert_string_toupper(string text); // Quite obvious 2
 void set_starting_elements(int& weak_element, int& resist_element); // Sets the starting elements (weakness and resistant)
-void show_enemy_stats(Enemy enemy); // Shows the enemy's battle stats
-void show_battle_stats(Player player); // Shows the player's battle stats (name, hp, sta)
-void show_skill(Player player, int index); // Shows the player's current skill
-void dialogue_input(Player player, string dialogue_choice); // Story player input
+void show_enemy_stats(Enemy ENEMY_Enemy); // Shows the ENEMY_Enemy's battle stats
+void show_battle_stats(Player PLAYER_Player); // Shows the PLAYER_Player's battle stats (name, hp, sta)
+void show_skill(Player PLAYER_Player, int index); // Shows the PLAYER_Player's current skill
+void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice); // Story PLAYER_Player input
 int main_menu(); // Main menu when the game is executed
-void battle(Player& player, Dungeon* current_dungeon, Enemy enemy); // Battle sequence
-void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dungeon* current_dungeon, storyStatus& story_status, gameStatus& game_status, Story& story); // Map Movement
-void open_chest(Player& player, Dungeon* current_dungeon); // Open chests
-void output_dungeon(Dungeon* current_dungeon, Story story); // Outputs current dungeon
+void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY_Enemy); // Battle sequence
+void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEMY_New_Enemy, Dungeon* DUNGEON_Current_Dungeon, storyStatus& ENUM_Story_Status, gameStatus& ENUM_Game_Status, Story& STORY_Story); // Map Movement
+void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon); // Open chests
+void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story); // Outputs current dungeon
 void play_audio(string to_play); // Plays music
 
 
@@ -83,35 +86,35 @@ int main()
 	srand(static_cast<unsigned int>(time(nullptr)));
 	main_menu();
 	// Setup
-	string player_name;
-	string dialogue_choice;
-	storyStatus story_status = storyStatus::INTRO;
-	gameStatus game_status = gameStatus::DIALOGUE;
-	Dungeon* current_dungeon = NULL;
-	vector<Dungeon*> visited_dungeons = { };
-	Enemy newEnemy;
+	string STR_Player_Name;
+	string STR_Dialogue_Choice;
+	storyStatus ENUM_Story_Status = storyStatus::INTRO;
+	gameStatus ENUM_Game_Status = gameStatus::DIALOGUE;
+	Dungeon* DUNGEON_Current_Dungeon = NULL;
+	vector<Dungeon*> VEC_Visited_Dungeons = { };
+	Enemy ENEMY_New_Enemy;
 	int weak_element = -1;
 	int resist_element = -1;
 	cout << "\n   Your Character Name: "; 
-	getline(cin, player_name);
+	getline(cin, STR_Player_Name);
 	set_starting_elements(weak_element, resist_element); // Player chooeses their starting elements
-	Player player = Player(player_name, weak_element, resist_element, 1, 140, 62); // Instantiates object of type Player
-	Story story = Story(player_name); // Instantiates object of type Story
+	Player PLAYER_Player = Player(STR_Player_Name, weak_element, resist_element, 1, 140, 62); // Instantiates object of type Player
+	Story STORY_Story = Story(STR_Player_Name); // Instantiates object of type Story
 	system("CLS");
 	cout << ">>> TYPE /help TO VIEW ALL POSSIBLE COMMANDS <<<" << endl << endl;
 
 	while (true)
 	{
 		// INTRO DIALOGUE/TUTORIAL BATTLE
-		while (story_status == storyStatus::INTRO)
+		while (ENUM_Story_Status == storyStatus::INTRO)
 		{
 			clock_t start = clock();
 
-			cout << "   " << story.getDialogue() << endl << endl;
-			story.increaseDialogueIndex();
-			if (story.getDialogue() == "END DIALOGUE")
+			cout << "   " << STORY_Story.getDialogue() << endl << endl;
+			STORY_Story.increaseDialogueIndex();
+			if (STORY_Story.getDialogue() == "END DIALOGUE")
 			{
-				story.endOfDialogue();
+				STORY_Story.endOfDialogue();
 			}
 			_getch();
 			clock_t end = clock();
@@ -119,33 +122,33 @@ int main()
 			int ms_remaining = 33 - ms_duration;
 			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
 
-			if (story.isEvent())
+			if (STORY_Story.isEvent())
 			{
 				// DUNGEON 1: GLACIER WASTELAND
-				game_status = gameStatus::BATTLE;
-				current_dungeon = new DungeonGlacier();
-				current_dungeon->fillWithEnemies();
-				current_dungeon->fillWithChests();
-				newEnemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 12);
+				ENUM_Game_Status = gameStatus::BATTLE;
+				DUNGEON_Current_Dungeon = new DungeonGlacier();
+				DUNGEON_Current_Dungeon->fillWithEnemies();
+				DUNGEON_Current_Dungeon->fillWithChests();
+				ENEMY_New_Enemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 12);
 				play_audio("Dungeon Battle");
-				battle(player, current_dungeon, newEnemy);
-				story.startOfDialogue();
-				story.increaseDialogueIndex();
-				story_status = storyStatus::ACT_ONE;
-				game_status = gameStatus::DUNGEON;
+				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+				STORY_Story.startOfDialogue();
+				STORY_Story.increaseDialogueIndex();
+				ENUM_Story_Status = storyStatus::ACT_ONE;
+				ENUM_Game_Status = gameStatus::DUNGEON;
 				break;
 			}
 		}
 
-		while (story_status == storyStatus::ACT_TWO && game_status == gameStatus::DIALOGUE)
+		while (ENUM_Story_Status == storyStatus::ACT_TWO && ENUM_Game_Status == gameStatus::DIALOGUE)
 		{
 			clock_t start = clock();
 
-			cout << "\n   " << story.getDialogue() << endl;
-			story.increaseDialogueIndex();
-			if (story.getDialogue() == "END DIALOGUE")
+			cout << "\n   " << STORY_Story.getDialogue() << endl;
+			STORY_Story.increaseDialogueIndex();
+			if (STORY_Story.getDialogue() == "END DIALOGUE")
 			{
-				story.endOfDialogue();
+				STORY_Story.endOfDialogue();
 			}
 			_getch();
 			clock_t end = clock();
@@ -153,35 +156,35 @@ int main()
 			int ms_remaining = 33 - ms_duration;
 			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
 
-			if (story.isEvent())
+			if (STORY_Story.isEvent())
 			{
 				// DUNGEON 2: ATLANTIS RUINS
-				current_dungeon->fillWithEnemies();
-				current_dungeon->fillWithChests();
-				visited_dungeons.push_back(current_dungeon);
-				current_dungeon = new DungeonAtlantis();
-				current_dungeon->fillWithEnemies();
-				current_dungeon->fillWithChests();
-				visited_dungeons.push_back(current_dungeon);
-				story.startOfDialogue();
-				story.increaseDialogueIndex();
-				game_status = gameStatus::DUNGEON;
+				DUNGEON_Current_Dungeon->fillWithEnemies();
+				DUNGEON_Current_Dungeon->fillWithChests();
+				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+				DUNGEON_Current_Dungeon = new DungeonAtlantis();
+				DUNGEON_Current_Dungeon->fillWithEnemies();
+				DUNGEON_Current_Dungeon->fillWithChests();
+				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+				STORY_Story.startOfDialogue();
+				STORY_Story.increaseDialogueIndex();
+				ENUM_Game_Status = gameStatus::DUNGEON;
 				break;
 			}
 		}
-		play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
+		play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 
-		while (game_status == gameStatus::DUNGEON)
+		while (ENUM_Game_Status == gameStatus::DUNGEON)
 		{
 			clock_t start = clock();
-			output_dungeon(current_dungeon, story);
-			if (!story.isEvent())
+			output_dungeon(DUNGEON_Current_Dungeon, STORY_Story);
+			if (!STORY_Story.isEvent())
 			{
-				cout << "   " << story.getDialogue() << endl;
-				story.increaseDialogueIndex();
-				if (story.getDialogue() == "END DIALOGUE")
+				cout << "   " << STORY_Story.getDialogue() << endl;
+				STORY_Story.increaseDialogueIndex();
+				if (STORY_Story.getDialogue() == "END DIALOGUE")
 				{
-					story.endOfDialogue();
+					STORY_Story.endOfDialogue();
 				}
 				_getch();
 			}
@@ -191,14 +194,14 @@ int main()
 				if (GetAsyncKeyState(VK_SPACE))
 				{
 					cout << "   > ";
-					cin >> dialogue_choice;
-					dialogue_choice = convert_string_tolower(dialogue_choice);
-					dialogue_input(player, dialogue_choice);
+					cin >> STR_Dialogue_Choice;
+					STR_Dialogue_Choice = convert_string_tolower(STR_Dialogue_Choice);
+					dialogue_input(PLAYER_Player, STR_Dialogue_Choice);
 				}
-				else if (GetAsyncKeyState(VK_RIGHT)) map_movement("d", player, newEnemy, current_dungeon, story_status, game_status, story);
-				else if (GetAsyncKeyState(VK_LEFT)) map_movement("a", player, newEnemy, current_dungeon, story_status, game_status, story);
-				else if (GetAsyncKeyState(VK_UP)) map_movement("w", player, newEnemy, current_dungeon, story_status, game_status, story);
-				else if (GetAsyncKeyState(VK_DOWN)) map_movement("s", player, newEnemy, current_dungeon, story_status, game_status, story);
+				else if (GetAsyncKeyState(VK_RIGHT)) map_movement("d", PLAYER_Player, ENEMY_New_Enemy, DUNGEON_Current_Dungeon, ENUM_Story_Status, ENUM_Game_Status, STORY_Story);
+				else if (GetAsyncKeyState(VK_LEFT)) map_movement("a", PLAYER_Player, ENEMY_New_Enemy, DUNGEON_Current_Dungeon, ENUM_Story_Status, ENUM_Game_Status, STORY_Story);
+				else if (GetAsyncKeyState(VK_UP)) map_movement("w", PLAYER_Player, ENEMY_New_Enemy, DUNGEON_Current_Dungeon, ENUM_Story_Status, ENUM_Game_Status, STORY_Story);
+				else if (GetAsyncKeyState(VK_DOWN)) map_movement("s", PLAYER_Player, ENEMY_New_Enemy, DUNGEON_Current_Dungeon, ENUM_Story_Status, ENUM_Game_Status, STORY_Story);
 				//Sleep(100);
 			}
 			clock_t end = clock();
@@ -211,8 +214,8 @@ int main()
 
 int main_menu()
 {
-	string menu_choice;
-	while (menu_choice != "new game" && menu_choice != "load game" && menu_choice != "settings" && menu_choice != "quit")
+	string STR_Menu_Choice;
+	while (STR_Menu_Choice != "new game" && STR_Menu_Choice != "load game" && STR_Menu_Choice != "credits" && STR_Menu_Choice != "settings" && STR_Menu_Choice != "quit")
 	{
 		system("CLS");
 		cout << "\n\n";
@@ -223,61 +226,62 @@ int main_menu()
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
+		cout << "		   v03_26.01 ALPHA        " << endl;
 		cout << "\n\n";
 		cout << "--> New Game\n--> Load Game\n--> Settings\n--> Credits\n--> Quit\n\n> ";
-		getline(cin, menu_choice);
-		menu_choice = convert_string_tolower(menu_choice);
+		getline(cin, STR_Menu_Choice);
+		STR_Menu_Choice = convert_string_tolower(STR_Menu_Choice);
 	}
 	system("CLS");
-	if (menu_choice == "new game")
+	if (STR_Menu_Choice == "new game")
 	{
 		return 0;
 	}
-	if (menu_choice == "load game")
+	if (STR_Menu_Choice == "load game")
 	{
 		cout << "Sorry but this feature doesn't exist yet, please restart the game\n";
 		exit(0);
 	}
-	if (menu_choice == "settings")
+	if (STR_Menu_Choice == "settings")
 	{
 		cout << "Sorry but this feature doesn't exist yet, please restart the game\n";
 		exit(0);
 	}
-	if (menu_choice == "credits")
+	if (STR_Menu_Choice == "credits")
 	{
 		cout << "Sorry but this feature doesn't exist yet, please restart the game\n";
 		exit(0);
 	}
-	if (menu_choice == "quit")
+	if (STR_Menu_Choice == "quit")
 	{
 		exit(0);
 	}
 	return 0;
 }
 
-void output_dungeon(Dungeon* current_dungeon, Story story)
+void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 {
 	system("CLS");
-	cout << "\n   " << current_dungeon->getDungeonName() << " " << current_dungeon->getDungeonRoom() << "F\n\n";
+	cout << "\n   " << DUNGEON_Current_Dungeon->getDungeonName() << " " << DUNGEON_Current_Dungeon->getDungeonRoom() << "F\n\n";
 	for (int i = 0; i < 15; i++)
 	{
 		cout << "   ";
 		for (int j = 0; j < 15; j++)
 		{
-			if (current_dungeon->getDungeonMap()[(current_dungeon->getDungeonRoom() - 1)][i][j] == 'O')
+			if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'O')
 			{
 				cout << "  ";
 			}
 			else
 			{
-				cout << current_dungeon->getDungeonMap()[(current_dungeon->getDungeonRoom() - 1)][i][j] << " ";
+				cout << DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] << " ";
 			}
-			if (current_dungeon->getDungeonMap()[(current_dungeon->getDungeonRoom() - 1)][i][j] == '+')
+			if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == '+')
 			{
-				current_dungeon->setPosX(j);
-				current_dungeon->setPosY(i);
+				DUNGEON_Current_Dungeon->setPosX(j);
+				DUNGEON_Current_Dungeon->setPosY(i);
 			}
-			if (story.isEvent())
+			if (STORY_Story.isEvent())
 			{
 				if (i == 0 && j == 14)
 				{
@@ -329,7 +333,7 @@ void output_dungeon(Dungeon* current_dungeon, Story story)
 				}
 				if (i == 14 && j == 14)
 				{
-					cout << "          X: " << current_dungeon->getPosX() << " | Y: " << current_dungeon->getPosY();
+					cout << "          X: " << DUNGEON_Current_Dungeon->getPosX() << " | Y: " << DUNGEON_Current_Dungeon->getPosY();
 				}
 			}
 		}
@@ -338,60 +342,60 @@ void output_dungeon(Dungeon* current_dungeon, Story story)
 	cout << "\n\n\n";
 }
 
-void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dungeon* current_dungeon, storyStatus& story_status, gameStatus& game_status, Story& story)
+void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEMY_New_Enemy, Dungeon* DUNGEON_Current_Dungeon, storyStatus& ENUM_Story_Status, gameStatus& ENUM_Game_Status, Story& STORY_Story)
 {
-	if (dialogue_choice == "d")
+	if (STR_Dialogue_Choice == "d")
 	{
-		if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == ' ')
+		if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == ' ')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
-			current_dungeon->changePosY(1);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+			DUNGEON_Current_Dungeon->changePosY(1);
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '!')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '!')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
-			current_dungeon->changePosY(1);
-			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+			DUNGEON_Current_Dungeon->changePosY(1);
+			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy(DUNGEON_Current_Dungeon);
 			play_audio("Dungeon Battle");
-			battle(player, current_dungeon, newEnemy);
+			battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '>')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '>')
 		{
-			current_dungeon->changeDungeonRoom(1);
-			if (story_status == storyStatus::ACT_ONE) play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
+			DUNGEON_Current_Dungeon->changeDungeonRoom(1);
+			if (ENUM_Story_Status == storyStatus::ACT_ONE) play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '*')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '*')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
-			current_dungeon->changePosY(1);
-			open_chest(player, current_dungeon);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+			DUNGEON_Current_Dungeon->changePosY(1);
+			open_chest(PLAYER_Player, DUNGEON_Current_Dungeon);
 			cout << "\n\n";
 			system("pause");
 		}
 
-		if (current_dungeon->getDungeonName() == "Glacier Wasteland")
+		if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
 		{
-			if (current_dungeon->getDungeonRoom() == 3)
+			if (DUNGEON_Current_Dungeon->getDungeonRoom() == 3)
 			{
-				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '|')
+				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
 				{
-					bool hasKey = false;
-					for (Item* item : player.getItems())
+					bool BOOL_Has_Key = false;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
 					{
-						if (item->getName() == "Glacier F3 Key")
+						if (ITEM_Item->getName() == "Glacier F3 Key")
 						{
-							hasKey = true;
+							BOOL_Has_Key = true;
 						}
 					}
-					if (hasKey)
+					if (BOOL_Has_Key)
 					{
-						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
-						current_dungeon->changePosY(1);
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+						DUNGEON_Current_Dungeon->changePosY(1);
 					}
 					else
 					{
@@ -400,23 +404,23 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					}
 				}
 			}
-			else if (current_dungeon->getDungeonRoom() == 5)
+			else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
 			{
-				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '|')
+				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
 				{
-					bool hasKey = false;
-					for (Item* item : player.getItems())
+					bool BOOL_Has_Key = false;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
 					{
-						if (item->getName() == "Glacier F5 Key")
+						if (ITEM_Item->getName() == "Glacier F5 Key")
 						{
-							hasKey = true;
+							BOOL_Has_Key = true;
 						}
 					}
-					if (hasKey)
+					if (BOOL_Has_Key)
 					{
-						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
-						current_dungeon->changePosY(1);
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+						DUNGEON_Current_Dungeon->changePosY(1);
 					}
 					else
 					{
@@ -425,70 +429,70 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					}
 				}
 			}
-			else if (current_dungeon->getDungeonRoom() == 6)
+			else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
 			{
-				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '?')
+				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
 				{
-					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-					current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
-					current_dungeon->changePosY(1);
+					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+					DUNGEON_Current_Dungeon->changePosY(1);
 					play_audio("Encounter");
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   ??? > Who goes there!?";
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   ??? > Only authorised personal can go enter this unexplored point of interest";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   " << player.getName() << " > What's going on?";
+					cout << "   " << PLAYER_Player.getName() << " > What's going on?";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   " << player.getName() << " > What year even is it??";
+					cout << "   " << PLAYER_Player.getName() << " > What year even is it??";
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   ??? > The year is 2067, the date is the 31st of January. And who are you weakling?";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   " << player.getName() << " > " << player.getName() << ".";
+					cout << "   " << PLAYER_Player.getName() << " > " << PLAYER_Player.getName() << ".";
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   ??? > I'm an active sergeant for the russians who currently compromise this area";
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   Russian Sergeant > State your reason for being here";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   " << player.getName() << " > I want to know what's going on";
+					cout << "   " << PLAYER_Player.getName() << " > I want to know what's going on";
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   Russian Sergeant > I'm afraid I cannot tell you";
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   Russian Sergeant > If you can prove to me you are capable, I may let you pass";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   " << player.getName() << " > Huh? Prove to you what?";
+					cout << "   " << PLAYER_Player.getName() << " > Huh? Prove to you what?";
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   Russian Sergeant > Blyat!!";
 					_getch();
-					Enemy newEnemy = Enemy("Russian Sergeant", 15, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex") }, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Mezapao")), true, 56);
+					Enemy ENEMY_New_Enemy = Enemy("Russian Sergeant", 15, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex") }, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Mezapao")), true, 56);
 					play_audio("Dungeon Main Boss");
-					battle(player, current_dungeon, newEnemy);
-					story.startOfDialogue();
-					story.increaseDialogueIndex();
-					story_status = storyStatus::ACT_TWO;
-					game_status = gameStatus::DIALOGUE;
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Story_Status = storyStatus::ACT_TWO;
+					ENUM_Game_Status = gameStatus::DIALOGUE;
 				}
 			}
 		}
-		else if (current_dungeon->getDungeonName() == "Atlantis Ruins")
+		else if (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
 		{
-			if (current_dungeon->getDungeonRoom() == 2)
+			if (DUNGEON_Current_Dungeon->getDungeonRoom() == 2)
 			{
-				if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '|')
+				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
 				{
-					bool hasKey = false;
-					for (Item* item : player.getItems())
+					bool BOOL_Has_Key = false;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
 					{
-						if (item->getName() == "Atlantis F2 Key")
+						if (ITEM_Item->getName() == "Atlantis F2 Key")
 						{
-							hasKey = true;
+							BOOL_Has_Key = true;
 						}
 					}
-					if (hasKey)
+					if (BOOL_Has_Key)
 					{
-						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-						current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1), '+');
-						current_dungeon->changePosY(1);
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+						DUNGEON_Current_Dungeon->changePosY(1);
 					}
 					else
 					{
@@ -496,8 +500,11 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 						this_thread::sleep_for(chrono::seconds(2));
 					}
 				}
-				else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() + 1)) == '?')
-				{
+				else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
+				{ // Reanimated Mermaid Mini Boss, drops key used to advance
+					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+					DUNGEON_Current_Dungeon->changePosY(1);
 					play_audio("Encounter");
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   ??? > Who the fuck are you? What are you doing here!?";
@@ -522,52 +529,52 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   British Soldier > Why don't you fight one of our little subjects?";
 					_getch(); cout << "\33[2K\r" << flush;;
-					Enemy newEnemy = Enemy("Reanimated Mermaid", 20, 586, 126, { Skill("Flame"), Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Hexo"), Skill("Blighta")}, new Item("Atlantis F2 Key", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 53);
+					Enemy ENEMY_New_Enemy = Enemy("Reanimated Mermaid", 20, 586, 126, { Skill("Flame"), Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Hexo"), Skill("Blighta")}, new Item("Atlantis F2 Key", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 53);
 					play_audio("Dungeon Mini Boss");
-					battle(player, current_dungeon, newEnemy);
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
 			}
 		}
 	}
-	if (dialogue_choice == "a")
+	if (STR_Dialogue_Choice == "a")
 	{
-		if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == ' ')
+		if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == ' ')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
-			current_dungeon->changePosY(-1);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1), '+');
+			DUNGEON_Current_Dungeon->changePosY(-1);
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '!')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '!')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
-			current_dungeon->changePosY(-1);
-			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1), '+');
+			DUNGEON_Current_Dungeon->changePosY(-1);
+			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy(DUNGEON_Current_Dungeon);
 			play_audio("Dungeon Battle");
-			battle(player, current_dungeon, newEnemy);
+			battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '<')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '<')
 		{
-			current_dungeon->changeDungeonRoom(-1);
-			if (story_status == storyStatus::ACT_ONE) play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
+			DUNGEON_Current_Dungeon->changeDungeonRoom(-1);
+			if (ENUM_Story_Status == storyStatus::ACT_ONE) play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '*')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '*')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
-			current_dungeon->changePosY(-1);
-			open_chest(player, current_dungeon);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1), '+');
+			DUNGEON_Current_Dungeon->changePosY(-1);
+			open_chest(PLAYER_Player, DUNGEON_Current_Dungeon);
 			cout << "\n\n";
 			system("pause");
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1)) == '?')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '?')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), (current_dungeon->getPosX() - 1), '+');
-			current_dungeon->changePosY(-1);
-			if (current_dungeon->getDungeonName() == "Glacier Wasteland")
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1), '+');
+			DUNGEON_Current_Dungeon->changePosY(-1);
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
 			{
-				if (current_dungeon->getDungeonRoom() == 3) // Snow Golem Mini Boss, drops key used to advance
+				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 3) // Snow Golem Mini Boss, drops key used to advance
 				{
 					play_audio("Encounter");
 					_getch(); cout << "\33[2K\r" << flush;;
@@ -579,13 +586,13 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   ??? > *growls angrily*";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   ??? > *charges towards " << player.getName() << "*";
+					cout << "   ??? > *charges towards " << PLAYER_Player.getName() << "*";
 					_getch(); cout << "\33[2K\r" << flush;;
-					Enemy newEnemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hex") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 31);
+					Enemy ENEMY_New_Enemy = Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hex") }, new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 31);
 					play_audio("Dungeon Mini Boss");
-					battle(player, current_dungeon, newEnemy);
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
-				else if (current_dungeon->getDungeonRoom() == 5) // Duty Soldier Mini Boss, drops key used to advance
+				else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5) // Duty Soldier Mini Boss, drops key used to advance
 				{
 					play_audio("Encounter");
 					_getch(); cout << "\33[2K\r" << flush;;
@@ -597,76 +604,76 @@ void map_movement(string dialogue_choice, Player& player, Enemy& newEnemy, Dunge
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   Duty Soldier > Come here little one let me put you out of your misery...";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   " << player.getName() << " > Bring it!";
+					cout << "   " << PLAYER_Player.getName() << " > Bring it!";
 					_getch(); cout << "\33[2K\r" << flush;;
-					Enemy newEnemy = Enemy("Duty Soldier", 12, 384, 67, { Skill("Flame"), Skill("Zap"), Skill("Zapao"), Skill("Blight")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 37);
+					Enemy ENEMY_New_Enemy = Enemy("Duty Soldier", 12, 384, 67, { Skill("Flame"), Skill("Zap"), Skill("Zapao"), Skill("Blight")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 37);
 					play_audio("Dungeon Mini Boss");
-					battle(player, current_dungeon, newEnemy);
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
 			}
 		}
 
 	}
-	if (dialogue_choice == "w")
+	if (STR_Dialogue_Choice == "w")
 	{
-		if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX()) == ' ')
+		if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() - 1), DUNGEON_Current_Dungeon->getPosX()) == ' ')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX(), '+');
-			current_dungeon->changePosX(-1);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() - 1), DUNGEON_Current_Dungeon->getPosX(), '+');
+			DUNGEON_Current_Dungeon->changePosX(-1);
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX()) == '!')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() - 1), DUNGEON_Current_Dungeon->getPosX()) == '!')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX(), '+');
-			current_dungeon->changePosX(-1);
-			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() - 1), DUNGEON_Current_Dungeon->getPosX(), '+');
+			DUNGEON_Current_Dungeon->changePosX(-1);
+			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy(DUNGEON_Current_Dungeon);
 			play_audio("Dungeon Battle");
-			battle(player, current_dungeon, newEnemy);
+			battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX()) == '*')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() - 1), DUNGEON_Current_Dungeon->getPosX()) == '*')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() - 1), current_dungeon->getPosX(), '+');
-			current_dungeon->changePosX(-1);
-			open_chest(player, current_dungeon);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() - 1), DUNGEON_Current_Dungeon->getPosX(), '+');
+			DUNGEON_Current_Dungeon->changePosX(-1);
+			open_chest(PLAYER_Player, DUNGEON_Current_Dungeon);
 			cout << "\n\n";
 			system("pause");
 		}
 	}
-	if (dialogue_choice == "s")
+	if (STR_Dialogue_Choice == "s")
 	{
-		if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX()) == ' ')
+		if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX()) == ' ')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX(), '+');
-			current_dungeon->changePosX(1);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
+			DUNGEON_Current_Dungeon->changePosX(1);
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX()) == '!')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX()) == '!')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX(), '+');
-			current_dungeon->changePosX(1);
-			Enemy newEnemy = current_dungeon->newEnemy(current_dungeon);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
+			DUNGEON_Current_Dungeon->changePosX(1);
+			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy(DUNGEON_Current_Dungeon);
 			play_audio("Dungeon Battle");
-			battle(player, current_dungeon, newEnemy);
+			battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 		}
-		else if (current_dungeon->getPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX()) == '*')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX()) == '*')
 		{
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), current_dungeon->getPosY(), current_dungeon->getPosX(), ' ');
-			current_dungeon->setPosition((current_dungeon->getDungeonRoom() - 1), (current_dungeon->getPosY() + 1), current_dungeon->getPosX(), '+');
-			current_dungeon->changePosX(1);
-			open_chest(player, current_dungeon);
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
+			DUNGEON_Current_Dungeon->changePosX(1);
+			open_chest(PLAYER_Player, DUNGEON_Current_Dungeon);
 			cout << "\n\n";
 			system("pause");
 		}
 	}
 }
 
-void open_chest(Player& player, Dungeon* current_dungeon)
+void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 {
 	vector<Item*> chestLoot = { };
-	if (current_dungeon->getDungeonName() == "Glacier Wasteland")
+	if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
 	{
 		for (int i = 0; i < 5; i++) chestLoot.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
 		for (int i = 0; i < 5; i++) chestLoot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
@@ -677,28 +684,28 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 		for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")));
 		for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, 29));
 
-		if (current_dungeon->getDungeonRoom() >= 2)
+		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 2)
 		{
 			for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
 		}
-		if (current_dungeon->getDungeonRoom() >= 3)
+		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 3)
 		{
 			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemMelee("Ice Crossbow", "Icified crossbow which fires icicles", 3, 46));
 		}
-		if (current_dungeon->getDungeonRoom() >= 4)
+		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 4)
 		{
 			for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
 			for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
 			for (int i = 0; i < 2; i++) chestLoot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 67));
 		}
-		if (current_dungeon->getDungeonRoom() >= 5)
+		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 5)
 		{
 			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemSkill("Electrical Wire", "Exposed electric wire that still packs some spark", 3, Skill("Zapao")));
 			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
 			for (int i = 0; i < 2; i++) chestLoot.push_back(new Item("Chipped Diamond", "Exposed diamond which appears chipped and frozen over, might still carry some value", 4));
 		}
 	}
-	else if(current_dungeon->getDungeonName() == "Atlantis Ruins")
+	else if(DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
 	{
 		for (int i = 0; i < 5; i++) chestLoot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
 		for (int i = 0; i < 5; i++) chestLoot.push_back(new Item("Half Eaten Sandwich", "Some would call it a penguin classic(s)", 1));
@@ -709,116 +716,116 @@ void open_chest(Player& player, Dungeon* current_dungeon)
 		for (int i = 0; i < 4; i++) chestLoot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
 		for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemMelee("Trident", "Sharp spike-like ends perfect for impaling", 3, 71));
 		for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
-		if (current_dungeon->getDungeonRoom() >= 2)
+		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 2)
 		{
 			for (int i = 0; i < 4; i++) chestLoot.push_back(new Item("Water Balloon", "May annoy some people", 2));
 			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemMelee("Iron Spear", "Has great reach!", 3, 86));
 			for (int i = 0; i < 2; i++) chestLoot.push_back(new ItemSkill("Glass Pendant", "A glass heart pendant emitting a strong healthy aura", 4, Skill("Healan")));
 		}
-		if (current_dungeon->getDungeonRoom() >= 3)
+		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 3)
 		{
 			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
 			for (int i = 0; i < 2; i++) chestLoot.push_back(new ItemMelee("Royal Tridant", "Tridant yielded by the Old Royal Gaurds of Atlantis", 4, 103));
 		}
-		if (current_dungeon->getDungeonRoom() >= 4)
+		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 4)
 		{
 			for (int i = 0; i < 3; i++) chestLoot.push_back(new Item("Gold Coin", "Made of real gold!", 3));
 			for (int i = 0; i < 3; i++) chestLoot.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
 		}
-		if (current_dungeon->getDungeonRoom() >= 5)
+		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 5)
 		{
 			for (int i = 0; i < 2; i++) chestLoot.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
 		}
 	}
 	Item* newItem = chestLoot[rand() % (chestLoot.size())];
-	bool itemDupe = false;
-	for (Item* item : player.getItems())
+	bool BOOL_Item_Dupe = false;
+	for (Item* ITEM_Item : PLAYER_Player.getItems())
 	{
-		if (newItem->getName() == item->getName())
+		if (newItem->getName() == ITEM_Item->getName())
 		{
-			item->increaseQuantity(1);
-			itemDupe = true;
+			ITEM_Item->increaseQuantity(1);
+			BOOL_Item_Dupe = true;
 		}
 	}
-	if (!itemDupe)
+	if (!BOOL_Item_Dupe)
 	{
-		player.addItem(newItem);
+		PLAYER_Player.addItem(newItem);
 	}
 	cout << "   Something is shining on the ground...\n\n";
 	this_thread::sleep_for(chrono::seconds(2));
 	cout << "   You found " << newItem->getName() << "!";
-	if (!itemDupe)
+	if (!BOOL_Item_Dupe)
 	{
 		cout << " (NEW)";
 	}
 	cout << "\n\n";
 	cout << newItem->toString();
-	player.update();
+	PLAYER_Player.update();
 	this_thread::sleep_for(chrono::seconds(2));
-	if (newItem->isMeleeWeapon() && !itemDupe)
+	if (newItem->isMeleeWeapon() && !BOOL_Item_Dupe)
 	{
-		cout << "\n\n   You currently have " << player.getMeleeWeapon().getName() << " equipped.\n   Would you like to replace it with " << newItem->getName() << "? [y] or [n]\n\n   Atk: " << player.getMeleeWeapon().getMeleeDamage() << " --> " << newItem->getMeleeDamage() << "\n   >";
-		string choice;
-		cin >> choice;
-		while (convert_string_tolower(choice) != "y" && convert_string_tolower(choice) != "n")
+		cout << "\n\n   You currently have " << PLAYER_Player.getMeleeWeapon().getName() << " equipped.\n   Would you like to replace it with " << newItem->getName() << "? [y] or [n]\n\n   Atk: " << PLAYER_Player.getMeleeWeapon().getMeleeDamage() << " --> " << newItem->getMeleeDamage() << "\n   >";
+		string STR_Battle_Choice;
+		cin >> STR_Battle_Choice;
+		while (convert_string_tolower(STR_Battle_Choice) != "y" && convert_string_tolower(STR_Battle_Choice) != "n")
 		{
-			if (convert_string_tolower(choice) == "y" || convert_string_tolower(choice) == "n") break;
+			if (convert_string_tolower(STR_Battle_Choice) == "y" || convert_string_tolower(STR_Battle_Choice) == "n") break;
 			cout << "\n   [!] Please choose 'y' or 'n': ";
-			cin >> choice;
+			cin >> STR_Battle_Choice;
 		}
-		if (convert_string_tolower(choice) == "y")
+		if (convert_string_tolower(STR_Battle_Choice) == "y")
 		{
 			ItemMelee newPlayerMelee = ItemMelee(newItem->getName(), newItem->getDesc(), newItem->getRarity(), newItem->getMeleeDamage());
-			player.setMelee(newPlayerMelee);
-			cout << "\n\n   You equipped " << player.getMeleeWeapon().getName();
+			PLAYER_Player.setMelee(newPlayerMelee);
+			cout << "\n\n   You equipped " << PLAYER_Player.getMeleeWeapon().getName();
 		}
 		else
 		{
-			cout << "\n\n   You decided to keep " << player.getMeleeWeapon().getName() << " equipped";
+			cout << "\n\n   You decided to keep " << PLAYER_Player.getMeleeWeapon().getName() << " equipped";
 		}
 		this_thread::sleep_for(chrono::seconds(2));
 	}
 }
 
-void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
+void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY_Enemy)
 {
 	system("CLS");
-	bool player_turn = true; // Is it player turn or enemy turn?
+	bool BOOL_Player_Turn = true; // Is it PLAYER_Player turn or ENEMY_Enemy turn?
 	bool battle = true; // Whilst the battle is in play
-	string choice; // Selecting a skill
-	string player_page; // Battle menu page
-	Item* enemyDrop = enemy.getDroppedItem();
-	current_dungeon->elementSetter(enemy);
-	enemy.setHealth();
-	int skillIndex = 0; // Selected skill index (to display)
-	cout << "\n   You have encountered " << enemy.getName() << endl;
+	string STR_Battle_Choice; // Selecting a skill
+	string STR_Player_Page; // Battle menu page
+	Item* enemyDrop = ENEMY_Enemy.getDroppedItem();
+	DUNGEON_Current_Dungeon->elementSetter(ENEMY_Enemy);
+	ENEMY_Enemy.setHealth();
+	int INT_Skill_Index = 0; // Selected skill index (to display)
+	cout << "\n   You have encountered " << ENEMY_Enemy.getName() << endl;
 	this_thread::sleep_for(chrono::seconds(3));
-	player.update();
+	PLAYER_Player.update();
 	// Battle Loop
 	while (battle)
 	{
-		bool validSkill = false;
-		player_page = "";
-		while (player_turn)
+		bool BOOL_Valid_Skill = false;
+		STR_Player_Page = "";
+		while (BOOL_Player_Turn)
 		{
-			// Starts the player's turn
-			player.setGuard(false);
-			while ((player_page != "melee") && (player_page != "skill") && (player_page != "item") && (player_page != "guard") && (player_page != "analyse"))
+			// Starts the PLAYER_Player's turn
+			PLAYER_Player.setGuard(false);
+			while ((STR_Player_Page != "melee") && (STR_Player_Page != "skill") && (STR_Player_Page != "item") && (STR_Player_Page != "guard") && (STR_Player_Page != "analyse"))
 			{
-				show_battle_stats(player);
+				show_battle_stats(PLAYER_Player);
 				cout << "\n--> Melee\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n  > ";
-				getline(cin, player_page);
-				player_page = convert_string_tolower(player_page);
+				getline(cin, STR_Player_Page);
+				STR_Player_Page = convert_string_tolower(STR_Player_Page);
 			}
-			while (player_page == "item" && player_turn)
+			while (STR_Player_Page == "item" && BOOL_Player_Turn)
 			{
 				system("CLS");
-				show_battle_stats(player);
+				show_battle_stats(PLAYER_Player);
 				cout << endl;
 				bool hasItems = false;
-				for (Item* item : player.getItems())
+				for (Item* ITEM_Item : PLAYER_Player.getItems())
 				{
-					if (item->isConsumable() && item->getQuantity() > 0)
+					if (ITEM_Item->isConsumable() && ITEM_Item->getQuantity() > 0)
 					{
 						hasItems = true;
 					}
@@ -827,411 +834,318 @@ void battle(Player& player, Dungeon* current_dungeon, Enemy enemy)
 				{
 					cout << "   You have no useable items currently." << endl;
 					this_thread::sleep_for(chrono::seconds(2));
-					player_page = "";
+					STR_Player_Page = "";
 				}
 				else
 				{
-					for (Item* item : player.getItems())
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
 					{
-						if (item->isConsumable())
+						if (ITEM_Item->isConsumable())
 						{
-							cout << item->toString() << endl << endl;
+							cout << ITEM_Item->toString() << endl << endl;
 						}
 					}
 					cout << "--> Return\n\n  > ";
-					getline(cin, choice);
-					choice = convert_string_tolower(choice);
-					for (Item* item : player.getItems())
+					getline(cin, STR_Battle_Choice);
+					STR_Battle_Choice = convert_string_tolower(STR_Battle_Choice);
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
 					{
-						if (convert_string_tolower(item->getName()) == choice && item->isConsumable())
+						if (convert_string_tolower(ITEM_Item->getName()) == STR_Battle_Choice && ITEM_Item->isConsumable())
 						{
 							system("CLS");
-							show_battle_stats(player);
-							if (item->getType() == "HP")
+							show_battle_stats(PLAYER_Player);
+							if (ITEM_Item->getType() == "HP")
 							{
-								player.changeHealth(item->getAmount());
-								if (player.getHealth() > player.getMaxHealth())
+								PLAYER_Player.changeHealth(ITEM_Item->getAmount());
+								if (PLAYER_Player.getHealth() > PLAYER_Player.getMaxHealth())
 								{
-									player.fullHealth();
+									PLAYER_Player.fullHealth();
 								}
 							}
-							else if (item->getType() == "STA")
+							else if (ITEM_Item->getType() == "STA")
 							{
-								player.changeStamina(item->getAmount());
-								if (player.getStamina() > player.getMaxStamina())
+								PLAYER_Player.changeStamina(ITEM_Item->getAmount());
+								if (PLAYER_Player.getStamina() > PLAYER_Player.getMaxStamina())
 								{
-									player.fullStamina();
+									PLAYER_Player.fullStamina();
 								}
 							}
-							cout << "\n   You used " << item->getName() << " restoring " << item->getAmount() << " " << item->getType();
-							item->increaseQuantity(-1);
-							if (item->getQuantity() == 0)
+							cout << "\n   You used " << ITEM_Item->getName() << " restoring " << ITEM_Item->getAmount() << " " << ITEM_Item->getType();
+							ITEM_Item->increaseQuantity(-1);
+							if (ITEM_Item->getQuantity() == 0)
 							{
-								vector<Item*> temp_player_items = player.getItems();
-								temp_player_items.erase(find(temp_player_items.begin(), temp_player_items.end(), item));
-								player.setItems(temp_player_items);
+								vector<Item*> temp_player_items = PLAYER_Player.getItems();
+								temp_player_items.erase(find(temp_player_items.begin(), temp_player_items.end(), ITEM_Item));
+								PLAYER_Player.setItems(temp_player_items);
 							}
-							player_turn = false;
+							BOOL_Player_Turn = false;
 							break;
 						}
 					}
-					if (choice == "return" || choice == "r")
+					if (STR_Battle_Choice == "return" || STR_Battle_Choice == "r")
 					{
-						player_page = "";
+						STR_Player_Page = "";
 						break;
 					}
 				}
 			}
 			// Page : Skill
-			while (player_page == "skill")
+			while (STR_Player_Page == "skill")
 			{
 				system("CLS");
-				show_battle_stats(player);
+				show_battle_stats(PLAYER_Player);
 				cout << endl;
-				if (player.getSkills().empty())
+				if (PLAYER_Player.getSkills().empty())
 				{
 					cout << "   You have no skills currently." << endl;
 					this_thread::sleep_for(chrono::seconds(2));
-					player_page = "";
+					STR_Player_Page = "";
 				}
 				else
 				{
-					show_skill(player, skillIndex);
+					show_skill(PLAYER_Player, INT_Skill_Index);
 					cout << "\n\n--> Next\n--> Back\n--> Return\n\n  > ";
-					getline(cin, choice);
-					choice = convert_string_tolower(choice);
+					getline(cin, STR_Battle_Choice);
+					STR_Battle_Choice = convert_string_tolower(STR_Battle_Choice);
 					// Validates if the skill selected exists
-					for (Skill skill : player.getSkills())
+					for (Skill skill : PLAYER_Player.getSkills())
 					{
-						if ((choice == convert_string_tolower(skill.getName())) && (player.getStamina() >= skill.getStaminaCost()))
+						if ((STR_Battle_Choice == convert_string_tolower(skill.getName())) && (PLAYER_Player.getStamina() >= skill.getStaminaCost()))
 						{
-							Skill skillSelected = skill;
+							Skill SKILL_Skill_Selected = skill;
 							system("CLS");
-							show_battle_stats(player);
+							show_battle_stats(PLAYER_Player);
 							// Determines what the skill does
-							if (skillSelected.getType() == "support")
+							if (SKILL_Skill_Selected.getType() == "support")
 							{
-								// Heal the player
-								player.changeHealth(skillSelected.getHPGain());
-								cout << "\n   You have healed yourself restoring " << skillSelected.getHPGain() << " health\n\n";
+								// Heal the PLAYER_Player
+								PLAYER_Player.changeHealth(SKILL_Skill_Selected.getHPGain());
+								cout << "\n   You have healed yourself restoring " << SKILL_Skill_Selected.getHPGain() << " health\n\n";
 							}
 							else
 							{
-								// Damage the enemy
+								// Damage the ENEMY_Enemy
+								int INT_Calculated_Damage; // Player Skill Damage after calculations
+								float FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Magic")->second) / 10); // Player Attribute "Magic" Multiplier
 								if (true)
 								{
-									if (skillSelected.getType() == "fire")
+									if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
 									{
-										if (enemy.getElements()[0] == "Wk")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-										}
-										else if (enemy.getElements()[0] == "Rst")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-										}
-										else
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-											enemy.changeHealth(-(skillSelected.getBaseDamage()));
-										}
+										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier;
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage\n\n";
 									}
-									else if (skillSelected.getType() == "ice")
+									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
 									{
-										if (enemy.getElements()[1] == "Wk")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-										}
-										else if (enemy.getElements()[1] == "Rst")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-										}
-										else
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-											enemy.changeHealth(-(skillSelected.getBaseDamage()));
-										}
+										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 1.5;
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage (WEAK)\n\n";
 									}
-									else if (skillSelected.getType() == "electric")
+									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
 									{
-										if (enemy.getElements()[2] == "Wk")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-										}
-										else if (enemy.getElements()[2] == "Rst")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-										}
-										else
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-											enemy.changeHealth(-(skillSelected.getBaseDamage()));
-										}
+										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 0.5;
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage (RESIST)\n\n";
 									}
-									else if (skillSelected.getType() == "wind")
+									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
 									{
-										if (enemy.getElements()[3] == "Wk")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-										}
-										else if (enemy.getElements()[3] == "Rst")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-										}
-										else
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-											enemy.changeHealth(-(skillSelected.getBaseDamage()));
-										}
-									}
-									else if (skillSelected.getType() == "curse")
-									{
-										if (enemy.getElements()[4] == "Wk")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-										}
-										else if (enemy.getElements()[4] == "Rst")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-										}
-										else
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-											enemy.changeHealth(-(skillSelected.getBaseDamage()));
-										}
-									}
-									else if (skillSelected.getType() == "bless")
-									{
-										if (enemy.getElements()[5] == "Wk")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 1.5) << " damage (WEAK)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 1.5));
-
-										}
-										else if (enemy.getElements()[5] == "Rst")
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << int(skillSelected.getBaseDamage() * 0.5) << " damage (RESIST)\n\n";
-											enemy.changeHealth(-int(skillSelected.getBaseDamage() * 0.5));
-										}
-										else
-										{
-											cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-											enemy.changeHealth(-(skillSelected.getBaseDamage()));
-										}
-									}
-									else if (skillSelected.getType() == "nuclear")
-									{
-										cout << "\n   You casted " << skillSelected.getName() << " upon " << enemy.getName() << " dealing " << skillSelected.getBaseDamage() << " damage\n\n";
-										enemy.changeHealth(-(skillSelected.getBaseDamage()));
+										INT_Calculated_Damage = 0;
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage (BLOCK)\n\n";
 									}
 								}
-								else
-								{
-									cout << "\n   You casted " << skillSelected.getName() << " upon all enemies dealing " << skillSelected.getBaseDamage() << " damage each\n\n";
-								}
+								//else
+								//{
+								//	cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon all enemies dealing " << SKILL_Skill_Selected.getBaseDamage() << " damage each\n\n";
+								//}
+								ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
 							}
-							player.changeStamina(-skillSelected.getStaminaCost());
-							player_turn = false;
+							PLAYER_Player.changeStamina(-SKILL_Skill_Selected.getStaminaCost());
+							BOOL_Player_Turn = false;
 							break;
 						}
 					}
-					if (!player_turn) break;
-					// If choice is "next", show the player their next skill
-					if (choice == "next" || choice == "n" || choice == ">")
+					if (!BOOL_Player_Turn) break;
+					// If STR_Battle_Choice is "next", show the PLAYER_Player their next skill
+					if (STR_Battle_Choice == "next" || STR_Battle_Choice == "n" || STR_Battle_Choice == ">")
 					{
-						skillIndex++;
-						if (skillIndex > player.getSkills().size() - 1)
+						INT_Skill_Index++;
+						if (INT_Skill_Index > PLAYER_Player.getSkills().size() - 1)
 						{
-							skillIndex = 0;
+							INT_Skill_Index = 0;
 						}
 					}
-					// If choice is "back", show the player their previous skill
-					else if (choice == "back" || choice == "b" || choice == "<")
+					// If STR_Battle_Choice is "back", show the PLAYER_Player their previous skill
+					else if (STR_Battle_Choice == "back" || STR_Battle_Choice == "b" || STR_Battle_Choice == "<")
 					{
-						skillIndex--;
-						if (skillIndex < 0)
+						INT_Skill_Index--;
+						if (INT_Skill_Index < 0)
 						{
-							skillIndex = player.getSkills().size() - 1;
+							INT_Skill_Index = PLAYER_Player.getSkills().size() - 1;
 						}
 					}
-					// If choice is "return", take the player back to the main battle menu
-					else if (choice == "return" || choice == "r")
+					// If STR_Battle_Choice is "return", take the PLAYER_Player back to the main battle menu
+					else if (STR_Battle_Choice == "return" || STR_Battle_Choice == "r")
 					{
-						player_page = "";
+						STR_Player_Page = "";
 						break;
 					}
 				}
 			}
 			// Page : Melee
-			while (player_page == "melee")
+			while (STR_Player_Page == "melee")
 			{
 				system("CLS");
-				show_battle_stats(player);
+				show_battle_stats(PLAYER_Player);
 				cout << endl;
-				cout << player.getMeleeWeapon().toString();
+				cout << PLAYER_Player.getMeleeWeapon().toString();
 				cout << "\n\n--> Use\n--> Return\n\n  > ";
-				getline(cin, choice);
-				choice = convert_string_tolower(choice);
+				getline(cin, STR_Battle_Choice);
+				STR_Battle_Choice = convert_string_tolower(STR_Battle_Choice);
 
-				// If choice is "use", attack the enemy with melee weapon
-				if (choice == "use" || choice == "u")
+				// If STR_Battle_Choice is "use", attack the ENEMY_Enemy with melee weapon
+				if (STR_Battle_Choice == "use" || STR_Battle_Choice == "u")
 				{
-					int critical_chance = (rand() % 100) + 1;
+					int INT_Critical_Chance = (rand() % 100) + 1; // Number 1-100, if >79 deal a Critical Hit
+					int INT_Calculated_Damage; // Player Melee Damage after calculations
+					float FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Strength")->second) / 10); // Player Attribute "Strength" Multiplier
 					system("CLS");
-					show_battle_stats(player);
-					if (critical_chance > 79)
+					show_battle_stats(PLAYER_Player);
+					if (INT_Critical_Chance > 79)
 					{
-						cout << "\n   You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " landing a CRITICAL HIT dealing " << (player.getMeleeWeapon().getMeleeDamage() * 2) << " damage\n\n";
-						enemy.changeHealth(-(player.getMeleeWeapon().getMeleeDamage() * 2));
+						INT_Calculated_Damage = PLAYER_Player.getMeleeWeapon().getMeleeDamage() * FLT_Attribute_Multiplier * 2;
+						cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " landing a CRITICAL HIT dealing " << INT_Calculated_Damage << " damage\n\n";
 					}
 					else
 					{
-						cout << "\n   You attacked " << enemy.getName() << " using " << player.getMeleeWeapon().getName() << " dealing " << player.getMeleeWeapon().getMeleeDamage() << " damage\n\n";
-						enemy.changeHealth(-(player.getMeleeWeapon().getMeleeDamage()));
+						INT_Calculated_Damage = PLAYER_Player.getMeleeWeapon().getMeleeDamage() * FLT_Attribute_Multiplier;
+						cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " dealing " << INT_Calculated_Damage << " damage\n\n";
 					}
-					player_turn = false;
+					ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
+					BOOL_Player_Turn = false;
 					break;
 				}
-				// If choice is "return", take the player back to the main battle menu
-				else if (choice == "return" || choice == "r")
+				// If STR_Battle_Choice is "return", take the PLAYER_Player back to the main battle menu
+				else if (STR_Battle_Choice == "return" || STR_Battle_Choice == "r")
 				{
-					player_page = "";
+					STR_Player_Page = "";
 					break;
 				}
 			}
 			// Page : Guard
-			while (player_page == "guard")
+			while (STR_Player_Page == "guard")
 			{
 				system("CLS");
-				show_battle_stats(player);
+				show_battle_stats(PLAYER_Player);
 				cout << endl;
 				cout << "   Reduce incoming damage by 33% and negates weaknesses\n   (Does stack if resistant)";
 				cout << "\n\n--> Guard\n--> Return\n\n  > ";
-				getline(cin, choice);
-				choice = convert_string_tolower(choice);
+				getline(cin, STR_Battle_Choice);
+				STR_Battle_Choice = convert_string_tolower(STR_Battle_Choice);
 
-				// If choice is "guard", guards against incoming attack
-				if (choice == "guard" || choice == "g")
+				// If STR_Battle_Choice is "guard", guards against incoming attack
+				if (STR_Battle_Choice == "guard" || STR_Battle_Choice == "g")
 				{
 					system("CLS");
-					show_battle_stats(player);
-					player.setGuard(true);
+					show_battle_stats(PLAYER_Player);
+					PLAYER_Player.setGuard(true);
 					cout << "\n   You have guarded yourself\n\n";
-					player_turn = false;
+					BOOL_Player_Turn = false;
 					break;
 				}
-				// If choice is "return", take the player back to the main battle menu
-				else if (choice == "return" || choice == "r")
+				// If STR_Battle_Choice is "return", take the PLAYER_Player back to the main battle menu
+				else if (STR_Battle_Choice == "return" || STR_Battle_Choice == "r")
 				{
-					player_page = "";
+					STR_Player_Page = "";
 					break;
 				}
 			}
 			// Page : Analyse
-			while (player_page == "analyse")
+			while (STR_Player_Page == "analyse")
 			{
 				system("CLS");
-				show_enemy_stats(enemy);
+				show_enemy_stats(ENEMY_Enemy);
 				cout << "\n   Item: " << enemyDrop->getName();
 				cout << "\n\n--> Return\n\n  > ";
-				getline(cin, choice);
-				choice = convert_string_tolower(choice);
+				getline(cin, STR_Battle_Choice);
+				STR_Battle_Choice = convert_string_tolower(STR_Battle_Choice);
 
-				// If choice is "return", take the player back to the main battle menu
-				if (choice == "return" || choice == "r")
+				// If STR_Battle_Choice is "return", take the PLAYER_Player back to the main battle menu
+				if (STR_Battle_Choice == "return" || STR_Battle_Choice == "r")
 				{
-					player_page = "";
+					STR_Player_Page = "";
 					break;
 				}
 			}
 		}
-		if (enemy.getHealth() <= 0)
+		if (ENEMY_Enemy.getHealth() <= 0)
 		{
 			play_audio("Victory");
-			float exp_earned;
-			bool itemDupe = false;
-			if (enemy.getName() == "Gold Fish")
+			float FLT_EXP_Earned;
+			bool BOOL_Item_Dupe = false;
+			if (ENEMY_Enemy.getName() == "Gold Fish")
 			{
-				exp_earned = enemy.getMaxHealth() * 7.7;
+				FLT_EXP_Earned = ENEMY_Enemy.getMaxHealth() * 7.7;
 			}
-			else if (enemy.isBoss())
+			else if (ENEMY_Enemy.isBoss())
 			{
-				exp_earned = enemy.getMaxHealth() * 3;
+				FLT_EXP_Earned = ENEMY_Enemy.getMaxHealth() * 3;
 			}
 			else
 			{
-				exp_earned = enemy.getMaxHealth() * 2;
+				FLT_EXP_Earned = ENEMY_Enemy.getMaxHealth() * 2;
 			}
-			for (Item* item : player.getItems())
+			for (Item* ITEM_Item : PLAYER_Player.getItems())
 			{
-				if (enemyDrop->getName() == item->getName())
+				if (enemyDrop->getName() == ITEM_Item->getName())
 				{
-					item->increaseQuantity(1);
-					itemDupe = true;
+					ITEM_Item->increaseQuantity(1);
+					BOOL_Item_Dupe = true;
 				}
 			}
-			if (!itemDupe)
+			if (!BOOL_Item_Dupe)
 			{
-				player.addItem(enemyDrop);
+				PLAYER_Player.addItem(enemyDrop);
 			}
 			for (int i = 0; i < 20; i++)
 			{
 				Sleep(10);
 				system("CLS");
-				player.increaseExp(exp_earned/20);
-				cout << "\n   You gained " << exp_earned << " experience" << endl << endl;
-				cout << "   " << enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
-				if (!itemDupe)
+				PLAYER_Player.increaseExp(FLT_EXP_Earned/20);
+				cout << "\n   You gained " << FLT_EXP_Earned << " experience" << endl << endl;
+				cout << "   " << ENEMY_Enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
+				if (!BOOL_Item_Dupe)
 				{
 					if (enemyDrop->canInheritSkill())
 					{
 						cout << "   + Unlocked Skill: " << enemyDrop->getSkill().getName() << endl;
 					}
 				}
-				cout << "\n   Level " << player.getLevel() << " | Next EXP: " << int(player.getNextEXP());
-				cout << "\n   HP: " << player.getHealth() << "/" << player.getMaxHealth() << " | STA: " << player.getStamina() << "/" << player.getMaxStamina() << endl << endl;
-				//player.getPlayerStats();
+				cout << "\n   Level " << PLAYER_Player.getLevel() << " | Next EXP: " << int(PLAYER_Player.getNextEXP());
+				cout << "\n   HP: " << PLAYER_Player.getHealth() << "/" << PLAYER_Player.getMaxHealth() << " | STA: " << PLAYER_Player.getStamina() << "/" << PLAYER_Player.getMaxStamina() << endl << endl;
+				//PLAYER_Player.getPlayerStats();
 			}
-			player.update();
+			PLAYER_Player.update();
 			system("pause");
 			system("CLS");
 			battle = false;
-			play_audio(current_dungeon->getDungeonName() + " F" + to_string(current_dungeon->getDungeonRoom()));
+			play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 		}
 		else
 		{
-			while (!player_turn)
+			while (!BOOL_Player_Turn)
 			{
 				this_thread::sleep_for(chrono::seconds(3));
 				system("CLS");
-				show_battle_stats(player);
-				cout << "\n   " << enemy.getName() << "'s turn...";
+				show_battle_stats(PLAYER_Player);
+				cout << "\n   " << ENEMY_Enemy.getName() << "'s turn...";
 				this_thread::sleep_for(chrono::seconds(2));
 				system("CLS");
-				show_battle_stats(player);
-				enemy.update(player);
-				cout << enemy.getTurnPhrase();
+				show_battle_stats(PLAYER_Player);
+				ENEMY_Enemy.update(PLAYER_Player);
+				cout << ENEMY_Enemy.getTurnPhrase();
 				this_thread::sleep_for(chrono::seconds(1));
 				system("CLS");
-				show_battle_stats(player);
-				cout << enemy.getTurnPhrase();
+				show_battle_stats(PLAYER_Player);
+				cout << ENEMY_Enemy.getTurnPhrase();
 				this_thread::sleep_for(chrono::seconds(2));
-				player_turn = true;
+				BOOL_Player_Turn = true;
 				break;
 			}
 		}
@@ -1313,69 +1227,69 @@ string convert_string_toupper(string text)
 	return converted_text;
 }
 
-void dialogue_input(Player player, string dialogue_choice)
+void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice)
 {
-	if (dialogue_choice == "/help") // Displays full list of commands
+	if (STR_Dialogue_Choice == "/help") // Displays full list of commands
 	{
 		system("CLS");
 		cout <<
 			"\n   /help  : Displays this menu!" <<
 			"\n\n   items : Displays all of your items + melee weapon" <<
-			"\n\n   stats : Displays your player stats" <<
+			"\n\n   stats : Displays your PLAYER_Player stats" <<
 			"\n\n   debugfight : Initiate a fight at Lv 99 for testing purposes" << endl;
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	if (dialogue_choice == "items") // Displays all items the player has
+	if (STR_Dialogue_Choice == "items") // Displays all items the PLAYER_Player has
 	{
 		system("CLS");
-		cout << "\n   " << player.getName() << "'s Inventory\n";
-		vector<int> rarityNumbers = { 0, 0, 0, 0, 0 };
+		cout << "\n   " << PLAYER_Player.getName() << "'s Inventory\n";
+		vector<int> VEC_Rarity_Numbers = { 0, 0, 0, 0, 0 };
 		for (int i = 1; i < 6; i++)
 		{
-			for (Item* item : player.getItems())
+			for (Item* ITEM_Item : PLAYER_Player.getItems())
 			{
-				if (item->getRarity() == i)
+				if (ITEM_Item->getRarity() == i)
 				{
-					rarityNumbers[(i - 1)] = rarityNumbers[(i - 1)] + item->getQuantity();
+					VEC_Rarity_Numbers[(i - 1)] = VEC_Rarity_Numbers[(i - 1)] + ITEM_Item->getQuantity();
 				}
 			}
 		}
-		cout << "   [ " << rarityNumbers[0] << " (1*) | " << rarityNumbers[1] << " (2*) | " << rarityNumbers[2] << " (3*) | " << rarityNumbers[3] << " (4*) | " << rarityNumbers[4] << " (5*) ]\n\n";
+		cout << "   [ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
 		for (int i = 1; i < 6; i++)
 		{
-			for (Item* item : player.getItems())
+			for (Item* ITEM_Item : PLAYER_Player.getItems())
 			{
-				if (item->getRarity() == i)
+				if (ITEM_Item->getRarity() == i)
 				{
-					cout << item->toString() << endl << endl;
+					cout << ITEM_Item->toString() << endl << endl;
 				}
 			}
 		}
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	if (dialogue_choice == "stats") // Displays the players levelling stats
+	if (STR_Dialogue_Choice == "stats") // Displays the players levelling stats
 	{
 		system("CLS");
-		cout << "\n   " << player.getName() << "\n";
-		player.getPlayerStats();
-		player.getPlayerElements();
+		cout << "\n   " << PLAYER_Player.getName() << "\n";
+		PLAYER_Player.getPlayerStats();
+		PLAYER_Player.getPlayerElements();
 		cout << endl;
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	if (dialogue_choice == "debugfight") // Initiates a secret fight against the creator
+	if (STR_Dialogue_Choice == "debugfight") // Initiates a secret fight against the creator
 	{
-		Enemy newEnemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true, 218);
-		player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
-		player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
+		Enemy ENEMY_New_Enemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true, 218);
+		PLAYER_Player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
+		PLAYER_Player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
 		for (int i = 0; i < 99; i++)
 		{
-			player.increaseExp(9999999);
+			PLAYER_Player.increaseExp(9999999);
 		}
-		DungeonGlacier current_dungeon = DungeonGlacier();
-		battle(player, &current_dungeon, newEnemy);
+		DungeonGlacier DUNGEON_Current_Dungeon = DungeonGlacier();
+		battle(PLAYER_Player, &DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 	}
 	else
 	{
@@ -1385,21 +1299,21 @@ void dialogue_input(Player player, string dialogue_choice)
 
 void set_starting_elements(int& weak_element, int& resist_element)
 {
-	bool valid_option = false;
-	vector<string> list_of_elements = { "fire", "ice", "electric", "wind", "curse", "bless" };
+	bool BOOL_Valid_Option = false;
+	vector<string> VEC_List_Of_Elements = { "fire", "ice", "electric", "wind", "curse", "bless" };
 	string inp_we, inp_re;
 	while (true)
 	{
 		cout << "\n   Choose an element to be weak to:\n   Fire, Ice, Electric, Wind, Curse, Bless\n   > "; cin >> inp_we;
 		inp_we = convert_string_tolower(inp_we);
-		for (string element : list_of_elements)
+		for (string element : VEC_List_Of_Elements)
 		{
 			if (inp_we == element)
 			{
-				valid_option = true;
+				BOOL_Valid_Option = true;
 			}
 		}
-		if (valid_option) break;
+		if (BOOL_Valid_Option) break;
 	}
 	if (inp_we == "fire")
 	{
@@ -1426,19 +1340,19 @@ void set_starting_elements(int& weak_element, int& resist_element)
 		weak_element = 5;
 	}
 
-	valid_option = false;
+	BOOL_Valid_Option = false;
 	while (true)
 	{
 		cout << "\n   Choose an element to be resistant to:\n   Fire, Ice, Electric, Wind, Curse, Bless   \n   > "; cin >> inp_re;
 		inp_re = convert_string_tolower(inp_re);
-		for (string element : list_of_elements)
+		for (string element : VEC_List_Of_Elements)
 		{
 			if (inp_re == element)
 			{
-				valid_option = true;
+				BOOL_Valid_Option = true;
 			}
 		}
-		if (valid_option) break;
+		if (BOOL_Valid_Option) break;
 	}
 	if (inp_re == "fire")
 	{
@@ -1466,39 +1380,39 @@ void set_starting_elements(int& weak_element, int& resist_element)
 	}
 }
 
-void show_enemy_stats(Enemy enemy)
+void show_enemy_stats(Enemy ENEMY_Enemy)
 {
-	cout << "\n   " << enemy.getName() << " (Lv " << enemy.getLevel() << ")" << endl;
-	cout << "   HP: " << enemy.getHealth() << " | STA: " << enemy.getStamina() << endl << endl << endl;
-	vector<string> element_names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
+	cout << "\n   " << ENEMY_Enemy.getName() << " (Lv " << ENEMY_Enemy.getLevel() << ")" << endl;
+	cout << "   HP: " << ENEMY_Enemy.getHealth() << " | STA: " << ENEMY_Enemy.getStamina() << endl << endl << endl;
+	vector<string> VEC_Element_Names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
 	for (int i = 0; i < 6; i++)
 	{
-		cout << ".  " << element_names[i] << ": " << enemy.getElements()[i] << "\n";
+		cout << ".  " << VEC_Element_Names[i] << ": " << ENEMY_Enemy.getElements().find(convert_string_tolower(VEC_Element_Names[i]))->second << "\n";
 	}
 }
 
-void show_battle_stats(Player player)
+void show_battle_stats(Player PLAYER_Player)
 {
 	system("CLS");
-	cout << "\n   " << player.getName() << "\n";
-	cout << "   HP: " << player.getHealth() << " / " << player.getMaxHealth() << " | STA: " << player.getStamina() << " / " << player.getMaxStamina() << endl << endl;
+	cout << "\n   " << PLAYER_Player.getName() << "\n";
+	cout << "   HP: " << PLAYER_Player.getHealth() << " / " << PLAYER_Player.getMaxHealth() << " | STA: " << PLAYER_Player.getStamina() << " / " << PLAYER_Player.getMaxStamina() << endl << endl;
 }
 
-void show_skill(Player player, int index)
+void show_skill(Player PLAYER_Player, int index)
 {
-	vector<Skill> tempSkills = player.getSkills();
-	cout << "--> " << convert_string_toupper(tempSkills[index].getName()) << endl;
-	cout << "    Type: " << tempSkills[index].getType() << endl;
-	cout << "    Desc: " << tempSkills[index].getDesc() << endl;
-	cout << "    STA: " << tempSkills[index].getStaminaCost() << endl;
-	if (tempSkills[index].getName() == "Heal" || tempSkills[index].getName() == "Healan" || tempSkills[index].getName() == "Healadia")
+	vector<Skill> TEMP_Player_Skills = PLAYER_Player.getSkills();
+	cout << "--> " << convert_string_toupper(TEMP_Player_Skills[index].getName()) << endl;
+	cout << "    Type: " << TEMP_Player_Skills[index].getType() << endl;
+	cout << "    Desc: " << TEMP_Player_Skills[index].getDesc() << endl;
+	cout << "    STA: " << TEMP_Player_Skills[index].getStaminaCost() << endl;
+	if (TEMP_Player_Skills[index].getName() == "Heal" || TEMP_Player_Skills[index].getName() == "Healan" || TEMP_Player_Skills[index].getName() == "Healadia")
 	{
-		cout << "    HP+: " << tempSkills[index].getHPGain() << endl;
+		cout << "    HP+: " << TEMP_Player_Skills[index].getHPGain() << endl;
 	}
 	else
 	{
-		cout << "    DMG: " << tempSkills[index].getBaseDamage() << endl;
+		cout << "    DMG: " << TEMP_Player_Skills[index].getBaseDamage() << endl;
 	}
-	cout << "    [Skill " << (index + 1) << " of " << tempSkills.size() << "]";
+	cout << "    [Skill " << (index + 1) << " of " << TEMP_Player_Skills.size() << "]";
 }
 

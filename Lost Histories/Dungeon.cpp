@@ -82,49 +82,49 @@ void Dungeon::elementSetter(Enemy& enemy)
 {
 	if (enemy.getName() == "Ice Monster")
 	{
-		enemy.setElements({ "Wk", "Rst", "-", "-", "-", "-" });
+		enemy.setElements({ {"fire", "Wk"}, {"ice", "Rst"}, {"electric", "-"}, {"wind", "-"}, {"curse", "-"}, {"bless", "-"} });
 	}
 	else if (enemy.getName() == "Ice Fiend")
 	{
-		enemy.setElements({ "Rst", "Rst", "-", "-", "-", "-" });
+		enemy.setElements({ {"fire", "Rst"}, {"ice", "Rst"}, {"electric", "-"}, {"wind", "-"}, {"curse", "-"}, {"bless", "-"} });
 	}
 	else if (enemy.getName() == "Bergmite")
 	{
-		enemy.setElements({ "Wk", "-", "-", "Rst", "-", "-" });
+		enemy.setElements({ {"fire", "Wk"}, {"ice", "-"}, {"electric", "-"}, {"wind", "Rst"}, {"curse", "-"}, {"bless", "-"} });
 	}
 	else if (enemy.getName() == "Wasteland Spirit")
 	{
-		enemy.setElements({ "Wk", "Rst", "Rst", "-", "-", "Wk" });
+		enemy.setElements({ {"fire", "Wk"}, {"ice", "Rst"}, {"electric", "Rst"}, {"wind", "-"}, {"curse", "-"}, {"bless", "Wk"} });
 	}
 	else if (enemy.getName() == "Duty Soldier")
 	{
-		enemy.setElements({ "-", "Rst", "Wk", "Rst", "-", "-" });
+		enemy.setElements({ {"fire", "-"}, {"ice", "Rst"}, {"electric", "Wk"}, {"wind", "Rst"}, {"curse", "-"}, {"bless", "-"} });
 	}
 	else if (enemy.getName() == "Lab Fish")
 	{
-		enemy.setElements({ "-", "-", "Rst", "-", "Rst", "Wk" });
+		enemy.setElements({ {"fire", "-"}, {"ice", "-"}, {"electric", "Rst"}, {"wind", "-"}, {"curse", "Rst"}, {"bless", "Wk"} });
 	}
 	else if (enemy.getName() == "Gold Fish")
 	{
-		enemy.setElements({ "Rst", "Rst", "Rst", "Rst", "Rst", "Rst" });
+		enemy.setElements({ {"fire", "Rst"}, {"ice", "Rst"}, {"electric", "Rst"}, {"wind", "Rst"}, {"curse", "Rst"}, {"bless", "Rst"} });
 	}
 	// Mini Bosses
 	if (enemy.getName() == "Snow Golem")
 	{
-		enemy.setElements({ "Wk", "Rst", "-", "Rst", "-", "-" });
+		enemy.setElements({ {"fire", "Wk"}, {"ice", "Nul"}, {"electric", "-"}, {"wind", "Rst"}, {"curse", "-"}, {"bless", "-"} });
 	}
 	else if (enemy.getName() == "Patrol Soldier")
 	{
-		enemy.setElements({ "-", "Rst", "Wk", "Rst", "-", "-" });
+		enemy.setElements({ {"fire", "-"}, {"ice", "Rst"}, {"electric", "Wk"}, {"wind", "Rst"}, {"curse", "-"}, {"bless", "-"} });
 	}
 	else if (enemy.getName() == "Reanimated Mermaid")
 	{
-		enemy.setElements({ "Rst", "Wk", "-", "-", "Rst", "-" });
+		enemy.setElements({ {"fire", "Nul"}, {"ice", "Wk"}, {"electric", "-"}, {"wind", "-"}, {"curse", "Rst"}, {"bless", "-"} });
 	}
 	// Bosses
 	else if (enemy.getName() == "Russian Sergeant")
 	{
-		enemy.setElements({ "Rst", "Rst", "Wk", "Rst", "Wk", "Wk" });
+		enemy.setElements({ {"fire", "Rst"}, {"ice", "Rst"}, {"electric", "Wk"}, {"wind", "Rst"}, {"curse", "Wk"}, {"bless", "Wk"} });
 	}
 }
 

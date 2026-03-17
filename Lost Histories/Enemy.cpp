@@ -14,7 +14,7 @@ Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> 
 	this->damage = nDamage;
 }
 
-vector<string> Enemy::getElements()
+map<string, string>  Enemy::getElements()
 {
 	return this->elements;
 }
@@ -50,7 +50,7 @@ void Enemy::setHealth()
 	this->max_health = this->health;
 }
 
-void Enemy::setElements(vector<string> nElements)
+void Enemy::setElements(map<string, string> nElements)
 {
 	this->elements = nElements;
 }

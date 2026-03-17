@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include "BattleStat.h"
 #include "Skill.h"
 #include "ItemSkill.h"
@@ -18,8 +19,8 @@ class Enemy : public BattleStat
 {
 private:
 	battleState state;
-	vector<string> elements;
 	vector<Skill> skills;
+	map<string, string> elements;
 	Item* droppedItem;
 	bool alive;
 	bool boss;
@@ -30,12 +31,12 @@ public:
 	Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, Item* nDroppedItem, bool nBoss, int nDamage);
 	bool isAlive();
 	bool isBoss();
-	vector<string> getElements();
+	map<string, string> getElements();
 	vector<Skill> getSkills();
 	int getDamage();
 	Item* getDroppedItem();
 	string getTurnPhrase();
 	void setHealth();
-	void setElements(vector<string> nElements);
+	void setElements(map<string, string>  nElements);
 	void update(Player& player) override;
 };
