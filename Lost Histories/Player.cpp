@@ -33,7 +33,7 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 	Rpl - Attacks self
 	*/
 	this->MAP_Elements = { {"Fire", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} };
-	this->VEC_Element_Names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
+	this->VEC_Element_Names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless", "Nuclear", "Support" };
 	this->MAP_Elements.find(VEC_Element_Names[weak_element])->second = "Wk";
 	this->MAP_Elements.find(VEC_Element_Names[weak_element])->second = "Rst";
 
@@ -122,6 +122,22 @@ bool Player::isGuard()
 	return this->BOOL_Guard;
 }
 
+bool Player::isLevelUp()
+{
+	return this->BOOL_Level_Up;
+}
+
+void Player::setPlayerAttribute(string STR_Attribute, int N_VALUE)
+{
+	auto it = this->MAP_Player_Attributes.find(STR_Attribute);
+	it->second = N_VALUE;
+}
+
+void Player::notLevelUp()
+{
+	this->BOOL_Level_Up = false;
+}
+
 void Player::increaseExp(float INT_Amount)
 {
 	// Increases EXP
@@ -131,6 +147,7 @@ void Player::increaseExp(float INT_Amount)
 	{
 		if (this->INT_Level < 99)
 		{
+			BOOL_Level_Up = true;
 			int TEMP_EXP_Value = this->FLT_Curr_EXP - this->FLT_Next_EXP;
 
 			// Increases Player Stats
@@ -140,18 +157,6 @@ void Player::increaseExp(float INT_Amount)
 			this->INT_Health = this->INT_Max_Health;
 			this->INT_Stamina = this->INT_Max_Stamina;
 			this->FLT_Curr_EXP = TEMP_EXP_Value;
-#
-			// Increase a chosen Attribute
-			string STR_Attribute_Choice = "";
-			while (STR_Attribute_Choice != "Strength" && STR_Attribute_Choice != "Magic" && STR_Attribute_Choice != "Endurance")
-			{
-				cout << "\n   Choose an Attribute to Increment\n   Strength: "
-					<< this->MAP_Player_Attributes.find("Strength")->second << "\n   Magic: "
-					<< this->MAP_Player_Attributes.find("Magic")->second << "\n   Endurance: "
-					<< this->MAP_Player_Attributes.find("Endurance")->second << "\n   >";
-				getline(cin, STR_Attribute_Choice);
-			}
-			this->MAP_Player_Attributes.find(STR_Attribute_Choice)->second += 2;
 
 			// Calculates next EXP required
 			if (this->INT_Level > 49)
@@ -166,7 +171,6 @@ void Player::increaseExp(float INT_Amount)
 			{
 				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.35);
 			}
-			system("CLS");
 		}
 	}
 }
@@ -189,20 +193,19 @@ void Player::setItems(vector<Item*> nItems)
 void Player::update()
 {
 	this->setSkills({ });
-	vector<Skill> items_with_skill = { };
-	vector<string> temp_element_names = { "fire", "ice", "electric", "wind", "curse", "bless", "nuclear", "support"};
-	for (int i = 0; i < temp_element_names.size(); i++)
+	vector<Skill> VEC_Items_With_Skill = { };
+	for (int i = 0; i < VEC_Element_Names.size(); i++)
 	{
 		for (Item* ITEM_Item : this->getItems())
 		{
 			if (ITEM_Item->canInheritSkill())
 			{
-				if (ITEM_Item->getSkill().getType() == temp_element_names[i])
+				if (ITEM_Item->getSkill().getType() == VEC_Element_Names[i])
 				{
-					items_with_skill.push_back(ITEM_Item->getSkill());
+					VEC_Items_With_Skill.push_back(ITEM_Item->getSkill());
 				}
 			}
 		}
 	}
-	this->setSkills(items_with_skill);
+	this->setSkills(VEC_Items_With_Skill);
 }

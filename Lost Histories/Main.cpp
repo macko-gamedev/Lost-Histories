@@ -926,8 +926,13 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 							{
 								// Damage the ENEMY_Enemy
 								int INT_Calculated_Damage; // Player Skill Damage after calculations
-								float FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Magic")->second) / 10); // Player Attribute "Magic" Multiplier
-								if (true)
+								float FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Magic")->second) / 25); // Player Attribute "Magic" Multiplier
+								if (SKILL_Skill_Selected.getType() == "Nuclear")
+								{
+									INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier;
+									cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon all enemies dealing " << INT_Calculated_Damage << " damage\n\n";
+								}
+								else
 								{
 									if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
 									{
@@ -1107,7 +1112,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			{
 				Sleep(10);
 				system("CLS");
-				PLAYER_Player.increaseExp(FLT_EXP_Earned/20);
+				PLAYER_Player.increaseExp(FLT_EXP_Earned / 20);
 				cout << "\n   You gained " << FLT_EXP_Earned << " experience" << endl << endl;
 				cout << "   " << ENEMY_Enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
 				if (!BOOL_Item_Dupe)
@@ -1119,7 +1124,23 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 				}
 				cout << "\n   Level " << PLAYER_Player.getLevel() << " | Next EXP: " << int(PLAYER_Player.getNextEXP());
 				cout << "\n   HP: " << PLAYER_Player.getHealth() << "/" << PLAYER_Player.getMaxHealth() << " | STA: " << PLAYER_Player.getStamina() << "/" << PLAYER_Player.getMaxStamina() << endl << endl;
-				//PLAYER_Player.getPlayerStats();
+				if (PLAYER_Player.isLevelUp())
+				{
+					// Increase a chosen Attribute
+					string STR_Attribute_Choice = "";
+					while (STR_Attribute_Choice != "Strength" && STR_Attribute_Choice != "Magic" && STR_Attribute_Choice != "Endurance")
+					{
+						cout << "\n   Choose an Attribute to Increment\n.  Strength: "
+							<< PLAYER_Player.getPlayerAttributes().find("Strength")->second << "\n.  Magic: "
+							<< PLAYER_Player.getPlayerAttributes().find("Magic")->second << "\n.  Endurance: "
+							<< PLAYER_Player.getPlayerAttributes().find("Endurance")->second << "\n\n   > ";
+						getline(cin, STR_Attribute_Choice);
+					}
+					cout << "\n   You added 2 points to " << STR_Attribute_Choice << endl << endl << "   ";
+					PLAYER_Player.setPlayerAttribute(STR_Attribute_Choice, (PLAYER_Player.getPlayerAttributes().find(STR_Attribute_Choice)->second + 2));
+					PLAYER_Player.notLevelUp();
+					this_thread::sleep_for(chrono::seconds(2));
+				}
 			}
 			PLAYER_Player.update();
 			system("pause");
@@ -1275,7 +1296,7 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice)
 		cout << "\n   " << PLAYER_Player.getName() << "\n";
 		PLAYER_Player.getPlayerStats();
 		PLAYER_Player.getPlayerElements();
-		cout << "\n   St: " << PLAYER_Player.getPlayerAttributes().find("Strength")->second << "\n   Ma: " << PLAYER_Player.getPlayerAttributes().find("Magic")->second << "\n   En: " << PLAYER_Player.getPlayerAttributes().find("Endurance")->second;
+		cout << "\n.  St: " << PLAYER_Player.getPlayerAttributes().find("Strength")->second << "\n.  Ma: " << PLAYER_Player.getPlayerAttributes().find("Magic")->second << "\n.  En: " << PLAYER_Player.getPlayerAttributes().find("Endurance")->second << endl;
 		cout << endl;
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;

@@ -26,6 +26,7 @@ private:
 	float FLT_Next_EXP;
 	int INT_Total_EXP;
 	bool BOOL_Guard;
+	bool BOOL_Level_Up;
 
 public:
 	Player(string name, int weak_element, int resist_element, int level, int health, int stamina);
@@ -41,6 +42,9 @@ public:
 	int getLevelStats();
 	int getNextEXP();
 	bool isGuard();
+	bool isLevelUp();
+	void setPlayerAttribute(string STR_Attribute, int N_VALUE);
+	void notLevelUp();
 	void increaseExp(float INT_Amount);
 	void setGuard(bool BOOL_Guard_State);
 	void getPlayerStats();

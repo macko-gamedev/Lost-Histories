@@ -84,7 +84,7 @@ void Enemy::update(Player& PLAYER_Player)
 				Skill SKILL_Skill_Selected;
 				SKILL_Skill_Selected = this->VEC_Skills[(rand() % this->VEC_Skills.size())];
 				int INT_Calculated_Damage;
-				float FLT_Attribute_Multiplier = 1 - (float(PLAYER_Player.getPlayerAttributes().find("Endurance")->second) / 100); // Player Attribute "Magic" Multiplier
+				float FLT_Attribute_Multiplier = 1 - (float(PLAYER_Player.getPlayerAttributes().find("Endurance")->second) / 200); // Player Attribute "Magic" Multiplier
 				float FLT_Guard_Multiplier;
 				if (PLAYER_Player.isGuard())
 				{
