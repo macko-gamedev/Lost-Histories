@@ -7,17 +7,17 @@ using namespace std;
 class Skill
 {
 private:
-	string skill_name;
-	string skill_type;
-	string skill_desc;
-	int base_dmg;
-	int hp_gain;
-	int stamina_cost;
-	bool single_target;
+	string STR_Skill_Name;
+	string STR_Skill_Type;
+	string STR_Skill_Desc;
+	int INT_Base_Damage;
+	int INT_Health_Gain;
+	int INT_Stamina_Cost;
+	bool BOOL_Single_Target;
 
 public:
 	Skill();
-	Skill(string name);
+	Skill(string N_NAME);
 	string getName();
 	string getDesc();
 	string getType();

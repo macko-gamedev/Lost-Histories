@@ -9,30 +9,30 @@ using namespace std;
 class Dungeon
 {
 protected:
-	vector<vector<vector<char>>> dungeon_map;
-	string dungeon_name;
-	int dungeon_room;
-	int pos_x;
-	int pos_y;
+	vector<vector<vector<char>>> VEC_Dungeon_Map;
+	string STR_Dungeon_Name;
+	int INT_Dungeon_Room;
+	int INT_Pos_X;
+	int INT_Pos_Y;
 public:
 	Dungeon();
-	Dungeon(Player& player);
+	Dungeon(Player& PLAYER_Player);
 	vector<vector<vector<char>>> getDungeonMap();
 	string getDungeonName();
-	char getPosition(int room, int x, int y);
+	char getPosition(int INT_Get_Room, int INT_Get_X, int INT_Get_Y);
 	int getDungeonRoom();
 	int getPosX();
 	int getPosY();
-	Item* getItemFromLootTable(string enemyName);
-	void changeDungeonRoom(int value);
-	void setPosition(int room, int x, int y, char icon);
+	Item* getItemFromLootTable(string STR_Enemy_Name);
+	void changeDungeonRoom(int INT_Amount);
+	void setPosition(int INT_Set_Room, int INT_Set_X, int INT_Set_Y, char CHAR_Set_Icon);
 	void setPosX(int x);
 	void setPosY(int y);
-	void changePosX(int amount);
-	void changePosY(int amount);
-	void elementSetter(Enemy& enemy);
+	void changePosX(int INT_Amount);
+	void changePosY(int INT_Amount);
+	void elementSetter(Enemy& ENEMY_Enemy);
 	void virtual fillWithEnemies();
 	void virtual fillWithChests();
-	Enemy newEnemy(Dungeon* curr_dungeon);
+	Enemy newEnemy(Dungeon* DUNGEON_Current_Dungeon);
 };
 

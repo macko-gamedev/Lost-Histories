@@ -46,8 +46,8 @@ int Enemy::getDamage()
 
 void Enemy::setHealth()
 {
-	this->health = int(float(this->health) * ((float(level) / 10) + 1));
-	this->max_health = this->health;
+	this->INT_Health = int(float(this->INT_Health) * ((float(INT_Level) / 10) + 1));
+	this->INT_Max_Health = this->INT_Health;
 }
 
 void Enemy::setElements(map<string, string> nElements)
@@ -63,7 +63,7 @@ string Enemy::getTurnPhrase()
 void Enemy::update(Player& PLAYER_Player)
 {
 	srand(time(0));
-	vector<string> VEC_Waiting_Phases = { (this->name + " is waiting..."), (this->name + " is staring at you intensly..."),  (this->name + " is planning their next move...") };
+	vector<string> VEC_Waiting_Phases = { (this->STR_Name + " is waiting..."), (this->STR_Name + " is staring at you intensly..."),  (this->STR_Name + " is planning their next move...") };
 	if (this->isBoss() == false)
 	{
 		this->ENUM_State = battleState::ATTACKING;
@@ -84,7 +84,7 @@ void Enemy::update(Player& PLAYER_Player)
 				Skill SKILL_Skill_Selected;
 				SKILL_Skill_Selected = this->VEC_Skills[(rand() % this->VEC_Skills.size())];
 				int INT_Calculated_Damage;
-				float FLT_Attribute_Multiplier = 1 - (float(PLAYER_Player.getPlayerAttributes().find("Endurnace")->second) / 100); // Player Attribute "Magic" Multiplier
+				float FLT_Attribute_Multiplier = 1 - (float(PLAYER_Player.getPlayerAttributes().find("Endurance")->second) / 100); // Player Attribute "Magic" Multiplier
 				float FLT_Guard_Multiplier;
 				if (PLAYER_Player.isGuard())
 				{
@@ -103,37 +103,37 @@ void Enemy::update(Player& PLAYER_Player)
 						if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
 						{
 							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
-							this->STR_Turn_Phrase = "\n   " + this->name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " INT_Damage";
+							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
 						{
 							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 1.5;
-							this->STR_Turn_Phrase = "\n   " + this->name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " INT_Damage (WEAK)";
+							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (WEAK)";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
 						{
 							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 0.5;
-							this->STR_Turn_Phrase = "\n   " + this->name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " INT_Damage (RESIST)";
+							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (RESIST)";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
 						{
 							INT_Calculated_Damage = 0;
-							this->STR_Turn_Phrase = "\n   " + this->name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " INT_Damage (BLOCK)";
+							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (BLOCK)";
 						}
 					}
-					this->stamina -= SKILL_Skill_Selected.getStaminaCost();
+					this->INT_Stamina -= SKILL_Skill_Selected.getStaminaCost();
 				}
 				else
 				{
 					INT_Calculated_Damage = this->getDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
-					this->STR_Turn_Phrase = "\n   " + this->name + " attacked you dealing " + to_string(INT_Calculated_Damage) + " INT_Damage";
+					this->STR_Turn_Phrase = "\n   " + this->STR_Name + " attacked you dealing " + to_string(INT_Calculated_Damage) + " damage";
 				}
 				PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 			}
 		}
 		else
 		{
-			this->STR_Turn_Phrase = "\n   " + this->name + " missed their attack!";
+			this->STR_Turn_Phrase = "\n   " + this->STR_Name + " missed their attack!";
 		}
 		this->ENUM_State = battleState::WAITING;
 	}

@@ -6,11 +6,11 @@
 
 DungeonGlacier::DungeonGlacier()
 {
-	this->dungeon_name = "Glacier Wasteland";
-	this->dungeon_room = 1;
-	this->pos_x = 3;
-	this->pos_y = 10;
-	this->dungeon_map =
+	this->STR_Dungeon_Name = "Glacier Wasteland";
+	this->INT_Dungeon_Room = 1;
+	this->INT_Pos_X = 3;
+	this->INT_Pos_Y = 10;
+	this->VEC_Dungeon_Map =
 	{
 		{
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }, //       XXXXXXXX
@@ -128,8 +128,8 @@ void DungeonGlacier::fillWithEnemies()
 			{
 				if (this->getDungeonMap()[r][i][j] == ' ')
 				{
-					int spawnChance = (rand() % 100) + 1;
-					if (spawnChance > 84)
+					int INT_Spawn_Chance = (rand() % 100) + 1;
+					if (INT_Spawn_Chance > 84)
 					{
 						this->setPosition(r, i, j, '!');
 					}
@@ -150,8 +150,8 @@ void DungeonGlacier::fillWithChests()
 			{
 				if (this->getDungeonMap()[r][i][j] == ' ')
 				{
-					int spawnChance = (rand() % 100) + 1;
-					if (spawnChance > 94)
+					int INT_Spawn_Chance = (rand() % 100) + 1;
+					if (INT_Spawn_Chance > 94)
 					{
 						this->setPosition(r, i, j, '*');
 					}

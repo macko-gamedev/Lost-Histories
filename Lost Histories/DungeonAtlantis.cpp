@@ -6,11 +6,11 @@
 
 DungeonAtlantis::DungeonAtlantis()
 {
-	this->dungeon_name = "Atlantis Ruins";
-	this->dungeon_room = 1;
-	this->pos_x = 3;
-	this->pos_y = 7;
-	this->dungeon_map =
+	this->STR_Dungeon_Name = "Atlantis Ruins";
+	this->INT_Dungeon_Room = 1;
+	this->INT_Pos_X = 3;
+	this->INT_Pos_Y = 7;
+	this->VEC_Dungeon_Map =
 	{
 		{
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'X', 'O' },
@@ -60,8 +60,8 @@ void DungeonAtlantis::fillWithEnemies()
 			{
 				if (this->getDungeonMap()[r][i][j] == ' ')
 				{
-					int spawnChance = (rand() % 100) + 1;
-					if (spawnChance > 84)
+					int INT_Spawn_Chance = (rand() % 100) + 1;
+					if (INT_Spawn_Chance > 84)
 					{
 						this->setPosition(r, i, j, '!');
 					}
@@ -82,8 +82,8 @@ void DungeonAtlantis::fillWithChests()
 			{
 				if (this->getDungeonMap()[r][i][j] == ' ')
 				{
-					int spawnChance = (rand() % 100) + 1;
-					if (spawnChance > 92)
+					int INT_Spawn_Chance = (rand() % 100) + 1;
+					if (INT_Spawn_Chance > 92)
 					{
 						this->setPosition(r, i, j, '*');
 					}

@@ -1,9 +1,9 @@
 #include "Story.h"
 
-Story::Story(string player)
+Story::Story(string N_Player_Name)
 {
-	this->player_name = player;
-	this->dialogue =
+	this->STR_Player_Name = N_Player_Name;
+	this->VEC_Dialogue =
 	{
 		{ "THIS IS PLACE HOLDER TEXT TO NOT ZERO INDEX" },
 		{ "??? > January 1st, 2067..." },
@@ -11,7 +11,7 @@ Story::Story(string player)
 		{ "??? > What's that?" },
 		{ "??? > The ice is melting." },
 		{ "??? > You're alive?" },
-		{ (player_name + " has awoken from deep slumber, after being captive in a block of ice for 41 years") },
+		{ (STR_Player_Name + " has awoken from deep slumber, after being captive in a block of ice for 41 years") },
 		{ "??? > Why hello brave adventurer!" },
 		{ "??? > You can see we have problem here don't ya?" },
 		{ "??? > You shouldn't be here." },
@@ -20,25 +20,25 @@ Story::Story(string player)
 		{ "??? A moving block of ice? No. An ice monster?" },
 		{ "You look around quickly for any sort of weapon." },
 		{ "+ Received Melee: Sharp Stick" },
-		{ ("??? > Here it comes " + player_name + "!") },
+		{ ("??? > Here it comes " + STR_Player_Name + "!") },
 		{ "END DIALOGUE" },
 		{ "..." },
-		{ "How am I alive?" },
-		{ "And what was that thing?" },
-		{ "That... thing... dropped something" },
-		{ "Maybe this ice block thingy can come in handy" },
+		{ "Yourself > How am I alive?" },
+		{ "Yourself > And what was that thing?" },
+		{ "Yourself > That... thing... dropped something" },
+		{ "Yourself > Maybe this ice block thingy can come in handy" },
 		{ "[You can now use elemental skills]" },
-		{ "I should probably explore for now" },
-		{ "It's cold..." },
+		{ "Yourself > I should probably explore for now" },
+		{ "Yourself > It's cold..." },
 		{ "END DIALOGUE" },
 		{ "..." },
 		{ "Russian Sergeant > How... did... you... beat me?" },
 		{ "Russian Sergeant > I have let HIM down" },
 		{ "Russian Sergeant > You will never find the artifact in Atlantis" },
-		{ (player_name + " > Artifact? What do you mean?") },
+		{ (STR_Player_Name + " > Artifact? What do you mean?") },
 		{ "Russian Sergeant > I shall not go against my master" },
 		{ "Russian Sergeant > You will never know from me..." },
-		{ (player_name + " > And who's, HIM?") },
+		{ (STR_Player_Name + " > And who's, HIM?") },
 		{ "Russian Sergeant > You shall meet him soon..." },
 		{ "Russian Sergeant > You are worthy, I will give you that" },
 		{ "Russian Sergeant > I will let you pass, but this is no joke" },
@@ -58,41 +58,41 @@ Story::Story(string player)
 		{ "Yourself > By the sounds of it, the next room..." },
 		{ "END DIALOGUE" }
 	};
-	this->dialogueIndex = 1;
-	this->event = false;
+	this->INDEX_Dialogue = 1;
+	this->BOOL_Event = false;
 }
 
 string Story::getDialogue()
 {
-	return this->dialogue[this->dialogueIndex];
+	return this->VEC_Dialogue[this->INDEX_Dialogue];
 }
 
 int Story::getDialogueIndex()
 {
-	return this->dialogueIndex;
+	return this->INDEX_Dialogue;
 }
 
-void Story::setDialogueIndex(int index)
+void Story::setDialogueIndex(int N_Index)
 {
-	this->dialogueIndex = index;
+	this->INDEX_Dialogue = N_Index;
 }
 
 bool Story::isEvent()
 {
-	return this->event;
+	return this->BOOL_Event;
 }
 
 void Story::increaseDialogueIndex()
 {
-	this->dialogueIndex++;
+	this->INDEX_Dialogue++;
 }
 
 void Story::startOfDialogue()
 {
-	this->event = false;
+	this->BOOL_Event = false;
 }
 
 void Story::endOfDialogue()
 {
-	this->event = true;
+	this->BOOL_Event = true;
 }

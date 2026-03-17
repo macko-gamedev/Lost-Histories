@@ -124,19 +124,36 @@ bool Player::isGuard()
 
 void Player::increaseExp(float INT_Amount)
 {
+	// Increases EXP
 	this->FLT_Curr_EXP += INT_Amount;
 	this->INT_Total_EXP += INT_Amount;
 	while (FLT_Curr_EXP >= FLT_Next_EXP)
 	{
 		if (this->INT_Level < 99)
 		{
-			int tempVal = this->FLT_Curr_EXP - this->FLT_Next_EXP;
+			int TEMP_EXP_Value = this->FLT_Curr_EXP - this->FLT_Next_EXP;
+
+			// Increases Player Stats
 			this->INT_Level++;
 			this->INT_Max_Health += 7;
 			this->INT_Max_Stamina += 4;
 			this->INT_Health = this->INT_Max_Health;
 			this->INT_Stamina = this->INT_Max_Stamina;
-			this->FLT_Curr_EXP = tempVal;
+			this->FLT_Curr_EXP = TEMP_EXP_Value;
+#
+			// Increase a chosen Attribute
+			string STR_Attribute_Choice = "";
+			while (STR_Attribute_Choice != "Strength" && STR_Attribute_Choice != "Magic" && STR_Attribute_Choice != "Endurance")
+			{
+				cout << "\n   Choose an Attribute to Increment\n   Strength: "
+					<< this->MAP_Player_Attributes.find("Strength")->second << "\n   Magic: "
+					<< this->MAP_Player_Attributes.find("Magic")->second << "\n   Endurance: "
+					<< this->MAP_Player_Attributes.find("Endurance")->second << "\n   >";
+				getline(cin, STR_Attribute_Choice);
+			}
+			this->MAP_Player_Attributes.find(STR_Attribute_Choice)->second += 2;
+
+			// Calculates next EXP required
 			if (this->INT_Level > 49)
 			{
 				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.03);
@@ -149,6 +166,7 @@ void Player::increaseExp(float INT_Amount)
 			{
 				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.35);
 			}
+			system("CLS");
 		}
 	}
 }

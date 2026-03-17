@@ -7,16 +7,16 @@ using namespace std;
 class Story
 {
 private:
-	vector<string> dialogue;
-	string player_name;
-	int dialogueIndex;
-	bool event;
+	vector<string> VEC_Dialogue;
+	string STR_Player_Name;
+	int INDEX_Dialogue;
+	bool BOOL_Event;
 public:
 	Story();
-	Story(string player);
+	Story(string N_Player_Name);
 	string getDialogue();
 	int getDialogueIndex();
-	void setDialogueIndex(int index);
+	void setDialogueIndex(int N_Index);
 	bool isEvent();
 	void increaseDialogueIndex();
 	void startOfDialogue();
