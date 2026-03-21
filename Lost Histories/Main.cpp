@@ -363,6 +363,10 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		}
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '>')
 		{
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
+			{
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), 'O');
+			}
 			DUNGEON_Current_Dungeon->changeDungeonRoom(1);
 			if (ENUM_Story_Status == storyStatus::ACT_ONE) play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 
@@ -678,6 +682,7 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Old Cross", "An old church cross emitting a blessing aura", 1, Skill("Blight")));
+		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")));
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, 17));
@@ -718,7 +723,7 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 2)
 		{
-			for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new Item("Water Balloon", "May annoy some people", 2));
+			for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Water Balloon", "May annoy some people", 2, Skill("Mesplash")));
 			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Iron Spear", "Has great reach!", 3, 86));
 			for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Glass Pendant", "A glass heart pendant emitting a strong healthy aura", 4, Skill("Healan")));
 		}
@@ -813,7 +818,9 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			while ((STR_Player_Page != "melee") && (STR_Player_Page != "skill") && (STR_Player_Page != "item") && (STR_Player_Page != "guard") && (STR_Player_Page != "analyse"))
 			{
 				show_battle_stats(PLAYER_Player);
-				cout << "\n--> Melee\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n  > ";
+				cout << "\n--> Melee";
+				if (PLAYER_Player.getMeleeAttackMultiplier() != 1.0) cout << " : ATK ^"; 
+				cout << "\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n > ";
 				getline(cin, STR_Player_Page);
 				STR_Player_Page = convert_string_tolower(STR_Player_Page);
 			}
@@ -861,6 +868,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 								{
 									PLAYER_Player.fullHealth();
 								}
+								cout << "\n   You used " << ITEM_Item->getName() << " restoring " << ITEM_Item->getAmount() << " " << ITEM_Item->getType();
 							}
 							else if (ITEM_Item->getType() == "STA")
 							{
@@ -869,8 +877,18 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 								{
 									PLAYER_Player.fullStamina();
 								}
+								cout << "\n   You used " << ITEM_Item->getName() << " restoring " << ITEM_Item->getAmount() << " " << ITEM_Item->getType();
 							}
-							cout << "\n   You used " << ITEM_Item->getName() << " restoring " << ITEM_Item->getAmount() << " " << ITEM_Item->getType();
+							else if (ITEM_Item->getType() == "ATK")
+							{
+								PLAYER_Player.changeStamina(ITEM_Item->getAmount());
+								if (PLAYER_Player.getStamina() > PLAYER_Player.getMaxStamina())
+								{
+									PLAYER_Player.fullStamina();
+								}
+								cout << "\n   You used " << ITEM_Item->getName() << " increasing your next attack damage by " << ITEM_Item->getAmount() << "x";
+								PLAYER_Player.setMeleeAttackMultiplier(ITEM_Item->getAmount());
+							}
 							ITEM_Item->increaseQuantity(-1);
 							if (ITEM_Item->getQuantity() == 0)
 							{
@@ -1014,15 +1032,16 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 					show_battle_stats(PLAYER_Player);
 					if (INT_Critical_Chance > 79)
 					{
-						INT_Calculated_Damage = PLAYER_Player.getMeleeWeapon().getMeleeDamage() * FLT_Attribute_Multiplier * 2;
+						INT_Calculated_Damage = PLAYER_Player.getMeleeWeapon().getMeleeDamage() * FLT_Attribute_Multiplier * 2 * PLAYER_Player.getMeleeAttackMultiplier();
 						cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " landing a CRITICAL HIT dealing " << INT_Calculated_Damage << " damage\n\n";
 					}
 					else
 					{
-						INT_Calculated_Damage = PLAYER_Player.getMeleeWeapon().getMeleeDamage() * FLT_Attribute_Multiplier;
+						INT_Calculated_Damage = PLAYER_Player.getMeleeWeapon().getMeleeDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMeleeAttackMultiplier();
 						cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " dealing " << INT_Calculated_Damage << " damage\n\n";
 					}
 					ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
+					PLAYER_Player.setMeleeAttackMultiplier(1.0);
 					BOOL_Player_Turn = false;
 					break;
 				}
@@ -1468,8 +1487,8 @@ void show_enemy_stats(Enemy ENEMY_Enemy)
 void show_battle_stats(Player PLAYER_Player)
 {
 	system("CLS");
-	cout << "\n   " << PLAYER_Player.getName() << "\n";
-	cout << "   HP: " << PLAYER_Player.getHealth() << " / " << PLAYER_Player.getMaxHealth() << " | STA: " << PLAYER_Player.getStamina() << " / " << PLAYER_Player.getMaxStamina() << endl << endl;
+	cout << "\n   " << PLAYER_Player.getName() << "   ";
+	cout << "\n   HP: " << PLAYER_Player.getHealth() << " / " << PLAYER_Player.getMaxHealth() << " | STA: " << PLAYER_Player.getStamina() << " / " << PLAYER_Player.getMaxStamina() << endl << endl;
 }
 
 void show_skill(Player PLAYER_Player, int INDEX_Skill)

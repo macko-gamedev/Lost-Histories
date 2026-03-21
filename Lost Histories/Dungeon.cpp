@@ -109,9 +109,13 @@ void Dungeon::elementSetter(Enemy& ENEMY_Enemy)
 		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Wk"} });
 	}
 	// Rare Enemies
-	else if (ENEMY_Enemy.getName() == "Gold Fish")
+	else if (ENEMY_Enemy.getName() == "Gold Fish I")
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Gold Fish II")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "-"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "Nul"}, {"Curse", "-"}, {"Bless", "Nul"} });
 	}
 	// Mini Bosses
 	else if (ENEMY_Enemy.getName() == "Snow Golem")
@@ -213,7 +217,7 @@ Enemy Dungeon::newEnemy(Dungeon* DUNGEON_Current_Dungeon)
 			int INT_Enemy_Spawn_Chance = (rand() % 10) + 1;
 			if (INT_Enemy_Spawn_Chance == 10)
 			{
-				return Enemy("Gold Fish", 20, 150, 0, { }, getItemFromLootTable("Gold Fish"), true, 10);
+				return Enemy("Gold Fish I", 20, 150, 0, { }, getItemFromLootTable("Gold Fish"), true, 10);
 			}
 			else if (INT_Enemy_Spawn_Chance > 5)
 			{
@@ -230,19 +234,40 @@ Enemy Dungeon::newEnemy(Dungeon* DUNGEON_Current_Dungeon)
 			int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
 			if (INT_Enemy_Spawn_Chance > 18)
 			{
-				return Enemy("Gold Fish", 20, 150, 0, { }, getItemFromLootTable("Gold Fish"), true, 10);
+				return Enemy("Gold Fish I", 20, 150, 0, { }, getItemFromLootTable("Gold Fish I"), true, 10);
 			}
 			else if (INT_Enemy_Spawn_Chance > 14)
 			{
-				return Enemy("Royal Guard", ((rand() % 3) + 20), 173, 69, { Skill("Flamao"), Skill("Freezan"), Skill("Hex"), Skill("Blight") }, getItemFromLootTable("Royal Guard"), false, 67);
+				return Enemy("Royal Guard", ((rand() % 4) + 20), 173, 69, { Skill("Flamao"), Skill("Freezan"), Skill("Hex"), Skill("Blight") }, getItemFromLootTable("Royal Guard"), false, 67);
 			}
-			else if (INT_Enemy_Spawn_Chance > 7)
+			else if (INT_Enemy_Spawn_Chance > 6)
 			{
-				return Enemy("Lab Fish", ((rand() % 4) + 18), 125, 109, { Skill("Freezan"), Skill("Zapao"), Skill("Mezapao"), Skill("Hex") }, getItemFromLootTable("Lab Fish"), false, 33);
+				return Enemy("Lab Fish", ((rand() % 5) + 18), 125, 109, { Skill("Freezan"), Skill("Zapao"), Skill("Mezapao"), Skill("Hex") }, getItemFromLootTable("Lab Fish"), false, 33);
 			}
 			else
 			{
-				return Enemy("Patrol Soldier", ((rand() % 3) + 17), 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, getItemFromLootTable("Patrol Soldier"), false, 48);
+				return Enemy("Patrol Soldier", ((rand() % 4) + 17), 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, getItemFromLootTable("Patrol Soldier"), false, 48);
+			}
+		}
+		else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 3)
+		{
+			// Enemy level for this floor: 21-26		Lab Fish: 21-25   Royal Guard: 22-26   Armed Soldier: 25-27   Gold Fish: 25
+			int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
+			if (INT_Enemy_Spawn_Chance > 18)
+			{
+				return Enemy("Gold Fish II", 25, 250, 0, { }, getItemFromLootTable("Gold Fish II"), true, 10);
+			}
+			else if (INT_Enemy_Spawn_Chance > 14)
+			{
+				return Enemy("Royal Guard", ((rand() % 5) + 22), 173, 69, { Skill("Flamao"), Skill("Freezan"), Skill("Hex"), Skill("Blight") }, getItemFromLootTable("Royal Guard"), false, 67);
+			}
+			else if (INT_Enemy_Spawn_Chance > 6)
+			{
+				return Enemy("Lab Fish", ((rand() % 5) + 21), 125, 109, { Skill("Freezan"), Skill("Zapao"), Skill("Mezapao"), Skill("Hex") }, getItemFromLootTable("Lab Fish"), false, 33);
+			}
+			else
+			{
+				return Enemy("Armed Soldier", ((rand() % 3) + 25), 219, 27, { Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Gust"), Skill("Hex") }, getItemFromLootTable("Patrol Soldier"), false, 73);
 			}
 		}
 	}
@@ -275,7 +300,7 @@ Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 2, Skill("Gustan")));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 3, Skill("Gustan")));
 	}
 	else if (STR_Enemy_Name == "Wasteland Spirit")
 	{
@@ -304,7 +329,7 @@ Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Fish Tooth", "Caution, may be sharp", 2));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Squid Head", "Squirts black genetically modified ink", 2, Skill("Mehex")));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Jellyfish Tenticle", "Dead or Alive it still carries some charge", 4, Skill("Zapadia")));;
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Jellyfish Tenticle", "Dead or Alive it still carries some current", 4, Skill("Zapadia")));;
 	}
 	else if (STR_Enemy_Name == "Royal Guard")
 	{
@@ -316,13 +341,35 @@ Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
 		/* 3 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Bottle o' Holy Water", "500ml of pure holy water!", 4, "STA", 150));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Dark Staff", "Some foul play is at work here...", 4, Skill("Mehexo")));;
 	}
-	else if (STR_Enemy_Name == "Gold Fish")
+	else if (STR_Enemy_Name == "Armed Soldier")
+	{
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("Gold Coin", "Made of real gold!", 3));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
+	}
+	else if (STR_Enemy_Name == "Gold Fish I")
 	{
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Box of Matches", "Withered box of Fire matches, can they still alight?", 2, Skill("Meflame")));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Water Balloon", "May annoy some people", 2, Skill("Mesplash")));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Ice Shard", "A sharp ended icicle which could shatter", 2, Skill("Mefreeze")));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Live Cables", "A bundle of small exposed cables", 2, Skill("Mezap")));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Diamond", "A natural chunk of diamond from the earth", 5));
+	}
+	else if (STR_Enemy_Name == "Gold Fish II")
+	{
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Portable Mini-Cannon", "Old cannons dated back to the 1800s", 3, Skill("Flamao")));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Water Blaster 9000", "Graded PSA 10, worth an absolute fortune!", 3, Skill("Splashan")));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Crystalised Flake", "A snowflake fully crystalised, emitting a frosty aura", 3, Skill("Freezan")));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Electrical Wire", "Exposed electric wire that still packs some spark", 3, Skill("Zapao")));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 3, Skill("Gustan")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Diamond", "A natural chunk of raw diamond from the earth", 5));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Emerald", "A natural chunk of raw emerald from the earth", 5));
 	}
 	return VEC_Enemy_Drops[rand() % VEC_Enemy_Drops.size()];
 }

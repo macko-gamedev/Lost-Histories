@@ -59,7 +59,7 @@ int Item::getMeleeDamage()
 	return this->damage;
 }
 
-int Item::getAmount()
+double Item::getAmount()
 {
 	return this->amount;
 }

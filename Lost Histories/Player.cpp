@@ -15,6 +15,7 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 
 	// Status : Effects Player in battle
 	this->STR_Status = "Great";
+	this->FLT_Melee_Attack_Multiplier = 1.0;
 
 	// Attributes : On levelling up, Player can choose to increase one of these
 	/*
@@ -38,11 +39,14 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 	this->MAP_Elements.find(VEC_Element_Names[weak_element])->second = "Rst";
 
 	// Items: Giving the player a backpack by default and equipping the player with a basic melee weapon
-	this->VEC_Items = { new Item("Torn Backpack", "Your trusty backpack for storing VEC_Items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4), new ItemSkill("Insta-Kill","Testing purposes only", 5, Skill("Death"))};
+	this->VEC_Items = { new Item("Torn Backpack", "Your trusty backpack for storing VEC_Items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4)};
 	this->ITEM_MELEE_Equipped_Melee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 
 	// Skills: Player starts with no VEC_Skills, so just declaring the vector here
 	this->VEC_Skills = { };
+	VEC_Items.push_back(new ItemSkill("Insta-Kill", "Testing purposes only", 5, Skill("Death")));
+	VEC_Items.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
+	VEC_Items[3]->increaseQuantity(9);
 }
 
 void Player::getPlayerStats()
@@ -125,6 +129,16 @@ bool Player::isGuard()
 bool Player::isLevelUp()
 {
 	return this->BOOL_Level_Up;
+}
+
+float Player::getMeleeAttackMultiplier()
+{
+	return this->FLT_Melee_Attack_Multiplier;
+}
+
+void Player::setMeleeAttackMultiplier(float N_Value)
+{
+	this->FLT_Melee_Attack_Multiplier = N_Value;
 }
 
 void Player::setPlayerAttribute(string STR_Attribute, int N_VALUE)

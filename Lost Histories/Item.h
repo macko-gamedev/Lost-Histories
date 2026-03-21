@@ -17,7 +17,7 @@ protected:
 	bool consumable;
 	int damage;
 	Skill inherit_skill;
-	int amount;
+	double amount;
 	string type;
 public:
 	Item();
@@ -26,7 +26,7 @@ public:
 	string getName();
 	string getDesc();
 	string getType();
-	int getAmount();
+	double getAmount();
 	int getRarity();
 	int getQuantity();
 	bool isMeleeWeapon();

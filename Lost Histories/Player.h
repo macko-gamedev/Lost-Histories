@@ -24,6 +24,7 @@ private:
 	map<string, string> MAP_Elements;
 	float FLT_Curr_EXP;
 	float FLT_Next_EXP;
+	float FLT_Melee_Attack_Multiplier;
 	int INT_Total_EXP;
 	bool BOOL_Guard;
 	bool BOOL_Level_Up;
@@ -43,6 +44,8 @@ public:
 	int getNextEXP();
 	bool isGuard();
 	bool isLevelUp();
+	float getMeleeAttackMultiplier();
+	void setMeleeAttackMultiplier(float N_VALUE);
 	void setPlayerAttribute(string STR_Attribute, int N_VALUE);
 	void notLevelUp();
 	void increaseExp(float INT_Amount);
