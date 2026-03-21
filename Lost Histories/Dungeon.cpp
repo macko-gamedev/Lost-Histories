@@ -82,49 +82,54 @@ void Dungeon::elementSetter(Enemy& ENEMY_Enemy)
 {
 	if (ENEMY_Enemy.getName() == "Ice Monster")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Ice Fiend")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Bergmite")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Wasteland Spirit")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Wk"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Wk"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Duty Soldier")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Lab Fish")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Ice", "-"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Wk"} });
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Rst"}, {"Ice", "-"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Wk"} });
 	}
+	else if (ENEMY_Enemy.getName() == "Royal Guard")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Wk"} });
+	}
+	// Rare Enemies
 	else if (ENEMY_Enemy.getName() == "Gold Fish")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 	}
 	// Mini Bosses
-	if (ENEMY_Enemy.getName() == "Snow Golem")
+	else if (ENEMY_Enemy.getName() == "Snow Golem")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Patrol Soldier")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Reanimated Mermaid")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "-"} });
 	}
 	// Bosses
 	else if (ENEMY_Enemy.getName() == "Russian Sergeant")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
 	}
 }
 

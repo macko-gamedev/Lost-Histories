@@ -69,7 +69,7 @@ void set_starting_elements(int& weak_element, int& resist_element); // Sets the 
 void show_enemy_stats(Enemy ENEMY_Enemy); // Shows the ENEMY_Enemy's battle stats
 void show_battle_stats(Player PLAYER_Player); // Shows the PLAYER_Player's battle stats (name, hp, sta)
 void show_skill(Player PLAYER_Player, int INDEX_Skill); // Shows the PLAYER_Player's current skill
-void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice); // Story PLAYER_Player input
+void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dungeon*> VEC_Visited_Dungeons, Dungeon*& DUNGEON_Current_Dungeon); // Story PLAYER_Player input
 int main_menu(); // Main menu when the game is executed
 void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY_Enemy); // Battle sequence
 void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEMY_New_Enemy, Dungeon* DUNGEON_Current_Dungeon, storyStatus& ENUM_Story_Status, gameStatus& ENUM_Game_Status, Story& STORY_Story); // Map Movement
@@ -196,7 +196,7 @@ int main()
 					cout << "   > ";
 					cin >> STR_Dialogue_Choice;
 					STR_Dialogue_Choice = convert_string_tolower(STR_Dialogue_Choice);
-					dialogue_input(PLAYER_Player, STR_Dialogue_Choice);
+					dialogue_input(PLAYER_Player, STR_Dialogue_Choice, VEC_Visited_Dungeons, DUNGEON_Current_Dungeon);
 				}
 				else if (GetAsyncKeyState(VK_RIGHT)) map_movement("d", PLAYER_Player, ENEMY_New_Enemy, DUNGEON_Current_Dungeon, ENUM_Story_Status, ENUM_Game_Status, STORY_Story);
 				else if (GetAsyncKeyState(VK_LEFT)) map_movement("a", PLAYER_Player, ENEMY_New_Enemy, DUNGEON_Current_Dungeon, ENUM_Story_Status, ENUM_Game_Status, STORY_Story);
@@ -1009,7 +1009,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 				{
 					int INT_Critical_Chance = (rand() % 100) + 1; // Number 1-100, if >79 deal a Critical Hit
 					int INT_Calculated_Damage; // Player Melee Damage after calculations
-					float FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Strength")->second) / 10); // Player Attribute "Strength" Multiplier
+					float FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Strength")->second) / 25); // Player Attribute "Strength" Multiplier
 					system("CLS");
 					show_battle_stats(PLAYER_Player);
 					if (INT_Critical_Chance > 79)
@@ -1248,7 +1248,7 @@ string convert_string_toupper(string text)
 	return converted_text;
 }
 
-void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice)
+void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dungeon*> VEC_Visited_Dungeons, Dungeon* &DUNGEON_Current_Dungeon)
 {
 	if (STR_Dialogue_Choice == "/help") // Displays full list of commands
 	{
@@ -1301,6 +1301,50 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice)
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
+	if (STR_Dialogue_Choice == "travel") // Quick travel
+	{
+		if (VEC_Visited_Dungeons.size() == 0)
+		{
+			cout << "\033[A" << "\33[2K\r" << endl;
+			cout << "   You have explored no other places...";
+			this_thread::sleep_for(chrono::seconds(2));
+		}
+		else
+		{
+			system("CLS");
+			bool BOOL_Is_Valid_Travel = false;
+			int INDEX_Dungeon;
+			string STR_Dungeon_Choice;
+			while (!BOOL_Is_Valid_Travel)
+			{
+				system("CLS");
+				cout << "\n   Where would you like to go?\n\n";
+				for (Dungeon* DUNGEON_Dungeon : VEC_Visited_Dungeons)
+				{
+					cout << "   " << DUNGEON_Dungeon->getDungeonName() << " (F" << DUNGEON_Dungeon->getDungeonRoom() << ")" << endl << endl;
+				}
+				cout << "   > ";
+				getline(cin, STR_Dungeon_Choice);
+				INDEX_Dungeon = 0;
+				for (Dungeon* DUNGEON_Dungeon : VEC_Visited_Dungeons)
+				{
+					if (convert_string_tolower(STR_Dungeon_Choice) == convert_string_tolower(DUNGEON_Dungeon->getDungeonName()))
+					{
+
+						BOOL_Is_Valid_Travel = true;
+						VEC_Visited_Dungeons[INDEX_Dungeon] = DUNGEON_Current_Dungeon;
+						DUNGEON_Current_Dungeon = DUNGEON_Dungeon;
+						system("CLS");
+						cout << "\n   Travelling to " << DUNGEON_Dungeon->getDungeonName();
+						this_thread::sleep_for(chrono::seconds(2));
+						play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
+						break;
+					}
+					INDEX_Dungeon++;
+				}
+			}
+		}
+	}
 	if (STR_Dialogue_Choice == "debugfight") // Initiates a secret fight against the creator
 	{
 		Enemy ENEMY_New_Enemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true, 218);
@@ -1322,11 +1366,11 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice)
 void set_starting_elements(int& weak_element, int& resist_element)
 {
 	bool BOOL_Valid_Option = false;
-	vector<string> VEC_List_Of_Elements = { "fire", "ice", "electric", "wind", "curse", "bless" };
+	vector<string> VEC_List_Of_Elements = { "fire", "water", "ice", "electric", "wind", "curse", "bless"};
 	string inp_we, inp_re;
 	while (true)
 	{
-		cout << "\n   Choose an element to be weak to:\n   Fire, Ice, Electric, Wind, Curse, Bless\n   > "; cin >> inp_we;
+		cout << "\n   Choose an element to be weak to:\n   Fire, Water, Ice, Electric, Wind, Curse, Bless\n   > "; cin >> inp_we;
 		inp_we = convert_string_tolower(inp_we);
 		for (string element : VEC_List_Of_Elements)
 		{
@@ -1341,31 +1385,35 @@ void set_starting_elements(int& weak_element, int& resist_element)
 	{
 		weak_element = 0;
 	}
-	else if (inp_we == "ice")
+	else if (inp_we == "water")
 	{
 		weak_element = 1;
 	}
-	else if (inp_we == "electric")
+	else if (inp_we == "ice")
 	{
 		weak_element = 2;
 	}
-	else if (inp_we == "wind")
+	else if (inp_we == "electric")
 	{
 		weak_element = 3;
 	}
-	else if (inp_we == "curse")
+	else if (inp_we == "wind")
 	{
 		weak_element = 4;
 	}
-	else if (inp_we == "bless")
+	else if (inp_we == "curse")
 	{
 		weak_element = 5;
+	}
+	else if (inp_we == "bless")
+	{
+		weak_element = 6;
 	}
 
 	BOOL_Valid_Option = false;
 	while (true)
 	{
-		cout << "\n   Choose an element to be resistant to:\n   Fire, Ice, Electric, Wind, Curse, Bless   \n   > "; cin >> inp_re;
+		cout << "\n   Choose an element to be resistant to:\n   Fire, Water, Ice, Electric, Wind, Curse, Bless   \n   > "; cin >> inp_re;
 		inp_re = convert_string_tolower(inp_re);
 		for (string element : VEC_List_Of_Elements)
 		{
@@ -1380,25 +1428,29 @@ void set_starting_elements(int& weak_element, int& resist_element)
 	{
 		resist_element = 0;
 	}
-	else if (inp_re == "ice")
+	else if (inp_re == "water")
 	{
 		resist_element = 1;
 	}
-	else if (inp_re == "electric")
+	else if (inp_re == "ice")
 	{
 		resist_element = 2;
 	}
-	else if (inp_re == "wind")
+	else if (inp_re == "electric")
 	{
 		resist_element = 3;
 	}
-	else if (inp_re == "curse")
+	else if (inp_re == "wind")
 	{
 		resist_element = 4;
 	}
-	else if (inp_re == "bless")
+	else if (inp_re == "curse")
 	{
 		resist_element = 5;
+	}
+	else if (inp_re == "bless")
+	{
+		resist_element = 6;
 	}
 }
 
@@ -1406,8 +1458,8 @@ void show_enemy_stats(Enemy ENEMY_Enemy)
 {
 	cout << "\n   " << ENEMY_Enemy.getName() << " (Lv " << ENEMY_Enemy.getLevel() << ")" << endl;
 	cout << "   HP: " << ENEMY_Enemy.getHealth() << " | STA: " << ENEMY_Enemy.getStamina() << endl << endl << endl;
-	vector<string> VEC_Element_Names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless" };
-	for (int i = 0; i < 6; i++)
+	vector<string> VEC_Element_Names = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless"};
+	for (int i = 0; i < 7; i++)
 	{
 		cout << ".  " << VEC_Element_Names[i] << ": " << ENEMY_Enemy.getElements().find(VEC_Element_Names[i])->second << "\n";
 	}

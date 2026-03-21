@@ -7,7 +7,7 @@ Enemy::Enemy() { }
 
 Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, Item* nDroppedItem, bool nBoss, int nDamage) : BattleStat(nName, nLevel, nHealth, nStamina)
 {
-	this->MAP_Elements = { {"Fire", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} };
+	this->MAP_Elements = { {"Fire", "-"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} };
 	this->VEC_Skills = nSkills;
 	this->ITEM_Dropped_Item = nDroppedItem;
 	this->BOOL_Boss = nBoss;

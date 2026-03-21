@@ -32,8 +32,8 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 	Nul - Deals 0.0x damage
 	Rpl - Attacks self
 	*/
-	this->MAP_Elements = { {"Fire", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} };
-	this->VEC_Element_Names = { "Fire", "Ice", "Electric", "Wind", "Curse", "Bless", "Nuclear", "Support" };
+	this->MAP_Elements = { {"Fire", "-"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} };
+	this->VEC_Element_Names = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless", "Nuclear", "Support"};
 	this->MAP_Elements.find(VEC_Element_Names[weak_element])->second = "Wk";
 	this->MAP_Elements.find(VEC_Element_Names[weak_element])->second = "Rst";
 
@@ -54,7 +54,7 @@ void Player::getPlayerStats()
 void Player::getPlayerElements()
 {
 	int INDEX_Element = 0;
-	while (INDEX_Element < 6)
+	while (INDEX_Element < 7)
 	{
 		cout << ".  " << VEC_Element_Names[INDEX_Element] << ": " << MAP_Elements.find(VEC_Element_Names[INDEX_Element])->second << endl;
 		INDEX_Element++;

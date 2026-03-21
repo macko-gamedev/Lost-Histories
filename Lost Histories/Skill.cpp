@@ -67,6 +67,64 @@ Skill::Skill(string N_NAME)
 		this->BOOL_Single_Target = true;
 	}
 
+	// ATTACK : WATER
+	else if (this->STR_Skill_Name == "Splash")
+	{
+		this->STR_Skill_Type = "Water";
+		this->STR_Skill_Desc = "Deal low water damage to one enemy";
+		this->INT_Base_Damage = 36;
+		this->INT_Stamina_Cost = 5;
+		this->BOOL_Single_Target = true;
+	}
+	if (this->STR_Skill_Name == "Mesplash")
+	{
+		this->STR_Skill_Type = "Water";
+		this->STR_Skill_Desc = "Deal low water damage to all enemies";
+		this->INT_Base_Damage = 29;
+		this->INT_Stamina_Cost = 8;
+		this->BOOL_Single_Target = false;
+	}
+	else if (this->STR_Skill_Name == "Splashan")
+	{
+		this->STR_Skill_Type = "Water";
+		this->STR_Skill_Desc = "Deal medium water damage to one enemy";
+		this->INT_Base_Damage = 60;
+		this->INT_Stamina_Cost = 10;
+		this->BOOL_Single_Target = true;
+	}
+	if (this->STR_Skill_Name == "Mesplashan")
+	{
+		this->STR_Skill_Type = "Water";
+		this->STR_Skill_Desc = "Deal medium water damage to all enemies";
+		this->INT_Base_Damage = 48;
+		this->INT_Stamina_Cost = 14;
+		this->BOOL_Single_Target = false;
+	}
+	else if (this->STR_Skill_Name == "Splashadia")
+	{
+		this->STR_Skill_Type = "Water";
+		this->STR_Skill_Desc = "Deal heavy water damage to one enemy";
+		this->INT_Base_Damage = 95;
+		this->INT_Stamina_Cost = 16;
+		this->BOOL_Single_Target = true;
+	}
+	else if (this->STR_Skill_Name == "Mesplashadia")
+	{
+		this->STR_Skill_Type = "Water";
+		this->STR_Skill_Desc = "Deal heavy water damage to all enemies";
+		this->INT_Base_Damage = 76;
+		this->INT_Stamina_Cost = 20;
+		this->BOOL_Single_Target = false;
+	}
+	else if (this->STR_Skill_Name == "Eye of the 'Shell")
+	{
+		this->STR_Skill_Type = "Water";
+		this->STR_Skill_Desc = "Channel the inner water of the ocean upon one foe";
+		this->INT_Base_Damage = 380;
+		this->INT_Stamina_Cost = 60;
+		this->BOOL_Single_Target = true;
+	}
+
 	// ATTACK : ICE
 	else if (this->STR_Skill_Name == "Freeze")
 	{
