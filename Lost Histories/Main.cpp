@@ -363,12 +363,8 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		}
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '>')
 		{
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
-			{
-				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), 'O');
-			}
 			DUNGEON_Current_Dungeon->changeDungeonRoom(1);
-			if (ENUM_Story_Status == storyStatus::ACT_ONE) play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland") play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 
 		}
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '*')
@@ -560,7 +556,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '<')
 		{
 			DUNGEON_Current_Dungeon->changeDungeonRoom(-1);
-			if (ENUM_Story_Status == storyStatus::ACT_ONE) play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland") play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 		}
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '*')
 		{
@@ -819,7 +815,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			{
 				show_battle_stats(PLAYER_Player);
 				cout << "\n--> Melee";
-				if (PLAYER_Player.getMeleeAttackMultiplier() != 1.0) cout << " : ATK ^"; 
+				if (PLAYER_Player.getMeleeAttackMultiplier() != 1.0) cout << " ^^";
 				cout << "\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n > ";
 				getline(cin, STR_Player_Page);
 				STR_Player_Page = convert_string_tolower(STR_Player_Page);
@@ -886,7 +882,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 								{
 									PLAYER_Player.fullStamina();
 								}
-								cout << "\n   You used " << ITEM_Item->getName() << " increasing your next attack damage by " << ITEM_Item->getAmount() << "x";
+								cout << "\n   You used " << ITEM_Item->getName() << " increasing your next attack damage by " << round((ITEM_Item->getAmount()) * 100 - 100) << "%";
 								PLAYER_Player.setMeleeAttackMultiplier(ITEM_Item->getAmount());
 							}
 							ITEM_Item->increaseQuantity(-1);
@@ -1103,13 +1099,13 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			play_audio("Victory");
 			float FLT_EXP_Earned;
 			bool BOOL_Item_Dupe = false;
-			if (ENEMY_Enemy.getName() == "Gold Fish")
+			if (ENEMY_Enemy.getName() == "Gold Fish I" || ENEMY_Enemy.getName() == "Gold Fish II")
 			{
 				FLT_EXP_Earned = ENEMY_Enemy.getMaxHealth() * 7.7;
 			}
 			else if (ENEMY_Enemy.isBoss())
 			{
-				FLT_EXP_Earned = ENEMY_Enemy.getMaxHealth() * 3;
+				FLT_EXP_Earned = ENEMY_Enemy.getMaxHealth() * 5;
 			}
 			else
 			{
@@ -1149,10 +1145,22 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 					string STR_Attribute_Choice = "";
 					while (STR_Attribute_Choice != "Strength" && STR_Attribute_Choice != "Magic" && STR_Attribute_Choice != "Endurance")
 					{
-						cout << "\n   Choose an Attribute to Increment\n.  Strength: "
-							<< PLAYER_Player.getPlayerAttributes().find("Strength")->second << "\n.  Magic: "
-							<< PLAYER_Player.getPlayerAttributes().find("Magic")->second << "\n.  Endurance: "
-							<< PLAYER_Player.getPlayerAttributes().find("Endurance")->second << "\n\n   > ";
+						cout << "\n   Choose an Attribute to Increment\n.  Strength:  ";
+						for (int i = 0; i < PLAYER_Player.getPlayerAttributes().find("Strength")->second; i++)
+						{
+							cout << "|";
+						}
+						cout << "\n.  Magic:     ";
+						for (int i = 0; i < PLAYER_Player.getPlayerAttributes().find("Magic")->second; i++)
+						{
+							cout << "|";
+						}
+						cout << "\n.  Endurance: ";
+						for (int i = 0; i < PLAYER_Player.getPlayerAttributes().find("Endurance")->second; i++)
+						{
+							cout << "|";
+						}
+						cout << "\n\n   > ";
 						getline(cin, STR_Attribute_Choice);
 					}
 					cout << "\n   You added 2 points to " << STR_Attribute_Choice << endl << endl << "   ";
@@ -1219,7 +1227,7 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Atlantis Ruins F1" || to_play == "Atlantis Ruins F2")
+	else if (to_play == "Atlantis Ruins F1" || to_play == "Atlantis Ruins F2" || to_play == "Atlantis Ruins F3")
 	{
 		PlaySound(TEXT("music/atlantis_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
@@ -1242,6 +1250,10 @@ void play_audio(string to_play)
 	else if (to_play == "Encounter")
 	{
 		PlaySound(TEXT("music/encounter.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Macko Fight")
+	{
+		PlaySound(TEXT("music/macko_fight.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 }
 
@@ -1273,14 +1285,15 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 	{
 		system("CLS");
 		cout <<
-			"\n   /help  : Displays this menu!" <<
-			"\n\n   items : Displays all of your items + melee weapon" <<
-			"\n\n   stats : Displays your PLAYER_Player stats" <<
+			"\n   /help      : Displays this menu!" <<
+			"\n\n   items      : Displays all of your items + melee weapon" <<
+			"\n\n   stats      : Displays your PLAYER_Player stats" <<
+			"\n\n   travel     : Quick travel between dungeons" <<
 			"\n\n   debugfight : Initiate a fight at Lv 99 for testing purposes" << endl;
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	if (STR_Dialogue_Choice == "items") // Displays all items the PLAYER_Player has
+	else if (STR_Dialogue_Choice == "items") // Displays all items the PLAYER_Player has
 	{
 		system("CLS");
 		cout << "\n   " << PLAYER_Player.getName() << "'s Inventory\n";
@@ -1309,18 +1322,32 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	if (STR_Dialogue_Choice == "stats") // Displays the players levelling stats
+	else if (STR_Dialogue_Choice == "stats") // Displays the players levelling stats
 	{
 		system("CLS");
 		cout << "\n   " << PLAYER_Player.getName() << "\n";
 		PLAYER_Player.getPlayerStats();
 		PLAYER_Player.getPlayerElements();
-		cout << "\n.  St: " << PLAYER_Player.getPlayerAttributes().find("Strength")->second << "\n.  Ma: " << PLAYER_Player.getPlayerAttributes().find("Magic")->second << "\n.  En: " << PLAYER_Player.getPlayerAttributes().find("Endurance")->second << endl;
-		cout << endl;
+		cout << "\n.  St: ";
+		for (int i = 0; i < PLAYER_Player.getPlayerAttributes().find("Strength")->second; i++)
+		{
+			cout << "|";
+		}
+		cout << "\n.  Ma: ";
+		for (int i = 0; i < PLAYER_Player.getPlayerAttributes().find("Magic")->second; i++)
+		{
+			cout << "|";
+		}
+		cout <<  "\n.  En: ";
+		for (int i = 0; i < PLAYER_Player.getPlayerAttributes().find("Endurance")->second; i++)
+		{
+			cout << "|";
+		}
+		cout << endl << endl;
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	if (STR_Dialogue_Choice == "travel") // Quick travel
+	else if (STR_Dialogue_Choice == "travel") // Quick travel
 	{
 		if (VEC_Visited_Dungeons.size() == 0)
 		{
@@ -1364,17 +1391,15 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 			}
 		}
 	}
-	if (STR_Dialogue_Choice == "debugfight") // Initiates a secret fight against the creator
+	else if (STR_Dialogue_Choice == "debugfight") // Initiates a secret fight against the creator
 	{
-		Enemy ENEMY_New_Enemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true, 218);
-		PLAYER_Player.setSkills({ Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hex of Death"), Skill("Healadia") });
+		Enemy TEMP_New_Enemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true, 218);
+		PLAYER_Player.setSkills({ Skill("Flamadia"), Skill("Splashadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hexaon"), Skill("Healadia") });
 		PLAYER_Player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
-		for (int i = 0; i < 99; i++)
-		{
-			PLAYER_Player.increaseExp(9999999);
-		}
-		DungeonGlacier DUNGEON_Current_Dungeon = DungeonGlacier();
-		battle(PLAYER_Player, &DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+		PLAYER_Player.setLevelStats(99, 826, 454);
+		play_audio("Macko Fight");
+		system("pause");
+		battle(PLAYER_Player, DUNGEON_Current_Dungeon, TEMP_New_Enemy);
 	}
 	else
 	{
@@ -1385,12 +1410,11 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 void set_starting_elements(int& weak_element, int& resist_element)
 {
 	bool BOOL_Valid_Option = false;
-	vector<string> VEC_List_Of_Elements = { "fire", "water", "ice", "electric", "wind", "curse", "bless"};
+	vector<string> VEC_List_Of_Elements = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless"};
 	string inp_we, inp_re;
 	while (true)
 	{
 		cout << "\n   Choose an element to be weak to:\n   Fire, Water, Ice, Electric, Wind, Curse, Bless\n   > "; cin >> inp_we;
-		inp_we = convert_string_tolower(inp_we);
 		for (string element : VEC_List_Of_Elements)
 		{
 			if (inp_we == element)
@@ -1400,31 +1424,31 @@ void set_starting_elements(int& weak_element, int& resist_element)
 		}
 		if (BOOL_Valid_Option) break;
 	}
-	if (inp_we == "fire")
+	if (inp_we == "Fire")
 	{
 		weak_element = 0;
 	}
-	else if (inp_we == "water")
+	else if (inp_we == "Water")
 	{
 		weak_element = 1;
 	}
-	else if (inp_we == "ice")
+	else if (inp_we == "Ice")
 	{
 		weak_element = 2;
 	}
-	else if (inp_we == "electric")
+	else if (inp_we == "Electric")
 	{
 		weak_element = 3;
 	}
-	else if (inp_we == "wind")
+	else if (inp_we == "Wind")
 	{
 		weak_element = 4;
 	}
-	else if (inp_we == "curse")
+	else if (inp_we == "Curse")
 	{
 		weak_element = 5;
 	}
-	else if (inp_we == "bless")
+	else if (inp_we == "Bless")
 	{
 		weak_element = 6;
 	}
@@ -1433,7 +1457,6 @@ void set_starting_elements(int& weak_element, int& resist_element)
 	while (true)
 	{
 		cout << "\n   Choose an element to be resistant to:\n   Fire, Water, Ice, Electric, Wind, Curse, Bless   \n   > "; cin >> inp_re;
-		inp_re = convert_string_tolower(inp_re);
 		for (string element : VEC_List_Of_Elements)
 		{
 			if (inp_re == element)
@@ -1443,31 +1466,31 @@ void set_starting_elements(int& weak_element, int& resist_element)
 		}
 		if (BOOL_Valid_Option) break;
 	}
-	if (inp_re == "fire")
+	if (inp_re == "Fire")
 	{
 		resist_element = 0;
 	}
-	else if (inp_re == "water")
+	else if (inp_re == "Water")
 	{
 		resist_element = 1;
 	}
-	else if (inp_re == "ice")
+	else if (inp_re == "Ice")
 	{
 		resist_element = 2;
 	}
-	else if (inp_re == "electric")
+	else if (inp_re == "Electric")
 	{
 		resist_element = 3;
 	}
-	else if (inp_re == "wind")
+	else if (inp_re == "Wind")
 	{
 		resist_element = 4;
 	}
-	else if (inp_re == "curse")
+	else if (inp_re == "Curse")
 	{
 		resist_element = 5;
 	}
-	else if (inp_re == "bless")
+	else if (inp_re == "Bless")
 	{
 		resist_element = 6;
 	}

@@ -39,14 +39,14 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 	this->MAP_Elements.find(VEC_Element_Names[weak_element])->second = "Rst";
 
 	// Items: Giving the player a backpack by default and equipping the player with a basic melee weapon
-	this->VEC_Items = { new Item("Torn Backpack", "Your trusty backpack for storing VEC_Items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4)};
+	this->VEC_Items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4)};
 	this->ITEM_MELEE_Equipped_Melee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 
 	// Skills: Player starts with no VEC_Skills, so just declaring the vector here
 	this->VEC_Skills = { };
 	VEC_Items.push_back(new ItemSkill("Insta-Kill", "Testing purposes only", 5, Skill("Death")));
 	VEC_Items.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
-	VEC_Items[3]->increaseQuantity(9);
+	VEC_Items[3]->increaseQuantity(98);
 }
 
 void Player::getPlayerStats()
@@ -222,4 +222,13 @@ void Player::update()
 		}
 	}
 	this->setSkills(VEC_Items_With_Skill);
+}
+
+void Player::setLevelStats(int N_Level, int N_Health, int N_Stamina)
+{
+	this->INT_Level = N_Level;
+	this->INT_Max_Health = N_Health;
+	this->INT_Max_Stamina = N_Stamina;
+	this->fullHealth();
+	this->fullStamina();
 }

@@ -217,7 +217,7 @@ Enemy Dungeon::newEnemy(Dungeon* DUNGEON_Current_Dungeon)
 			int INT_Enemy_Spawn_Chance = (rand() % 10) + 1;
 			if (INT_Enemy_Spawn_Chance == 10)
 			{
-				return Enemy("Gold Fish I", 20, 150, 0, { }, getItemFromLootTable("Gold Fish"), true, 10);
+				return Enemy("Gold Fish I", 20, 150, 0, { }, getItemFromLootTable("Gold Fish I"), true, 10);
 			}
 			else if (INT_Enemy_Spawn_Chance > 5)
 			{

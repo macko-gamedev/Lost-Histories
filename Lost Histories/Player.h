@@ -45,6 +45,7 @@ public:
 	bool isGuard();
 	bool isLevelUp();
 	float getMeleeAttackMultiplier();
+	void setLevelStats(int N_Level, int N_Health, int N_Stamina);
 	void setMeleeAttackMultiplier(float N_VALUE);
 	void setPlayerAttribute(string STR_Attribute, int N_VALUE);
 	void notLevelUp();
