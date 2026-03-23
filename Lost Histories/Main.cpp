@@ -100,9 +100,21 @@ int main()
 	set_starting_elements(weak_element, resist_element); // Player chooeses their starting elements
 	Player PLAYER_Player = Player(STR_Player_Name, weak_element, resist_element, 1, 140, 62); // Instantiates object of type Player
 	Story STORY_Story = Story(STR_Player_Name); // Instantiates object of type Story
+	string STR_Intro_Choice = "";
+	while (STR_Intro_Choice != "y" && STR_Intro_Choice != "n")
+	{
+		system("CLS");
+		cout << "\n   You are playing Prototype 1\n   . This build includes Dungeon 1 and up to Floor 3 of Dungeon 2\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
+		getline(cin, STR_Intro_Choice);
+		if (STR_Intro_Choice == "y")
+		{
+			PLAYER_Player.addItem(new ItemSkill("Get Out Of Jail Free Card", "Incase you need it", 5, Skill("Death"))); break;
+		}
+		if (STR_Intro_Choice == "n") break;
+	}
+	cout << "\n\n   ! For dialogue scenes, press any key to advance\n   ! Whilst dungeon exploring, press SPACE to make an input\n\n   Have Fun!\n\n\n   ";
+	system("pause");
 	system("CLS");
-	cout << ">>> TYPE /help TO VIEW ALL POSSIBLE COMMANDS <<<" << endl << endl;
-
 	while (true)
 	{
 		// INTRO DIALOGUE/TUTORIAL BATTLE
@@ -225,8 +237,8 @@ int main_menu()
 		cout << "   #       #   #       #     #   " << endl;
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
-		cout << "         H I S T O R I E S" << endl;
-		cout << "		   v03_26.01 ALPHA" << endl;
+		cout << "         H I S T O R I E S       " << endl;
+		cout << "            Prototype 1          " << endl;
 		cout << "\n\n";
 		cout << "--> New Game\n--> Load Game\n--> Settings\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
@@ -289,23 +301,19 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 				}
 				if (i == 1 && j == 14)
 				{
-					cout << "          SPACE:       Input";
+					cout << "          SPACE: Input";
 				}
 				if (i == 2 && j == 14)
 				{
-					cout << "          UP ARROW:    Up";
-				}
-				if (i == 3 && j == 14)
-				{
-					cout << "          LEFT ARROW:  Left";
+					cout << "          MOVE:  Arrow Keys";
 				}
 				if (i == 4 && j == 14)
 				{
-					cout << "          DOWN ARROW:  Down";
+					cout << "          Commands";
 				}
 				if (i == 5 && j == 14)
 				{
-					cout << "          RIGHT ARROW: Right";
+					cout << "          SPACE + /help";
 				}
 				if (i == 7 && j == 14)
 				{

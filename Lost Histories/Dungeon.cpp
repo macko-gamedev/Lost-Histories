@@ -108,6 +108,10 @@ void Dungeon::elementSetter(Enemy& ENEMY_Enemy)
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Wk"} });
 	}
+	else if (ENEMY_Enemy.getName() == "Armed Soldier")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "-"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Wk"}, {"Bless", "-"} });
+	}
 	// Rare Enemies
 	else if (ENEMY_Enemy.getName() == "Gold Fish I")
 	{
@@ -349,7 +353,7 @@ Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
+		/* 3 STAR */ //for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
 	}
 	else if (STR_Enemy_Name == "Gold Fish I")
