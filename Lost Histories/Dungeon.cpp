@@ -108,6 +108,14 @@ void Dungeon::elementSetter(Enemy& ENEMY_Enemy)
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Wk"} });
 	}
+	else if (ENEMY_Enemy.getName() == "Armed Soldier")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Sharkman")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "Rst"} });
+	}
 	// Rare Enemies
 	else if (ENEMY_Enemy.getName() == "Gold Fish I")
 	{
@@ -129,6 +137,10 @@ void Dungeon::elementSetter(Enemy& ENEMY_Enemy)
 	else if (ENEMY_Enemy.getName() == "Reanimated Mermaid")
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "-"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Reanimated Jellyfisherman")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Nul"}, {"Ice", "-"}, {"Electric", "Nul"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 	}
 	// Bosses
 	else if (ENEMY_Enemy.getName() == "Russian Sergeant")
@@ -267,7 +279,28 @@ Enemy Dungeon::newEnemy(Dungeon* DUNGEON_Current_Dungeon)
 			}
 			else
 			{
-				return Enemy("Armed Soldier", ((rand() % 3) + 25), 219, 27, { Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Gust"), Skill("Hex") }, getItemFromLootTable("Patrol Soldier"), false, 73);
+				return Enemy("Armed Soldier", ((rand() % 3) + 25), 219, 27, { Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Gust"), Skill("Hex") }, getItemFromLootTable("Armed Soldier"), false, 73);
+			}
+		}
+		else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 4)
+		{
+			// Enemy level for this floor: 24-30		Royal Guard: 24-28   Armed Soldier: 27-30   Sharkman: 26-30   Gold Fish: 25
+			int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
+			if (INT_Enemy_Spawn_Chance > 18)
+			{
+				return Enemy("Gold Fish II", 25, 250, 0, { }, getItemFromLootTable("Gold Fish II"), true, 10);
+			}
+			else if (INT_Enemy_Spawn_Chance > 14)
+			{
+				return Enemy("Royal Guard", ((rand() % 5) + 24), 173, 69, { Skill("Flamao"), Skill("Freezan"), Skill("Hex"), Skill("Blight") }, getItemFromLootTable("Royal Guard"), false, 67);
+			}
+			else if (INT_Enemy_Spawn_Chance > 6)
+			{
+				return Enemy("Sharkman", ((rand() % 5) + 26), 192, 156, { Skill("Splashan"), Skill("Mesplashan"), Skill("Gustan"), Skill("Blighta") }, getItemFromLootTable("Sharkman"), false, 56);
+			}
+			else
+			{
+				return Enemy("Armed Soldier", ((rand() % 4) + 27), 219, 27, { Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Gust"), Skill("Hex") }, getItemFromLootTable("Armed Soldier"), false, 73);
 			}
 		}
 	}
@@ -351,6 +384,15 @@ Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
+	}
+	else if (STR_Enemy_Name == "Sharkman")
+	{
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Shark Tooth", "Caution, may be sharp", 2));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("Gold Coin", "Made of real gold!", 3));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Water Blaster 9000", "Graded PSA 10, worth an absolute fortune!", 3, Skill("Splashan")));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Fire Hydrant", "Very powerful water beam!", 4, Skill("Splashadia")));
 	}
 	else if (STR_Enemy_Name == "Gold Fish I")
 	{
