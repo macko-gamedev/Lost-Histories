@@ -812,6 +812,15 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			cout << "\n\n";
 			system("pause");
 		}
+		if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX()) == '?')
+		{
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
+			DUNGEON_Current_Dungeon->changePosX(1);
+			Enemy ENEMY_New_Enemy = Enemy("Radioactive Atlantis Guard", 30, 813, 214, { Skill("Meflamao"), Skill("Mesplashan"), Skill("Zapao"), Skill("Hexaon"), Skill("Frei"), Skill("Heal") }, new Item("Atlantis F5 Key B", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 95);
+			play_audio("Dungeon Mini Boss");
+			battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+		}
 	}
 }
 
@@ -1448,32 +1457,142 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 	}
 	else if (STR_Dialogue_Choice == "items") // Displays all items the PLAYER_Player has
 	{
-		system("CLS");
-		cout << "\n   " << PLAYER_Player.getName() << "'s Inventory\n";
-		vector<int> VEC_Rarity_Numbers = { 0, 0, 0, 0, 0 };
-		for (int i = 1; i < 6; i++)
+		string STR_Item_Page = "all";
+		while (STR_Dialogue_Choice == "items")
 		{
-			for (Item* ITEM_Item : PLAYER_Player.getItems())
+			system("CLS");
+			cout << "\n   " << PLAYER_Player.getName() << "'s Inventory\n";
+			cout << "   [ " << convert_string_toupper(STR_Item_Page) << " ] ";
+			vector<int> VEC_Rarity_Numbers = { 0, 0, 0, 0, 0 };
+			if (STR_Item_Page == "all")
 			{
-				if (ITEM_Item->getRarity() == i)
+				for (int i = 1; i < 6; i++)
 				{
-					VEC_Rarity_Numbers[(i - 1)] = VEC_Rarity_Numbers[(i - 1)] + ITEM_Item->getQuantity();
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getRarity() == i)
+						{
+							VEC_Rarity_Numbers[(i - 1)] = VEC_Rarity_Numbers[(i - 1)] + ITEM_Item->getQuantity();
+						}
+					}
+				}
+				cout << "[ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
+				for (int i = 1; i < 6; i++)
+				{
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getRarity() == i)
+						{
+							cout << ITEM_Item->toString() << endl << endl;
+						}
+					}
 				}
 			}
-		}
-		cout << "   [ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
-		for (int i = 1; i < 6; i++)
-		{
-			for (Item* ITEM_Item : PLAYER_Player.getItems())
+			else if (STR_Item_Page == "weapons")
 			{
-				if (ITEM_Item->getRarity() == i)
+				for (int i = 1; i < 6; i++)
 				{
-					cout << ITEM_Item->toString() << endl << endl;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getRarity() == i && ITEM_Item->isMeleeWeapon())
+						{
+							VEC_Rarity_Numbers[(i - 1)] = VEC_Rarity_Numbers[(i - 1)] + ITEM_Item->getQuantity();
+						}
+					}
+				}
+				cout << "[ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
+				for (int i = 1; i < 6; i++)
+				{
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getRarity() == i && ITEM_Item->isMeleeWeapon())
+						{
+							cout << ITEM_Item->toString() << endl << endl;
+						}
+					}
 				}
 			}
+			else if (STR_Item_Page == "consumables")
+			{
+				for (int i = 1; i < 6; i++)
+				{
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getRarity() == i && ITEM_Item->isConsumable())
+						{
+							VEC_Rarity_Numbers[(i - 1)] = VEC_Rarity_Numbers[(i - 1)] + ITEM_Item->getQuantity();
+						}
+					}
+				}
+				cout << "[ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
+				for (int i = 1; i < 6; i++)
+				{
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getRarity() == i && ITEM_Item->isConsumable())
+						{
+							cout << ITEM_Item->toString() << endl << endl;
+						}
+					}
+				}
+			}
+			else if (STR_Item_Page == "skills")
+			{
+				for (int i = 1; i < 6; i++)
+				{
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getRarity() == i && ITEM_Item->canInheritSkill())
+						{
+							VEC_Rarity_Numbers[(i - 1)] = VEC_Rarity_Numbers[(i - 1)] + ITEM_Item->getQuantity();
+						}
+					}
+				}
+				cout << "[ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
+				for (int i = 1; i < 6; i++)
+				{
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getRarity() == i && ITEM_Item->canInheritSkill())
+						{
+							cout << ITEM_Item->toString() << endl << endl;
+						}
+					}
+				}
+			}
+			else if (STR_Item_Page == "items")
+			{
+				for (int i = 1; i < 6; i++)
+				{
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getRarity() == i && !ITEM_Item->canInheritSkill() && !ITEM_Item->isConsumable() && !ITEM_Item->isMeleeWeapon())
+						{
+							VEC_Rarity_Numbers[(i - 1)] = VEC_Rarity_Numbers[(i - 1)] + ITEM_Item->getQuantity();
+						}
+					}
+				}
+				cout << "[ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
+				for (int i = 1; i < 6; i++)
+				{
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getRarity() == i && !ITEM_Item->canInheritSkill() && !ITEM_Item->isConsumable() && !ITEM_Item->isMeleeWeapon())
+						{
+							cout << ITEM_Item->toString() << endl << endl;
+						}
+					}
+				}
+			}
+			cout << "   > ";
+			getline(cin, STR_Item_Page);
+			STR_Item_Page = convert_string_tolower(STR_Item_Page);
+			if (STR_Item_Page == "return") break;
+			if (STR_Item_Page != "weapons" && STR_Item_Page != "consumables" && STR_Item_Page != "skills" && STR_Item_Page != "items")
+			{
+				STR_Item_Page = "all";
+			}
 		}
-		system("pause");
-		cout << "\033[A" << "\33[2K\r" << endl;
 	}
 	else if (STR_Dialogue_Choice == "stats") // Displays the players levelling stats
 	{
