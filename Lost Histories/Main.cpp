@@ -364,8 +364,10 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '>')
 		{
 			DUNGEON_Current_Dungeon->changeDungeonRoom(1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland") play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
-
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5))
+			{
+				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
+			}
 		}
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '*')
 		{
@@ -581,7 +583,10 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '<')
 		{
 			DUNGEON_Current_Dungeon->changeDungeonRoom(-1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland") play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4))
+			{
+				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
+			}
 		}
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '*')
 		{
@@ -1283,9 +1288,13 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Atlantis Ruins F1" || to_play == "Atlantis Ruins F2" || to_play == "Atlantis Ruins F3")
+	else if (to_play == "Atlantis Ruins F1" || to_play == "Atlantis Ruins F2" || to_play == "Atlantis Ruins F3" || to_play == "Atlantis Ruins F4")
 	{
-		PlaySound(TEXT("music/atlantis_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/atlantis_above_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Atlantis Ruins F5" || to_play == "Atlantis Ruins F6" || to_play == "Atlantis Ruins F7")
+	{
+		PlaySound(TEXT("music/atlantis_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Battle")
 	{

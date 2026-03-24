@@ -7,7 +7,7 @@
 DungeonAtlantis::DungeonAtlantis()
 {
 	this->STR_Dungeon_Name = "Atlantis Ruins";
-	this->INT_Dungeon_Room = 1;
+	this->INT_Dungeon_Room = 3;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 7;
 	this->VEC_Dungeon_Map =
@@ -79,6 +79,23 @@ DungeonAtlantis::DungeonAtlantis()
 			{ 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ 'X', '?', ' ', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'O' },
 			{ 'X', 'X', 'X', 'O', 'O', 'X', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'O', 'O' }
+		},
+		{
+			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', ' ', ' ', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X' },
+			{ 'X', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X', 'X', '?', 'X', ' ', ' ', 'X' },
+			{ 'X', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', 'X', 'X' },
+			{ 'X', ' ', 'X', 'O', '<', '+', ' ', '*', ' ', ' ', 'X', ' ', ' ', '|', '>' },
+			{ 'X', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X' },
+			{ 'X', ' ', 'X', ' ', ' ', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', ' ', '|', ' ', 'X' },
+			{ 'X', ' ', 'X', 'X', 'X', 'X', 'X', '?', ' ', 'X', 'X', 'X', 'X', ' ', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' }
 		}
 	};
 }
@@ -86,7 +103,7 @@ DungeonAtlantis::DungeonAtlantis()
 void DungeonAtlantis::fillWithEnemies()
 {
 	// 15% chance for each tile to have an enemy
-	for (int r = 0; r < 4; r++)
+	for (int r = 0; r < 5; r++)
 	{
 		for (int i = 0; i < 15; i++)
 		{
@@ -108,7 +125,7 @@ void DungeonAtlantis::fillWithEnemies()
 void DungeonAtlantis::fillWithChests()
 {
 	// 8% chance for each tile to have a chest
-	for (int r = 0; r < 4; r++)
+	for (int r = 0; r < 5; r++)
 	{
 		for (int i = 0; i < 15; i++)
 		{
