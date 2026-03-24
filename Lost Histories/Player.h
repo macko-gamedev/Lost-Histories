@@ -25,6 +25,7 @@ private:
 	float FLT_Curr_EXP;
 	float FLT_Next_EXP;
 	float FLT_Melee_Attack_Multiplier;
+	float FLT_Magic_Attack_Multiplier;
 	int INT_Total_EXP;
 	bool BOOL_Guard;
 	bool BOOL_Level_Up;
@@ -45,8 +46,10 @@ public:
 	bool isGuard();
 	bool isLevelUp();
 	float getMeleeAttackMultiplier();
+	float getMagicAttackMultiplier();
 	void setLevelStats(int N_Level, int N_Health, int N_Stamina);
 	void setMeleeAttackMultiplier(float N_VALUE);
+	void setMagicAttackMultiplier(float N_VALUE);
 	void setPlayerAttribute(string STR_Attribute, int N_VALUE);
 	void notLevelUp();
 	void increaseExp(float INT_Amount);

@@ -413,6 +413,31 @@ Skill::Skill(string N_NAME)
 		this->BOOL_Single_Target = true;
 	}
 
+	// ATTACK : NUCLEAR
+	if (this->STR_Skill_Name == "Frei")
+	{
+		this->STR_Skill_Type = "Nuclear";
+		this->STR_Skill_Desc = "Deal low nuclear damage to all enemies";
+		this->INT_Base_Damage = 98;
+		this->INT_Stamina_Cost = 20;
+		this->BOOL_Single_Target = false;
+	}
+	if (this->STR_Skill_Name == "Freila")
+	{
+		this->STR_Skill_Type = "Nuclear";
+		this->STR_Skill_Desc = "Deal medium nuclear damage to all enemies";
+		this->INT_Base_Damage = 174;
+		this->INT_Stamina_Cost = 36;
+		this->BOOL_Single_Target = false;
+	}
+	else if (this->STR_Skill_Name == "Freiladia")
+	{
+		this->STR_Skill_Type = "Nuclear";
+		this->STR_Skill_Desc = "Deal heavy nuclear damage to all enemies";
+		this->INT_Base_Damage = 269;
+		this->INT_Stamina_Cost = 48;
+		this->BOOL_Single_Target = false;
+	}
 	if (this->STR_Skill_Name == "Death")
 	{
 		this->STR_Skill_Type = "Nuclear";
@@ -421,6 +446,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 0;
 		this->BOOL_Single_Target = true;
 	}
+
 
 	// SUPPORT : HEALING
 	if (this->STR_Skill_Name == "Heal")

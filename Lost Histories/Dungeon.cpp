@@ -116,6 +116,10 @@ void Dungeon::elementSetter(Enemy& ENEMY_Enemy)
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "Rst"} });
 	}
+	else if (ENEMY_Enemy.getName() == "Reanimated Entity")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "Wk"}, {"Curse", "Rst"}, {"Bless", "-"} });
+	}
 	// Rare Enemies
 	else if (ENEMY_Enemy.getName() == "Gold Fish I")
 	{
@@ -141,6 +145,10 @@ void Dungeon::elementSetter(Enemy& ENEMY_Enemy)
 	else if (ENEMY_Enemy.getName() == "Reanimated Jellyfisherman")
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Nul"}, {"Ice", "-"}, {"Electric", "Nul"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Radioactive Atlantis Survivor")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Wk"} });
 	}
 	// Bosses
 	else if (ENEMY_Enemy.getName() == "Russian Sergeant")
@@ -305,7 +313,7 @@ Enemy Dungeon::newEnemy(Dungeon* DUNGEON_Current_Dungeon)
 		}
 		else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
 		{
-			// Enemy level for this floor: 28-34		Armed Soldier: 27-30   Sharkman: 26-30   Gold Fish: 30
+			// Enemy level for this floor: 28-34		Armed Soldier: 28-33   Sharkman: 31-34   Reanimated Entity: 29-34   Gold Fish: 30
 			int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
 			if (INT_Enemy_Spawn_Chance > 18)
 			{
@@ -313,7 +321,7 @@ Enemy Dungeon::newEnemy(Dungeon* DUNGEON_Current_Dungeon)
 			}
 			else if (INT_Enemy_Spawn_Chance > 14)
 			{
-				return Enemy("Royal Guard", ((rand() % 5) + 24), 173, 69, { Skill("Flamao"), Skill("Freezan"), Skill("Hex"), Skill("Blight") }, getItemFromLootTable("Royal Guard"), false, 67);
+				return Enemy("Reanimated Entity", ((rand() % 6) + 29), ((rand() % 50) + 175), 100, {Skill("Flamao"), Skill("Splashan"), Skill("Freezan"), Skill("Zapao"), Skill("Gustan"), Skill("Hexo"), Skill("Blighta")}, getItemFromLootTable("Reanimated Entity"), false, 67);
 			}
 			else if (INT_Enemy_Spawn_Chance > 6)
 			{
@@ -403,7 +411,8 @@ Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
-		/* 3 STAR */ //for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Radioactive Core", "May need a suit for this one!", 3, Skill("Frei")));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
 	}
 	else if (STR_Enemy_Name == "Sharkman")
@@ -414,6 +423,22 @@ Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Water Blaster 9000", "Graded PSA 10, worth an absolute fortune!", 3, Skill("Splashan")));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Fire Hydrant", "Very powerful water beam!", 4, Skill("Splashadia")));
+	}
+	else if (STR_Enemy_Name == "Reanimated Entity")
+	{
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new Item("Seaweed", "Lonely strand of seaweed", 1));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Mermaid Tail", "Sadly from a dead mermaid corpse", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Shark Tooth", "Caution, may be sharp", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Fish Tooth", "Caution, may be sharp", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("Gold Coin", "Made of real gold!", 3));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("Gun Fragment", "A piece of fragment from a Soldiers gun", 3));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Radioactive Core", "May need a suit for this one!", 3, Skill("Frei")));
+		/* 2 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Radioactive Chunk", "A small intake of this could spell the end", 4, Skill("Freila")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Diamond", "A natural chunk of diamond from the earth", 5));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Emerald", "A natural chunk of raw emerald from the earth", 5));
 	}
 	else if (STR_Enemy_Name == "Gold Fish I")
 	{
@@ -431,6 +456,7 @@ Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Crystalised Flake", "A snowflake fully crystalised, emitting a frosty aura", 3, Skill("Freezan")));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Electrical Wire", "Exposed electric wire that still packs some spark", 3, Skill("Zapao")));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 3, Skill("Gustan")));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Radioactive Core", "May need a suit for this one!", 3, Skill("Frei")));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Diamond", "A natural chunk of raw diamond from the earth", 5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Emerald", "A natural chunk of raw emerald from the earth", 5));
 	}

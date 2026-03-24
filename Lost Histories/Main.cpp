@@ -569,6 +569,31 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					}
 				}
 			}
+			if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
+			{
+				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
+				{
+					bool BOOL_Has_Key = false;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getName() == "Atlantis F5 Key B")
+						{
+							BOOL_Has_Key = true;
+						}
+					}
+					if (BOOL_Has_Key)
+					{
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+						DUNGEON_Current_Dungeon->changePosY(1);
+					}
+					else
+					{
+						cout << "   Requires Atlantis F5 Key B";
+						this_thread::sleep_for(chrono::seconds(2));
+					}
+				}
+			}
 		}
 	}
 	if (STR_Dialogue_Choice == "a")
@@ -675,13 +700,64 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   Reanimated Jellyfisherman > *shoots bolts towards " << PLAYER_Player.getName() << "*";
 					_getch(); cout << "\33[2K\r" << flush;;
-					Enemy ENEMY_New_Enemy = Enemy("Reanimated Jellyfisherman", 25, 498, 174, { Skill("Splashan"), Skill("Splashadia"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Hexo"), Skill("Blighta") }, new Item("Atlantis F4 Key", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 28);
+					Enemy ENEMY_New_Enemy = Enemy("Reanimated Jellyfisherman", 25, 636, 174, { Skill("Splashan"), Skill("Splashadia"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Hexo"), Skill("Blighta") }, new Item("Atlantis F4 Key", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 28);
+					play_audio("Dungeon Mini Boss");
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+				}
+				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5) // Radioactive Atlantis Survivor Mini Boss, drops key used to advance
+				{
+					play_audio("Encounter");
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   You notice something feels off";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > Notice the radical looking hazmat?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > *gargling*";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > Looks like that Jellyfisherman was utter pointless aswell!";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > Blooming heck! Can anything round here be useful?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   The soldier storms off in a fit of rage";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   The air feels poisonous";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > *lunges towards " << PLAYER_Player.getName() << "*";
+					_getch(); cout << "\33[2K\r" << flush;;
+					Enemy ENEMY_New_Enemy = Enemy("Radioactive Atlantis Survivor", 28, 746, 214, { Skill("Splashadia"), Skill("Mesplashadia"), Skill("Frei"), Skill("Heal") }, new Item("Atlantis F5 Key A", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 6);
 					play_audio("Dungeon Mini Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
 			}
 		}
-
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '|')
+		{
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
+			{
+				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
+				{
+					bool BOOL_Has_Key = false;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getName() == "Atlantis F5 Key A")
+						{
+							BOOL_Has_Key = true;
+						}
+					}
+					if (BOOL_Has_Key)
+					{
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1), '+');
+						DUNGEON_Current_Dungeon->changePosY(-1);
+					}
+					else
+					{
+						cout << "   Requires Atlantis F5 Key A";
+						this_thread::sleep_for(chrono::seconds(2));
+					}
+				}
+			}
+		}
 	}
 	if (STR_Dialogue_Choice == "w")
 	{
@@ -790,6 +866,8 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		{
 			for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Water Balloon", "May annoy some people", 2, Skill("Mesplash")));
 			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Iron Spear", "Has great reach!", 3, 86));
+			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
+			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
 			for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Glass Pendant", "A glass heart pendant emitting a strong healthy aura", 4, Skill("Healan")));
 		}
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 3)
@@ -864,10 +942,13 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 	bool battle = true; // Whilst the battle is in play
 	string STR_Battle_Choice; // Selecting a skill
 	string STR_Player_Page; // Battle menu page
+	int INT_Skill_Index = 0; // Selected skill INDEX_Skill (to display)
+
+	// Sets up the Enemy
 	Item* enemyDrop = ENEMY_Enemy.getDroppedItem();
 	DUNGEON_Current_Dungeon->elementSetter(ENEMY_Enemy);
 	ENEMY_Enemy.setHealth();
-	int INT_Skill_Index = 0; // Selected skill INDEX_Skill (to display)
+
 	cout << "\n   You have encountered " << ENEMY_Enemy.getName() << endl;
 	this_thread::sleep_for(chrono::seconds(3));
 	PLAYER_Player.update();
@@ -885,7 +966,9 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 				show_battle_stats(PLAYER_Player);
 				cout << "\n--> Melee";
 				if (PLAYER_Player.getMeleeAttackMultiplier() != 1.0) cout << " ^^";
-				cout << "\n--> Skill\n--> Item\n--> Guard\n--> Analyse\n\n > ";
+				cout << "\n--> Skill";
+				if (PLAYER_Player.getMagicAttackMultiplier() != 1.0) cout << " ^^"; 
+				cout << "\n--> Item\n--> Guard\n--> Analyse\n\n  > ";
 				getline(cin, STR_Player_Page);
 				STR_Player_Page = convert_string_tolower(STR_Player_Page);
 			}
@@ -946,20 +1029,20 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 							}
 							else if (ITEM_Item->getType() == "ATK")
 							{
-								PLAYER_Player.changeStamina(ITEM_Item->getAmount());
-								if (PLAYER_Player.getStamina() > PLAYER_Player.getMaxStamina())
-								{
-									PLAYER_Player.fullStamina();
-								}
-								cout << "\n   You used " << ITEM_Item->getName() << " increasing your next attack damage by " << round((ITEM_Item->getAmount()) * 100 - 100) << "%";
+								cout << "\n   You used " << ITEM_Item->getName() << " increasing your next melee attack damage by " << round((ITEM_Item->getAmount()) * 100 - 100) << "%";
 								PLAYER_Player.setMeleeAttackMultiplier(ITEM_Item->getAmount());
+							}
+							else if (ITEM_Item->getType() == "MAG")
+							{
+								cout << "\n   You used " << ITEM_Item->getName() << " increasing your next magic attack damage by " << round((ITEM_Item->getAmount()) * 100 - 100) << "%";
+								PLAYER_Player.setMagicAttackMultiplier(ITEM_Item->getAmount());
 							}
 							ITEM_Item->increaseQuantity(-1);
 							if (ITEM_Item->getQuantity() == 0)
 							{
-								vector<Item*> temp_player_items = PLAYER_Player.getItems();
-								temp_player_items.erase(find(temp_player_items.begin(), temp_player_items.end(), ITEM_Item));
-								PLAYER_Player.setItems(temp_player_items);
+								vector<Item*> TEMP_Player_Items = PLAYER_Player.getItems();
+								TEMP_Player_Items.erase(find(TEMP_Player_Items.begin(), TEMP_Player_Items.end(), ITEM_Item));
+								PLAYER_Player.setItems(TEMP_Player_Items);
 							}
 							BOOL_Player_Turn = false;
 							break;
@@ -1012,24 +1095,24 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 								float FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Magic")->second) / 25); // Player Attribute "Magic" Multiplier
 								if (SKILL_Skill_Selected.getType() == "Nuclear")
 								{
-									INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier;
+									INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
 									cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon all enemies dealing " << INT_Calculated_Damage << " damage\n\n";
 								}
 								else
 								{
 									if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
 									{
-										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier;
+										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
 										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage\n\n";
 									}
 									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
 									{
-										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 1.5;
+										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 1.5 * PLAYER_Player.getMagicAttackMultiplier();
 										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage (WEAK)\n\n";
 									}
 									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
 									{
-										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 0.5;
+										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 0.5 * PLAYER_Player.getMagicAttackMultiplier();
 										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage (RESIST)\n\n";
 									}
 									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
@@ -1038,13 +1121,10 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage (BLOCK)\n\n";
 									}
 								}
-								//else
-								//{
-								//	cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon all enemies dealing " << SKILL_Skill_Selected.getBaseDamage() << " damage each\n\n";
-								//}
 								ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
 							}
 							PLAYER_Player.changeStamina(-SKILL_Skill_Selected.getStaminaCost());
+							PLAYER_Player.setMagicAttackMultiplier(1.0);
 							BOOL_Player_Turn = false;
 							break;
 						}

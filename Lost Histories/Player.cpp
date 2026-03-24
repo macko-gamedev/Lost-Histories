@@ -15,7 +15,10 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 
 	// Status : Effects Player in battle
 	this->STR_Status = "Great";
+
+	// Attack Multiplier : Increases with use of items or skills
 	this->FLT_Melee_Attack_Multiplier = 1.0;
+	this->FLT_Magic_Attack_Multiplier = 1.0;
 
 	// Attributes : On levelling up, Player can choose to increase one of these
 	/*
@@ -44,6 +47,8 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 
 	// Skills: Player starts with no VEC_Skills, so just declaring the vector here
 	this->VEC_Skills = { };
+	VEC_Items.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
+	VEC_Items.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
 }
 
 void Player::getPlayerStats()
@@ -133,9 +138,19 @@ float Player::getMeleeAttackMultiplier()
 	return this->FLT_Melee_Attack_Multiplier;
 }
 
+float Player::getMagicAttackMultiplier()
+{
+	return this->FLT_Magic_Attack_Multiplier;
+}
+
 void Player::setMeleeAttackMultiplier(float N_Value)
 {
 	this->FLT_Melee_Attack_Multiplier = N_Value;
+}
+
+void Player::setMagicAttackMultiplier(float N_Value)
+{
+	this->FLT_Magic_Attack_Multiplier = N_Value;
 }
 
 void Player::setPlayerAttribute(string STR_Attribute, int N_VALUE)

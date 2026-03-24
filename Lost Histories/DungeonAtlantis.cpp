@@ -7,7 +7,7 @@
 DungeonAtlantis::DungeonAtlantis()
 {
 	this->STR_Dungeon_Name = "Atlantis Ruins";
-	this->INT_Dungeon_Room = 3;
+	this->INT_Dungeon_Room = 5;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 7;
 	this->VEC_Dungeon_Map =
@@ -54,7 +54,7 @@ DungeonAtlantis::DungeonAtlantis()
 			{ 'O', 'O', 'X', ' ', ' ', 'X', 'O', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'O' },
 			{ 'O', 'X', 'X', ' ', ' ', 'X', 'O', 'X', ' ', 'X', 'O', 'X', ' ', 'X', 'O' },
 			{ 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X' },
-			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'O', '>' },
+			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '>' },
 			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ 'O', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
 			{ 'O', 'O', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },

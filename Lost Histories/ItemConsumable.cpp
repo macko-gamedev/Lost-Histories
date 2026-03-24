@@ -16,7 +16,11 @@ string ItemConsumable::toString()
 	string convertedText;
 	if (this->type == "ATK")
 	{
-		convertedText = "   x" + to_string(this->getQuantity()) + " " + this->name + " (" + to_string(this->rarity) + "*)\n   Desc: " + this->desc + "\n   Increases damage of next MELEE Attack by " + to_string(int((this->amount * 100) - 100)) + "%";
+		convertedText = "   x" + to_string(this->getQuantity()) + " " + this->name + " (" + to_string(this->rarity) + "*)\n   Desc: " + this->desc + "\n   Increases damage of next melee attack by " + to_string(int((this->amount * 100) - 100)) + "%";
+	}
+	else if (this->type == "MAG")
+	{
+		convertedText = "   x" + to_string(this->getQuantity()) + " " + this->name + " (" + to_string(this->rarity) + "*)\n   Desc: " + this->desc + "\n   Increases damage of next magic attack by " + to_string(int((this->amount * 100) - 100)) + "%";
 	}
 	else
 	{
