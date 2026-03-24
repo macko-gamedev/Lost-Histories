@@ -372,8 +372,10 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '>')
 		{
 			DUNGEON_Current_Dungeon->changeDungeonRoom(1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland") play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
-
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5))
+			{
+				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
+			}
 		}
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '*')
 		{
@@ -542,6 +544,31 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
 			}
+			if (DUNGEON_Current_Dungeon->getDungeonRoom() == 4)
+			{
+				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
+				{
+					bool BOOL_Has_Key = false;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getName() == "Atlantis F4 Key")
+						{
+							BOOL_Has_Key = true;
+						}
+					}
+					if (BOOL_Has_Key)
+					{
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+						DUNGEON_Current_Dungeon->changePosY(1);
+					}
+					else
+					{
+						cout << "   Requires Atlantis F4 Key";
+						this_thread::sleep_for(chrono::seconds(2));
+					}
+				}
+			}
 		}
 	}
 	if (STR_Dialogue_Choice == "a")
@@ -564,7 +591,10 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '<')
 		{
 			DUNGEON_Current_Dungeon->changeDungeonRoom(-1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland") play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4))
+			{
+				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
+			}
 		}
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '*')
 		{
@@ -606,15 +636,46 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   Duty Soldier > Aha! Another worthless twat trying to get in our way!";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   There seems to be a key dangling on his belt";
+					cout << "   Yourself > There seems to be a key dangling on his belt";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   Perhaps I need to grab it by force";
+					cout << "   Yourself > Perhaps I need to grab it by force";
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   Duty Soldier > Come here little one let me put you out of your misery...";
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   " << PLAYER_Player.getName() << " > Bring it!";
 					_getch(); cout << "\33[2K\r" << flush;;
 					Enemy ENEMY_New_Enemy = Enemy("Duty Soldier", 12, 384, 67, { Skill("Flame"), Skill("Zap"), Skill("Zapao"), Skill("Blight")}, new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3), true, 37);
+					play_audio("Dungeon Mini Boss");
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+				}
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
+			{
+				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 4) // Reanimated Jellyfisherman Mini Boss, drops key used to advance
+				{
+					play_audio("Encounter");
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Yourself > Heyyyy, could you like lowkey gimme that key?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > ...";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > *gargling*";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > You beat that mermaid thingy?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > Bloody hell! That subject was useless!";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > Well behold! Our 'newest' creation!";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > We dragged the dead corpses of one of the many civilizations that used to inhabit here";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   British Soldier > Isn't that right, Jellyfisherman?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Reanimated Jellyfisherman > *gargles more*";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   Reanimated Jellyfisherman > *shoots bolts towards " << PLAYER_Player.getName() << "*";
+					_getch(); cout << "\33[2K\r" << flush;;
+					Enemy ENEMY_New_Enemy = Enemy("Reanimated Jellyfisherman", 25, 498, 174, { Skill("Splashan"), Skill("Splashadia"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Hexo"), Skill("Blighta") }, new Item("Atlantis F4 Key", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 28);
 					play_audio("Dungeon Mini Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
@@ -1235,9 +1296,13 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Atlantis Ruins F1" || to_play == "Atlantis Ruins F2" || to_play == "Atlantis Ruins F3")
+	else if (to_play == "Atlantis Ruins F1" || to_play == "Atlantis Ruins F2" || to_play == "Atlantis Ruins F3" || to_play == "Atlantis Ruins F4")
 	{
-		PlaySound(TEXT("music/atlantis_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/atlantis_above_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Atlantis Ruins F5" || to_play == "Atlantis Ruins F6" || to_play == "Atlantis Ruins F7")
+	{
+		PlaySound(TEXT("music/atlantis_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Battle")
 	{
@@ -1295,9 +1360,9 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 		cout <<
 			"\n   /help      : Displays this menu!" <<
 			"\n\n   items      : Displays all of your items + melee weapon" <<
-			"\n\n   stats      : Displays your PLAYER_Player stats" <<
+			"\n\n   stats      : Displays your stats" <<
 			"\n\n   travel     : Quick travel between dungeons" <<
-			"\n\n   debugfight : Initiate a fight at Lv 99 for testing purposes" << endl;
+			"\n\n   debugfight : Initiate a fight at Lv 99 for testing purposes\n\n";
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
