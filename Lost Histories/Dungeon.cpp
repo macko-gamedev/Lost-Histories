@@ -120,6 +120,10 @@ void Dungeon::elementSetter(Enemy& ENEMY_Enemy)
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "Wk"}, {"Curse", "Rst"}, {"Bless", "-"} });
 	}
+	else if (ENEMY_Enemy.getName() == "British Soldier")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Wk"}, {"Bless", "Nul"} });
+	}
 	// Rare Enemies
 	else if (ENEMY_Enemy.getName() == "Gold Fish I")
 	{
@@ -148,7 +152,11 @@ void Dungeon::elementSetter(Enemy& ENEMY_Enemy)
 	}
 	else if (ENEMY_Enemy.getName() == "Radioactive Atlantis Survivor")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Wk"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Radioactive Atlantis Guard")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
 	}
 	// Bosses
 	else if (ENEMY_Enemy.getName() == "Russian Sergeant")
@@ -321,7 +329,7 @@ Enemy Dungeon::newEnemy(Dungeon* DUNGEON_Current_Dungeon)
 			}
 			else if (INT_Enemy_Spawn_Chance > 14)
 			{
-				return Enemy("Reanimated Entity", ((rand() % 6) + 29), ((rand() % 50) + 175), 100, {Skill("Flamao"), Skill("Splashan"), Skill("Freezan"), Skill("Zapao"), Skill("Gustan"), Skill("Hexo"), Skill("Blighta")}, getItemFromLootTable("Reanimated Entity"), false, 67);
+				return Enemy("Reanimated Entity", ((rand() % 6) + 29), ((rand() % 50) + 175), 100, { Skill("Flamao"), Skill("Splashan"), Skill("Freezan"), Skill("Zapao"), Skill("Gustan"), Skill("Hexo"), Skill("Blighta") }, getItemFromLootTable("Reanimated Entity"), false, 67);
 			}
 			else if (INT_Enemy_Spawn_Chance > 6)
 			{
@@ -330,6 +338,40 @@ Enemy Dungeon::newEnemy(Dungeon* DUNGEON_Current_Dungeon)
 			else
 			{
 				return Enemy("Armed Soldier", ((rand() % 4) + 27), 219, 27, { Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Gust"), Skill("Hex") }, getItemFromLootTable("Armed Soldier"), false, 73);
+			}
+		}
+		else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
+		{
+			// Enemy level for this floor: 31-37		Sharkman: 33-37   Reanimated Entity: 31-37   British Soldier: 34-37   Gold Fish: 35
+			int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
+			if (INT_Enemy_Spawn_Chance > 18)
+			{
+				return Enemy("Gold Fish II", 35, 250, 0, { }, getItemFromLootTable("Gold Fish II"), true, 10);
+			}
+			else if (INT_Enemy_Spawn_Chance > 14)
+			{
+				return Enemy("Reanimated Entity", ((rand() % 8) + 31), ((rand() % 50) + 175), 100, { Skill("Flamao"), Skill("Splashan"), Skill("Freezan"), Skill("Zapao"), Skill("Gustan"), Skill("Hexo"), Skill("Blighta") }, getItemFromLootTable("Reanimated Entity"), false, 67);
+			}
+			else if (INT_Enemy_Spawn_Chance > 6)
+			{
+				return Enemy("Sharkman", ((rand() % 5) + 33), 192, 156, { Skill("Splashan"), Skill("Mesplashan"), Skill("Gustan"), Skill("Blighta") }, getItemFromLootTable("Sharkman"), false, 56);
+			}
+			else
+			{
+				return Enemy("British Soldier", ((rand() % 4) + 34), 241, 27, { Skill("Gustan"), Skill("Zapao"), Skill("Blighta"), Skill("Blightaon"), Skill("Heal") }, getItemFromLootTable("British Soldier"), false, 84);
+			}
+		}
+		else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 7)
+		{
+			// Enemy level for this floor: 36-40		British Soldier: 36-40   Gold Fish: 35
+			int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
+			if (INT_Enemy_Spawn_Chance > 15)
+			{
+				return Enemy("Gold Fish II", 35, 250, 0, { }, getItemFromLootTable("Gold Fish II"), true, 10);
+			}
+			else
+			{
+				return Enemy("British Soldier", ((rand() % 5) + 36), 241, 27, { Skill("Gustan"), Skill("Zapao"), Skill("Blighta"), Skill("Blightaon"), Skill("Heal") }, getItemFromLootTable("British Soldier"), false, 84);
 			}
 		}
 	}
@@ -440,6 +482,18 @@ Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Diamond", "A natural chunk of diamond from the earth", 5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Emerald", "A natural chunk of raw emerald from the earth", 5));
 	}
+	else if (STR_Enemy_Name == "British Soldier")
+	{
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("£10 Coin", "Since when were £10 coins a thing?", 3));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power moderately", 3, "ATK", 2.5));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration moderately", 3, "MAG", 2.5));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Breach Hammer", "Designed for house raids", 4, 139));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Overpower Capsules", "Drugs used to increase users power and concentration moderately", 4, "ATK/MAG", 2.5));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 4));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 4));
+		}
 	else if (STR_Enemy_Name == "Gold Fish I")
 	{
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Box of Matches", "Withered box of Fire matches, can they still alight?", 2, Skill("Meflame")));

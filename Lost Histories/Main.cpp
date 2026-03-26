@@ -812,13 +812,13 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			cout << "\n\n";
 			system("pause");
 		}
-		if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX()) == '?')
+		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX()) == '?')
 		{
-			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
-			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
-			DUNGEON_Current_Dungeon->changePosX(1);
 			if (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
 			{
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
+				DUNGEON_Current_Dungeon->changePosX(1);
 				Enemy ENEMY_New_Enemy = Enemy("Radioactive Atlantis Guard", 30, 813, 214, { Skill("Meflamao"), Skill("Mesplashan"), Skill("Zapao"), Skill("Hexaon"), Skill("Frei"), Skill("Heal") }, new Item("Atlantis F5 Key B", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 95);
 				play_audio("Dungeon Mini Boss");
 				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
@@ -1047,6 +1047,12 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 							else if (ITEM_Item->getType() == "MAG")
 							{
 								cout << "\n   You used " << ITEM_Item->getName() << " increasing your next magic attack damage by " << round((ITEM_Item->getAmount()) * 100 - 100) << "%";
+								PLAYER_Player.setMagicAttackMultiplier(ITEM_Item->getAmount());
+							}
+							else if (ITEM_Item->getType() == "ATK/MAG")
+							{
+								cout << "\n   You used " << ITEM_Item->getName() << " increasing your next melee and magic attack damage by " << round((ITEM_Item->getAmount()) * 100 - 100) << "%";
+								PLAYER_Player.setMeleeAttackMultiplier(ITEM_Item->getAmount());
 								PLAYER_Player.setMagicAttackMultiplier(ITEM_Item->getAmount());
 							}
 							ITEM_Item->increaseQuantity(-1);

@@ -7,7 +7,7 @@
 DungeonGlacier::DungeonGlacier()
 {
 	this->STR_Dungeon_Name = "Glacier Wasteland";
-	this->INT_Dungeon_Room = 1;
+	this->INT_Dungeon_Room = 6;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 10;
 	this->VEC_Dungeon_Map =
@@ -104,10 +104,10 @@ DungeonGlacier::DungeonGlacier()
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' }, //
 			{ 'O', 'O', 'X', 'X', 'X', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'O' }, //
 			{ 'O', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'O', 'O', 'O' }, //
-			{ 'O', '<', '+', ' ', ' ', '!', ' ', ' ', '!', ' ', ' ', 'X', 'O', 'O', 'O' }, // <    !  !  ! ?
+			{ 'O', '<', ' ', ' ', ' ', '!', ' ', ' ', '!', ' ', ' ', 'X', 'O', 'O', 'O' }, // <    !  !  ! ?
 			{ 'O', 'X', 'X', ' ', ' ', 'X', ' ', 'X', 'X', ' ', ' ', 'X', 'X', 'O', 'O' }, //
 			{ 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'O' }, //
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'X' }, //
+			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', '+', ' ', 'X', 'X' }, //
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', ' ', '?', 'O' }, //
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', 'X', 'X' }, //
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'O' }, //
