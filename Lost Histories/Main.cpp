@@ -372,7 +372,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '>')
 		{
 			DUNGEON_Current_Dungeon->changeDungeonRoom(1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5))
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7))
 			{
 				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 			}
@@ -594,6 +594,22 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					}
 				}
 			}
+			if (DUNGEON_Current_Dungeon->getDungeonRoom() == 7)
+			{
+				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
+				{ // Reanimated Mermaid Mini Boss, drops key used to advance
+					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+					DUNGEON_Current_Dungeon->changePosY(1);
+					play_audio("Encounter");
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   need to code dialogue";
+					_getch(); cout << "\33[2K\r" << flush;;
+					Enemy ENEMY_New_Enemy = Enemy("Reawoken Guardian of Atlantis", 40, 976, 214, { Skill("Flamao"), Skill("Splashan"), Skill("Splashadia"), Skill("Freezan"), Skill("Hexo"), Skill("Mehexaon"), Skill("Heal")}, new Item("Mysterious Machine Part", "It seems like some sort of part from a machine, maybe this could play a vital part in saving the world?", 4), true, 47);
+					play_audio("Dungeon Main Boss");
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+				}
+			}
 		}
 	}
 	if (STR_Dialogue_Choice == "a")
@@ -616,7 +632,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '<')
 		{
 			DUNGEON_Current_Dungeon->changeDungeonRoom(-1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4))
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6))
 			{
 				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 			}
@@ -924,25 +940,7 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 	this_thread::sleep_for(chrono::seconds(2));
 	if (ITEM_New_Item->isMeleeWeapon() && !BOOL_Item_Dupe)
 	{
-		cout << "\n\n   You currently have " << PLAYER_Player.getMeleeWeapon().getName() << " equipped.\n   Would you like to replace it with " << ITEM_New_Item->getName() << "? [y] or [n]\n\n   Atk: " << PLAYER_Player.getMeleeWeapon().getMeleeDamage() << " --> " << ITEM_New_Item->getMeleeDamage() << "\n   >";
-		string STR_Battle_Choice;
-		cin >> STR_Battle_Choice;
-		while (convert_string_tolower(STR_Battle_Choice) != "y" && convert_string_tolower(STR_Battle_Choice) != "n")
-		{
-			if (convert_string_tolower(STR_Battle_Choice) == "y" || convert_string_tolower(STR_Battle_Choice) == "n") break;
-			cout << "\n   [!] Please choose 'y' or 'n': ";
-			cin >> STR_Battle_Choice;
-		}
-		if (convert_string_tolower(STR_Battle_Choice) == "y")
-		{
-			ItemMelee newPlayerMelee = ItemMelee(ITEM_New_Item->getName(), ITEM_New_Item->getDesc(), ITEM_New_Item->getRarity(), ITEM_New_Item->getMeleeDamage());
-			PLAYER_Player.setMelee(newPlayerMelee);
-			cout << "\n\n   You equipped " << PLAYER_Player.getMeleeWeapon().getName();
-		}
-		else
-		{
-			cout << "\n\n   You decided to keep " << PLAYER_Player.getMeleeWeapon().getName() << " equipped";
-		}
+		cout << "\n\n   You can change your equipped Melee weapon by 'SPACE + items'";
 		this_thread::sleep_for(chrono::seconds(2));
 	}
 }
@@ -1398,9 +1396,13 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/atlantis_above_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Atlantis Ruins F5" || to_play == "Atlantis Ruins F6" || to_play == "Atlantis Ruins F7")
+	else if (to_play == "Atlantis Ruins F5" || to_play == "Atlantis Ruins F6")
 	{
 		PlaySound(TEXT("music/atlantis_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Atlantis Ruins F7")
+	{
+		PlaySound(TEXT("music/atlantis_final_floor.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Battle")
 	{
@@ -1492,7 +1494,12 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 					{
 						if (ITEM_Item->getRarity() == i)
 						{
-							cout << ITEM_Item->toString() << endl << endl;
+							cout << ITEM_Item->toString();
+							if (ITEM_Item->getName() == PLAYER_Player.getMeleeWeapon().getName())
+							{
+								cout << "   [Equipped]";
+							}
+							cout << "\n\n";
 						}
 					}
 				}
@@ -1516,7 +1523,12 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 					{
 						if (ITEM_Item->getRarity() == i && ITEM_Item->isMeleeWeapon())
 						{
-							cout << ITEM_Item->toString() << endl << endl;
+							cout << ITEM_Item->toString();
+							if (ITEM_Item->getName() == PLAYER_Player.getMeleeWeapon().getName())
+							{
+								cout << "   [Equipped]";
+							}
+							cout << "\n\n";
 						}
 					}
 				}
@@ -1596,6 +1608,16 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 			cout << "   > ";
 			getline(cin, STR_Item_Page);
 			STR_Item_Page = convert_string_tolower(STR_Item_Page);
+			for (Item* ITEM_Item : PLAYER_Player.getItems())
+			{
+				if (ITEM_Item->isMeleeWeapon() && convert_string_tolower(ITEM_Item->getName()) == STR_Item_Page)
+				{
+					ItemMelee ITEM_MELEE_Equipping = ItemMelee(ITEM_Item->getName(), ITEM_Item->getDesc(), ITEM_Item->getRarity(), ITEM_Item->getMeleeDamage());
+					PLAYER_Player.setMelee(ITEM_MELEE_Equipping);
+					STR_Item_Page = "weapons";
+					break;
+				}
+			}
 			if (STR_Item_Page == "return") break;
 			if (STR_Item_Page != "weapons" && STR_Item_Page != "consumables" && STR_Item_Page != "skills" && STR_Item_Page != "items")
 			{
