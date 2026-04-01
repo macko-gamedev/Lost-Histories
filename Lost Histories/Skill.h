@@ -14,6 +14,7 @@ private:
 	int INT_Health_Gain;
 	int INT_Stamina_Cost;
 	bool BOOL_Single_Target;
+	bool BOOL_Is_Valid_Skill;
 
 public:
 	Skill();
@@ -25,5 +26,6 @@ public:
 	int getStaminaCost();
 	int getHPGain();
 	bool isSingleTarget();
+	bool isValid();
 };
 

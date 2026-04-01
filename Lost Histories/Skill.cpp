@@ -5,9 +5,8 @@ Skill::Skill() { }
 Skill::Skill(string N_NAME)
 {
 	this->STR_Skill_Name = N_NAME;
-
+	this->BOOL_Is_Valid_Skill = true;
 	// All skills which can be obtained
-
 
 	// ATTACK : FIRE
 	if (this->STR_Skill_Name == "Flame")
@@ -18,7 +17,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 6;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Meflame")
+	else if (this->STR_Skill_Name == "Meflame")
 	{
 		this->STR_Skill_Type = "Fire";
 		this->STR_Skill_Desc = "Deal low fire damage to all enemies";
@@ -34,7 +33,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 12;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Meflamao")
+	else if (this->STR_Skill_Name == "Meflamao")
 	{
 		this->STR_Skill_Type = "Fire";
 		this->STR_Skill_Desc = "Deal medium fire damage to all enemies";
@@ -76,7 +75,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 5;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Mesplash")
+	else if (this->STR_Skill_Name == "Mesplash")
 	{
 		this->STR_Skill_Type = "Water";
 		this->STR_Skill_Desc = "Deal low water damage to all enemies";
@@ -92,7 +91,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 10;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Mesplashan")
+	else if (this->STR_Skill_Name == "Mesplashan")
 	{
 		this->STR_Skill_Type = "Water";
 		this->STR_Skill_Desc = "Deal medium water damage to all enemies";
@@ -134,7 +133,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 5;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Mefreeze")
+	else if (this->STR_Skill_Name == "Mefreeze")
 	{
 		this->STR_Skill_Type = "Ice";
 		this->STR_Skill_Desc = "Deal low ice damage to all enemies";
@@ -150,7 +149,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 10;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Mefreezan")
+	else if (this->STR_Skill_Name == "Mefreezan")
 	{
 		this->STR_Skill_Type = "Ice";
 		this->STR_Skill_Desc = "Deal medium ice damage to all enemies";
@@ -184,7 +183,7 @@ Skill::Skill(string N_NAME)
 	}
 
 	// ATTACK : ELECTRIC
-	if (this->STR_Skill_Name == "Zap")
+	else if (this->STR_Skill_Name == "Zap")
 	{
 		this->STR_Skill_Type = "Electric";
 		this->STR_Skill_Desc = "Deal low electric damage to one enemy";
@@ -192,7 +191,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 6;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Mezap")
+	else if (this->STR_Skill_Name == "Mezap")
 	{
 		this->STR_Skill_Type = "Electric";
 		this->STR_Skill_Desc = "Deal low electric damage to all enemies";
@@ -208,7 +207,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 12;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Mezapao")
+	else if (this->STR_Skill_Name == "Mezapao")
 	{
 		this->STR_Skill_Type = "Electric";
 		this->STR_Skill_Desc = "Deal medium electric damage to all enemies";
@@ -250,7 +249,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 5;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Megust")
+	else if (this->STR_Skill_Name == "Megust")
 	{
 		this->STR_Skill_Type = "Wind";
 		this->STR_Skill_Desc = "Deal low wind damage to all enemies";
@@ -266,7 +265,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 10;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Megustan")
+	else if (this->STR_Skill_Name == "Megustan")
 	{
 		this->STR_Skill_Type = "Wind";
 		this->STR_Skill_Desc = "Deal medium wind damage to all enemies";
@@ -300,7 +299,7 @@ Skill::Skill(string N_NAME)
 	}
 
 	// ATTACK : CURSE
-	if (this->STR_Skill_Name == "Hex")
+	else if (this->STR_Skill_Name == "Hex")
 	{
 		this->STR_Skill_Type = "Curse";
 		this->STR_Skill_Desc = "Deal low curse damage to one enemy";
@@ -308,7 +307,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 8;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Mehex")
+	else if (this->STR_Skill_Name == "Mehex")
 	{
 		this->STR_Skill_Type = "Curse";
 		this->STR_Skill_Desc = "Deal low curse damage to all enemies";
@@ -324,7 +323,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 14;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Mehexo")
+	else if (this->STR_Skill_Name == "Mehexo")
 	{
 		this->STR_Skill_Type = "Curse";
 		this->STR_Skill_Desc = "Deal medium curse damage to all enemies";
@@ -357,7 +356,7 @@ Skill::Skill(string N_NAME)
 	}
 
 	// ATTACK : BLESS
-	if (this->STR_Skill_Name == "Blight")
+	else if (this->STR_Skill_Name == "Blight")
 	{
 		this->STR_Skill_Type = "Bless";
 		this->STR_Skill_Desc = "Deal low bless damage to one enemy";
@@ -365,7 +364,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 8;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Meblight")
+	else if (this->STR_Skill_Name == "Meblight")
 	{
 		this->STR_Skill_Type = "Bless";
 		this->STR_Skill_Desc = "Deal low bless damage to all enemies";
@@ -381,7 +380,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 14;
 		this->BOOL_Single_Target = true;
 	}
-	if (this->STR_Skill_Name == "Meblighta")
+	else if (this->STR_Skill_Name == "Meblighta")
 	{
 		this->STR_Skill_Type = "Bless";
 		this->STR_Skill_Desc = "Deal medium bless damage to all enemies";
@@ -414,7 +413,7 @@ Skill::Skill(string N_NAME)
 	}
 
 	// ATTACK : NUCLEAR
-	if (this->STR_Skill_Name == "Frei")
+	else if (this->STR_Skill_Name == "Frei")
 	{
 		this->STR_Skill_Type = "Nuclear";
 		this->STR_Skill_Desc = "Deal low nuclear damage to all enemies";
@@ -422,7 +421,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 20;
 		this->BOOL_Single_Target = false;
 	}
-	if (this->STR_Skill_Name == "Freila")
+	else if (this->STR_Skill_Name == "Freila")
 	{
 		this->STR_Skill_Type = "Nuclear";
 		this->STR_Skill_Desc = "Deal medium nuclear damage to all enemies";
@@ -438,7 +437,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 48;
 		this->BOOL_Single_Target = false;
 	}
-	if (this->STR_Skill_Name == "Death")
+	else if (this->STR_Skill_Name == "Death")
 	{
 		this->STR_Skill_Type = "Nuclear";
 		this->STR_Skill_Desc = "Instantly kill the enemy";
@@ -447,9 +446,8 @@ Skill::Skill(string N_NAME)
 		this->BOOL_Single_Target = true;
 	}
 
-
 	// SUPPORT : HEALING
-	if (this->STR_Skill_Name == "Heal")
+	else if (this->STR_Skill_Name == "Heal")
 	{
 		this->STR_Skill_Type = "Support";
 		this->STR_Skill_Desc = "Restores a small amount of health";
@@ -469,6 +467,10 @@ Skill::Skill(string N_NAME)
 		this->STR_Skill_Desc = "Fully restores your health";
 		this->INT_Health_Gain = 999;
 		this->INT_Stamina_Cost = 32;
+	}
+	else
+	{
+		this->BOOL_Is_Valid_Skill = false;
 	}
 }
 
@@ -504,4 +506,9 @@ int Skill::getHPGain()
 bool Skill::isSingleTarget()
 {
 	return this->BOOL_Single_Target;
+}
+
+bool Skill::isValid()
+{
+	return this->BOOL_Is_Valid_Skill;
 }

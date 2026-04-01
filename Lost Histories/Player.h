@@ -37,6 +37,7 @@ public:
 	string getLocation();
 	vector<Skill> getSkills();
 	void setSkills(vector<Skill> nSkills);
+	void swapSkill(int INDEX_Skill, Skill SKILL_Skill);
 	void setMelee(ItemMelee nMelee);
 	vector<Item*> getItems();
 	map<string, int> getPlayerAttributes();

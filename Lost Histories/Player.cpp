@@ -47,8 +47,13 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 
 	// Skills: Player starts with no VEC_Skills, so just declaring the vector here
 	this->VEC_Skills = { };
-	//VEC_Items.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
-	//VEC_Items.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
+	/*this->VEC_Items.push_back(new ItemSkill("Test 1", "", 1, Skill("Flame")));
+	this->VEC_Items.push_back(new ItemSkill("Test 2", "", 1, Skill("Splash")));
+	this->VEC_Items.push_back(new ItemSkill("Test 3", "", 1, Skill("Zap")));
+	this->VEC_Items.push_back(new ItemSkill("Test 4", "", 1, Skill("Gust")));
+	this->VEC_Items.push_back(new ItemSkill("Test 5", "", 1, Skill("Hex")));
+	this->VEC_Items.push_back(new ItemSkill("Test 6", "", 1, Skill("Blight")));
+	this->VEC_Items.push_back(new ItemSkill("Test 7", "", 1, Skill("Frei")));*/
 }
 
 void Player::getPlayerStats()
@@ -96,6 +101,11 @@ vector<Skill> Player::getSkills()
 void Player::setSkills(vector<Skill> nSkills)
 {
 	this->VEC_Skills = nSkills;
+}
+
+void Player::swapSkill(int INDEX_Skill, Skill SKILL_Skill)
+{
+	this->VEC_Skills[(INDEX_Skill - 1)] = SKILL_Skill;
 }
 
 void Player::setMelee(ItemMelee nMelee)
@@ -218,22 +228,25 @@ void Player::setItems(vector<Item*> nItems)
 
 void Player::update()
 {
-	this->setSkills({ });
-	vector<Skill> VEC_Items_With_Skill = { };
-	for (int i = 0; i < VEC_Element_Names.size(); i++)
+	if (VEC_Skills.size() < 8)
 	{
-		for (Item* ITEM_Item : this->getItems())
+		this->setSkills({});
+		vector<Skill> VEC_Items_With_Skill = { };
+		for (int i = 0; i < VEC_Element_Names.size(); i++)
 		{
-			if (ITEM_Item->canInheritSkill())
+			for (Item* ITEM_Item : this->getItems())
 			{
-				if (ITEM_Item->getSkill().getType() == VEC_Element_Names[i])
+				if (ITEM_Item->canInheritSkill())
 				{
-					VEC_Items_With_Skill.push_back(ITEM_Item->getSkill());
+					if (ITEM_Item->getSkill().getType() == VEC_Element_Names[i])
+					{
+						VEC_Items_With_Skill.push_back(ITEM_Item->getSkill());
+					}
 				}
 			}
 		}
+		this->setSkills(VEC_Items_With_Skill);
 	}
-	this->setSkills(VEC_Items_With_Skill);
 }
 
 void Player::setLevelStats(int N_Level, int N_Health, int N_Stamina)

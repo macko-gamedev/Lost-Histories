@@ -107,7 +107,7 @@ int main()
 	while (STR_Intro_Choice != "y" && STR_Intro_Choice != "n")
 	{
 		system("CLS");
-		cout << "\n   You are playing Prototype 1\n   . This build includes Dungeon 1 and up to Floor 3 of Dungeon 2\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
+		cout << "\n   You are playing Prototype 2\n   . This build includes Dungeon 1, Dungeon 2 and up to Floor 3 of Dungeon 3\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
 		getline(cin, STR_Intro_Choice);
 		if (STR_Intro_Choice == "y")
 		{
@@ -1694,9 +1694,21 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 					{
 						if (ITEM_Item->getRarity() == i && ITEM_Item->canInheritSkill())
 						{
-							cout << ITEM_Item->toString() << endl << endl;
+							cout << ITEM_Item->toString();
+							for (int i = 0; i < PLAYER_Player.getSkills().size(); i++)
+							{
+								if (ITEM_Item->getSkill().getName() == PLAYER_Player.getSkills()[i].getName())
+								{
+									cout << "   [" << (i + 1) << "]";
+								}
+							}
+							cout << "\n\n";
 						}
 					}
+				}
+				if (PLAYER_Player.getSkills().size() == 8)
+				{
+					cout << "   To change skills, type '(1-8):(Skill Name)'\n";
 				}
 			}
 
@@ -1729,7 +1741,30 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 			// Takes player input to determine which page to display, or to back out of the Items menu enirely
 			cout << "   > ";
 			getline(cin, STR_Item_Page);
+
+			// Checks to see if player switches skills
+			// ex:   5:Healan
+			int TEMP_Skill_Placement = (STR_Item_Page[0] - 48);
+			if ((TEMP_Skill_Placement > 0 && TEMP_Skill_Placement < 9) && PLAYER_Player.getSkills().size() == 8)
+			{
+				string TEMP_Skill_Name = "";
+				for (int i = 2; i < STR_Item_Page.size(); i++)
+				{
+					TEMP_Skill_Name += STR_Item_Page[i];
+				}
+				// Checks if the input is Valid
+				Skill TEMP_Skill = Skill(TEMP_Skill_Name);
+				if (TEMP_Skill.isValid())
+				{
+					// Swap skills at PLAYER_Player: VEC_Skills[TEMP_Skill_Placement] with TEMP_Skill
+					PLAYER_Player.swapSkill(TEMP_Skill_Placement, TEMP_Skill);
+				}
+				STR_Item_Page = "skills";
+			}
+
 			STR_Item_Page = convert_string_tolower(STR_Item_Page);
+
+			// Checks to see if player switches melee
 			for (Item* ITEM_Item : PLAYER_Player.getItems())
 			{
 				if (ITEM_Item->isMeleeWeapon() && convert_string_tolower(ITEM_Item->getName()) == STR_Item_Page)
@@ -1740,6 +1775,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 					break;
 				}
 			}
+
 			if (STR_Item_Page == "return") break;
 			if (STR_Item_Page != "weapons" && STR_Item_Page != "consumables" && STR_Item_Page != "skills" && STR_Item_Page != "items")
 			{
@@ -1771,6 +1807,12 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 			cout << "|";
 		}
 		cout << endl << endl;
+		cout << "   Equipped Skills:";
+		for (int i = 0; i < PLAYER_Player.getSkills().size(); i++)
+		{
+			cout << "\n.  " << PLAYER_Player.getSkills()[i].getName();
+		}
+		cout << "\n\n   Equipped Melee: " << PLAYER_Player.getMeleeWeapon().getName() << endl << endl;
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
