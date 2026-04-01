@@ -49,13 +49,16 @@ Last Updated: 17/03/26 (14:30)
 
  */
 
+// Enumerator for story status, what act the player is in
 enum storyStatus
 {
 	INTRO,
 	ACT_ONE,
 	ACT_TWO,
+	ACT_THREE,
 };
 
+// Enumerator for game status, what game state is the player in
 enum gameStatus
 {
 	DIALOGUE,
@@ -69,7 +72,7 @@ void set_starting_elements(int& weak_element, int& resist_element); // Sets the 
 void show_enemy_stats(Enemy ENEMY_Enemy); // Shows the ENEMY_Enemy's battle stats
 void show_battle_stats(Player PLAYER_Player); // Shows the PLAYER_Player's battle stats (name, hp, sta)
 void show_skill(Player PLAYER_Player, int INDEX_Skill); // Shows the PLAYER_Player's current skill
-void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dungeon*> VEC_Visited_Dungeons, Dungeon*& DUNGEON_Current_Dungeon); // Story PLAYER_Player input
+void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Dungeon*> VEC_Visited_Dungeons, Dungeon*& DUNGEON_Current_Dungeon); // Story PLAYER_Player input
 int main_menu(); // Main menu when the game is executed
 void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY_Enemy); // Battle sequence
 void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEMY_New_Enemy, Dungeon* DUNGEON_Current_Dungeon, storyStatus& ENUM_Story_Status, gameStatus& ENUM_Game_Status, Story& STORY_Story); // Map Movement
@@ -224,6 +227,7 @@ int main()
 	}
 }
 
+// Main Menu
 int main_menu()
 {
 	string STR_Menu_Choice;
@@ -238,7 +242,7 @@ int main_menu()
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
-		cout << "            Prototype 1          " << endl;
+		cout << "             v04_26.01           " << endl;
 		cout << "\n\n";
 		cout << "--> New Game\n--> Load Game\n--> Settings\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
@@ -271,6 +275,7 @@ int main_menu()
 	return 0;
 }
 
+// Outputs the Current Dungeon
 void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 {
 	system("CLS");
@@ -350,49 +355,71 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 	cout << "\n\n\n";
 }
 
+// Controls Player movement
 void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEMY_New_Enemy, Dungeon* DUNGEON_Current_Dungeon, storyStatus& ENUM_Story_Status, gameStatus& ENUM_Game_Status, Story& STORY_Story)
 {
+	// I will only comment for the first IF statement as its the same principal for each movement key
 	if (STR_Dialogue_Choice == "d")
 	{
+		// Checks if the next tile is empty
 		if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == ' ')
 		{
+			// Moves the player to the next tile
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 			DUNGEON_Current_Dungeon->changePosY(1);
 		}
+
+		// Checks if the next tile contains an Enemy (!)
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '!')
 		{
+			// Moves the player to the next tile
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 			DUNGEON_Current_Dungeon->changePosY(1);
+			
+			// Picks an enemy from the Dungeon class to fight
 			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy(DUNGEON_Current_Dungeon);
+
+			// Starts battle
 			play_audio("Dungeon Battle");
 			battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 		}
+
+		// Checks if the next tile changes the Dungeon Room (>)
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '>')
 		{
+			// Changes the Dungeon Room number by 1
 			DUNGEON_Current_Dungeon->changeDungeonRoom(1);
 			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7))
 			{
 				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 			}
 		}
+
+		// Checks if the next tile contains a Chest (*)
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '*')
 		{
+			// Moves the player to the next tile
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 			DUNGEON_Current_Dungeon->changePosY(1);
+
+			// Calls the open_chest function to give the Player a new Item
 			open_chest(PLAYER_Player, DUNGEON_Current_Dungeon);
 			cout << "\n\n";
 			system("pause");
 		}
 
+		// For Mini Bosses and Key Doors
 		if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
 		{
 			if (DUNGEON_Current_Dungeon->getDungeonRoom() == 3)
 			{
+				// Checks to see if the next tile is a Key Door (|)
 				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
 				{
+					// Checks if the Player has the key
 					bool BOOL_Has_Key = false;
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
 					{
@@ -403,12 +430,14 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					}
 					if (BOOL_Has_Key)
 					{
+						// Moves the player to the next tile (by unlocking the Key Door)
 						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 						DUNGEON_Current_Dungeon->changePosY(1);
 					}
 					else
 					{
+						// Outputs the Key which is required
 						cout << "   Requires Glacier F3 Key";
 						this_thread::sleep_for(chrono::seconds(2));
 					}
@@ -416,8 +445,10 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			}
 			else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
 			{
+				// Checks to see if the next tile is a Key Door (|)
 				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
 				{
+					// Checks if the Player has the key
 					bool BOOL_Has_Key = false;
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
 					{
@@ -428,12 +459,14 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					}
 					if (BOOL_Has_Key)
 					{
+						// Moves the player to the next tile (by unlocking the Key Door)
 						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 						DUNGEON_Current_Dungeon->changePosY(1);
 					}
 					else
 					{
+						// Outputs the Key which is required
 						cout << "   Requires Glacier F5 Key";
 						this_thread::sleep_for(chrono::seconds(2));
 					}
@@ -441,11 +474,15 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			}
 			else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
 			{
+				// Checks to see if the next tile is a Mini Boss or Main Boss (?)
 				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
 				{
+					// Moves the player to the next tile
 					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 					DUNGEON_Current_Dungeon->changePosY(1);
+
+					// Initiates dialogue sequence
 					play_audio("Encounter");
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   ??? > Who goes there!?";
@@ -474,9 +511,15 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   Russian Sergeant > Blyat!!";
 					_getch();
+
+					// Assigns the Enemy object a custom Enemy, this being the Main Boss of the dungeon
 					Enemy ENEMY_New_Enemy = Enemy("Russian Sergeant", 15, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex") }, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Mezapao")), true, 56);
+					
+					// Starts battle
 					play_audio("Dungeon Main Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+
+					// Once out of the battle gameplay loop, start dialogue and story between dungeons
 					STORY_Story.startOfDialogue();
 					STORY_Story.increaseDialogueIndex();
 					ENUM_Story_Status = storyStatus::ACT_TWO;
@@ -488,6 +531,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		{
 			if (DUNGEON_Current_Dungeon->getDungeonRoom() == 2)
 			{
+				// Checks to see if the next tile is a Key Door (|)
 				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
 				{
 					bool BOOL_Has_Key = false;
@@ -500,21 +544,29 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					}
 					if (BOOL_Has_Key)
 					{
+						// Moves the player to the next tile (by unlocking the Key Door)
 						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 						DUNGEON_Current_Dungeon->changePosY(1);
 					}
 					else
 					{
+						// Outputs the Key which is required
 						cout << "   Requires Atlantis F2 Key";
 						this_thread::sleep_for(chrono::seconds(2));
 					}
 				}
+
+				// Checks to see if the next tile is a Mini Boss or Main Boss (?)
 				else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
-				{ // Reanimated Mermaid Mini Boss, drops key used to advance
+				{ 
+					// Reanimated Mermaid Mini Boss, drops key used to advance
+					// Moves the player to the next tile
 					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 					DUNGEON_Current_Dungeon->changePosY(1);
+
+					// Initiates dialogue sequence
 					play_audio("Encounter");
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   ??? > Who the fuck are you? What are you doing here!?";
@@ -539,13 +591,18 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   British Soldier > Why don't you fight one of our little subjects?";
 					_getch(); cout << "\33[2K\r" << flush;;
+
+					// Assigns the Enemy object a custom Enemy, this being the Mini Boss of floor 2
 					Enemy ENEMY_New_Enemy = Enemy("Reanimated Mermaid", 20, 586, 126, { Skill("Flame"), Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Hexo"), Skill("Blighta")}, new Item("Atlantis F2 Key", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 53);
+
+					// Starts battle
 					play_audio("Dungeon Mini Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
 			}
 			if (DUNGEON_Current_Dungeon->getDungeonRoom() == 4)
 			{
+				// Checks to see if the next tile is a Key Door (|)
 				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
 				{
 					bool BOOL_Has_Key = false;
@@ -558,12 +615,14 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					}
 					if (BOOL_Has_Key)
 					{
+						// Moves the player to the next tile (by unlocking the Key Door)
 						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 						DUNGEON_Current_Dungeon->changePosY(1);
 					}
 					else
 					{
+						// Outputs the Key which is required
 						cout << "   Requires Atlantis F4 Key";
 						this_thread::sleep_for(chrono::seconds(2));
 					}
@@ -571,6 +630,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			}
 			if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
 			{
+				// Checks to see if the next tile is a Key Door (|)
 				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
 				{
 					bool BOOL_Has_Key = false;
@@ -583,12 +643,14 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					}
 					if (BOOL_Has_Key)
 					{
+						// Moves the player to the next tile (by unlocking the Key Door)
 						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 						DUNGEON_Current_Dungeon->changePosY(1);
 					}
 					else
 					{
+						// Outputs the Key which is required
 						cout << "   Requires Atlantis F5 Key B";
 						this_thread::sleep_for(chrono::seconds(2));
 					}
@@ -596,18 +658,32 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			}
 			if (DUNGEON_Current_Dungeon->getDungeonRoom() == 7)
 			{
+				// Checks to see if the next tile is a Mini Boss or Main Boss (?)
 				if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
-				{ // Reanimated Mermaid Mini Boss, drops key used to advance
+				{
+					// Moves the player to the next tile
 					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 					DUNGEON_Current_Dungeon->changePosY(1);
+
+					// Initiates dialogue sequence
 					play_audio("Encounter");
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   need to code dialogue";
 					_getch(); cout << "\33[2K\r" << flush;;
+
+					// Assigns the Enemy object a custom Enemy, this being the Main Boss of the dungeon
 					Enemy ENEMY_New_Enemy = Enemy("Reawoken Guardian of Atlantis", 40, 976, 214, { Skill("Flamao"), Skill("Splashan"), Skill("Splashadia"), Skill("Freezan"), Skill("Hexo"), Skill("Mehexaon"), Skill("Heal")}, new Item("Mysterious Machine Part", "It seems like some sort of part from a machine, maybe this could play a vital part in saving the world?", 4), true, 47);
+
+					// Starts battle
 					play_audio("Dungeon Main Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+
+					// Once out of the battle gameplay loop, start dialogue and story between dungeons
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Story_Status = storyStatus::ACT_THREE;
+					ENUM_Game_Status = gameStatus::DIALOGUE;
 				}
 			}
 		}
@@ -843,11 +919,14 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 	}
 }
 
+// Chest function which grants the player a new Item
 void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 {
+	// Declares a vector containing no objects, this vector changes with dungeon and dungeon room
 	vector<Item*> VEC_Chest_Loot = { };
 	if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
 	{
+		// Default Loot for Dungeon 1
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Old Cross", "An old church cross emitting a blessing aura", 1, Skill("Blight")));
@@ -858,6 +937,7 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")));
 		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, 29));
 
+		// Additional Loot added per Room
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 2)
 		{
 			for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
@@ -881,6 +961,7 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 	}
 	else if(DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
 	{
+		// Default Loot for Dungeon 2
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Half Eaten Sandwich", "Some would call it a penguin classic(s)", 1));
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Crocodile Floaty", "For a nice summers day", 1));
@@ -890,6 +971,8 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
 		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Trident", "Sharp spike-like ends perfect for impaling", 3, 71));
 		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+
+		// Additional Loot added per Room
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 2)
 		{
 			for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Water Balloon", "May annoy some people", 2, Skill("Mesplash")));
@@ -913,8 +996,12 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 			for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
 		}
 	}
+	
+	// Picks a random Item object pointer from the vector
 	Item* ITEM_New_Item = VEC_Chest_Loot[rand() % (VEC_Chest_Loot.size())];
 	bool BOOL_Item_Dupe = false;
+	
+	// Checks if the Item chosen is a duplicate
 	for (Item* ITEM_Item : PLAYER_Player.getItems())
 	{
 		if (ITEM_New_Item->getName() == ITEM_Item->getName())
@@ -927,6 +1014,8 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 	{
 		PLAYER_Player.addItem(ITEM_New_Item);
 	}
+
+	// Outputs the new Item
 	cout << "   Something is shining on the ground...\n\n";
 	this_thread::sleep_for(chrono::seconds(2));
 	cout << "   You found " << ITEM_New_Item->getName() << "!";
@@ -945,6 +1034,7 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 	}
 }
 
+// Battle gameplay loop
 void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY_Enemy)
 {
 	system("CLS");
@@ -1366,6 +1456,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 	}
 }
 
+// Play Music
 void play_audio(string to_play)
 {
 	if (to_play == "Glacier Wasteland F1")
@@ -1430,6 +1521,7 @@ void play_audio(string to_play)
 	}
 }
 
+// Converts strings to LOWERCASE
 string convert_string_tolower(string text)
 {
 	string converted_text;
@@ -1441,6 +1533,7 @@ string convert_string_tolower(string text)
 	return converted_text;
 }
 
+// Converts strings to UPPERCASE
 string convert_string_toupper(string text)
 {
 	string converted_text;
@@ -1452,10 +1545,13 @@ string convert_string_toupper(string text)
 	return converted_text;
 }
 
-void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dungeon*> VEC_Visited_Dungeons, Dungeon* &DUNGEON_Current_Dungeon)
+// This function acts upon the player input whilst dungeon exploring
+void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Dungeon*> VEC_Visited_Dungeons, Dungeon* &DUNGEON_Current_Dungeon)
 {
-	if (STR_Dialogue_Choice == "/help") // Displays full list of commands
-	{
+	// Displays the Help menu
+	if (STR_Dialogue_Choice == "/help")
+	{ 
+		// Displays full list of commands
 		system("CLS");
 		cout <<
 			"\n   /help      : Displays this menu!" <<
@@ -1466,7 +1562,9 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	else if (STR_Dialogue_Choice == "items") // Displays all items the PLAYER_Player has
+
+	// Displays the Item menu
+	else if (STR_Dialogue_Choice == "items")
 	{
 		string STR_Item_Page = "all";
 		while (STR_Dialogue_Choice == "items")
@@ -1475,8 +1573,11 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 			cout << "\n   " << PLAYER_Player.getName() << "'s Inventory\n";
 			cout << "   [ " << convert_string_toupper(STR_Item_Page) << " ] ";
 			vector<int> VEC_Rarity_Numbers = { 0, 0, 0, 0, 0 };
+
+			// Displays all parent Item and child Item objects
 			if (STR_Item_Page == "all")
 			{
+				// Calculates how many items of each Rarity
 				for (int i = 1; i < 6; i++)
 				{
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
@@ -1488,6 +1589,8 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 					}
 				}
 				cout << "[ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
+
+				// Outputs the objects sorted by Rarity
 				for (int i = 1; i < 6; i++)
 				{
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
@@ -1504,8 +1607,11 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 					}
 				}
 			}
+
+			// Displays all ItemMelee objects
 			else if (STR_Item_Page == "weapons")
 			{
+				// Calculates how many items of each Rarity
 				for (int i = 1; i < 6; i++)
 				{
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
@@ -1517,6 +1623,8 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 					}
 				}
 				cout << "[ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
+
+				// Outputs the objects sorted by Rarity
 				for (int i = 1; i < 6; i++)
 				{
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
@@ -1533,8 +1641,11 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 					}
 				}
 			}
+
+			// Displays all ItemConsumable objects
 			else if (STR_Item_Page == "consumables")
 			{
+				// Calculates how many items of each Rarity
 				for (int i = 1; i < 6; i++)
 				{
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
@@ -1546,6 +1657,8 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 					}
 				}
 				cout << "[ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
+				
+				// Outputs the objects sorted by Rarity
 				for (int i = 1; i < 6; i++)
 				{
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
@@ -1557,19 +1670,24 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 					}
 				}
 			}
+
+			// Displays all ItemSkill objects
 			else if (STR_Item_Page == "skills")
 			{
+				// Calculates how many items of each Rarity
 				for (int i = 1; i < 6; i++)
 				{
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
 					{
-						if (ITEM_Item->getRarity() == i && ITEM_Item->canInheritSkill())
+						if (ITEM_Item->getRarity() == i && ITEM_Item->canInheritSkill()) 
 						{
 							VEC_Rarity_Numbers[(i - 1)] = VEC_Rarity_Numbers[(i - 1)] + ITEM_Item->getQuantity();
 						}
 					}
 				}
 				cout << "[ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
+
+				// Outputs the objects sorted by Rarity
 				for (int i = 1; i < 6; i++)
 				{
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
@@ -1581,6 +1699,8 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 					}
 				}
 			}
+
+			// Displays all Item parent objects
 			else if (STR_Item_Page == "items")
 			{
 				for (int i = 1; i < 6; i++)
@@ -1605,6 +1725,8 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 					}
 				}
 			}
+
+			// Takes player input to determine which page to display, or to back out of the Items menu enirely
 			cout << "   > ";
 			getline(cin, STR_Item_Page);
 			STR_Item_Page = convert_string_tolower(STR_Item_Page);
@@ -1625,7 +1747,9 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 			}
 		}
 	}
-	else if (STR_Dialogue_Choice == "stats") // Displays the players levelling stats
+
+	// Displays the Player Stat's menu
+	else if (STR_Dialogue_Choice == "stats")
 	{
 		system("CLS");
 		cout << "\n   " << PLAYER_Player.getName() << "\n";
@@ -1650,8 +1774,12 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
-	else if (STR_Dialogue_Choice == "travel") // Quick travel
+
+	// Displays the Travel menu
+	else if (STR_Dialogue_Choice == "travel")
 	{
+		// Checks to see if any dungeons have been completed
+		// Travelling unlocks after completing Dungeon 1
 		if (VEC_Visited_Dungeons.size() == 0)
 		{
 			cout << "\033[A" << "\33[2K\r" << endl;
@@ -1664,10 +1792,13 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 			bool BOOL_Is_Valid_Travel = false;
 			int INDEX_Dungeon;
 			string STR_Dungeon_Choice;
+			// Validation
 			while (!BOOL_Is_Valid_Travel)
 			{
 				system("CLS");
 				cout << "\n   Where would you like to go?\n\n";
+
+				// Outputs each dungeon name
 				for (Dungeon* DUNGEON_Dungeon : VEC_Visited_Dungeons)
 				{
 					cout << "   " << DUNGEON_Dungeon->getDungeonName() << " (F" << DUNGEON_Dungeon->getDungeonRoom() << ")" << endl << endl;
@@ -1679,9 +1810,10 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 				{
 					if (convert_string_tolower(STR_Dungeon_Choice) == convert_string_tolower(DUNGEON_Dungeon->getDungeonName()))
 					{
-
+						// Updates the Current Dungeon from the Vector
 						BOOL_Is_Valid_Travel = true;
 						VEC_Visited_Dungeons[INDEX_Dungeon] = DUNGEON_Current_Dungeon;
+						// Sets the Current Dungeon to the one chosen from the Vector
 						DUNGEON_Current_Dungeon = DUNGEON_Dungeon;
 						system("CLS");
 						cout << "\n   Travelling to " << DUNGEON_Dungeon->getDungeonName();
@@ -1693,8 +1825,10 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 				}
 			}
 		}
-	}
-	else if (STR_Dialogue_Choice == "debugfight") // Initiates a secret fight against the creator
+	} 
+	
+	// Initiates a secret fight against the creator
+	else if (STR_Dialogue_Choice == "debugfight")
 	{
 		Enemy TEMP_New_Enemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true, 218);
 		PLAYER_Player.setSkills({ Skill("Flamadia"), Skill("Splashadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hexaon"), Skill("Healadia") });
@@ -1710,6 +1844,7 @@ void dialogue_input(Player PLAYER_Player, string STR_Dialogue_Choice, vector<Dun
 	}
 }
 
+// Sets the starting elements for the Player: 1 Weak and 1 Resistant
 void set_starting_elements(int& weak_element, int& resist_element)
 {
 	bool BOOL_Valid_Option = false;
@@ -1799,6 +1934,7 @@ void set_starting_elements(int& weak_element, int& resist_element)
 	}
 }
 
+// Outputs Enemy's name, HP, STA and Elements
 void show_enemy_stats(Enemy ENEMY_Enemy)
 {
 	cout << "\n   " << ENEMY_Enemy.getName() << " (Lv " << ENEMY_Enemy.getLevel() << ")" << endl;
@@ -1810,6 +1946,7 @@ void show_enemy_stats(Enemy ENEMY_Enemy)
 	}
 }
 
+// Outputs Player's name, HP and STA
 void show_battle_stats(Player PLAYER_Player)
 {
 	system("CLS");
@@ -1817,6 +1954,7 @@ void show_battle_stats(Player PLAYER_Player)
 	cout << "\n   HP: " << PLAYER_Player.getHealth() << " / " << PLAYER_Player.getMaxHealth() << " | STA: " << PLAYER_Player.getStamina() << " / " << PLAYER_Player.getMaxStamina() << endl << endl;
 }
 
+// Outputs a specific Skill whilst in battle
 void show_skill(Player PLAYER_Player, int INDEX_Skill)
 {
 	vector<Skill> TEMP_Player_Skills = PLAYER_Player.getSkills();
