@@ -56,6 +56,14 @@ Story::Story(string N_Player_Name)
 		{ "You can hear faint shouting from within" },
 		{ "Yourself > I may encounter a problem along the way" },
 		{ "Yourself > By the sounds of it, the next room..." },
+		{ "END DIALOGUE" },
+		{ "..." },
+		{ "need to code" },
+		{ "END DIALOGUE" },
+		{ "The entrance breeze is a painful cold" },
+		{ "Yourself > This facility, how is it still operational?" },
+		{ "Yourself > Perhaps this machine part could some in handy somewhere" },
+		{ "Yourself > I should look around" },
 		{ "END DIALOGUE" }
 	};
 	this->INDEX_Dialogue = 1;

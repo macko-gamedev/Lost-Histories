@@ -23,7 +23,6 @@ public:
 	int getDungeonRoom();
 	int getPosX();
 	int getPosY();
-	Item* getItemFromLootTable(string STR_Enemy_Name);
 	void changeDungeonRoom(int INT_Amount);
 	void setPosition(int INT_Set_Room, int INT_Set_X, int INT_Set_Y, char CHAR_Set_Icon);
 	void setPosX(int x);
@@ -34,5 +33,6 @@ public:
 	void virtual fillWithEnemies();
 	void virtual fillWithChests();
 	Enemy newEnemy(Dungeon* DUNGEON_Current_Dungeon);
+	virtual Item* getItemFromLootTable(string STR_Enemy_Name);
 };
 

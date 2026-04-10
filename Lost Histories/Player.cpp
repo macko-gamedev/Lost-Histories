@@ -47,13 +47,6 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 
 	// Skills: Player starts with no VEC_Skills, so just declaring the vector here
 	this->VEC_Skills = { };
-	/*this->VEC_Items.push_back(new ItemSkill("Test 1", "", 1, Skill("Flame")));
-	this->VEC_Items.push_back(new ItemSkill("Test 2", "", 1, Skill("Splash")));
-	this->VEC_Items.push_back(new ItemSkill("Test 3", "", 1, Skill("Zap")));
-	this->VEC_Items.push_back(new ItemSkill("Test 4", "", 1, Skill("Gust")));
-	this->VEC_Items.push_back(new ItemSkill("Test 5", "", 1, Skill("Hex")));
-	this->VEC_Items.push_back(new ItemSkill("Test 6", "", 1, Skill("Blight")));
-	this->VEC_Items.push_back(new ItemSkill("Test 7", "", 1, Skill("Frei")));*/
 }
 
 void Player::getPlayerStats()

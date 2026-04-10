@@ -375,6 +375,26 @@ Enemy Dungeon::newEnemy(Dungeon* DUNGEON_Current_Dungeon)
 			}
 		}
 	}
+	else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
+	{
+		if (DUNGEON_Current_Dungeon->getDungeonRoom() == 1)
+		{
+			// Enemy level for this floor: 38-44		
+			int INT_Enemy_Spawn_Chance = (rand() % 10) + 1;
+			if (INT_Enemy_Spawn_Chance == 10)
+			{
+				return Enemy("Gold Fish I", 20, 150, 0, { }, getItemFromLootTable("Gold Fish I"), true, 10);
+			}
+			else if (INT_Enemy_Spawn_Chance > 5)
+			{
+				return Enemy("Lab Fish", ((rand() % 3) + 16), 125, 109, { Skill("Freezan"), Skill("Zapao"), Skill("Mezapao"), Skill("Hex") }, getItemFromLootTable("Lab Fish"), false, 33);
+			}
+			else
+			{
+				return Enemy("Patrol Soldier", ((rand() % 3) + 14), 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, getItemFromLootTable("Patrol Soldier"), false, 48);
+			}
+		}
+	}
 }
 
 Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)

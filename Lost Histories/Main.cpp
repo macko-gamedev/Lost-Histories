@@ -7,6 +7,7 @@
 #include "ItemMelee.h"
 #include "DungeonGlacier.h"
 #include "DungeonAtlantis.h"
+#include "DungeonFacility.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -189,6 +190,40 @@ int main()
 		}
 		play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 
+		while (ENUM_Story_Status == storyStatus::ACT_THREE && ENUM_Game_Status == gameStatus::DIALOGUE)
+		{
+			clock_t start = clock();
+
+			cout << "\n   " << STORY_Story.getDialogue() << endl;
+			STORY_Story.increaseDialogueIndex();
+			if (STORY_Story.getDialogue() == "END DIALOGUE")
+			{
+				STORY_Story.endOfDialogue();
+			}
+			_getch();
+			clock_t end = clock();
+			int ms_duration = end - start;
+			int ms_remaining = 33 - ms_duration;
+			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
+
+			if (STORY_Story.isEvent())
+			{
+				// DUNGEON 3: FACILITY
+				DUNGEON_Current_Dungeon->fillWithEnemies();
+				DUNGEON_Current_Dungeon->fillWithChests();
+				VEC_Visited_Dungeons[1] = DUNGEON_Current_Dungeon;
+				DUNGEON_Current_Dungeon = new DungeonFacility();
+				DUNGEON_Current_Dungeon->fillWithEnemies();
+				DUNGEON_Current_Dungeon->fillWithChests();
+				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+				STORY_Story.startOfDialogue();
+				STORY_Story.increaseDialogueIndex();
+				ENUM_Game_Status = gameStatus::DUNGEON;
+				break;
+			}
+		}
+		play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
+
 		while (ENUM_Game_Status == gameStatus::DUNGEON)
 		{
 			clock_t start = clock();
@@ -230,6 +265,7 @@ int main()
 // Main Menu
 int main_menu()
 {
+	play_audio("Menu");
 	string STR_Menu_Choice;
 	while (STR_Menu_Choice != "new game" && STR_Menu_Choice != "load game" && STR_Menu_Choice != "credits" && STR_Menu_Choice != "settings" && STR_Menu_Choice != "quit")
 	{
@@ -242,7 +278,7 @@ int main_menu()
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
-		cout << "             v04_26.01           " << endl;
+		cout << "             v04_26.02           " << endl;
 		cout << "\n\n";
 		cout << "--> New Game\n--> Load Game\n--> Settings\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
@@ -509,7 +545,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					_getch(); cout << "\33[2K\r" << flush;;
 					cout << "   " << PLAYER_Player.getName() << " > Huh? Prove to you what?";
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   Russian Sergeant > Blyat!!";
+					cout << "   Russian Sergeant > This...";
 					_getch();
 
 					// Assigns the Enemy object a custom Enemy, this being the Main Boss of the dungeon
@@ -673,7 +709,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					_getch(); cout << "\33[2K\r" << flush;;
 
 					// Assigns the Enemy object a custom Enemy, this being the Main Boss of the dungeon
-					Enemy ENEMY_New_Enemy = Enemy("Reawoken Guardian of Atlantis", 40, 976, 214, { Skill("Flamao"), Skill("Splashan"), Skill("Splashadia"), Skill("Freezan"), Skill("Hexo"), Skill("Mehexaon"), Skill("Heal")}, new Item("Mysterious Machine Part", "It seems like some sort of part from a machine, maybe this could play a vital part in saving the world?", 4), true, 47);
+					Enemy ENEMY_New_Enemy = Enemy("Reawoken Guardian of Atlantis", 35, 976, 214, { Skill("Flamao"), Skill("Splashan"), Skill("Splashadia"), Skill("Freezan"), Skill("Hexo"), Skill("Mehexaon"), Skill("Heal")}, new Item("Mysterious Machine Part", "It seems like some sort of part from a machine, maybe this could play a vital part in saving the world?", 4), true, 47);
 
 					// Starts battle
 					play_audio("Dungeon Main Boss");
@@ -984,7 +1020,7 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 3)
 		{
 			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
-			for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemMelee("Royal Tridant", "Tridant yielded by the Old Royal Gaurds of Atlantis", 4, 103));
+			for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemMelee("Royal Trident", "Trident yielded by the Old Royal Gaurds of Atlantis", 4, 103));
 		}
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 4)
 		{
@@ -995,6 +1031,19 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		{
 			for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
 		}
+	}
+	else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
+	{
+		// Default Loot for Dungeon 2
+		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
+		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Half Eaten Sandwich", "Some would call it a penguin classic(s)", 1));
+		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Crocodile Floaty", "For a nice summers day", 1));
+		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Vial of Ink", "An old vial with ink emitting a curseful aura", 1, Skill("Hex")));
+		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
+		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Rusty Anchor", "A ship's anchor mainly covered in rust", 2, 56));
+		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Trident", "Sharp spike-like ends perfect for impaling", 3, 71));
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
 	}
 	
 	// Picks a random Item object pointer from the vector
@@ -1459,7 +1508,11 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 // Play Music
 void play_audio(string to_play)
 {
-	if (to_play == "Glacier Wasteland F1")
+	if (to_play == "Menu")
+	{
+		PlaySound(TEXT("music/main_menu.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Glacier Wasteland F1")
 	{
 		PlaySound(TEXT("music/glacier_floor_1.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
@@ -1479,9 +1532,9 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/glacier_floor_6.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Glacier Wasteland F6")
+	else if (to_play == "Glacier Wasteland F6" || to_play == "Atlantis Ruins F7")
 	{
-		PlaySound(TEXT("music/glacier_floor_5.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/dungeon_final_floor.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Atlantis Ruins F1" || to_play == "Atlantis Ruins F2" || to_play == "Atlantis Ruins F3" || to_play == "Atlantis Ruins F4")
 	{
@@ -1491,13 +1544,13 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/atlantis_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Atlantis Ruins F7")
+	else if (to_play == "Facility F1" || to_play == "Facility F2" || to_play == "Facility F3" || to_play == "Facility F4")
 	{
-		PlaySound(TEXT("music/atlantis_final_floor.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/facility_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Battle")
 	{
-		PlaySound(TEXT("music/dungeon_battle.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/dungeon_battle_custom.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Mini Boss")
 	{
@@ -1873,7 +1926,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 	else if (STR_Dialogue_Choice == "debugfight")
 	{
 		Enemy TEMP_New_Enemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true, 218);
-		PLAYER_Player.setSkills({ Skill("Flamadia"), Skill("Splashadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Hexaon"), Skill("Healadia") });
+		PLAYER_Player.setSkills({ Skill("Flamadia"), Skill("Splashadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Freiladia"), Skill("Healadia") });
 		PLAYER_Player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
 		PLAYER_Player.setLevelStats(99, 826, 454);
 		play_audio("Macko Fight");
