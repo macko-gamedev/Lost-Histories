@@ -415,7 +415,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			DUNGEON_Current_Dungeon->changePosY(1);
 			
 			// Picks an enemy from the Dungeon class to fight
-			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy(DUNGEON_Current_Dungeon);
+			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy();
 
 			// Starts battle
 			play_audio("Dungeon Battle");
@@ -737,7 +737,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1), '+');
 			DUNGEON_Current_Dungeon->changePosY(-1);
-			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy(DUNGEON_Current_Dungeon);
+			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy();
 			play_audio("Dungeon Battle");
 			battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 		}
@@ -900,7 +900,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() - 1), DUNGEON_Current_Dungeon->getPosX(), '+');
 			DUNGEON_Current_Dungeon->changePosX(-1);
-			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy(DUNGEON_Current_Dungeon);
+			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy();
 			play_audio("Dungeon Battle");
 			battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 		}
@@ -927,7 +927,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
 			DUNGEON_Current_Dungeon->changePosX(1);
-			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy(DUNGEON_Current_Dungeon);
+			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy();
 			play_audio("Dungeon Battle");
 			battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 		}
@@ -1403,7 +1403,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			play_audio("Victory");
 			float FLT_EXP_Earned;
 			bool BOOL_Item_Dupe = false;
-			if (ENEMY_Enemy.getName() == "Gold Fish I" || ENEMY_Enemy.getName() == "Gold Fish II")
+			if (ENEMY_Enemy.getName() == "Gold Entity I" || ENEMY_Enemy.getName() == "Gold Entity II")
 			{
 				FLT_EXP_Earned = ENEMY_Enemy.getMaxHealth() * 7.7;
 			}

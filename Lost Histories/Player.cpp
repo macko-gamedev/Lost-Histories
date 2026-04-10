@@ -45,7 +45,7 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 	this->VEC_Items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4)};
 	this->ITEM_MELEE_Equipped_Melee = ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4); // Name, Desc, Rarity 1-5, Damage
 
-	// Skills: Player starts with no VEC_Skills, so just declaring the vector here
+	// Skills: Player starts with no skills, so just declaring the vector here
 	this->VEC_Skills = { };
 }
 

@@ -160,3 +160,158 @@ void DungeonGlacier::fillWithChests()
 		}
 	}
 }
+
+void DungeonGlacier::elementSetter(Enemy& ENEMY_Enemy)
+{
+	// Normal Enemies
+	if (ENEMY_Enemy.getName() == "Ice Monster")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Ice Fiend")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Bergmite")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Wasteland Spirit")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Wk"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Patrol Soldier")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+	}
+	// Mini Bosses
+	else if (ENEMY_Enemy.getName() == "Snow Golem")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Duty Soldier")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+	}
+	// Dungeon Boss
+	else if (ENEMY_Enemy.getName() == "Russian Sergeant")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
+	}
+}
+
+Enemy DungeonGlacier::newEnemy()
+{
+	if (this->getDungeonRoom() == 1)
+	{
+		// Enemy level for this floor: 1-3		Ice Monster: 1-3
+		return Enemy("Ice Monster", ((rand() % 3) + 1), 30, 24, { Skill("Freeze") }, getItemFromLootTable("Ice Monster"), false, 14);
+	}
+	else if (this->getDungeonRoom() == 2)
+	{
+		// Enemy Level for this floor: 2-5		Ice Monster: 2-5
+		return Enemy("Ice Monster", ((rand() % 4) + 2), 30, 24, { Skill("Freeze") }, getItemFromLootTable("Ice Monster"), false, 14);
+	}
+	else if (this->getDungeonRoom() == 3)
+	{
+		// Enemy Level for this floor: 3-7		Ice Monster: 3-6	Ice Fiend: 4-7
+		if (((rand() % 5) + 1) > 3)
+		{
+			return Enemy("Ice Fiend", ((rand() % 4) + 4), 45, 18, { Skill("Freeze"), Skill("Freezan") }, getItemFromLootTable("Ice Fiend"), false, 21);
+		}
+		else
+		{
+			return Enemy("Ice Monster", ((rand() % 4) + 3), 30, 24, { Skill("Freeze") }, getItemFromLootTable("Ice Monster"), false, 14);
+		}
+	}
+	else if (this->getDungeonRoom() == 4)
+	{
+		// Enemy Level for this floor: 4-9		Ice Monster: 4-8	Ice Fiend: 5-8	 Bergmite: 5-9
+		int INT_Enemy_Spawn_Chance = (rand() % 10) + 1;
+		if (INT_Enemy_Spawn_Chance > 7)
+		{
+			return Enemy("Bergmite", ((rand() % 5) + 5), 62, 27, { Skill("Freezan"), Skill("Gust") }, getItemFromLootTable("Bergmite"), false, 26);
+		}
+		else if (INT_Enemy_Spawn_Chance > 3)
+		{
+			return Enemy("Ice Fiend", ((rand() % 4) + 5), 45, 18, { Skill("Freeze"), Skill("Freezan") }, getItemFromLootTable("Ice Fiend"), false, 21);
+		}
+		else
+		{
+			return Enemy("Ice Monster", ((rand() % 5) + 4), 30, 24, { Skill("Freeze") }, getItemFromLootTable("Ice Monster"), false, 14);
+		}
+	}
+	else if (this->getDungeonRoom() == 5)
+	{
+		// Enemy Level for this floor: 8-15		Ice Monster: 8-12	Ice Fiend: 9-13	 Bergmite: 10-15   Wasteland Spirit: 12-15
+		int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
+		if (INT_Enemy_Spawn_Chance > 17)
+		{
+			return Enemy("Wasteland Spirit", ((rand() % 4) + 12), 79, 41, { Skill("Flame"), Skill("Freeze"), Skill("Zap"), Skill("Gust") }, getItemFromLootTable("Wasteland Spirit"), false, 34);
+		}
+		if (INT_Enemy_Spawn_Chance > 11)
+		{
+			return Enemy("Bergmite", ((rand() % 6) + 10), 62, 27, { Skill("Freezan"), Skill("Gust") }, getItemFromLootTable("Bergmite"), false, 26);
+		}
+		else if (INT_Enemy_Spawn_Chance > 6)
+		{
+			return Enemy("Ice Fiend", ((rand() % 5) + 9), 45, 18, { Skill("Freeze"), Skill("Freezan") }, getItemFromLootTable("Ice Fiend"), false, 21);
+		}
+		else
+		{
+			return Enemy("Ice Monster", ((rand() % 5) + 8), 30, 24, { Skill("Freeze") }, getItemFromLootTable("Ice Monster"), false, 14);
+		}
+	}
+
+	else if (this->getDungeonRoom() == 6)
+	{
+		// Enemy Level for this floor: 15		Patrol Soldier: 15
+		return Enemy("Patrol Soldier", 15, 146, 27, { Skill("Flamao"), Skill("Meflamao"), Skill("Gustan"), Skill("Blighta") }, new Item("Gun Fragment", "A piece of fragment from a Soldiers gun", 3), true, 48);
+	}
+}
+
+Item* DungeonGlacier::getItemFromLootTable(string STR_Enemy_Name)
+{
+	vector<Item*> VEC_Enemy_Drops = { };
+	if (STR_Enemy_Name == "Ice Monster")
+	{
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Ice Core", "A strange looking block of Ice", 1, Skill("Freeze")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Sharp Icicle", "Caution, fragile!", 2, 13));
+	}
+	else if (STR_Enemy_Name == "Ice Fiend")
+	{
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Ice Shard", "A sharp ended icicle which could shatter", 2, Skill("Mefreeze")));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Sharp Icicle", "Caution, fragile!", 2, 13));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Crystalised Flake", "A snowflake fully crystalised, emitting a frosty aura", 3, Skill("Freezan")));
+	}
+	else if (STR_Enemy_Name == "Bergmite")
+	{
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Cold Hairdryer", "Lethalised hairdryer from the 2040s, the air is even more colder.", 3, Skill("Gustan")));
+	}
+	else if (STR_Enemy_Name == "Wasteland Spirit")
+	{
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Energy Pills", "Unopened tub of energy pills", 1, "STA", 15));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
+		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Power Cord", "Unfrozen exposed power cable. Wonder if it still sparks?", 3, Skill("Zapao")));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
+	}
+	return VEC_Enemy_Drops[rand() % VEC_Enemy_Drops.size()];
+}

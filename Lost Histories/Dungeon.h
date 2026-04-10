@@ -29,10 +29,10 @@ public:
 	void setPosY(int y);
 	void changePosX(int INT_Amount);
 	void changePosY(int INT_Amount);
-	void elementSetter(Enemy& ENEMY_Enemy);
+	void virtual elementSetter(Enemy& ENEMY_Enemy);
 	void virtual fillWithEnemies();
 	void virtual fillWithChests();
-	Enemy newEnemy(Dungeon* DUNGEON_Current_Dungeon);
+	virtual Enemy newEnemy();
 	virtual Item* getItemFromLootTable(string STR_Enemy_Name);
 };
 
