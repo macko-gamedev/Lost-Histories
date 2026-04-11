@@ -969,9 +969,9 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")));
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
-		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, 17));
+		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, (((rand() % 7) - 3) + 21)));
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")));
-		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, 29));
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, (((rand() % 11) - 5) + 36)));
 
 		// Additional Loot added per Room
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 2)
@@ -980,13 +980,13 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		}
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 3)
 		{
-			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Ice Crossbow", "Icified crossbow which fires icicles", 3, 46));
+			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Ice Crossbow", "Icified crossbow which fires icicles", 3, (((rand() % 13) - 6) + 46)));
 		}
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 4)
 		{
 			for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
 			for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
-			for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 67));
+			for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, (((rand() % 15) - 7) + 67)));
 		}
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 5)
 		{
@@ -1003,16 +1003,16 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Crocodile Floaty", "For a nice summers day", 1));
 		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Vial of Ink", "An old vial with ink emitting a curseful aura", 1, Skill("Hex")));
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
-		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Rusty Anchor", "A ship's anchor mainly covered in rust", 2, 56));
+		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Rusty Anchor", "A ship's anchor mainly covered in rust", 2, (((rand() % 11) - 5) + 56)));
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
-		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Trident", "Sharp spike-like ends perfect for impaling", 3, 71));
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Trident", "Sharp spike-like ends perfect for impaling", 3, (((rand() % 15) - 7) + 73)));
 		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
 
 		// Additional Loot added per Room
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 2)
 		{
 			for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Water Balloon", "May annoy some people", 2, Skill("Mesplash")));
-			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Iron Spear", "Has great reach!", 3, 86));
+			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Iron Spear", "Has great reach!", 3, (((rand() % 15) - 7) + 86)));
 			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
 			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
 			for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Glass Pendant", "A glass heart pendant emitting a strong healthy aura", 4, Skill("Healan")));
@@ -1020,7 +1020,6 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 3)
 		{
 			for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
-			for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemMelee("Royal Trident", "Trident yielded by the Old Royal Gaurds of Atlantis", 4, 103));
 		}
 		if (DUNGEON_Current_Dungeon->getDungeonRoom() >= 4)
 		{
@@ -1034,16 +1033,15 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 	}
 	else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
 	{
-		// Default Loot for Dungeon 2
-		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
-		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Half Eaten Sandwich", "Some would call it a penguin classic(s)", 1));
-		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Crocodile Floaty", "For a nice summers day", 1));
-		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Vial of Ink", "An old vial with ink emitting a curseful aura", 1, Skill("Hex")));
+		// Default Loot for Dungeon 3
+		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Test Tube", "Empty glass test tube for lab purposes", 1));
+		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Cracked Syringe", "Used for injections", 1));
+		for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemMelee("Screwdriver", "Can be used lethally", 1, (((rand() % 9) - 4) + 39)));
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
-		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Rusty Anchor", "A ship's anchor mainly covered in rust", 2, 56));
-		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
-		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Trident", "Sharp spike-like ends perfect for impaling", 3, 71));
-		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Glass Shard", "Prone to shattering immediately", 2, (((rand() % 13) - 6) + 73)));
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Holy Cross", "A crucifix emitting a blessful aura", 3, Skill("Blighta")));
+		for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Potion of Instant Health", "Red liquid fills the blocky bottle", 4, "HP", 350));
+		for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Potion of Mutated Souls", "Screaming can be heard inside the bottle", 4, "STA", 150));
 	}
 	
 	// Picks a random Item object pointer from the vector
@@ -1055,8 +1053,11 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 	{
 		if (ITEM_New_Item->getName() == ITEM_Item->getName())
 		{
-			ITEM_Item->increaseQuantity(1);
-			BOOL_Item_Dupe = true;
+			if (!ITEM_New_Item->isMeleeWeapon() || (ITEM_New_Item->isMeleeWeapon() && ITEM_New_Item->getMeleeDamage() == ITEM_Item->getMeleeDamage()))
+			{
+				ITEM_Item->increaseQuantity(1);
+				BOOL_Item_Dupe = true;
+			}
 		}
 	}
 	if (!BOOL_Item_Dupe)
@@ -1403,9 +1404,9 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			play_audio("Victory");
 			float FLT_EXP_Earned;
 			bool BOOL_Item_Dupe = false;
-			if (ENEMY_Enemy.getName() == "Gold Entity I" || ENEMY_Enemy.getName() == "Gold Entity II")
+			if (ENEMY_Enemy.getName() == "Gold Entity I" || ENEMY_Enemy.getName() == "Gold Entity II" || ENEMY_Enemy.getName() == "Gold Entity III" || ENEMY_Enemy.getName() == "Gold Entity IV")
 			{
-				FLT_EXP_Earned = ENEMY_Enemy.getMaxHealth() * 7.7;
+				FLT_EXP_Earned = int(ENEMY_Enemy.getMaxHealth() * 7.7);
 			}
 			else if (ENEMY_Enemy.isBoss())
 			{
@@ -1419,8 +1420,11 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			{
 				if (enemyDrop->getName() == ITEM_Item->getName())
 				{
-					ITEM_Item->increaseQuantity(1);
-					BOOL_Item_Dupe = true;
+					if (!enemyDrop->isMeleeWeapon() || (enemyDrop->isMeleeWeapon() && enemyDrop->getMeleeDamage() == ITEM_Item->getMeleeDamage()))
+					{
+						ITEM_Item->increaseQuantity(1);
+						BOOL_Item_Dupe = true;
+					}
 				}
 			}
 			if (!BOOL_Item_Dupe)
@@ -1651,7 +1655,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 						if (ITEM_Item->getRarity() == i)
 						{
 							cout << ITEM_Item->toString();
-							if (ITEM_Item->getName() == PLAYER_Player.getMeleeWeapon().getName())
+							if (ITEM_Item->getName() == PLAYER_Player.getMeleeWeapon().getName() && ITEM_Item->getMeleeDamage() == PLAYER_Player.getMeleeWeapon().getMeleeDamage())
 							{
 								cout << "   [Equipped]";
 							}
@@ -1685,7 +1689,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 						if (ITEM_Item->getRarity() == i && ITEM_Item->isMeleeWeapon())
 						{
 							cout << ITEM_Item->toString();
-							if (ITEM_Item->getName() == PLAYER_Player.getMeleeWeapon().getName())
+							if (ITEM_Item->getName() == PLAYER_Player.getMeleeWeapon().getName() && ITEM_Item->getMeleeDamage() == PLAYER_Player.getMeleeWeapon().getMeleeDamage())
 							{
 								cout << "   [Equipped]";
 							}
@@ -1693,6 +1697,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 						}
 					}
 				}
+				cout << "   To change weapons, type '(Atk):(Weapon Name)'\n";
 			}
 
 			// Displays all ItemConsumable objects
@@ -1815,12 +1820,23 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 				STR_Item_Page = "skills";
 			}
 
-			STR_Item_Page = convert_string_tolower(STR_Item_Page);
-
 			// Checks to see if player switches melee
+			STR_Item_Page = convert_string_tolower(STR_Item_Page);
+			string TEMP_Damage_Input = "";
+			for (int i = 0; i < STR_Item_Page.length(); i++)
+			{
+				if (STR_Item_Page[i] == ':') break;
+				TEMP_Damage_Input += STR_Item_Page[i];
+			}
+			string TEMP_Melee_Name = "";
+			for (int i = STR_Item_Page.length() - 1; i > 0; i--)
+			{
+				if (STR_Item_Page[i] == ':') break;
+				TEMP_Melee_Name = STR_Item_Page[i] + TEMP_Melee_Name;
+			}
 			for (Item* ITEM_Item : PLAYER_Player.getItems())
 			{
-				if (ITEM_Item->isMeleeWeapon() && convert_string_tolower(ITEM_Item->getName()) == STR_Item_Page)
+				if (ITEM_Item->isMeleeWeapon() && convert_string_tolower(ITEM_Item->getName()) == TEMP_Melee_Name && ITEM_Item->getMeleeDamage() == stoi(TEMP_Damage_Input))
 				{
 					ItemMelee ITEM_MELEE_Equipping = ItemMelee(ITEM_Item->getName(), ITEM_Item->getDesc(), ITEM_Item->getRarity(), ITEM_Item->getMeleeDamage());
 					PLAYER_Player.setMelee(ITEM_MELEE_Equipping);

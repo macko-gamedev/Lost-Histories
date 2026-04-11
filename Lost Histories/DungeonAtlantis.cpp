@@ -7,7 +7,7 @@
 DungeonAtlantis::DungeonAtlantis()
 {
 	this->STR_Dungeon_Name = "Atlantis Ruins";
-	this->INT_Dungeon_Room = 7;
+	this->INT_Dungeon_Room = 1;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 7;
 	this->VEC_Dungeon_Map =
@@ -206,11 +206,11 @@ void DungeonAtlantis::elementSetter(Enemy& ENEMY_Enemy)
 		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Wk"}, {"Bless", "Nul"} });
 	}
 	// Rare Enemies
-	else if (ENEMY_Enemy.getName() == "Gold Entity I")
+	else if (ENEMY_Enemy.getName() == "Gold Entity II")
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 	}
-	else if (ENEMY_Enemy.getName() == "Gold Entity II")
+	else if (ENEMY_Enemy.getName() == "Gold Entity III")
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "-"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "Nul"}, {"Curse", "-"}, {"Bless", "Nul"} });
 	}
@@ -246,7 +246,7 @@ Enemy DungeonAtlantis::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 10) + 1;
 		if (INT_Enemy_Spawn_Chance == 10)
 		{
-			return Enemy("Gold Entity I", 20, 150, 0, { }, getItemFromLootTable("Gold Entity I"), true, 10);
+			return Enemy("Gold Entity II", 20, 150, 0, { }, getItemFromLootTable("Gold Entity II"), true, 10);
 		}
 		else if (INT_Enemy_Spawn_Chance > 5)
 		{
@@ -263,7 +263,7 @@ Enemy DungeonAtlantis::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
 		if (INT_Enemy_Spawn_Chance > 18)
 		{
-			return Enemy("Gold Entity I", 20, 150, 0, { }, getItemFromLootTable("Gold Entity I"), true, 10);
+			return Enemy("Gold Entity II", 20, 150, 0, { }, getItemFromLootTable("Gold Entity II"), true, 10);
 		}
 		else if (INT_Enemy_Spawn_Chance > 14)
 		{
@@ -284,7 +284,7 @@ Enemy DungeonAtlantis::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
 		if (INT_Enemy_Spawn_Chance > 18)
 		{
-			return Enemy("Gold Entity II", 25, 250, 0, { }, getItemFromLootTable("Gold Entity II"), true, 10);
+			return Enemy("Gold Entity III", 25, 250, 0, { }, getItemFromLootTable("Gold Entity III"), true, 10);
 		}
 		else if (INT_Enemy_Spawn_Chance > 14)
 		{
@@ -305,7 +305,7 @@ Enemy DungeonAtlantis::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
 		if (INT_Enemy_Spawn_Chance > 18)
 		{
-			return Enemy("Gold Entity II", 25, 250, 0, { }, getItemFromLootTable("Gold Entity II"), true, 10);
+			return Enemy("Gold Entity III", 25, 250, 0, { }, getItemFromLootTable("Gold Entity III"), true, 10);
 		}
 		else if (INT_Enemy_Spawn_Chance > 14)
 		{
@@ -326,7 +326,7 @@ Enemy DungeonAtlantis::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
 		if (INT_Enemy_Spawn_Chance > 18)
 		{
-			return Enemy("Gold Entity II", 30, 250, 0, { }, getItemFromLootTable("Gold Entity II"), true, 10);
+			return Enemy("Gold Entity III", 30, 250, 0, { }, getItemFromLootTable("Gold Entity III"), true, 10);
 		}
 		else if (INT_Enemy_Spawn_Chance > 14)
 		{
@@ -347,7 +347,7 @@ Enemy DungeonAtlantis::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
 		if (INT_Enemy_Spawn_Chance > 18)
 		{
-			return Enemy("Gold Entity II", 35, 250, 0, { }, getItemFromLootTable("Gold Entity II"), true, 10);
+			return Enemy("Gold Entity III", 35, 250, 0, { }, getItemFromLootTable("Gold Entity III"), true, 10);
 		}
 		else if (INT_Enemy_Spawn_Chance > 14)
 		{
@@ -368,7 +368,7 @@ Enemy DungeonAtlantis::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
 		if (INT_Enemy_Spawn_Chance > 15)
 		{
-			return Enemy("Gold Entity II", 35, 250, 0, { }, getItemFromLootTable("Gold Entity II"), true, 10);
+			return Enemy("Gold Entity III", 35, 250, 0, { }, getItemFromLootTable("Gold Entity III"), true, 10);
 		}
 		else
 		{
@@ -419,7 +419,7 @@ Item* DungeonAtlantis::getItemFromLootTable(string STR_Enemy_Name)
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Radioactive Core", "May need a suit for this one!", 3, Skill("Frei")));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Glock-17", "Perfect for quick execution", 3, 78));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Glock-17", "Perfect for quick execution", 3, (((rand() % 15) - 7) + 78)));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
 	}
 	else if (STR_Enemy_Name == "Sharkman")
@@ -454,13 +454,13 @@ Item* DungeonAtlantis::getItemFromLootTable(string STR_Enemy_Name)
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power moderately", 3, "ATK", 2.5));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration moderately", 3, "MAG", 2.5));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Glock-17", "Perfect for quick execution", 3, 78));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Breach Hammer", "Designed for house raids", 4, 139));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Glock-17", "Perfect for quick execution", 3, (((rand() % 15) - 7) + 78)));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Breach Hammer", "Designed for house raids", 4, (((rand() % 19) - 9) + 139)));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Overpower Capsules", "Drugs used to increase users power and concentration moderately", 4, "ATK/MAG", 2.5));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 4));
 		/* 4 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 4));
 	}
-	else if (STR_Enemy_Name == "Gold Entity I")
+	else if (STR_Enemy_Name == "Gold Entity II")
 	{
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Box of Matches", "Withered box of Fire matches, can they still alight?", 2, Skill("Meflame")));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Water Balloon", "May annoy some people", 2, Skill("Mesplash")));
@@ -469,7 +469,7 @@ Item* DungeonAtlantis::getItemFromLootTable(string STR_Enemy_Name)
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Diamond", "A natural chunk of diamond from the earth", 5));
 	}
-	else if (STR_Enemy_Name == "Gold Entity II")
+	else if (STR_Enemy_Name == "Gold Entity III")
 	{
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Portable Mini-Cannon", "Old cannons dated back to the 1800s", 3, Skill("Flamao")));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Water Blaster 9000", "Graded PSA 10, worth an absolute fortune!", 3, Skill("Splashan")));

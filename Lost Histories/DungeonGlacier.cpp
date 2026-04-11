@@ -7,7 +7,7 @@
 DungeonGlacier::DungeonGlacier()
 {
 	this->STR_Dungeon_Name = "Glacier Wasteland";
-	this->INT_Dungeon_Room = 6;
+	this->INT_Dungeon_Room = 1;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 10;
 	this->VEC_Dungeon_Map =
@@ -104,10 +104,10 @@ DungeonGlacier::DungeonGlacier()
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' }, //
 			{ 'O', 'O', 'X', 'X', 'X', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'O' }, //
 			{ 'O', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'O', 'O', 'O' }, //
-			{ 'O', '<', ' ', ' ', ' ', '!', ' ', ' ', '!', ' ', ' ', 'X', 'O', 'O', 'O' }, // <    !  !  ! ?
+			{ 'O', '<', '+', ' ', ' ', '!', ' ', ' ', '!', ' ', ' ', 'X', 'O', 'O', 'O' }, // <    !  !  ! ?
 			{ 'O', 'X', 'X', ' ', ' ', 'X', ' ', 'X', 'X', ' ', ' ', 'X', 'X', 'O', 'O' }, //
 			{ 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'O' }, //
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', '+', ' ', 'X', 'X' }, //
+			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'X' }, //
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', ' ', '?', 'O' }, //
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', 'X', 'X' }, //
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'O' }, //
@@ -193,6 +193,11 @@ void DungeonGlacier::elementSetter(Enemy& ENEMY_Enemy)
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
+	// Rare Enemies
+	else if (ENEMY_Enemy.getName() == "Gold Entity I")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Wk"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
+	}
 	// Dungeon Boss
 	else if (ENEMY_Enemy.getName() == "Russian Sergeant")
 	{
@@ -226,13 +231,17 @@ Enemy DungeonGlacier::newEnemy()
 	}
 	else if (this->getDungeonRoom() == 4)
 	{
-		// Enemy Level for this floor: 4-9		Ice Monster: 4-8	Ice Fiend: 5-8	 Bergmite: 5-9
-		int INT_Enemy_Spawn_Chance = (rand() % 10) + 1;
-		if (INT_Enemy_Spawn_Chance > 7)
+		// Enemy Level for this floor: 4-9		Ice Monster: 4-8	Ice Fiend: 5-8	 Bergmite: 5-9   Gold Entity I: 5
+		int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
+		if (INT_Enemy_Spawn_Chance > 18)
+		{
+			return Enemy("Gold Entity I", 5, 200, 0, { }, getItemFromLootTable("Gold Entity I"), true, 10);
+		}
+		else if (INT_Enemy_Spawn_Chance > 11)
 		{
 			return Enemy("Bergmite", ((rand() % 5) + 5), 62, 27, { Skill("Freezan"), Skill("Gust") }, getItemFromLootTable("Bergmite"), false, 26);
 		}
-		else if (INT_Enemy_Spawn_Chance > 3)
+		else if (INT_Enemy_Spawn_Chance > 5)
 		{
 			return Enemy("Ice Fiend", ((rand() % 4) + 5), 45, 18, { Skill("Freeze"), Skill("Freezan") }, getItemFromLootTable("Ice Fiend"), false, 21);
 		}
@@ -278,16 +287,16 @@ Item* DungeonGlacier::getItemFromLootTable(string STR_Enemy_Name)
 		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
 		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Ice Core", "A strange looking block of Ice", 1, Skill("Freeze")));
 		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Sharp Icicle", "Caution, fragile!", 1, (((rand() % 7) - 3) + 13)));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
-		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Sharp Icicle", "Caution, fragile!", 2, 13));
 	}
 	else if (STR_Enemy_Name == "Ice Fiend")
 	{
 		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new Item("Snowball", "A cold ball of snow, perfect for throwing at people!", 1));
 		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Sharp Icicle", "Caution, fragile!", 1, (((rand() % 7) - 3) + 13)));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Scratched Coin", "A coin coated in scratches, the date on it says 2026", 2));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Ice Shard", "A sharp ended icicle which could shatter", 2, Skill("Mefreeze")));
-		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Sharp Icicle", "Caution, fragile!", 2, 13));
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Crystalised Flake", "A snowflake fully crystalised, emitting a frosty aura", 3, Skill("Freezan")));
 	}
@@ -312,6 +321,15 @@ Item* DungeonGlacier::getItemFromLootTable(string STR_Enemy_Name)
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Power Cord", "Unfrozen exposed power cable. Wonder if it still sparks?", 3, Skill("Zapao")));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
+	}
+	else if (STR_Enemy_Name == "Gold Entity I")
+	{
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Bubble Blower", "POP!", 1, Skill("Splash")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Ice Core", "A strange looking block of Ice", 1, Skill("Freeze")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Live Wire", "Still sparking at the tip", 1, Skill("Zap")));
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Dented Airhorn", "Old, red-ended airhorn which somehow still works", 1, Skill("Gust")));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new Item("Chipped Diamond", "Exposed diamond which appears chipped and frozen over, might still carry some value", 4));
 	}
 	return VEC_Enemy_Drops[rand() % VEC_Enemy_Drops.size()];
 }

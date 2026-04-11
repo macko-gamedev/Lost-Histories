@@ -67,3 +67,19 @@ void Dungeon::changePosY(int INT_Amount)
 {
 	this->INT_Pos_Y += INT_Amount;
 }
+
+void Dungeon::fillWithChests() { }
+
+void Dungeon::fillWithEnemies() { }
+
+void Dungeon::elementSetter(Enemy& ENEMY_Enemy) { }
+
+Enemy Dungeon::newEnemy()
+{
+	return Enemy("", 1, 1, 1, { }, new Item("", "", 1), false, 0);
+}
+
+Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
+{
+	return new Item("", "", 1);
+}
