@@ -7,7 +7,7 @@
 DungeonGlacier::DungeonGlacier()
 {
 	this->STR_Dungeon_Name = "Glacier Wasteland";
-	this->INT_Dungeon_Room = 1;
+	this->INT_Dungeon_Room = 6;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 10;
 	this->VEC_Dungeon_Map =
@@ -114,6 +114,16 @@ DungeonGlacier::DungeonGlacier()
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' }, //
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' }
 		}
+	};
+	this->VEC_Explored_Rooms = { true, false, false, false, false, false };
+	this->MAP_New_Room_Text =
+	{
+		{ 1, { "..." } },
+		{ 2, { "...", "You feel a sharp chill down your spine", "Maybe you should take extra care whilst exploring", "[You can press SPACE and type /help for a list of commands!]"}},
+		{ 3, { "...", "You feel a strong presence in this section", "The next area looks to be locked behind a door", "Perhaps try searching for the key" } },
+		{ 4, { "...", "An overwhelming panic is starting to set in", "Yourself > What is this place!?" } },
+		{ 5, { "...", "You feel a strong presence in this section", "The next area looks to be locked behind a door", "Perhaps try searching for the key", "Yourself > Another locked door?", "Yourself > The last strong 'thing' was hard enough..."} },
+		{ 6, { "...", "The land is void of enemies but two guards and a formidable opponent", "Make sure you're ready for whats up ahead" } }
 	};
 }
 

@@ -103,9 +103,9 @@ DungeonAtlantis::DungeonAtlantis()
 			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', 'X', 'O', 'X', 'X', ' ', '>' },
 			{ 'O', 'O', 'O', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X' },
 			{ 'O', 'O', 'O', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X' },
-			{ 'O', 'O', 'X', 'X', ' ', 'X', 'X', ' ', ' ', 'X', 'X', ' ', ' ', 'X', 'O' },
-			{ 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X', 'O' },
-			{ '<', '+', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'O', 'O', 'X', 'X', ' ', 'X', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'O' },
+			{ 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'O' },
+			{ '<', '+', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X' },
 			{ 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', ' ', 'X' },
 			{ 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X' },
 			{ 'O', 'X', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
@@ -131,6 +131,17 @@ DungeonAtlantis::DungeonAtlantis()
 			{ 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O' },
 			{ 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O', 'O' }
 		}
+	};
+	this->VEC_Explored_Rooms = { true, false, false, false, false, false, false };
+	this->MAP_New_Room_Text =
+	{
+		{ 1, { "..." } },
+		{ 2, { "...", "You feel a strong presence in this section", "The next area looks to be locked behind a door", "Perhaps try searching for the key", "Yourself > Theres more locked doors here too!? "} },
+		{ 3, { "...", "Yourself > Compared to the last area, this place 'looks' more peaceful", "Yourself > Maybe without the monsters"} },
+		{ 4, { "...", "You feel a strong presence in this section", "The next area looks to be locked behind a door", "Perhaps try searching for the key", "Yourself > Can I catch a break?" } },
+		{ 5, { "...", "You feel two strong presences in this section", "The next area looks to be locked behind two doors", "Yourself > This is a joke", "Yourself > Sometimes I wished I never unfronze..." } },
+		{ 6, { "...", "A tunnel leads downwards and splits off two ways with one exit", "Yourself > Is it even worth fighting anymore..." } },
+		{ 7, { "...", "This seems to be the last room of the dungeon", "The room is full of soldiers and a formidable opponent", "Make sure you're ready for whats up ahead" } },
 	};
 }
 

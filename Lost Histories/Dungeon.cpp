@@ -38,6 +38,21 @@ int Dungeon::getPosY()
 	return this->INT_Pos_Y;
 }
 
+vector<string> Dungeon::getNewRoomDialogue()
+{
+	return this->MAP_New_Room_Text.find(this->INT_Dungeon_Room)->second;
+}
+
+bool Dungeon::isExploredRoom()
+{
+	return this->VEC_Explored_Rooms[(this->INT_Dungeon_Room - 1)];
+}
+
+void Dungeon::exploredRoom()
+{
+	this->VEC_Explored_Rooms[(this->INT_Dungeon_Room - 1)] = true;
+}
+
 void Dungeon::changeDungeonRoom(int INT_Amount)
 {
 	this->INT_Dungeon_Room += INT_Amount;

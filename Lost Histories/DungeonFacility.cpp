@@ -45,6 +45,13 @@ DungeonFacility::DungeonFacility()
 			{ 'O', 'X', 'O', 'O', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' }
 		},
 	};
+
+	this->VEC_Explored_Rooms = { true, false };
+	this->MAP_New_Room_Text =
+	{
+		{ 1, { "..." } },
+		{ 2, { "...", "Each corner you turn is a new hallway", "This place is like a maze", "Yourself > Does this place even have an ending?"}},
+	};
 }
 
 void DungeonFacility::fillWithEnemies()

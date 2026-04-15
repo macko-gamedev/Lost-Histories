@@ -238,6 +238,16 @@ int main()
 				}
 				_getch();
 			}
+			else if (!DUNGEON_Current_Dungeon->isExploredRoom())
+			{
+				vector<string> VEC_New_Room_Dialogue = DUNGEON_Current_Dungeon->getNewRoomDialogue();
+				for (string STR_Dialogue : VEC_New_Room_Dialogue)
+				{
+					cout << "   " << STR_Dialogue;
+					_getch(); cout << "\33[2K\r" << flush;;
+				}
+				DUNGEON_Current_Dungeon->exploredRoom();
+			}
 			else
 			{
 				_getch();
@@ -278,7 +288,7 @@ int main_menu()
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
-		cout << "             v04_26.02           " << endl;
+		cout << "            Prototype 2          " << endl;
 		cout << "\n\n";
 		cout << "--> New Game\n--> Load Game\n--> Settings\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
@@ -1715,7 +1725,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 					}
 				}
 				cout << "[ " << VEC_Rarity_Numbers[0] << " (1*) | " << VEC_Rarity_Numbers[1] << " (2*) | " << VEC_Rarity_Numbers[2] << " (3*) | " << VEC_Rarity_Numbers[3] << " (4*) | " << VEC_Rarity_Numbers[4] << " (5*) ]\n\n";
-				
+
 				// Outputs the objects sorted by Rarity
 				for (int i = 1; i < 6; i++)
 				{
@@ -1737,7 +1747,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 				{
 					for (Item* ITEM_Item : PLAYER_Player.getItems())
 					{
-						if (ITEM_Item->getRarity() == i && ITEM_Item->canInheritSkill()) 
+						if (ITEM_Item->getRarity() == i && ITEM_Item->canInheritSkill())
 						{
 							VEC_Rarity_Numbers[(i - 1)] = VEC_Rarity_Numbers[(i - 1)] + ITEM_Item->getQuantity();
 						}
@@ -1798,17 +1808,21 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 
 			// Takes player input to determine which page to display, or to back out of the Items menu enirely
 			cout << "   > ";
-			getline(cin, STR_Item_Page);
+			string STR_Items_Input;
+			getline(cin, STR_Items_Input);
+			STR_Item_Page = convert_string_tolower(STR_Items_Input);
+
+			if (STR_Items_Input == "return") break;
 
 			// Checks to see if player switches skills
 			// ex:   5:Healan
-			int TEMP_Skill_Placement = (STR_Item_Page[0] - 48);
+			int TEMP_Skill_Placement = (STR_Items_Input[0] - 48);
 			if ((TEMP_Skill_Placement > 0 && TEMP_Skill_Placement < 9) && PLAYER_Player.getSkills().size() == 8)
 			{
 				string TEMP_Skill_Name = "";
-				for (int i = 2; i < STR_Item_Page.size(); i++)
+				for (int i = 2; i < STR_Items_Input.size(); i++)
 				{
-					TEMP_Skill_Name += STR_Item_Page[i];
+					TEMP_Skill_Name += STR_Items_Input[i];
 				}
 				// Checks if the input is Valid
 				Skill TEMP_Skill = Skill(TEMP_Skill_Name);
@@ -1816,23 +1830,23 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 				{
 					// Swap skills at PLAYER_Player: VEC_Skills[TEMP_Skill_Placement] with TEMP_Skill
 					PLAYER_Player.swapSkill(TEMP_Skill_Placement, TEMP_Skill);
+					STR_Item_Page = "skills";
 				}
-				STR_Item_Page = "skills";
 			}
 
 			// Checks to see if player switches melee
-			STR_Item_Page = convert_string_tolower(STR_Item_Page);
+			STR_Items_Input = convert_string_tolower(STR_Items_Input);
 			string TEMP_Damage_Input = "";
-			for (int i = 0; i < STR_Item_Page.length(); i++)
+			for (int i = 0; i < STR_Items_Input.length(); i++)
 			{
-				if (STR_Item_Page[i] == ':') break;
-				TEMP_Damage_Input += STR_Item_Page[i];
+				if (STR_Items_Input[i] == ':') break;
+				TEMP_Damage_Input += STR_Items_Input[i];
 			}
 			string TEMP_Melee_Name = "";
-			for (int i = STR_Item_Page.length() - 1; i > 0; i--)
+			for (int i = STR_Items_Input.length() - 1; i > 0; i--)
 			{
-				if (STR_Item_Page[i] == ':') break;
-				TEMP_Melee_Name = STR_Item_Page[i] + TEMP_Melee_Name;
+				if (STR_Items_Input[i] == ':') break;
+				TEMP_Melee_Name = STR_Items_Input[i] + TEMP_Melee_Name;
 			}
 			for (Item* ITEM_Item : PLAYER_Player.getItems())
 			{
@@ -1845,7 +1859,6 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 				}
 			}
 
-			if (STR_Item_Page == "return") break;
 			if (STR_Item_Page != "weapons" && STR_Item_Page != "consumables" && STR_Item_Page != "skills" && STR_Item_Page != "items")
 			{
 				STR_Item_Page = "all";
@@ -1912,9 +1925,9 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 				// Outputs each dungeon name
 				for (Dungeon* DUNGEON_Dungeon : VEC_Visited_Dungeons)
 				{
-					cout << "   " << DUNGEON_Dungeon->getDungeonName() << " (F" << DUNGEON_Dungeon->getDungeonRoom() << ")" << endl << endl;
+					cout << ".  " << DUNGEON_Dungeon->getDungeonName() << " (F" << DUNGEON_Dungeon->getDungeonRoom() << ")" << endl;
 				}
-				cout << "   > ";
+				cout << "\n   > ";
 				getline(cin, STR_Dungeon_Choice);
 				INDEX_Dungeon = 0;
 				for (Dungeon* DUNGEON_Dungeon : VEC_Visited_Dungeons)
