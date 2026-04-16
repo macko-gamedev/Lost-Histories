@@ -7,7 +7,7 @@
 DungeonGlacier::DungeonGlacier()
 {
 	this->STR_Dungeon_Name = "Glacier Wasteland";
-	this->INT_Dungeon_Room = 1;
+	this->INT_Dungeon_Room = 6;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 10;
 	this->VEC_Dungeon_Map =
@@ -357,7 +357,7 @@ Item* DungeonGlacier::getItemFromChest()
 	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, (((rand() % 7) - 3) + 21)));
 	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Box of Matches", "Withered box of fire matches, can they still alight?", 2, Skill("Meflame")));
 	for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Ice-Axe", "Battleaxe frozen to time", 3, (((rand() % 11) - 5) + 36)));
-	
+
 	// Additional Loot added per Room
 	if (this->INT_Dungeon_Room >= 2)
 	{

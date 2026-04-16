@@ -47,6 +47,16 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 
 	// Skills: Player starts with no skills, so just declaring the vector here
 	this->VEC_Skills = { };
+	this->VEC_Items.push_back(new ItemMelee("Test Melee 1", "A long wooden stick with a pointy end", 1, 4));
+	this->VEC_Items.push_back(new ItemMelee("Test Melee 2", "A long wooden stick with a pointy end", 1, 4));
+	this->VEC_Items.push_back(new ItemMelee("Test Melee 3", "A long wooden stick with a pointy end", 1, 4));
+	this->VEC_Items.push_back(new ItemMelee("Test Melee 4", "A long wooden stick with a pointy end", 1, 4));
+	this->VEC_Items.push_back(new ItemMelee("Test Melee 5", "A long wooden stick with a pointy end", 1, 4));
+	this->VEC_Items.push_back(new ItemMelee("Test Melee 6", "A long wooden stick with a pointy end", 1, 4));
+	this->VEC_Items.push_back(new ItemMelee("Test Melee 7", "A long wooden stick with a pointy end", 1, 4));
+	this->VEC_Items.push_back(new ItemMelee("Test Melee 8", "A long wooden stick with a pointy end", 1, 4));
+	this->VEC_Items.push_back(new ItemMelee("Test Melee 9", "A long wooden stick with a pointy end", 1, 4));
+	this->VEC_Items.push_back(new ItemMelee("Test Melee 10", "A long wooden stick with a pointy end", 1, 4));
 }
 
 void Player::getPlayerStats()
