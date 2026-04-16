@@ -98,3 +98,8 @@ Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
 {
 	return new Item("", "", 1);
 }
+
+Item* Dungeon::getItemFromChest()
+{
+	return new Item("", "", 1);
+}

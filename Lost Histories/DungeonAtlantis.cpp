@@ -493,3 +493,43 @@ Item* DungeonAtlantis::getItemFromLootTable(string STR_Enemy_Name)
 	}
 	return VEC_Enemy_Drops[rand() % VEC_Enemy_Drops.size()];
 }
+
+Item* DungeonAtlantis::getItemFromChest()
+{
+	vector<Item*> VEC_Chest_Loot = { };
+	// Default Loot for Dungeon 2
+	for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
+	for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Half Eaten Sandwich", "Some would call it a penguin classic(s)", 1));
+	for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Crocodile Floaty", "For a nice summers day", 1));
+	for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Vial of Ink", "An old vial with ink emitting a curseful aura", 1, Skill("Hex")));
+	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
+	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Rusty Anchor", "A ship's anchor mainly covered in rust", 2, (((rand() % 11) - 5) + 56)));
+	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
+	for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Trident", "Sharp spike-like ends perfect for impaling", 3, (((rand() % 15) - 7) + 73)));
+	for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+
+	// Additional Loot added per Room
+	if (this->INT_Dungeon_Room >= 2)
+	{
+		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Water Balloon", "May annoy some people", 2, Skill("Mesplash")));
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Iron Spear", "Has great reach!", 3, (((rand() % 15) - 7) + 86)));
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
+		for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Glass Pendant", "A glass heart pendant emitting a strong healthy aura", 4, Skill("Healan")));
+	}
+	if (this->INT_Dungeon_Room >= 3)
+	{
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
+	}
+	if (this->INT_Dungeon_Room >= 4)
+	{
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new Item("Gold Coin", "Made of real gold!", 3));
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
+	}
+	if (this->INT_Dungeon_Room >= 5)
+	{
+		for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
+	}
+	Item* ITEM_New_Item = VEC_Chest_Loot[rand() % (VEC_Chest_Loot.size())];
+	return ITEM_New_Item;
+}

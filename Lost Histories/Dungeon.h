@@ -39,5 +39,6 @@ public:
 	void virtual fillWithChests();
 	virtual Enemy newEnemy();
 	virtual Item* getItemFromLootTable(string STR_Enemy_Name);
+	virtual Item* getItemFromChest();
 };
 
