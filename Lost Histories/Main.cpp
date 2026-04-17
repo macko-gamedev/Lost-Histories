@@ -16,6 +16,8 @@
 #include "mmsystem.h"
 #include <conio.h>
 #include <map>
+#include "include/color.hpp"
+
 #pragma comment(lib, "winmm.lib")
 
 using namespace std;
@@ -325,7 +327,7 @@ int main_menu()
 void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 {
 	system("CLS");
-	cout << "\n   " << DUNGEON_Current_Dungeon->getDungeonName() << " " << DUNGEON_Current_Dungeon->getDungeonRoom() << "F\n\n";
+	cout << "\n   " << dye::black_on_white(" ") << dye::black_on_white(DUNGEON_Current_Dungeon->getDungeonName()) << dye::black_on_white(" ") << dye::black_on_white(DUNGEON_Current_Dungeon->getDungeonRoom()) << dye::black_on_white("F \n\n");
 	for (int i = 0; i < 15; i++)
 	{
 		cout << "   ";
@@ -333,7 +335,45 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 		{
 			if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'O')
 			{
-				cout << "  ";
+				if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
+				{
+					cout << dye::black_on_bright_white("  ");
+				}
+				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
+				{
+					cout << dye::black_on_aqua("  ");
+				}
+				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
+				{
+					cout << dye::black_on_purple("  ");
+				}
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'X')
+			{
+				cout << dye::black_on_grey(" ");
+				if ((j + 1) == 15 && DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'X')
+				{
+					cout << dye::black_on_grey(" ");
+				}
+				else if ((j + 1) < 15)
+				{
+					if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][(j + 1)] == 'X' || DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][(j + 1)] == 'O')
+					{
+						cout << dye::black_on_grey(" ");
+					}
+					else
+					{
+						cout << " ";
+					}
+				}
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == '!' || DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == '?')
+			{
+				cout << dye::red(DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j]) << " ";
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == '*')
+			{
+				cout << dye::yellow("*") << " ";
 			}
 			else
 			{
@@ -990,14 +1030,15 @@ void open_chest(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon)
 	}
 
 	// Outputs the new Item
-	cout << "   Something is shining on the ground...\n\n";
+	cout << dye::yellow("   Something is shining on the ground...\n\n");
 	this_thread::sleep_for(chrono::seconds(2));
-	cout << "   You found " << ITEM_New_Item->getName() << "!";
+	cout << dye::yellow("   You found ") << dye::light_yellow(ITEM_New_Item->getName()) << dye::yellow("!");
 	if (!BOOL_Item_Dupe)
 	{
-		cout << " (NEW)";
+		cout << dye::green(" (NEW)");
 	}
-	cout << "\n\n" << ITEM_New_Item->toString();
+	cout << "\n\n";
+	ITEM_New_Item->toString();
 	PLAYER_Player.update();
 	this_thread::sleep_for(chrono::seconds(2));
 }
@@ -1065,7 +1106,8 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 					{
 						if (ITEM_Item->isConsumable())
 						{
-							cout << ITEM_Item->toString() << endl << endl;
+							ITEM_Item->toString();
+							cout << endl << endl;
 						}
 					}
 					cout << "--> Return\n\n  > ";
@@ -1167,34 +1209,48 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 								// Damage the ENEMY_Enemy
 								int INT_Calculated_Damage; // Player Skill Damage after calculations
 								float FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Magic")->second) / 25); // Player Attribute "Magic" Multiplier
+								if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute())
+								{
+									if (PLAYER_Player.getMeleeWeapon().getAttributeType() == "Magic")
+									{
+										FLT_Attribute_Multiplier *= PLAYER_Player.getMeleeWeapon().getBonusValue();
+									}
+								}
+
 								if (SKILL_Skill_Selected.getType() == "Nuclear")
 								{
 									INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
-									cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon all enemies dealing " << INT_Calculated_Damage << " damage\n\n";
+									cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon all enemies dealing " << INT_Calculated_Damage << " damage ";
 								}
 								else
 								{
 									if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
 									{
 										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
-										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage\n\n";
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage ";
 									}
 									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
 									{
 										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 1.5 * PLAYER_Player.getMagicAttackMultiplier();
-										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage (WEAK)\n\n";
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage " << dye::black_on_yellow(" WEAK ") << " ";
 									}
 									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
 									{
 										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 0.5 * PLAYER_Player.getMagicAttackMultiplier();
-										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage (RESIST)\n\n";
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage " << dye::black_on_red(" RESIST ") << " ";
 									}
 									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
 									{
 										INT_Calculated_Damage = 0;
-										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage (BLOCK)\n\n";
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage " << dye::black_on_grey(" BLOCK ") << " ";
 									}
 								}
+
+								if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute() && PLAYER_Player.getMeleeWeapon().getAttributeType() == "Magic")
+								{
+									cout << dye::aqua_on_light_aqua(" BONUS ");
+								}
+								cout << "\n\n";
 								ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
 							}
 							PLAYER_Player.changeStamina(-SKILL_Skill_Selected.getStaminaCost());
@@ -1236,7 +1292,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 				system("CLS");
 				show_battle_stats(PLAYER_Player);
 				cout << endl;
-				cout << PLAYER_Player.getMeleeWeapon().toString();
+				PLAYER_Player.getMeleeWeapon().toString();
 				cout << "\n\n--> Use\n--> Return\n\n  > ";
 				getline(cin, STR_Battle_Choice);
 				STR_Battle_Choice = convert_string_tolower(STR_Battle_Choice);
@@ -1247,18 +1303,38 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 					int INT_Critical_Chance = (rand() % 100) + 1; // Number 1-100, if >79 deal a Critical Hit
 					int INT_Calculated_Damage; // Player Melee Damage after calculations
 					float FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Strength")->second) / 25); // Player Attribute "Strength" Multiplier
+					if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute())
+					{
+						if (PLAYER_Player.getMeleeWeapon().getAttributeType() == "Melee")
+						{
+							FLT_Attribute_Multiplier *= PLAYER_Player.getMeleeWeapon().getBonusValue();
+						}
+					}
+					else if (PLAYER_Player.getMeleeWeapon().hasElementCoverage())
+					{
+						if (ENEMY_Enemy.getElements().find(PLAYER_Player.getMeleeWeapon().getElementalType())->second == "Wk")
+						{
+							FLT_Attribute_Multiplier *= PLAYER_Player.getMeleeWeapon().getBonusValue();
+						}
+					}
 					system("CLS");
 					show_battle_stats(PLAYER_Player);
 					if (INT_Critical_Chance > 79)
 					{
 						INT_Calculated_Damage = PLAYER_Player.getMeleeWeapon().getMeleeDamage() * FLT_Attribute_Multiplier * 2 * PLAYER_Player.getMeleeAttackMultiplier();
-						cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " landing a CRITICAL HIT dealing " << INT_Calculated_Damage << " damage\n\n";
+						cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " landing a CRITICAL HIT dealing " << INT_Calculated_Damage << " damage ";
 					}
 					else
 					{
 						INT_Calculated_Damage = PLAYER_Player.getMeleeWeapon().getMeleeDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMeleeAttackMultiplier();
-						cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " dealing " << INT_Calculated_Damage << " damage\n\n";
+						cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " dealing " << INT_Calculated_Damage << " damage ";
 					}
+
+					if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute() && PLAYER_Player.getMeleeWeapon().getAttributeType() == "Melee")
+					{
+						cout << dye::aqua_on_light_aqua(" BONUS ");
+					}
+					cout << "\n\n";
 					ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
 					PLAYER_Player.setMeleeAttackMultiplier(1.0);
 					BOOL_Player_Turn = false;
@@ -1572,7 +1648,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 					{
 						if (ITEM_Item->getRarity() == i)
 						{
-							cout << ITEM_Item->toString();
+							ITEM_Item->toString();
 							if (ITEM_Item->getName() == PLAYER_Player.getMeleeWeapon().getName() && ITEM_Item->getMeleeDamage() == PLAYER_Player.getMeleeWeapon().getMeleeDamage())
 							{
 								cout << "   [Equipped]";
@@ -1606,7 +1682,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 					{
 						if (ITEM_Item->getRarity() == i && ITEM_Item->isMeleeWeapon())
 						{
-							cout << ITEM_Item->toString();
+							ITEM_Item->toString();
 							if (ITEM_Item->getName() == PLAYER_Player.getMeleeWeapon().getName() && ITEM_Item->getMeleeDamage() == PLAYER_Player.getMeleeWeapon().getMeleeDamage())
 							{
 								cout << "   [Equipped]";
@@ -1641,7 +1717,8 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 					{
 						if (ITEM_Item->getRarity() == i && ITEM_Item->isConsumable())
 						{
-							cout << ITEM_Item->toString() << endl << endl;
+							ITEM_Item->toString();
+							cout << endl << endl;
 						}
 					}
 				}
@@ -1670,7 +1747,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 					{
 						if (ITEM_Item->getRarity() == i && ITEM_Item->canInheritSkill())
 						{
-							cout << ITEM_Item->toString();
+							ITEM_Item->toString();
 							for (int i = 0; i < PLAYER_Player.getSkills().size(); i++)
 							{
 								if (ITEM_Item->getSkill().getName() == PLAYER_Player.getSkills()[i].getName())
@@ -1708,7 +1785,8 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 					{
 						if (ITEM_Item->getRarity() == i && !ITEM_Item->canInheritSkill() && !ITEM_Item->isConsumable() && !ITEM_Item->isMeleeWeapon())
 						{
-							cout << ITEM_Item->toString() << endl << endl;
+							ITEM_Item->toString();
+							cout << endl << endl;
 						}
 					}
 				}
@@ -1760,7 +1838,15 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 			{
 				if (ITEM_Item->isMeleeWeapon() && convert_string_tolower(ITEM_Item->getName()) == TEMP_Melee_Name && ITEM_Item->getMeleeDamage() == stoi(TEMP_Damage_Input))
 				{
-					ItemMelee ITEM_MELEE_Equipping = ItemMelee(ITEM_Item->getName(), ITEM_Item->getDesc(), ITEM_Item->getRarity(), ITEM_Item->getMeleeDamage());
+					ItemMelee ITEM_MELEE_Equipping = ItemMelee(ITEM_Item->getName(), ITEM_Item->getDesc(), ITEM_Item->getRarity(), ITEM_Item->getMeleeDamage(), false);
+					if (ITEM_Item->hasModifiedAttribute())
+					{
+						ITEM_MELEE_Equipping.setAttributeType(ITEM_Item->getAttributeType(), ITEM_Item->getBonusValue());
+					}
+					else if (ITEM_Item->hasElementCoverage())
+					{
+						ITEM_MELEE_Equipping.setElementalType(ITEM_Item->getElementalType(), ITEM_Item->getBonusValue());
+					}
 					PLAYER_Player.setMelee(ITEM_MELEE_Equipping);
 					STR_Item_Page = "weapons";
 					break;
@@ -1800,9 +1886,11 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 		cout << "   Equipped Skills:";
 		for (int i = 0; i < PLAYER_Player.getSkills().size(); i++)
 		{
-			cout << "\n.  " << PLAYER_Player.getSkills()[i].getName();
+			cout << "\n   " << dye::light_purple(PLAYER_Player.getSkills()[i].getName());
 		}
-		cout << "\n\n   Equipped Melee: " << PLAYER_Player.getMeleeWeapon().getName() << endl << endl;
+		cout << "\n\n   Equipped Melee:\n";
+		PLAYER_Player.getMeleeWeapon().toString();
+		cout << endl << endl;
 		system("pause");
 		cout << "\033[A" << "\33[2K\r" << endl;
 	}
@@ -1864,7 +1952,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 	{
 		Enemy TEMP_New_Enemy = Enemy("Macko", 99, 2000, 500, { Skill("Flamadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm") }, new ItemSkill("???", "I actually don't know what this is.", 5, Skill("Hex of Death")), true, 218);
 		PLAYER_Player.setSkills({ Skill("Flamadia"), Skill("Splashadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon"), Skill("Freiladia"), Skill("Healadia") });
-		PLAYER_Player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304));
+		PLAYER_Player.setMelee(ItemMelee("Sword of Lost Histories", "Only true completionists have found this relic", 5, 304, true));
 		PLAYER_Player.setLevelStats(99, 826, 454);
 		play_audio("Macko Fight");
 		system("pause");
@@ -1982,8 +2070,8 @@ void show_enemy_stats(Enemy ENEMY_Enemy)
 void show_battle_stats(Player PLAYER_Player)
 {
 	system("CLS");
-	cout << "\n   " << PLAYER_Player.getName() << "   ";
-	cout << "\n   HP: " << PLAYER_Player.getHealth() << " / " << PLAYER_Player.getMaxHealth() << " | STA: " << PLAYER_Player.getStamina() << " / " << PLAYER_Player.getMaxStamina() << endl << endl;
+	cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(PLAYER_Player.getName()) << dye::grey_on_white(" ");
+	cout << dye::light_green("\n   HP: ") << dye::light_green(PLAYER_Player.getHealth()) << dye::light_green(" / ") << dye::light_green(PLAYER_Player.getMaxHealth()) << " | " << dye::light_aqua("STA: ") << dye::light_aqua(PLAYER_Player.getStamina()) << dye::light_aqua(" / ") << dye::light_aqua(PLAYER_Player.getMaxStamina()) << endl << endl;
 }
 
 // Outputs a specific Skill whilst in battle

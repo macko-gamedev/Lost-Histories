@@ -11,6 +11,6 @@ private:
 public:
 	ItemSkill();
 	ItemSkill(string nName, string nDesc, int nRarity, Skill nSkill);
-	string toString() override;
+	void toString() override;
 };
 

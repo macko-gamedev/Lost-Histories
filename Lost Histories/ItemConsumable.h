@@ -10,6 +10,6 @@ private:
 public:
 	ItemConsumable();
 	ItemConsumable(string nName, string nDesc, int nRarity, string nType, double nAmount);
-	string toString() override;
+	void toString() override;
 };
 

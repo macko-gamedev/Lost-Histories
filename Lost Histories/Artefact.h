@@ -10,6 +10,6 @@ private:
 public:
 	Artefact();
 	Artefact(string nName, string nDesc, int nRarity, string nType, int nValue);
-	string toString() override;
+	void toString() override;
 };
 

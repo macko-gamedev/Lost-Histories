@@ -11,24 +11,22 @@ ItemConsumable::ItemConsumable(string nName, string nDesc, int nRarity, string n
 	this->consumable = true;
 }
 
-string ItemConsumable::toString()
+void ItemConsumable::toString()
 {
-	string convertedText;
 	if (this->type == "ATK")
 	{
-		convertedText = "   x" + to_string(this->getQuantity()) + " " + this->name + " (" + to_string(this->rarity) + "*)\n   Desc: " + this->desc + "\n   Increases damage of next melee attack by " + to_string(int((this->amount * 100) - 100)) + "%";
+		cout << "   " << dye::grey_on_white("x") << dye::grey_on_white(this->getQuantity()) << dye::black_on_white(" ") << dye::black_on_white(this->name) << dye::black_on_white(" ") << dye::black_on_yellow(" ") << dye::black_on_yellow(this->rarity) << dye::black_on_yellow("*") << dye::black_on_yellow(" ") << "\n   " << this->desc << dye::light_aqua("\n   Increases damage of next melee attack by ") << dye::light_aqua(this->amount) << dye::light_aqua("%");
 	}
 	else if (this->type == "MAG")
 	{
-		convertedText = "   x" + to_string(this->getQuantity()) + " " + this->name + " (" + to_string(this->rarity) + "*)\n   Desc: " + this->desc + "\n   Increases damage of next magic attack by " + to_string(int((this->amount * 100) - 100)) + "%";
+		cout << "   " << dye::grey_on_white("x") << dye::grey_on_white(this->getQuantity()) << dye::black_on_white(" ") << dye::black_on_white(this->name) << dye::black_on_white(" ") << dye::black_on_yellow(" ") << dye::black_on_yellow(this->rarity) << dye::black_on_yellow("*") << dye::black_on_yellow(" ") << "\n   " << this->desc << dye::light_aqua("\n   Increases damage of next magic attack by ") << dye::light_aqua(this->amount) << dye::light_aqua("%");
 	}
 	else if (this->type == "ATK/MAG")
 	{
-		convertedText = "   x" + to_string(this->getQuantity()) + " " + this->name + " (" + to_string(this->rarity) + "*)\n   Desc: " + this->desc + "\n   Increases damage of next melee and magic attack by " + to_string(int((this->amount * 100) - 100)) + "%";
+		cout << "   " << dye::grey_on_white("x") << dye::grey_on_white(this->getQuantity()) << dye::black_on_white(" ") << dye::black_on_white(this->name) << dye::black_on_white(" ") << dye::black_on_yellow(" ") << dye::black_on_yellow(this->rarity) << dye::black_on_yellow("*") << dye::black_on_yellow(" ") << "\n   " << this->desc << dye::light_aqua("\n   Increases damage of next melee and magic attack by ") << dye::light_aqua(this->amount) << dye::light_aqua("%");
 	}
 	else
 	{
-		convertedText = "   x" + to_string(this->getQuantity()) + " " + this->name + " (" + to_string(this->rarity) + "*)\n   Desc: " + this->desc + "\n   Restores " + to_string(int(this->amount)) + " " + this->type;
+		cout << "   " << dye::grey_on_white("x") << dye::grey_on_white(this->getQuantity()) << dye::black_on_white(" ") << dye::black_on_white(this->name) << dye::black_on_white(" ") << dye::black_on_yellow(" ") << dye::black_on_yellow(this->rarity) << dye::black_on_yellow("*") << dye::black_on_yellow(" ") << "\n   " << this->desc << dye::light_aqua("\n   Restores ") << dye::light_aqua(this->amount) << " " << dye::light_aqua(this->type);
 	}
-	return convertedText;
 }
