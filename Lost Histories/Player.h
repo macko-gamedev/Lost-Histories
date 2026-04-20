@@ -49,6 +49,7 @@ public:
 	float getMeleeAttackMultiplier();
 	float getMagicAttackMultiplier();
 	void setLevelStats(int N_Level, int N_Health, int N_Stamina);
+	void setLevelXP(int N_Tot, int N_Next);
 	void setMeleeAttackMultiplier(float N_VALUE);
 	void setMagicAttackMultiplier(float N_VALUE);
 	void setPlayerAttribute(string STR_Attribute, int N_VALUE);

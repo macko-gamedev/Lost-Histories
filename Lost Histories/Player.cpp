@@ -250,3 +250,9 @@ void Player::setLevelStats(int N_Level, int N_Health, int N_Stamina)
 	this->fullHealth();
 	this->fullStamina();
 }
+
+void Player::setLevelXP(int N_Tot, int N_Next)
+{
+	this->INT_Total_EXP = N_Tot;
+	this->FLT_Next_EXP = N_Next;
+}

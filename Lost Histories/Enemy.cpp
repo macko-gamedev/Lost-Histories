@@ -94,7 +94,14 @@ void Enemy::update(Player& PLAYER_Player)
 				{
 					FLT_Guard_Multiplier = 1;
 				}
-				
+
+				if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute())
+				{
+					if (PLAYER_Player.getMeleeWeapon().getAttributeType() == "Endurance")
+					{
+						FLT_Attribute_Multiplier *= 1 - (PLAYER_Player.getMeleeWeapon().getBonusValue() - 1);
+					}
+				}
 				int INT_Skill_Chance = (rand() % 10) + 1;
 				if (this->getStamina() >= SKILL_Skill_Selected.getStaminaCost() && INT_Skill_Chance > 3)
 				{
@@ -113,27 +120,27 @@ void Enemy::update(Player& PLAYER_Player)
 						if (SKILL_Skill_Selected.getType() == "Nuclear")
 						{
 							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
-							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage";
+							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage ";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
 						{
 							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
-							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage";
+							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage ";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
 						{
 							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 1.5;
-							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (WEAK)";
+							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (WEAK) ";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
 						{
 							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 0.5;
-							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (RESIST)";
+							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (RESIST) ";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
 						{
 							INT_Calculated_Damage = 0;
-							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (BLOCK)";
+							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (BLOCK) ";
 						}
 						PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 					}
@@ -142,7 +149,7 @@ void Enemy::update(Player& PLAYER_Player)
 				else
 				{
 					INT_Calculated_Damage = this->getDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
-					this->STR_Turn_Phrase = "\n   " + this->STR_Name + " attacked you dealing " + to_string(INT_Calculated_Damage) + " damage";
+					this->STR_Turn_Phrase = "\n   " + this->STR_Name + " attacked you dealing " + to_string(INT_Calculated_Damage) + " damage ";
 					PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 				}
 			}
