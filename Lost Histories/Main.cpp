@@ -25,7 +25,7 @@ using namespace std;
 /* 
 
 ###### LOST HISTORIES ######
-Last Updated: 17/03/26 (14:30)
+Last Updated: 21/04/26 (13:44)
 
 --- Parent Classes ---
 . BattleStat	 # Contains key variables to battles such as health and stamina values
@@ -33,11 +33,12 @@ Last Updated: 17/03/26 (14:30)
 . Item			 # Contains name, description and rarity of an item
                  : ItemMelee, ItemSkill, ItemConsumable
 . Dungeon        # Contains name, floor number
-				 : DungeonGlacier, DungeonAtlantis
+				 : DungeonGlacier, DungeonAtlantis, DungeonFacility
 
 --- Child Classes ---
 . Enemy		      : Inherits BattleStat
 . DungeonAtlantis : Inherits Dungeon, dungeon 2 of the game
+. DungeonFacility : Inherits Dungeon, dungeon 3 of the game
 . DungeonGlacier  : Inherits Dungeon, dungeon 1 of the game
 . ItemConsumable  : Inherits Item, an item which can be used in battle
 . ItemMelee       : Inherits Item, an item which can be equipped as a Melee
@@ -91,29 +92,46 @@ int main()
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 	main_menu();
-	// Setup
-	string STR_Player_Name;
-	string STR_Dialogue_Choice;
+
+	// Declaring Enums
 	storyStatus ENUM_Story_Status = storyStatus::INTRO;
 	gameStatus ENUM_Game_Status = gameStatus::DIALOGUE;
+
+	// Instantiates object of type Dungeon
 	Dungeon* DUNGEON_Current_Dungeon = NULL;
 	vector<Dungeon*> VEC_Visited_Dungeons = { };
+
+	// Instantiates object of type Enemy
 	Enemy ENEMY_New_Enemy;
+
+	// Setting up the Player
+	string STR_Player_Name;
+	cout << "\n   Your Character Name: ";
+	getline(cin, STR_Player_Name);
 	int weak_element = -1;
 	int resist_element = -1;
-	cout << "\n   Your Character Name: "; 
-	getline(cin, STR_Player_Name);
+	set_starting_elements(weak_element, resist_element);
 
-	set_starting_elements(weak_element, resist_element); // Player chooeses their starting elements
-	Player PLAYER_Player = Player(STR_Player_Name, weak_element, resist_element, 1, 140, 62); // Instantiates object of type Player
-	Story STORY_Story = Story(STR_Player_Name); // Instantiates object of type Story
+	// Instantiates object of type Player
+	Player PLAYER_Player = Player(STR_Player_Name, weak_element, resist_element, 1, 140, 62);
+
+	// Instantiates object of type Story
+	Story STORY_Story = Story(STR_Player_Name);
 	string STR_Intro_Choice = "";
+	string STR_Dialogue_Choice;
 
+	// Loading data from Prototype 1
 	if (PLAYER_Player.getName() == "Lukas")
 	{
 		PLAYER_Player.addItem(new ItemSkill("Glass Pendant", "A glass heart pendant emitting a strong healthy aura", 4, Skill("Healan")));
 		PLAYER_Player.addItem(new ItemSkill("Jellyfish Tenticle", "Dead or Alive it still carries some current", 4, Skill("Zapadia")));
 		PLAYER_Player.addItem(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 67, true));
+		PLAYER_Player.addItem(new ItemMelee("Sword of Lost Histories", "Gift from Macko because you played Prototype 1!", 5, 100, true));
+		PLAYER_Player.addItem(new ItemSkill("Low Skill 1", "I don't know what other skill moves you had", 5, Skill("Flame")));
+		PLAYER_Player.addItem(new ItemSkill("Low Skill 2", "I don't know what other skill moves you had", 5, Skill("Splash")));
+		PLAYER_Player.addItem(new ItemSkill("Low Skill 3", "I don't know what other skill moves you had", 5, Skill("Freeze")));
+		PLAYER_Player.addItem(new ItemSkill("Low Skill 4", "I don't know what other skill moves you had", 5, Skill("Zap")));
+		PLAYER_Player.addItem(new ItemSkill("Low Skill 5", "I don't know what other skill moves you had", 5, Skill("Gust")));
 		PLAYER_Player.setLevelStats(30, 343, 178);
 		PLAYER_Player.setLevelXP(85680, 12748);
 		PLAYER_Player.setPlayerAttribute("Strength", 3);
@@ -124,6 +142,12 @@ int main()
 	{
 		PLAYER_Player.addItem(new Item("Chipped Diamond", "Exposed diamond which appears chipped and frozen over, might still carry some value", 4));
 		PLAYER_Player.addItem(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+		PLAYER_Player.addItem(new ItemMelee("Sword of Lost Histories", "Gift from Macko because you played Prototype 1!", 5, 100, true));
+		PLAYER_Player.addItem(new ItemSkill("Low Skill 1", "I don't know what other skill moves you had", 5, Skill("Flame")));
+		PLAYER_Player.addItem(new ItemSkill("Low Skill 2", "I don't know what other skill moves you had", 5, Skill("Splash")));
+		PLAYER_Player.addItem(new ItemSkill("Low Skill 3", "I don't know what other skill moves you had", 5, Skill("Freeze")));
+		PLAYER_Player.addItem(new ItemSkill("Low Skill 4", "I don't know what other skill moves you had", 5, Skill("Zap")));
+		PLAYER_Player.addItem(new ItemSkill("Low Skill 5", "I don't know what other skill moves you had", 5, Skill("Gust")));
 		Item* ITEM_To_Add = new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80);
 		ITEM_To_Add->increaseQuantity(1);
 		PLAYER_Player.addItem(ITEM_To_Add);
@@ -142,6 +166,7 @@ int main()
 		PLAYER_Player.setPlayerAttribute("Endurance", 99);
 	}
 
+	// Setting up Prototype 2
 	while (STR_Intro_Choice != "y" && STR_Intro_Choice != "n")
 	{
 		system("CLS");
@@ -156,6 +181,8 @@ int main()
 	cout << "\n\n   ! For dialogue scenes, press any key to advance\n   ! Whilst dungeon exploring, press SPACE to make an input\n\n   Have Fun!\n\n\n   ";
 	system("pause");
 	system("CLS");
+
+	// Main Gameplay Loop
 	while (true)
 	{
 		// INTRO DIALOGUE/TUTORIAL BATTLE
@@ -358,7 +385,7 @@ int main_menu()
 		cout << "         H I S T O R I E S       " << endl;
 		cout << "            Prototype 2          " << endl;
 		cout << "\n\n";
-		cout << "--> New Game\n--> Load Game\n--> Settings\n--> Credits\n--> Quit\n\n> ";
+		cout << "--> New Game\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
 		STR_Menu_Choice = convert_string_tolower(STR_Menu_Choice);
 	}
