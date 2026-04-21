@@ -126,8 +126,8 @@ int main()
 		PLAYER_Player.addItem(new ItemSkill("Glass Pendant", "A glass heart pendant emitting a strong healthy aura", 4, Skill("Healan")));
 		PLAYER_Player.addItem(new ItemSkill("Jellyfish Tenticle", "Dead or Alive it still carries some current", 4, Skill("Zapadia")));
 		PLAYER_Player.addItem(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 67, true));
-		PLAYER_Player.addItem(new ItemMelee("Sword of Lost Histories", "Gift from Macko because you played Prototype 1!", 5, 100, true));
-		PLAYER_Player.addItem(new ItemSkill("Low Skill 1", "I don't know what other skill moves you had", 5, Skill("Flame")));
+		PLAYER_Player.addItem(new ItemMelee("Sword of Lost Histories", "Gift from Macko because you played Prototype 1!", 5, 111, true));
+		PLAYER_Player.addItem(new ItemSkill("Pror", "I don't know what other skill moves you had", 5, Skill("Flame")));
 		PLAYER_Player.addItem(new ItemSkill("Low Skill 2", "I don't know what other skill moves you had", 5, Skill("Splash")));
 		PLAYER_Player.addItem(new ItemSkill("Low Skill 3", "I don't know what other skill moves you had", 5, Skill("Freeze")));
 		PLAYER_Player.addItem(new ItemSkill("Low Skill 4", "I don't know what other skill moves you had", 5, Skill("Zap")));
@@ -142,19 +142,19 @@ int main()
 	{
 		PLAYER_Player.addItem(new Item("Chipped Diamond", "Exposed diamond which appears chipped and frozen over, might still carry some value", 4));
 		PLAYER_Player.addItem(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
-		PLAYER_Player.addItem(new ItemMelee("Sword of Lost Histories", "Gift from Macko because you played Prototype 1!", 5, 100, true));
-		PLAYER_Player.addItem(new ItemSkill("Low Skill 1", "I don't know what other skill moves you had", 5, Skill("Flame")));
-		PLAYER_Player.addItem(new ItemSkill("Low Skill 2", "I don't know what other skill moves you had", 5, Skill("Splash")));
-		PLAYER_Player.addItem(new ItemSkill("Low Skill 3", "I don't know what other skill moves you had", 5, Skill("Freeze")));
-		PLAYER_Player.addItem(new ItemSkill("Low Skill 4", "I don't know what other skill moves you had", 5, Skill("Zap")));
-		PLAYER_Player.addItem(new ItemSkill("Low Skill 5", "I don't know what other skill moves you had", 5, Skill("Gust")));
-		Item* ITEM_To_Add = new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80);
-		ITEM_To_Add->increaseQuantity(1);
-		PLAYER_Player.addItem(ITEM_To_Add);
-		PLAYER_Player.setLevelStats(23, 294, 150);
-		PLAYER_Player.setLevelXP(33640, 7686);
-		PLAYER_Player.setPlayerAttribute("Strength", 23);
-		PLAYER_Player.setPlayerAttribute("Magic", 23);
+		PLAYER_Player.addItem(new ItemMelee("Sword of Lost Histories", "Gift from Macko because you played Prototype 1!", 5, 111, true));
+		PLAYER_Player.addItem(new ItemMelee("Sword of More Lost Histories", "Gift from Macko because you played Prototype 2!", 5, 222, true));
+		PLAYER_Player.addItem(new ItemSkill("Prototype 2 Skill 1", "I didn't forget these this time", 5, Skill("Freezan")));
+		PLAYER_Player.addItem(new ItemSkill("Prototype 2 Skill 2", "I didn't forget these this time", 5, Skill("Splashan")));
+		PLAYER_Player.addItem(new ItemSkill("Prototype 2 Skill 3", "I didn't forget these this time", 5, Skill("Zapao")));
+		PLAYER_Player.addItem(new ItemSkill("Prototype 2 Skill 4", "I didn't forget these this time", 5, Skill("Freila")));
+		PLAYER_Player.addItem(new ItemConsumable("Bottle o' Spirit", "A strange looking bottle containing dead souls", 2, "STA", 35));
+		PLAYER_Player.addItem(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
+		PLAYER_Player.addItem(new ItemConsumable("Power Supplements", "Drugs used to increase users power moderately", 3, "ATK", 2.5));
+		PLAYER_Player.setLevelStats(30, 343, 178);
+		PLAYER_Player.setLevelXP(106140, 6682);
+		PLAYER_Player.setPlayerAttribute("Strength", 31);
+		PLAYER_Player.setPlayerAttribute("Magic", 29);
 		PLAYER_Player.setPlayerAttribute("Endurance", 1);
 	}
 	else if (PLAYER_Player.getName() == "Macko")
@@ -213,7 +213,8 @@ int main()
 					DUNGEON_Current_Dungeon->fillWithChests();
 					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 					DUNGEON_Current_Dungeon = new DungeonAtlantis();
-					DUNGEON_Current_Dungeon->changeDungeonRoom(2);
+					if (PLAYER_Player.getName() == "Will") DUNGEON_Current_Dungeon->changeDungeonRoom(5);
+					else DUNGEON_Current_Dungeon->changeDungeonRoom(2);
 					DUNGEON_Current_Dungeon->fillWithEnemies();
 					DUNGEON_Current_Dungeon->fillWithChests();
 					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
@@ -1720,7 +1721,7 @@ void play_audio(string to_play)
 	}
 	else if (to_play == "Dungeon Battle")
 	{
-		PlaySound(TEXT("music/dungeon_battle_custom.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/dungeon_battle.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Mini Boss")
 	{
