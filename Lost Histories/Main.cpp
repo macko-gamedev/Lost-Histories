@@ -133,6 +133,14 @@ int main()
 		PLAYER_Player.setPlayerAttribute("Magic", 23);
 		PLAYER_Player.setPlayerAttribute("Endurance", 1);
 	}
+	else if (PLAYER_Player.getName() == "Macko")
+	{
+		PLAYER_Player.setLevelStats(99, 826, 454);
+		PLAYER_Player.setLevelXP(6284945, 214245);
+		PLAYER_Player.setPlayerAttribute("Strength", 99);
+		PLAYER_Player.setPlayerAttribute("Magic", 99);
+		PLAYER_Player.setPlayerAttribute("Endurance", 99);
+	}
 
 	while (STR_Intro_Choice != "y" && STR_Intro_Choice != "n")
 	{
@@ -183,6 +191,21 @@ int main()
 					DUNGEON_Current_Dungeon->fillWithChests();
 					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 					PLAYER_Player.update();
+				}
+				else if (PLAYER_Player.getName() == "Macko")
+				{
+					DUNGEON_Current_Dungeon = new DungeonGlacier();
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+					DUNGEON_Current_Dungeon = new DungeonAtlantis();
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+					DUNGEON_Current_Dungeon = new DungeonFacility();
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 				}
 				else
 				{
@@ -376,7 +399,11 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 		cout << "   ";
 		for (int j = 0; j < 15; j++)
 		{
-			if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'O')
+			if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'S')
+			{
+				cout << dye::aqua("S") << " ";
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'O')
 			{
 				if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
 				{
@@ -393,16 +420,49 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 			}
 			else if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'X')
 			{
-				cout << dye::black_on_grey(" ");
+				if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
+				{
+					cout << dye::black_on_bright_white(" ");
+				}
+				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
+				{
+					cout << dye::black_on_aqua(" ");
+				}
+				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
+				{
+					cout << dye::black_on_purple(" ");
+				}
 				if ((j + 1) == 15 && DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'X')
 				{
-					cout << dye::black_on_grey(" ");
+					if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
+					{
+						cout << dye::black_on_bright_white(" ");
+					}
+					else if (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
+					{
+						cout << dye::black_on_aqua(" ");
+					}
+					else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
+					{
+						cout << dye::black_on_purple(" ");
+					}
 				}
 				else if ((j + 1) < 15)
 				{
 					if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][(j + 1)] == 'X' || DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][(j + 1)] == 'O')
 					{
-						cout << dye::black_on_grey(" ");
+						if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
+						{
+							cout << dye::black_on_bright_white(" ");
+						}
+						else if (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
+						{
+							cout << dye::black_on_aqua(" ");
+						}
+						else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
+						{
+							cout << dye::black_on_purple(" ");
+						}
 					}
 					else
 					{
@@ -816,6 +876,33 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				}
 			}
 		}
+		else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
+		{
+			if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
+			{
+				bool BOOL_Has_Key = false;
+				for (Item* ITEM_Item : PLAYER_Player.getItems())
+				{
+					if (ITEM_Item->getName() == "Facility F3 Keycard")
+					{
+						BOOL_Has_Key = true;
+					}
+				}
+				if (BOOL_Has_Key)
+				{
+					// Moves the player to the next tile (by unlocking the Key Door)
+					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+					DUNGEON_Current_Dungeon->changePosY(1);
+				}
+				else
+				{
+					// Outputs the Key which is required
+					cout << "   Requires Facility F3 Keycard";
+					this_thread::sleep_for(chrono::seconds(2));
+				}
+			}
+		}
 	}
 	if (STR_Dialogue_Choice == "a")
 	{
@@ -1041,6 +1128,15 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
 				DUNGEON_Current_Dungeon->changePosX(1);
 				Enemy ENEMY_New_Enemy = Enemy("Radioactive Atlantis Guard", 30, 813, 214, { Skill("Meflamao"), Skill("Mesplashan"), Skill("Zapao"), Skill("Hexaon"), Skill("Frei"), Skill("Heal") }, new Item("Atlantis F5 Key B", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 95);
+				play_audio("Dungeon Mini Boss");
+				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 3)
+			{
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
+				DUNGEON_Current_Dungeon->changePosX(1);
+				Enemy ENEMY_New_Enemy = Enemy("Mutated Lab Researcher", 50, 894, 487, { Skill("Flamadia"), Skill("Splashadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon") }, new Item("Facility F3 Keycard", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 46);
 				play_audio("Dungeon Mini Boss");
 				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 			}
@@ -1597,7 +1693,7 @@ void play_audio(string to_play)
 	}
 	else if (to_play == "Dungeon Battle")
 	{
-		PlaySound(TEXT("music/dungeon_battle.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/dungeon_battle_custom.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Mini Boss")
 	{
@@ -1670,8 +1766,12 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 		while (STR_Dialogue_Choice == "items")
 		{
 			system("CLS");
-			cout << "\n   " << PLAYER_Player.getName() << "'s Inventory\n";
-			cout << "   [ " << convert_string_toupper(STR_Item_Page) << " ] ";
+			cout << "\n   " << PLAYER_Player.getName() << "'s Inventory";
+			if (STR_Item_Page == "consumables")
+			{
+				cout << " :: " << dye::light_green("HP: ") << dye::light_green(PLAYER_Player.getHealth()) << dye::light_green(" / ") << dye::light_green(PLAYER_Player.getMaxHealth()) << " | " << dye::light_aqua("STA: ") << dye::light_aqua(PLAYER_Player.getStamina()) << dye::light_aqua(" / ") << dye::light_aqua(PLAYER_Player.getMaxStamina());
+			}
+			cout << "\n   [ " << convert_string_toupper(STR_Item_Page) << " ] ";
 			vector<int> VEC_Rarity_Numbers = { 0, 0, 0, 0, 0 };
 
 			// Displays all parent Item and child Item objects
@@ -1776,6 +1876,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 						}
 					}
 				}
+				cout << "   To use a consumable, type the name of item\n";
 			}
 
 			// Displays all ItemSkill objects
@@ -1905,6 +2006,40 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 					PLAYER_Player.setMelee(ITEM_MELEE_Equipping);
 					STR_Item_Page = "weapons";
 					break;
+				}
+			}
+
+			// Checks to see if player uses a consumable
+			for (Item* ITEM_Item : PLAYER_Player.getItems())
+			{
+				if (convert_string_tolower(ITEM_Item->getName()) == STR_Items_Input)
+				{
+					if (ITEM_Item->isConsumable())
+					{
+						if (ITEM_Item->getType() == "HP")
+						{
+							PLAYER_Player.changeHealth(ITEM_Item->getAmount());
+							ITEM_Item->increaseQuantity(-1);
+							if (ITEM_Item->getQuantity() == 0)
+							{
+								vector<Item*> TEMP_Player_Items = PLAYER_Player.getItems();
+								TEMP_Player_Items.erase(find(TEMP_Player_Items.begin(), TEMP_Player_Items.end(), ITEM_Item));
+								PLAYER_Player.setItems(TEMP_Player_Items);
+							}
+						}
+						else if (ITEM_Item->getType() == "STA")
+						{
+							PLAYER_Player.changeStamina(ITEM_Item->getAmount());
+							ITEM_Item->increaseQuantity(-1);
+							if (ITEM_Item->getQuantity() == 0)
+							{
+								vector<Item*> TEMP_Player_Items = PLAYER_Player.getItems();
+								TEMP_Player_Items.erase(find(TEMP_Player_Items.begin(), TEMP_Player_Items.end(), ITEM_Item));
+								PLAYER_Player.setItems(TEMP_Player_Items);
+							}
+						}
+						STR_Item_Page = "consumables";
+					}
 				}
 			}
 
