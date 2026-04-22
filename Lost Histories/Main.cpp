@@ -1601,9 +1601,16 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 									cout << dye::aqua_on_light_aqua(" BONUS ");
 								}
 								cout << "\n\n";
-								if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rpl")
+								if (SKILL_Skill_Selected.getType() != "Nuclear")
 								{
-									PLAYER_Player.changeHealth(-INT_Calculated_Damage);
+									if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rpl")
+									{
+										PLAYER_Player.changeHealth(-INT_Calculated_Damage);
+									}
+									else
+									{
+										ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
+									}
 								}
 								else
 								{
@@ -1775,6 +1782,10 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
 			{
 				FLT_EXP_Earned *= 2.5;
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields")
+			{
+				FLT_EXP_Earned *= 3.5;
 			}
 
 			for (Item* ITEM_Item : PLAYER_Player.getItems())

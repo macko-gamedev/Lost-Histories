@@ -115,7 +115,7 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 20;
 		this->BOOL_Single_Target = false;
 	}
-	else if (this->STR_Skill_Name == "Eye of the 'Shell")
+	else if (this->STR_Skill_Name == "Eye of the Ocean")
 	{
 		this->STR_Skill_Type = "Water";
 		this->STR_Skill_Desc = "Channel the inner water of the ocean upon one foe";
