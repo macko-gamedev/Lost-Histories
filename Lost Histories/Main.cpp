@@ -159,8 +159,8 @@ int main()
 	}
 	else if (PLAYER_Player.getName() == "Macko")
 	{
-		PLAYER_Player.setLevelStats(99, 826, 454);
-		PLAYER_Player.setLevelXP(6284945, 214245);
+		PLAYER_Player.setLevelStats(40, 826, 454);
+		PLAYER_Player.setLevelXP(6284945, 24434);
 		PLAYER_Player.setPlayerAttribute("Strength", 99);
 		PLAYER_Player.setPlayerAttribute("Magic", 99);
 		PLAYER_Player.setPlayerAttribute("Endurance", 99);
@@ -608,7 +608,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		{
 			// Changes the Dungeon Room number by 1
 			DUNGEON_Current_Dungeon->changeDungeonRoom(1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7))
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6))
 			{
 				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 			}
@@ -908,26 +908,92 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		{
 			if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '|')
 			{
-				bool BOOL_Has_Key = false;
-				for (Item* ITEM_Item : PLAYER_Player.getItems())
+				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 3)
 				{
-					if (ITEM_Item->getName() == "Facility F3 Keycard")
+					bool BOOL_Has_Key = false;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
 					{
-						BOOL_Has_Key = true;
+						if (ITEM_Item->getName() == "Facility F3 Keycard")
+						{
+							BOOL_Has_Key = true;
+						}
+					}
+					if (BOOL_Has_Key)
+					{
+						// Moves the player to the next tile (by unlocking the Key Door)
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+						DUNGEON_Current_Dungeon->changePosY(1);
+					}
+					else
+					{
+						// Outputs the Key which is required
+						cout << "   Requires Facility F3 Keycard";
+						this_thread::sleep_for(chrono::seconds(2));
 					}
 				}
-				if (BOOL_Has_Key)
+				else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
 				{
-					// Moves the player to the next tile (by unlocking the Key Door)
-					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
-					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
-					DUNGEON_Current_Dungeon->changePosY(1);
+					bool BOOL_Has_Key = false;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getName() == "Facility F5 Keycard B")
+						{
+							BOOL_Has_Key = true;
+						}
+					}
+					if (BOOL_Has_Key)
+					{
+						// Moves the player to the next tile (by unlocking the Key Door)
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+						DUNGEON_Current_Dungeon->changePosY(1);
+					}
+					else
+					{
+						// Outputs the Key which is required
+						cout << "   Requires Facility F5 Keycard B";
+						this_thread::sleep_for(chrono::seconds(2));
+					}
 				}
-				else
+				else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
 				{
-					// Outputs the Key which is required
-					cout << "   Requires Facility F3 Keycard";
-					this_thread::sleep_for(chrono::seconds(2));
+					bool BOOL_Has_Key = false;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getName() == "Facility F6 Keycard")
+						{
+							BOOL_Has_Key = true;
+						}
+					}
+					if (BOOL_Has_Key)
+					{
+						// Moves the player to the next tile (by unlocking the Key Door)
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+						DUNGEON_Current_Dungeon->changePosY(1);
+					}
+					else
+					{
+						// Outputs the Key which is required
+						cout << "   Requires Facility F6 Keycard";
+						this_thread::sleep_for(chrono::seconds(2));
+					}
+				}
+			}
+			else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
+			{
+				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
+				{
+					Enemy ENEMY_New_Enemy = Enemy("Mutated Security Sector 4B", 55, 901, 293, { Skill("Splashadia"), Skill("Meplashadia"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Healan") }, new Item("Facility F5 Keycard A", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 142);
+					play_audio("Dungeon Mini Boss");
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+				}
+				else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
+				{
+					Enemy ENEMY_New_Enemy = Enemy("Mutated Security Sector 46D", 60, 952, 394, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Gustadia"), Skill("Megustadia"), Skill("Healan") }, new Item("Facility F6 Keycard", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 163);
+					play_audio("Dungeon Mini Boss");
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
 			}
 		}
@@ -952,7 +1018,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '<')
 		{
 			DUNGEON_Current_Dungeon->changeDungeonRoom(-1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6))
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5))
 			{
 				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 			}
@@ -1093,6 +1159,31 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					}
 				}
 			}
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
+			{
+				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
+				{
+					bool BOOL_Has_Key = false;
+					for (Item* ITEM_Item : PLAYER_Player.getItems())
+					{
+						if (ITEM_Item->getName() == "Facility F5 Keycard A")
+						{
+							BOOL_Has_Key = true;
+						}
+					}
+					if (BOOL_Has_Key)
+					{
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+						DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1), '+');
+						DUNGEON_Current_Dungeon->changePosY(-1);
+					}
+					else
+					{
+						cout << "   Requires Facility F5 Keycard A";
+						this_thread::sleep_for(chrono::seconds(2));
+					}
+				}
+			}
 		}
 	}
 	if (STR_Dialogue_Choice == "w")
@@ -1165,6 +1256,15 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
 				DUNGEON_Current_Dungeon->changePosX(1);
 				Enemy ENEMY_New_Enemy = Enemy("Mutated Lab Researcher", 50, 894, 487, { Skill("Flamadia"), Skill("Splashadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon") }, new Item("Facility F3 Keycard", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 46);
+				play_audio("Dungeon Mini Boss");
+				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
+			{
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
+				DUNGEON_Current_Dungeon->changePosX(1);
+				Enemy ENEMY_New_Enemy = Enemy("Mutated Security Sector 16A", 55, 924, 246, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Gustadia"), Skill("Megustadia"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Healan") }, new Item("Facility F5 Keycard B", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 135);
 				play_audio("Dungeon Mini Boss");
 				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 			}
@@ -1566,7 +1666,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			play_audio("Victory");
 			float FLT_EXP_Earned;
 			bool BOOL_Item_Dupe = false;
-			if (ENEMY_Enemy.getName() == "Gold Entity I" || ENEMY_Enemy.getName() == "Gold Entity II" || ENEMY_Enemy.getName() == "Gold Entity III" || ENEMY_Enemy.getName() == "Gold Entity IV")
+			if (ENEMY_Enemy.getName() == "Gold Entity I" || ENEMY_Enemy.getName() == "Gold Entity II" || ENEMY_Enemy.getName() == "Gold Entity III" || ENEMY_Enemy.getName() == "Gold Entity IV" || ENEMY_Enemy.getName() == "Gold Entity V" || ENEMY_Enemy.getName() == "Gold Entity VI")
 			{
 				FLT_EXP_Earned = int(ENEMY_Enemy.getMaxHealth() * 7.7);
 			}
@@ -1578,6 +1678,16 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			{
 				FLT_EXP_Earned = ENEMY_Enemy.getMaxHealth() * 2;
 			}
+
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
+			{
+				FLT_EXP_Earned *= 1.5;
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
+			{
+				FLT_EXP_Earned *= 2.5;
+			}
+
 			for (Item* ITEM_Item : PLAYER_Player.getItems())
 			{
 				if (enemyDrop->getName() == ITEM_Item->getName())
@@ -1703,7 +1813,7 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/glacier_floor_6.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Glacier Wasteland F6" || to_play == "Atlantis Ruins F7")
+	else if (to_play == "Glacier Wasteland F6" || to_play == "Atlantis Ruins F7" || to_play == "Facility F6")
 	{
 		PlaySound(TEXT("music/dungeon_final_floor.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
@@ -1715,7 +1825,7 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/atlantis_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Facility F1" || to_play == "Facility F2" || to_play == "Facility F3" || to_play == "Facility F4")
+	else if (to_play == "Facility F1" || to_play == "Facility F2" || to_play == "Facility F3" || to_play == "Facility F4" || to_play == "Facility F5")
 	{
 		PlaySound(TEXT("music/facility_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}

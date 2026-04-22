@@ -134,7 +134,7 @@ void Item::setElementalType(string N_Elemental_Type, float N_Bonus_Value)
 void Item::applyModifications()
 {
 	int INT_Modified_Chance = (rand() % 20) + 1;
-	vector<float> VEC_Bonus_Values = { 1.05, 1.10, 1.15, 1.20, 1.25, 1.30, 1.35, 1.40 };
+	vector<float> VEC_Bonus_Values = { 1.05, 1.15, 1.25, 1.35, 1.45 };
 	if (INT_Modified_Chance > 15)
 	{
 		// Picks an Attribute to deal bonus damage with with a multiplier between 5% - 40%

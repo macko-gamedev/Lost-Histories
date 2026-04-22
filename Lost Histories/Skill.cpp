@@ -436,7 +436,15 @@ Skill::Skill(string N_NAME)
 		this->INT_Base_Damage = 269;
 		this->INT_Stamina_Cost = 48;
 		this->BOOL_Single_Target = false;
-	}
+		}
+	else if (this->STR_Skill_Name == "End of the World")
+	{
+		this->STR_Skill_Type = "Nuclear";
+		this->STR_Skill_Desc = "Deal massive nuclear damage to all enemies";
+		this->INT_Base_Damage = 666;
+		this->INT_Stamina_Cost = 88;
+		this->BOOL_Single_Target = false;
+		}
 	else if (this->STR_Skill_Name == "Death")
 	{
 		this->STR_Skill_Type = "Nuclear";
