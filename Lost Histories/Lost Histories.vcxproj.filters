@@ -57,6 +57,9 @@
     <ClInclude Include="DungeonFacility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DungeonMagma.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -102,6 +105,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DungeonFacility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DungeonMagma.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

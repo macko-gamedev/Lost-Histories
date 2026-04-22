@@ -8,6 +8,7 @@
 #include "DungeonGlacier.h"
 #include "DungeonAtlantis.h"
 #include "DungeonFacility.h"
+#include "DungeonMagma.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -60,6 +61,8 @@ enum storyStatus
 	ACT_ONE,
 	ACT_TWO,
 	ACT_THREE,
+	ACT_FOUR,
+	ACT_FIVE,
 };
 
 // Enumerator for game status, what game state is the player in
@@ -233,6 +236,7 @@ int main()
 					DUNGEON_Current_Dungeon = new DungeonFacility();
 					DUNGEON_Current_Dungeon->fillWithEnemies();
 					DUNGEON_Current_Dungeon->fillWithChests();
+				    DUNGEON_Current_Dungeon->changeDungeonRoom(5);
 					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 				}
 				else
@@ -241,7 +245,7 @@ int main()
 					DUNGEON_Current_Dungeon->fillWithEnemies();
 					DUNGEON_Current_Dungeon->fillWithChests();
 					ENEMY_New_Enemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 12);
-					play_audio("Dungeon Battle");
+					play_audio("Story Battle");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
 				STORY_Story.startOfDialogue();
@@ -284,7 +288,6 @@ int main()
 				break;
 			}
 		}
-		play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 
 		while (ENUM_Story_Status == storyStatus::ACT_THREE && ENUM_Game_Status == gameStatus::DIALOGUE)
 		{
@@ -314,6 +317,44 @@ int main()
 				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 				STORY_Story.startOfDialogue();
 				STORY_Story.increaseDialogueIndex();
+				ENUM_Game_Status = gameStatus::DUNGEON;
+				break;
+			}
+		}
+
+		while (ENUM_Story_Status == storyStatus::ACT_FOUR && ENUM_Game_Status == gameStatus::DIALOGUE)
+		{
+			clock_t start = clock();
+
+			cout << "\n   " << STORY_Story.getDialogue() << endl;
+			STORY_Story.increaseDialogueIndex();
+			if (STORY_Story.getDialogue() == "END DIALOGUE")
+			{
+				STORY_Story.endOfDialogue();
+			}
+			_getch();
+			clock_t end = clock();
+			int ms_duration = end - start;
+			int ms_remaining = 33 - ms_duration;
+			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
+
+			if (STORY_Story.isEvent())
+			{
+				// STORY BATTLE
+				DUNGEON_Current_Dungeon->fillWithEnemies();
+				DUNGEON_Current_Dungeon->fillWithChests();
+				VEC_Visited_Dungeons[2] = DUNGEON_Current_Dungeon;
+
+				ENEMY_New_Enemy = Enemy("Reincarnation of George Shaw", 65, 1145, 532, { Skill("Flamadia"), Skill("Eye of the Sun"), Skill("Zapadia"), Skill("Eye of the Spark"), Skill("Hexaon"), Skill("Freiladia"), Skill("Healan") }, new ItemMelee("Blunt Kunai", "A replica of George Shaw's favourite video game character's melee skin from 2026", 5, 224, true), false, 60);
+				play_audio("Story Battle");
+				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+				DUNGEON_Current_Dungeon = new DungeonMagma();
+				DUNGEON_Current_Dungeon->fillWithEnemies();
+				DUNGEON_Current_Dungeon->fillWithChests();
+				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+				STORY_Story.startOfDialogue();
+				STORY_Story.increaseDialogueIndex();
+				ENUM_Story_Status = storyStatus::ACT_FIVE;
 				ENUM_Game_Status = gameStatus::DUNGEON;
 				break;
 			}
@@ -384,7 +425,7 @@ int main_menu()
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
-		cout << "            Prototype 2          " << endl;
+		cout << "             v04_26.04          " << endl;
 		cout << "\n\n";
 		cout << "--> New Game\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
@@ -443,7 +484,11 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 				}
 				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
 				{
-					cout << dye::black_on_purple("  ");
+					cout << dye::black_on_grey("  ");
+				}
+				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields")
+				{
+					cout << dye::black_on_light_red("  ");
 				}
 			}
 			else if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'X')
@@ -458,7 +503,11 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 				}
 				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
 				{
-					cout << dye::black_on_purple(" ");
+					cout << dye::black_on_grey(" ");
+				}
+				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields")
+				{
+					cout << dye::black_on_light_red(" ");
 				}
 				if ((j + 1) == 15 && DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'X')
 				{
@@ -472,7 +521,11 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 					}
 					else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
 					{
-						cout << dye::black_on_purple(" ");
+						cout << dye::black_on_grey(" ");
+					}
+					else if (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields")
+					{
+						cout << dye::black_on_light_red(" ");
 					}
 				}
 				else if ((j + 1) < 15)
@@ -489,7 +542,11 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 						}
 						else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
 						{
-							cout << dye::black_on_purple(" ");
+							cout << dye::black_on_grey(" ");
+						}
+						else if (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields")
+						{
+							cout << dye::black_on_light_red(" ");
 						}
 					}
 					else
@@ -983,17 +1040,26 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			}
 			else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
 			{
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+				DUNGEON_Current_Dungeon->changePosY(1);
 				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
 				{
 					Enemy ENEMY_New_Enemy = Enemy("Mutated Security Sector 4B", 55, 901, 293, { Skill("Splashadia"), Skill("Meplashadia"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Healan") }, new Item("Facility F5 Keycard A", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 142);
 					play_audio("Dungeon Mini Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
-				else if (DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
+				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
 				{
-					Enemy ENEMY_New_Enemy = Enemy("Mutated Security Sector 46D", 60, 952, 394, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Gustadia"), Skill("Megustadia"), Skill("Healan") }, new Item("Facility F6 Keycard", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 163);
-					play_audio("Dungeon Mini Boss");
+					Enemy ENEMY_New_Enemy = Enemy("Master of the Facility", 60, 1092, 482, { Skill("Flamadia"), Skill("Freezadia"), Skill("Gustadia"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Spark"), Skill("Healan") }, new Item("Frozen Crystal of Bitter Cold", "This is the core component of a machine, its purpose is to restore the balance between hot and cold on the planet", 5), true, 90);
+					play_audio("Dungeon Main Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+
+					// Once out of the battle gameplay loop, start dialogue and story between dungeons
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Story_Status = storyStatus::ACT_FOUR;
+					ENUM_Game_Status = gameStatus::DIALOGUE;
 				}
 			}
 		}
@@ -1130,6 +1196,12 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					play_audio("Dungeon Mini Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
+			{
+				Enemy ENEMY_New_Enemy = Enemy("Mutated Security Sector 46D", 60, 952, 394, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Gustadia"), Skill("Megustadia"), Skill("Healan") }, new Item("Facility F6 Keycard", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 163);
+				play_audio("Dungeon Mini Boss");
+				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 			}
 		}
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '|')
@@ -1512,6 +1584,16 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 										INT_Calculated_Damage = 0;
 										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage " << dye::black_on_grey(" BLOCK ") << " ";
 									}
+									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Abs")
+									{
+										INT_Calculated_Damage = -(SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier());
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " which absorbed your attack restoring " << -INT_Calculated_Damage << " health " << dye::black_on_green(" ABSORB ") << " ";
+									}
+									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rpl")
+									{
+										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " which repelled your attack dealing " << INT_Calculated_Damage << " damage to yourself " << dye::red_on_light_red(" REPEL ") << " ";
+									}
 								}
 
 								if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute() && PLAYER_Player.getMeleeWeapon().getAttributeType() == "Magic")
@@ -1519,7 +1601,14 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 									cout << dye::aqua_on_light_aqua(" BONUS ");
 								}
 								cout << "\n\n";
-								ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
+								if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rpl")
+								{
+									PLAYER_Player.changeHealth(-INT_Calculated_Damage);
+								}
+								else
+								{
+									ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
+								}
 							}
 							PLAYER_Player.changeStamina(-SKILL_Skill_Selected.getStaminaCost());
 							PLAYER_Player.setMagicAttackMultiplier(1.0);
@@ -1829,6 +1918,10 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/facility_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
+	else if (to_play == "Magma Fields F1" || to_play == "Magma Fields F2" || to_play == "Magma Fields F3")
+	{
+		PlaySound(TEXT("music/magma_fields_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
 	else if (to_play == "Dungeon Battle")
 	{
 		PlaySound(TEXT("music/dungeon_battle.wav"), NULL, SND_ASYNC | SND_LOOP);
@@ -1840,6 +1933,10 @@ void play_audio(string to_play)
 	else if (to_play == "Dungeon Main Boss")
 	{
 		PlaySound(TEXT("music/dungeon_main_boss.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Story Battle")
+	{
+		PlaySound(TEXT("music/story_battle.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Victory")
 	{

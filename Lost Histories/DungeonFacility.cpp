@@ -103,7 +103,7 @@ DungeonFacility::DungeonFacility()
 			{ 'O', 'O', 'X', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
 			{ 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
-			{ '<', '+', ' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', '?', 'X' },
+			{ '<', ' ', ' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', '+', '?', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O' },
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
@@ -179,23 +179,23 @@ void DungeonFacility::elementSetter(Enemy& ENEMY_Enemy)
 	}
 	else if (ENEMY_Enemy.getName() == "Nuclear Spirit")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Wk"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Corrupt Researcher")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Wk"}, {"Bless", "Nul"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Abs"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Wk"}, {"Bless", "Abs"} });
 	}
 	else if (ENEMY_Enemy.getName() == "German Soldier")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Wk"}, {"Ice", "Wk"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Wk"}, {"Ice", "Wk"}, {"Electric", "Rpl"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "French Soldier")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rpl"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "American Soldier")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "Nul"}, {"Wind", "Wk"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "Abs"}, {"Electric", "Nul"}, {"Wind", "Wk"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 	}
 	// Rare Enemies
 	else if (ENEMY_Enemy.getName() == "Gold Entity IV")
@@ -204,7 +204,7 @@ void DungeonFacility::elementSetter(Enemy& ENEMY_Enemy)
 	}
 	else if (ENEMY_Enemy.getName() == "Gold Entity V")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Gold Entity VI")
 	{
@@ -213,19 +213,24 @@ void DungeonFacility::elementSetter(Enemy& ENEMY_Enemy)
 	// Mini Bosses 
 	else if (ENEMY_Enemy.getName() == "Mutated Lab Researcher")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Nul"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Wk"}, {"Wind", "Nul"}, {"Curse", "Abs"}, {"Bless", "Wk"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Mutated Security Sector 4B")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Rst"}, {"Ice", "-"}, {"Electric", "Nul"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Nul"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Rst"}, {"Ice", "-"}, {"Electric", "Rpl"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Rpl"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Mutated Security Sector 16A")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Mutated Security Sector 46D")
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+	}
+	// Main Boss
+	else if (ENEMY_Enemy.getName() == "Master of the Facility")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Abs"}, {"Water", "Abs"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Nul"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
 }
 

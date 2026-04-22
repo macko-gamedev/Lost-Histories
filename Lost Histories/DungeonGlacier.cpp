@@ -197,7 +197,7 @@ void DungeonGlacier::elementSetter(Enemy& ENEMY_Enemy)
 	// Mini Bosses
 	else if (ENEMY_Enemy.getName() == "Snow Golem")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "Abs"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Duty Soldier")
 	{
@@ -211,7 +211,7 @@ void DungeonGlacier::elementSetter(Enemy& ENEMY_Enemy)
 	// Dungeon Boss
 	else if (ENEMY_Enemy.getName() == "Russian Sergeant")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rpl"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
 	}
 }
 

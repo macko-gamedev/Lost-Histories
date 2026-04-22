@@ -198,15 +198,15 @@ void DungeonAtlantis::elementSetter(Enemy& ENEMY_Enemy)
 	}
 	else if (ENEMY_Enemy.getName() == "Royal Guard")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Wk"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Rpl"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Wk"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Armed Soldier")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Rpl"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Sharkman")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "Rst"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Abs"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "Rst"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Reanimated Entity")
 	{
@@ -214,7 +214,7 @@ void DungeonAtlantis::elementSetter(Enemy& ENEMY_Enemy)
 	}
 	else if (ENEMY_Enemy.getName() == "British Soldier")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Wk"}, {"Bless", "Nul"} });
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Rpl"}, {"Wind", "Nul"}, {"Curse", "Wk"}, {"Bless", "Abs"} });
 	}
 	// Rare Enemies
 	else if (ENEMY_Enemy.getName() == "Gold Entity II")
@@ -223,29 +223,29 @@ void DungeonAtlantis::elementSetter(Enemy& ENEMY_Enemy)
 	}
 	else if (ENEMY_Enemy.getName() == "Gold Entity III")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "-"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "Nul"}, {"Curse", "-"}, {"Bless", "Nul"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "Abs"}, {"Ice", "Nul"}, {"Electric", "Abs"}, {"Wind", "Nul"}, {"Curse", "Abs"}, {"Bless", "Nul"} });
 	}
 	// Mini Bosses
 	else if (ENEMY_Enemy.getName() == "Reanimated Mermaid")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "-"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "Abs"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "-"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Reanimated Jellyfisherman")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Nul"}, {"Ice", "-"}, {"Electric", "Nul"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
+		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Abs"}, {"Ice", "-"}, {"Electric", "Abs"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Radioactive Atlantis Survivor")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Wk"}, {"Water", "Rpl"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
 	else if (ENEMY_Enemy.getName() == "Radioactive Atlantis Guard")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Rpl"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
 	// Dungeon Boss
-	else if (ENEMY_Enemy.getName() == "Russian Sergeant")
+	else if (ENEMY_Enemy.getName() == "Reawoken Guardian of Atlantis")
 	{
-		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
+		ENEMY_Enemy.setElements({ {"Fire", "Rst"}, {"Water", "Abs"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rpl"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
 	}
 }
 

@@ -64,7 +64,10 @@ Story::Story(string N_Player_Name)
 		{ "Yourself > This facility, how is it still operational?" },
 		{ "Yourself > Perhaps this machine part could some in handy somewhere" },
 		{ "Yourself > I should look around" },
-		{ "END DIALOGUE" }
+		{ "END DIALOGUE" },
+		{ "..." },
+		{ "need to code dialogue" },
+		{ "END DIALOGUE" },
 	};
 	this->INDEX_Dialogue = 1;
 	this->BOOL_Event = false;
