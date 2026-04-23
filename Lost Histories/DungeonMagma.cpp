@@ -113,6 +113,10 @@ void DungeonMagma::elementSetter(Enemy& ENEMY_Enemy)
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "-"}, {"Water", "Abs"}, {"Ice", "-"}, {"Electric", "Wk"}, {"Wind", "Rpl"}, {"Curse", "Wk"}, {"Bless", "Abs"} });
 	}
+	else if (ENEMY_Enemy.getName() == "Fire Prowler")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Rpl"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+	}
 	// Rare Enemies
 	else if (ENEMY_Enemy.getName() == "Gold Entity VII")
 	{
@@ -143,15 +147,19 @@ Enemy DungeonMagma::newEnemy()
 	}
 	else if (this->getDungeonRoom() == 2)
 	{
-		// Enemy level for this floor: 72-80		Lava Spirit: 72-76   Japanese Soldier: 74-80   Gold Entity VII: 75
-		int INT_Enemy_Spawn_Chance = (rand() % 10) + 1;
-		if (INT_Enemy_Spawn_Chance == 10)
+		// Enemy level for this floor: 72-80		Lava Spirit: 72-76   Japanese Soldier: 74-80   Fire Prowler: 76-80   Gold Entity VII: 75
+		int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
+		if (INT_Enemy_Spawn_Chance > 18)
 		{
 			return Enemy("Gold Entity VII", 75, 650, 0, { }, getItemFromLootTable("Gold Entity VII"), true, 10);
 		}
-		else if (INT_Enemy_Spawn_Chance > 5)
+		else if (INT_Enemy_Spawn_Chance > 11)
 		{
 			return Enemy("Japanese Soldier", ((rand() % 7) + 74), 302, 189, { Skill("Splashadia"), Skill("Eye of the Ocean"), Skill("Gustadia"), Skill("Blightaon") }, getItemFromLootTable("Japanese Soldier"), false, 89);
+		}
+		else if (INT_Enemy_Spawn_Chance > 5)
+		{
+			return Enemy("Fire Prowler", ((rand() % 5) + 76), 287, 92, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Eye of the Sun"), Skill("Zapadia") }, getItemFromLootTable("Fire Prowler"), false, 57);
 		}
 		else
 		{
@@ -179,6 +187,12 @@ Item* DungeonMagma::getItemFromLootTable(string STR_Enemy_Name)
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements 50mg", "Drugs used to increase users power massively", 5, "ATK", 7));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills 50mg", "Drugs used to increase users concentration massively", 5, "MAG", 7));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Batra's Staff of Reckoning", "Let's turn the tide!", 5, Skill("Eye of the Ocean")));
+	}
+	else if (STR_Enemy_Name == "Fire Prowler")
+	{
+		/* 1 STAR */ for (int i = 0; i < 5; i++) VEC_Enemy_Drops.push_back(new Item("Magma Rock", "Hot piece of magma rock", 1));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Volcanic Blade", "Sharp blade created by civilians who lived near the volcanoes", 3, (((rand() % 29) - 14) + 184), true));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Magma Forged Sword", "A sword forged from molten magma, gloves need to be worn", 5, (((rand() % 45) - 22) + 286), true));
 	}
 	else if (STR_Enemy_Name == "Gold Entity VII")
 	{
