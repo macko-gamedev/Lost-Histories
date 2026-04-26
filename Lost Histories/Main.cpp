@@ -2599,13 +2599,20 @@ void set_starting_elements(int& weak_element, int& resist_element)
 // Outputs Enemy's name, HP, STA and Elements
 void show_enemy_stats(Enemy ENEMY_Enemy)
 {
-	cout << "\n   " << ENEMY_Enemy.getName() << " (Lv " << ENEMY_Enemy.getLevel() << ")" << endl;
-	cout << "   HP: " << ENEMY_Enemy.getHealth() << " | STA: " << ENEMY_Enemy.getStamina() << endl << endl << endl;
+	cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(ENEMY_Enemy.getName()) << dye::grey_on_white(" ") << dye::white_on_grey(" Lv ") << dye::white_on_grey(ENEMY_Enemy.getLevel()) << dye::white_on_grey(" ");
+	cout << dye::light_green("\n   HP: ") << dye::light_green(ENEMY_Enemy.getHealth()) << dye::light_green(" / ") << dye::light_green(ENEMY_Enemy.getMaxHealth()) << " | " << dye::light_aqua("STA: ") << dye::light_aqua(ENEMY_Enemy.getStamina()) << dye::light_aqua(" / ") << dye::light_aqua(ENEMY_Enemy.getMaxStamina()) << endl << endl;
 	vector<string> VEC_Element_Names = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless"};
 	for (int i = 0; i < 7; i++)
 	{
 		cout << ".  " << VEC_Element_Names[i] << ": " << ENEMY_Enemy.getElements().find(VEC_Element_Names[i])->second << "\n";
 	}
+	cout << endl;
+	cout << "   Skills:";
+	for (int i = 0; i < ENEMY_Enemy.getSkills().size(); i++)
+	{
+		cout << "\n   " << dye::light_purple(ENEMY_Enemy.getSkills()[i].getName());
+	}
+	cout << endl;
 }
 
 // Outputs Player's name, HP and STA
