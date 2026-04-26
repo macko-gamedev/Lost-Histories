@@ -236,7 +236,10 @@ int main()
 					DUNGEON_Current_Dungeon = new DungeonFacility();
 					DUNGEON_Current_Dungeon->fillWithEnemies();
 					DUNGEON_Current_Dungeon->fillWithChests();
-				    DUNGEON_Current_Dungeon->changeDungeonRoom(5);
+					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+					DUNGEON_Current_Dungeon = new DungeonMagma();
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
 					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 				}
 				else
@@ -651,7 +654,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
 			DUNGEON_Current_Dungeon->changePosY(1);
-			
+
 			// Picks an enemy from the Dungeon class to fight
 			Enemy ENEMY_New_Enemy = DUNGEON_Current_Dungeon->newEnemy();
 
@@ -665,7 +668,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		{
 			// Changes the Dungeon Room number by 1
 			DUNGEON_Current_Dungeon->changeDungeonRoom(1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6))
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6) || (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4))
 			{
 				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 			}
@@ -788,7 +791,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 
 					// Assigns the Enemy object a custom Enemy, this being the Main Boss of the dungeon
 					Enemy ENEMY_New_Enemy = Enemy("Russian Sergeant", 15, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex") }, new ItemSkill("Battery Reserve", "Incase of power cut emergencies", 4, Skill("Mezapao")), true, 56);
-					
+
 					// Starts battle
 					play_audio("Dungeon Main Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
@@ -833,7 +836,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 
 				// Checks to see if the next tile is a Mini Boss or Main Boss (?)
 				else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
-				{ 
+				{
 					// Reanimated Mermaid Mini Boss, drops key used to advance
 					// Moves the player to the next tile
 					DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
@@ -867,7 +870,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					_getch(); cout << "\33[2K\r" << flush;;
 
 					// Assigns the Enemy object a custom Enemy, this being the Mini Boss of floor 2
-					Enemy ENEMY_New_Enemy = Enemy("Reanimated Mermaid", 20, 586, 126, { Skill("Flame"), Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Hexo"), Skill("Blighta")}, new Item("Atlantis F2 Key", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 53);
+					Enemy ENEMY_New_Enemy = Enemy("Reanimated Mermaid", 20, 586, 126, { Skill("Flame"), Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Hexo"), Skill("Blighta") }, new Item("Atlantis F2 Key", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 53);
 
 					// Starts battle
 					play_audio("Dungeon Mini Boss");
@@ -943,11 +946,23 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					// Initiates dialogue sequence
 					play_audio("Encounter");
 					_getch(); cout << "\33[2K\r" << flush;;
-					cout << "   need to code dialogue";
+					cout << "   ??? > Why must you come here!??";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > Our sancturary!";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > Why must another pest such as yourself come here and ruin everything!?";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   " << PLAYER_Player.getName() << " > I don't even know who you are...";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   A small object is glowing on the creatures waistband";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   " << PLAYER_Player.getName() << " > That object seems important, give it to me or I'll take it by force";
+					_getch(); cout << "\33[2K\r" << flush;;
+					cout << "   ??? > ARGHHHHH!!!!!";
 					_getch(); cout << "\33[2K\r" << flush;;
 
 					// Assigns the Enemy object a custom Enemy, this being the Main Boss of the dungeon
-					Enemy ENEMY_New_Enemy = Enemy("Reawoken Guardian of Atlantis", 35, 976, 214, { Skill("Flamao"), Skill("Splashan"), Skill("Splashadia"), Skill("Freezan"), Skill("Hexo"), Skill("Mehexaon"), Skill("Heal")}, new Item("Mysterious Machine Part", "It seems like some sort of part from a machine, maybe this could play a vital part in saving the world?", 4), true, 47);
+					Enemy ENEMY_New_Enemy = Enemy("Reawoken Guardian of Atlantis", 35, 976, 214, { Skill("Flamao"), Skill("Splashan"), Skill("Splashadia"), Skill("Freezan"), Skill("Hexo"), Skill("Mehexaon"), Skill("Heal") }, new Item("Mysterious Machine Part", "It seems like some sort of part from a machine, maybe this could play a vital part in saving the world?", 4), true, 47);
 
 					// Starts battle
 					play_audio("Dungeon Main Boss");
@@ -1045,12 +1060,34 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				DUNGEON_Current_Dungeon->changePosY(1);
 				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
 				{
+					play_audio("Encounter");
+					_getch(); cout << "\33[2K\r" << flush;
+					cout << "   Yourself > This guard is carrying a keycard to unlock one of those treasure rooms";
+					_getch(); cout << "\33[2K\r" << flush;
+					cout << "   Yourself > I could really do with some new resources";
+					_getch(); cout << "\33[2K\r" << flush;
+					cout << "   Yourself > Let's hope I can defeat it";
+					_getch(); cout << "\33[2K\r" << flush;
 					Enemy ENEMY_New_Enemy = Enemy("Mutated Security Sector 4B", 55, 901, 293, { Skill("Splashadia"), Skill("Meplashadia"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Healan") }, new Item("Facility F5 Keycard A", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 142);
 					play_audio("Dungeon Mini Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				}
 				if (DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
 				{
+					play_audio("Encounter");
+					_getch(); cout << "\33[2K\r" << flush;
+					cout << "   " << PLAYER_Player.getName() << " > Who are you!?";
+					_getch(); cout << "\33[2K\r" << flush;
+					cout << "   ??? > I am the founder and leader of this place";
+					_getch(); cout << "\33[2K\r" << flush;
+					cout << "   ??? > I knew you was coming " << PLAYER_Player.getName() << ".";
+					_getch(); cout << "\33[2K\r" << flush;
+					cout << "   ??? > The device you are in search of is right behind me";
+					_getch(); cout << "\33[2K\r" << flush;
+					cout << "   ??? > I wont make it so easy though";
+					_getch(); cout << "\33[2K\r" << flush;
+					cout << "   " << PLAYER_Player.getName() << " > Bring it!";
+					_getch(); cout << "\33[2K\r" << flush;
 					Enemy ENEMY_New_Enemy = Enemy("Master of the Facility", 60, 1092, 482, { Skill("Flamadia"), Skill("Freezadia"), Skill("Gustadia"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Spark"), Skill("Healan") }, new Item("Frozen Crystal of Bitter Cold", "This is the core component of a machine, its purpose is to restore the balance between hot and cold on the planet", 5), true, 90);
 					play_audio("Dungeon Main Boss");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
@@ -1061,6 +1098,35 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					ENUM_Story_Status = storyStatus::ACT_FOUR;
 					ENUM_Game_Status = gameStatus::DIALOGUE;
 				}
+			}
+		}
+		else if (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields")
+		{
+			if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
+			{
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+				DUNGEON_Current_Dungeon->changePosY(1);
+
+				// Initiates dialogue sequence
+				play_audio("Encounter");
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   ??? > need to code dialogue";
+				_getch(); cout << "\33[2K\r" << flush;
+
+				// Assigns the Enemy object a custom Enemy, this being the Main Boss of the dungeon
+				// Gimmick: every 2 FULL turns, it's skills and elemental coverage changes randomly
+				Enemy ENEMY_New_Enemy = Enemy("The Mastermind", 90, 1982, 1752, { Skill("Flamadia") }, new Item("Device Compass", "A small metallic compass pointing directly towards The Device, you're almost there!", 5), true, 148);
+
+				// Starts battle
+				play_audio("Boss - The Mastermind Pt 1");
+				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+
+				// Once out of the battle gameplay loop, start dialogue and story between dungeons
+				STORY_Story.startOfDialogue();
+				STORY_Story.increaseDialogueIndex();
+				ENUM_Story_Status = storyStatus::ACT_THREE;
+				ENUM_Game_Status = gameStatus::DIALOGUE;
 			}
 		}
 	}
@@ -1084,7 +1150,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '<')
 		{
 			DUNGEON_Current_Dungeon->changeDungeonRoom(-1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5))
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5) || (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields" && DUNGEON_Current_Dungeon->getDungeonRoom() == 3))
 			{
 				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 			}
@@ -1199,6 +1265,12 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 			}
 			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
 			{
+				play_audio("Encounter");
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   Yourself > This looks like the last guard in this facility";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   Yourself > I've got this...";
+				_getch(); cout << "\33[2K\r" << flush;
 				Enemy ENEMY_New_Enemy = Enemy("Mutated Security Sector 46D", 60, 952, 394, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Gustadia"), Skill("Megustadia"), Skill("Healan") }, new Item("Facility F6 Keycard", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 163);
 				play_audio("Dungeon Mini Boss");
 				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
@@ -1318,6 +1390,12 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
 				DUNGEON_Current_Dungeon->changePosX(1);
+				play_audio("Encounter");
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   ??? > *gargles*";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   ??? > *charges at " << PLAYER_Player.getName() << "*";
+				_getch(); cout << "\33[2K\r" << flush;
 				Enemy ENEMY_New_Enemy = Enemy("Radioactive Atlantis Guard", 30, 813, 214, { Skill("Meflamao"), Skill("Mesplashan"), Skill("Zapao"), Skill("Hexaon"), Skill("Frei"), Skill("Heal") }, new Item("Atlantis F5 Key B", "Rusted key from Atlantis, maybe can be used for something?", 3), true, 95);
 				play_audio("Dungeon Mini Boss");
 				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
@@ -1327,12 +1405,28 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
 				DUNGEON_Current_Dungeon->changePosX(1);
+				play_audio("Encounter");
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   ??? > You shouldn't be here " << PLAYER_Player.getName() << "...";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   ??? > I'd back off if I was you!";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   ??? > You'll never get to that device!";
+				_getch(); cout << "\33[2K\r" << flush;
 				Enemy ENEMY_New_Enemy = Enemy("Mutated Lab Researcher", 50, 894, 487, { Skill("Flamadia"), Skill("Splashadia"), Skill("Freezadia"), Skill("Zapadia"), Skill("Gustadia"), Skill("Hexaon"), Skill("Blightaon") }, new Item("Facility F3 Keycard", "Shiny keycard from Facility, maybe can be used for something?", 3), true, 46);
 				play_audio("Dungeon Mini Boss");
 				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 			}
 			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5)
 			{
+				play_audio("Encounter");
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   Yourself > This guard is carrying a keycard to unlock one of those treasure rooms";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   Yourself > I could really do with some new resources";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   Yourself > Let's hope I can defeat it";
+				_getch(); cout << "\33[2K\r" << flush;
 				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
 				DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), (DUNGEON_Current_Dungeon->getPosY() + 1), DUNGEON_Current_Dungeon->getPosX(), '+');
 				DUNGEON_Current_Dungeon->changePosX(1);
@@ -1606,6 +1700,10 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 									if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rpl")
 									{
 										PLAYER_Player.changeHealth(-INT_Calculated_Damage);
+									}
+									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Abs")
+									{
+										ENEMY_Enemy.changeHealth(INT_Calculated_Damage);
 									}
 									else
 									{
@@ -1933,9 +2031,13 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/magma_fields_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
+	else if (to_play == "Magma Fields F4")
+	{
+		PlaySound(TEXT("music/magma_fields_above_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
 	else if (to_play == "Dungeon Battle")
 	{
-		PlaySound(TEXT("music/dungeon_battle.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/dungeon_battle_custom.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Mini Boss")
 	{
@@ -1944,6 +2046,10 @@ void play_audio(string to_play)
 	else if (to_play == "Dungeon Main Boss")
 	{
 		PlaySound(TEXT("music/dungeon_main_boss.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Boss - The Mastermind Pt 1")
+	{
+		PlaySound(TEXT("music/boss_the_mastermind_part_1.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Story Battle")
 	{

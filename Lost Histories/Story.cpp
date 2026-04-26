@@ -117,6 +117,10 @@ Story::Story(string N_Player_Name)
 		{ "??? > *charges towards " + STR_Player_Name + "*" },
 		{ "END DIALOGUE" },
 		{ "..." },
+		{ "Yourself > That was a close one." },
+		{ "Yourself > I can't believe I just did that..." },
+		{ "Yourself > Kill my friend. I mean, it wasn't actually him, but..." },
+		{ "Yourself > I need to find this damn machine" },
 		{ "END DIALOGUE" },
 	};
 	this->INDEX_Dialogue = 1;

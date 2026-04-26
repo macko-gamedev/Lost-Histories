@@ -25,6 +25,7 @@ private:
 	bool BOOL_Alive;
 	bool BOOL_Boss;
 	int INT_Damage;
+	int INT_Boss_Stat_Cycle;
 	string STR_Turn_Phrase;
 public:
 	Enemy();

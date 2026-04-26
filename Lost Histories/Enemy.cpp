@@ -12,9 +12,10 @@ Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> 
 	this->ITEM_Dropped_Item = nDroppedItem;
 	this->BOOL_Boss = nBoss;
 	this->INT_Damage = nDamage;
+	this->INT_Boss_Stat_Cycle = 2;
 }
 
-map<string, string>  Enemy::getElements()
+map<string, string> Enemy::getElements()
 {
 	return this->MAP_Elements;
 }
@@ -64,6 +65,7 @@ void Enemy::update(Player& PLAYER_Player)
 {
 	srand(time(0));
 	vector<string> VEC_Waiting_Phases = { (this->STR_Name + " is waiting..."), (this->STR_Name + " is staring at you intensly..."),  (this->STR_Name + " is planning their next move...") };
+	
 	if (this->isBoss() == false)
 	{
 		this->ENUM_State = battleState::ATTACKING;
@@ -71,7 +73,32 @@ void Enemy::update(Player& PLAYER_Player)
 	
 	if (this->ENUM_State == battleState::WAITING)
 	{
-		this->STR_Turn_Phrase = "\n   " + VEC_Waiting_Phases[rand() % 3];
+		if (this->getName() == "The Mastermind")
+		{
+			this->INT_Boss_Stat_Cycle++;
+			if (this->INT_Boss_Stat_Cycle == 4)
+			{
+				this->INT_Boss_Stat_Cycle = 0;
+				vector<string> VEC_Ailments = { "-", "Wk", "Rst", "Rpl", "Abs", "Nul" };
+				vector<Skill> VEC_Skills_Available = { Skill("Flamadia"), Skill("Meflamadia"), Skill("Eye of the Sun"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Eye of the 'Berg"), Skill("Splashadia"), Skill("Mesplashadia"), Skill("Eye of the Ocean"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Eye of the Spark"), Skill("Gustadia"), Skill("Megustadia"), Skill("Eye of the Storm"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Frei"), Skill("Freiladia"), Skill("Healan") };
+
+				this->VEC_Skills = { };
+				for (int i = 0; i < 8; i++)
+				{
+					VEC_Skills.push_back(VEC_Skills_Available[rand() % VEC_Skills_Available.size()]);
+				}
+				this->setElements({ {"Fire", VEC_Ailments[rand() % 6]},{"Water", VEC_Ailments[rand() % 6]},{"Ice", VEC_Ailments[rand() % 6]},{"Electric", VEC_Ailments[rand() % 6]},{"Wind", VEC_Ailments[rand() % 6]},{"Curse", VEC_Ailments[rand() % 6]}, { "Bless", VEC_Ailments[rand() % 6] } });
+				this->STR_Turn_Phrase = "\n   The Mastermind is shifting their elemental coverage and magic attacks!";
+			}
+			else
+			{
+				this->STR_Turn_Phrase = "\n   " + VEC_Waiting_Phases[rand() % 3];
+			}
+		}
+		else
+		{
+			this->STR_Turn_Phrase = "\n   " + VEC_Waiting_Phases[rand() % 3];
+		}
 		this->ENUM_State = battleState::ATTACKING;
 	}
 	else if (this->ENUM_State == battleState::ATTACKING)
@@ -142,6 +169,7 @@ void Enemy::update(Player& PLAYER_Player)
 							INT_Calculated_Damage = 0;
 							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (BLOCK) ";
 						}
+						if (this->getName() == "The Mastermind") INT_Calculated_Damage *= 1.25;
 						PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 					}
 					this->INT_Stamina -= SKILL_Skill_Selected.getStaminaCost();
@@ -149,6 +177,7 @@ void Enemy::update(Player& PLAYER_Player)
 				else
 				{
 					INT_Calculated_Damage = this->getDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
+					if (this->getName() == "The Mastermind") INT_Calculated_Damage *= 1.25;
 					this->STR_Turn_Phrase = "\n   " + this->STR_Name + " attacked you dealing " + to_string(INT_Calculated_Damage) + " damage ";
 					PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 				}
