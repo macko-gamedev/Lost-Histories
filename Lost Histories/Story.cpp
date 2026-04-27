@@ -6,7 +6,7 @@ Story::Story(string N_Player_Name)
 	this->VEC_Dialogue =
 	{
 		{ "THIS IS PLACE HOLDER TEXT TO NOT ZERO INDEX" },
-		{ "??? > January 1st, 2067..." },
+		{ "\n   ??? > January 1st, 2067..." },
 		{ "??? > The planet's heat has peaked, and thus devasting disasters are about to happen..." },
 		{ "??? > What's that?" },
 		{ "??? > The ice is melting." },
@@ -17,7 +17,7 @@ Story::Story(string N_Player_Name)
 		{ "??? > You shouldn't be here." },
 		{ "??? > ...." },
 		{ "??? > Enough chitter chatter, looks like someone, or something is approaching." },
-		{ "??? A moving block of ice? No. An ice monster?" },
+		{ "A moving block of ice? No. An ice monster?" },
 		{ "You look around quickly for any sort of weapon." },
 		{ "+ Received Melee: Sharp Stick" },
 		{ ("??? > Here it comes " + STR_Player_Name + "!") },

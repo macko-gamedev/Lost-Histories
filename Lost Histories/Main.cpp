@@ -96,7 +96,7 @@ void play_audio(string to_play); // Plays music
 int main()
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
-	main_menu();
+	int INT_Save = main_menu();
 
 	// Declaring Enums
 	storyStatus ENUM_Story_Status = storyStatus::INTRO;
@@ -108,43 +108,44 @@ int main()
 
 	// Instantiates object of type Enemy
 	Enemy ENEMY_New_Enemy;
-
-	// Setting up the Player
+	Player PLAYER_Player;
 	string STR_Player_Name;
-	cout << "\n   Your Character Name: ";
-	getline(cin, STR_Player_Name);
-	int weak_element = -1;
-	int resist_element = -1;
-	set_starting_elements(weak_element, resist_element);
 
-	// Instantiates object of type Player
-	Player PLAYER_Player = Player(STR_Player_Name, weak_element, resist_element, 1, 140, 62);
-
-	// Instantiates object of type Story
-	Story STORY_Story = Story(STR_Player_Name);
-	string STR_Intro_Choice = "";
-	string STR_Dialogue_Choice;
-
-	// Loading data from Prototype 1
-	if (PLAYER_Player.getName() == "Lukas")
+	if (INT_Save == 0)
 	{
+		// Setting up the Player
+		cout << "\n   Your Character Name: ";
+		getline(cin, STR_Player_Name);
+		int weak_element = -1;
+		int resist_element = -1;
+		set_starting_elements(weak_element, resist_element);	
+		
+		// Instantiates object of type Player
+		PLAYER_Player = Player(STR_Player_Name, weak_element, resist_element, 1, 140, 62);
+		PLAYER_Player.setLevelXP(0, 22);
+
+	}
+	// Loading data from Prototype 1/2
+	else if (INT_Save == 1)
+	{
+		PLAYER_Player = Player("Lukas", 0, 1, 30, 343, 178);
 		PLAYER_Player.addItem(new ItemSkill("Glass Pendant", "A glass heart pendant emitting a strong healthy aura", 4, Skill("Healan")));
 		PLAYER_Player.addItem(new ItemSkill("Jellyfish Tenticle", "Dead or Alive it still carries some current", 4, Skill("Zapadia")));
 		PLAYER_Player.addItem(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, 67, true));
 		PLAYER_Player.addItem(new ItemMelee("Sword of Lost Histories", "Gift from Macko because you played Prototype 1!", 5, 111, true));
-		PLAYER_Player.addItem(new ItemSkill("Pror", "I don't know what other skill moves you had", 5, Skill("Flame")));
-		PLAYER_Player.addItem(new ItemSkill("Low Skill 2", "I don't know what other skill moves you had", 5, Skill("Splash")));
-		PLAYER_Player.addItem(new ItemSkill("Low Skill 3", "I don't know what other skill moves you had", 5, Skill("Freeze")));
-		PLAYER_Player.addItem(new ItemSkill("Low Skill 4", "I don't know what other skill moves you had", 5, Skill("Zap")));
-		PLAYER_Player.addItem(new ItemSkill("Low Skill 5", "I don't know what other skill moves you had", 5, Skill("Gust")));
-		PLAYER_Player.setLevelStats(30, 343, 178);
+		PLAYER_Player.addItem(new ItemSkill("Mid Skill 1", "I don't know what other skill moves you had", 5, Skill("Flamao")));
+		PLAYER_Player.addItem(new ItemSkill("Mid Skill 2", "I don't know what other skill moves you had", 5, Skill("Splashan")));
+		PLAYER_Player.addItem(new ItemSkill("Mid Skill 3", "I don't know what other skill moves you had", 5, Skill("Freezan")));
+		PLAYER_Player.addItem(new ItemSkill("Mid Skill 4", "I don't know what other skill moves you had", 5, Skill("Zapao")));
+		PLAYER_Player.addItem(new ItemSkill("Mid Skill 5", "I don't know what other skill moves you had", 5, Skill("Gustan")));
 		PLAYER_Player.setLevelXP(85680, 12748);
 		PLAYER_Player.setPlayerAttribute("Strength", 3);
 		PLAYER_Player.setPlayerAttribute("Magic", 55);
 		PLAYER_Player.setPlayerAttribute("Endurance", 3);
 	}
-	else if (PLAYER_Player.getName() == "Will")
+	else if (INT_Save == 2)
 	{
+		PLAYER_Player = Player("Will", 0, 1, 30, 343, 178);
 		PLAYER_Player.addItem(new Item("Chipped Diamond", "Exposed diamond which appears chipped and frozen over, might still carry some value", 4));
 		PLAYER_Player.addItem(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
 		PLAYER_Player.addItem(new ItemMelee("Sword of Lost Histories", "Gift from Macko because you played Prototype 1!", 5, 111, true));
@@ -162,30 +163,82 @@ int main()
 		PLAYER_Player.setPlayerAttribute("Magic", 29);
 		PLAYER_Player.setPlayerAttribute("Endurance", 1);
 	}
-	else if (PLAYER_Player.getName() == "Macko")
+	else if (INT_Save == 3)
 	{
-		PLAYER_Player.setLevelStats(40, 826, 454);
+		PLAYER_Player = Player("Macko", 0, 1, 40, 999, 999);
 		PLAYER_Player.setLevelXP(6284945, 24434);
 		PLAYER_Player.setPlayerAttribute("Strength", 99);
 		PLAYER_Player.setPlayerAttribute("Magic", 99);
 		PLAYER_Player.setPlayerAttribute("Endurance", 99);
 	}
 
+	// Instantiates object of type Story
+	Story STORY_Story = Story(STR_Player_Name);
+	string STR_Intro_Choice = "";
+	string STR_Dialogue_Choice;
+
 	// Setting up Prototype 2
-	while (STR_Intro_Choice != "y" && STR_Intro_Choice != "n")
+	if (INT_Save == 0)
 	{
-		system("CLS");
-		cout << "\n   You are playing v04_26.05\n   . This build includes Dungeons 1-4, and the second phase of the final boss fight\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
-		getline(cin, STR_Intro_Choice);
-		if (STR_Intro_Choice == "y")
+		while (STR_Intro_Choice != "y" && STR_Intro_Choice != "n")
 		{
-			PLAYER_Player.addItem(new ItemSkill("Get Out Of Jail Free Card", "Incase you need it", 5, Skill("Death"))); break;
+			system("CLS");
+			cout << "\n   You are playing v04_26.05\n   . This build includes Dungeons 1-4, and the second phase of the final boss fight\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
+			getline(cin, STR_Intro_Choice);
+			if (STR_Intro_Choice == "y")
+			{
+				PLAYER_Player.addItem(new ItemSkill("Get Out Of Jail Free Card", "Incase you need it", 5, Skill("Death"))); break;
+			}
+			if (STR_Intro_Choice == "n") break;
 		}
-		if (STR_Intro_Choice == "n") break;
+		cout << "\n\n   ! For dialogue scenes, press ENTER to advance\n   ! Whilst dungeon exploring, press SPACE to make an input\n\n   ? Recommended Levels:\n   Dungeon 1: Lv 1-20, Dungeon 2: Lv 20-40, Dungeon 3: Lv 40-65, Dungeon 4: Lv 65+, Final Boss on Dungeon 4: Lv 85+\n\n   Have Fun!\n\n\n   ";
+		system("pause");
+		system("CLS");
 	}
-	cout << "\n\n   ! For dialogue scenes, press ENTER to advance\n   ! Whilst dungeon exploring, press SPACE to make an input\n\n   ? Recommended Levels:\n   Dungeon 1: Lv 1-20, Dungeon 2: Lv 20-40, Dungeon 3: Lv 40-65, Dungeon 4: Lv 65+, Final Boss on Dungeon 4: Lv 85+\n\n   Have Fun!\n\n\n   ";
-	system("pause");
-	system("CLS");
+
+	if (PLAYER_Player.getName() == "Lukas" || PLAYER_Player.getName() == "Will")
+	{
+		DUNGEON_Current_Dungeon = new DungeonGlacier();
+		DUNGEON_Current_Dungeon->fillWithEnemies();
+		DUNGEON_Current_Dungeon->fillWithChests();
+		VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+		DUNGEON_Current_Dungeon = new DungeonAtlantis();
+		if (PLAYER_Player.getName() == "Will") DUNGEON_Current_Dungeon->changeDungeonRoom(5);
+		else DUNGEON_Current_Dungeon->changeDungeonRoom(2);
+		DUNGEON_Current_Dungeon->fillWithEnemies();
+		DUNGEON_Current_Dungeon->fillWithChests();
+		VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+		PLAYER_Player.update();
+		STORY_Story.setDialogueIndex(46);
+		ENUM_Game_Status = gameStatus::DUNGEON;
+		ENUM_Story_Status = storyStatus::ACT_TWO;
+	}
+	else if (PLAYER_Player.getName() == "Macko")
+	{
+		DUNGEON_Current_Dungeon = new DungeonGlacier();
+		DUNGEON_Current_Dungeon->fillWithEnemies();
+		DUNGEON_Current_Dungeon->fillWithChests();
+		VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+		DUNGEON_Current_Dungeon = new DungeonAtlantis();
+		DUNGEON_Current_Dungeon->fillWithEnemies();
+		DUNGEON_Current_Dungeon->fillWithChests();
+		VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+		DUNGEON_Current_Dungeon = new DungeonFacility();
+		DUNGEON_Current_Dungeon->fillWithEnemies();
+		DUNGEON_Current_Dungeon->fillWithChests();
+		VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+		DUNGEON_Current_Dungeon = new DungeonMagma();
+		DUNGEON_Current_Dungeon->fillWithEnemies();
+		DUNGEON_Current_Dungeon->fillWithChests();
+		VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+		ENUM_Game_Status = gameStatus::DUNGEON;
+		ENUM_Story_Status = storyStatus::ACT_FIVE;
+	}
+	else
+	{
+		ENUM_Game_Status = gameStatus::DIALOGUE;
+		ENUM_Story_Status = storyStatus::INTRO;
+	}
 
 	// Main Gameplay Loop
 	while (true)
@@ -211,52 +264,13 @@ int main()
 			{
 				// DUNGEON 1: GLACIER WASTELAND
 				ENUM_Game_Status = gameStatus::BATTLE;
-				if (PLAYER_Player.getName() == "Lukas" || PLAYER_Player.getName() == "Will")
-				{
-					DUNGEON_Current_Dungeon = new DungeonGlacier();
-					DUNGEON_Current_Dungeon->fillWithEnemies();
-					DUNGEON_Current_Dungeon->fillWithChests();
-					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-					DUNGEON_Current_Dungeon = new DungeonAtlantis();
-					if (PLAYER_Player.getName() == "Will") DUNGEON_Current_Dungeon->changeDungeonRoom(5);
-					else DUNGEON_Current_Dungeon->changeDungeonRoom(2);
-					DUNGEON_Current_Dungeon->fillWithEnemies();
-					DUNGEON_Current_Dungeon->fillWithChests();
-					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-					PLAYER_Player.update();
-					STORY_Story.setDialogueIndex(46);
-					ENUM_Story_Status = storyStatus::ACT_TWO;
-				}
-				else if (PLAYER_Player.getName() == "Macko")
-				{
-					DUNGEON_Current_Dungeon = new DungeonGlacier();
-					DUNGEON_Current_Dungeon->fillWithEnemies();
-					DUNGEON_Current_Dungeon->fillWithChests();
-					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-					DUNGEON_Current_Dungeon = new DungeonAtlantis();
-					DUNGEON_Current_Dungeon->fillWithEnemies();
-					DUNGEON_Current_Dungeon->fillWithChests();
-					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-					DUNGEON_Current_Dungeon = new DungeonFacility();
-					DUNGEON_Current_Dungeon->fillWithEnemies();
-					DUNGEON_Current_Dungeon->fillWithChests();
-					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-					DUNGEON_Current_Dungeon = new DungeonMagma();
-					DUNGEON_Current_Dungeon->fillWithEnemies();
-					DUNGEON_Current_Dungeon->fillWithChests();
-					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-					ENUM_Story_Status = storyStatus::ACT_FIVE;
-				}
-				else
-				{
-					DUNGEON_Current_Dungeon = new DungeonGlacier();
-					DUNGEON_Current_Dungeon->fillWithEnemies();
-					DUNGEON_Current_Dungeon->fillWithChests();
-					ENEMY_New_Enemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 12);
-					play_audio("Story Battle");
-					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
-					ENUM_Story_Status = storyStatus::ACT_ONE;
-				}
+				DUNGEON_Current_Dungeon = new DungeonGlacier();
+				DUNGEON_Current_Dungeon->fillWithEnemies();
+				DUNGEON_Current_Dungeon->fillWithChests();
+				ENEMY_New_Enemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 12);
+				play_audio("Story Battle");
+				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+				ENUM_Story_Status = storyStatus::ACT_ONE;
 				ENUM_Game_Status = gameStatus::DUNGEON;
 				STORY_Story.startOfDialogue();
 				STORY_Story.increaseDialogueIndex();
@@ -470,7 +484,7 @@ int main_menu()
 		cout << "         H I S T O R I E S       " << endl;
 		cout << "             v04_26.05          " << endl;
 		cout << "\n\n";
-		cout << "--> New Game\n--> Credits\n--> Quit\n\n> ";
+		cout << "--> New Game\n--> Load Game\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
 		STR_Menu_Choice = convert_string_tolower(STR_Menu_Choice);
 	}
@@ -478,6 +492,19 @@ int main_menu()
 	if (STR_Menu_Choice == "new game")
 	{
 		return 0;
+	}
+	if (STR_Menu_Choice == "load game")
+	{
+		system("CLS");
+		map<string, int> MAP_Save_Names = { { "Lukas", 1 }, { "Will", 2 }, { "Macko", 3 } };
+		cout << "\n   " << dye::black_on_bright_white(" Current Save Files \n");
+		cout << dye::grey("   Lukas\n") << dye::light_yellow("   Lv 30") << " | Atlantis Ruins F3\n\n";
+		cout << dye::grey("   Will\n") << dye::light_yellow("   Lv 30") << " | Atlantis Ruins F6\n\n";
+		cout << dye::grey("   Macko\n") << dye::light_yellow("   Lv 40") << " | Facility F1\n\n";
+		cout << "   > ";
+		string STR_Save_Name_Selected;
+		getline(cin, STR_Save_Name_Selected);
+		return MAP_Save_Names.find(STR_Save_Name_Selected)->second;
 	}
 	if (STR_Menu_Choice == "credits")
 	{
@@ -1893,7 +1920,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			{
 				system("CLS");
 				show_enemy_stats(ENEMY_Enemy);
-				cout << "\n   Item: " << enemyDrop->getName();
+				cout << "\n   " << dye::black_on_white(" Item \n") << "   " << enemyDrop->getName();
 				cout << "\n\n--> Return\n\n  > ";
 				getline(cin, STR_Battle_Choice);
 				STR_Battle_Choice = convert_string_tolower(STR_Battle_Choice);
@@ -2464,8 +2491,8 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 	// Displays the Player Stat's menu
 	else if (STR_Dialogue_Choice == "stats")
 	{
-		system("CLS");
-		cout << "\n   " << PLAYER_Player.getName() << "\n";
+		system("CLS");	
+		cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(PLAYER_Player.getName()) << dye::grey_on_white(" ");
 		PLAYER_Player.getPlayerStats();
 		PLAYER_Player.getPlayerElements();
 		cout << "\n.  St: ";
@@ -2661,12 +2688,25 @@ void show_enemy_stats(Enemy ENEMY_Enemy)
 	cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(ENEMY_Enemy.getName()) << dye::grey_on_white(" ") << dye::white_on_grey(" Lv ") << dye::white_on_grey(ENEMY_Enemy.getLevel()) << dye::white_on_grey(" ");
 	cout << dye::light_green("\n   HP: ") << dye::light_green(ENEMY_Enemy.getHealth()) << dye::light_green(" / ") << dye::light_green(ENEMY_Enemy.getMaxHealth()) << " | " << dye::light_aqua("STA: ") << dye::light_aqua(ENEMY_Enemy.getStamina()) << dye::light_aqua(" / ") << dye::light_aqua(ENEMY_Enemy.getMaxStamina()) << endl << endl;
 	vector<string> VEC_Element_Names = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless" };
+	cout << "   " << dye::black_on_white(" Elements \n");
 	for (int i = 0; i < 7; i++)
 	{
-		cout << ".  " << VEC_Element_Names[i] << ": " << ENEMY_Enemy.getElements().find(VEC_Element_Names[i])->second << "\n";
+		cout << ".  " << VEC_Element_Names[i] << ": ";
+		if (ENEMY_Enemy.getElements().find(VEC_Element_Names[i])->second == "Wk")
+		{
+			cout << dye::light_yellow("Wk\n");
+		}
+		else if (ENEMY_Enemy.getElements().find(VEC_Element_Names[i])->second != "-")
+		{
+			cout << dye::light_red(ENEMY_Enemy.getElements().find(VEC_Element_Names[i])->second) << endl;
+		}
+		else
+		{
+			cout << "-\n";
+		}
 	}
 	cout << endl;
-	cout << "   Skills:";
+	cout << "   " << dye::black_on_white(" Skills ");
 	for (int i = 0; i < ENEMY_Enemy.getSkills().size(); i++)
 	{
 		cout << "\n   " << dye::light_purple(ENEMY_Enemy.getSkills()[i].getName());

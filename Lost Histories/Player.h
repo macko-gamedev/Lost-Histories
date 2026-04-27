@@ -31,6 +31,7 @@ private:
 	bool BOOL_Level_Up;
 
 public:
+	Player();
 	Player(string name, int weak_element, int resist_element, int level, int health, int stamina);
 	ItemMelee getMeleeWeapon();
 	string getStatus();

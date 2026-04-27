@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
+Player::Player() { }
 
 Player::Player(string name, int weak_element, int resist_element, int INT_Level, int INT_Health, int INT_Stamina) : BattleStat(name, INT_Level, INT_Health, INT_Stamina)
 {
@@ -51,8 +51,8 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 
 void Player::getPlayerStats()
 {
-	cout << "   HP: " << this->INT_Health << " / " << this->INT_Max_Health << " | STA: " << this->INT_Stamina << " / " << this->INT_Max_Stamina << endl << endl;
-	cout << "   Level " << this->INT_Level << "\n   EXP Next: " << int(this->getNextEXP()) << "\n   EXP Total: " << this->INT_Total_EXP << endl << endl;
+	cout << dye::light_green("\n   HP: ") << dye::light_green(this->getHealth()) << dye::light_green(" / ") << dye::light_green(this->getMaxHealth()) << " | " << dye::light_aqua("STA: ") << dye::light_aqua(this->getStamina()) << dye::light_aqua(" / ") << dye::light_aqua(this->getMaxStamina()) << endl << endl;
+	cout << dye::light_yellow("   Level ") << dye::light_yellow(this->INT_Level) << dye::yellow("\n   EXP Next: ") << dye::yellow(int(this->getNextEXP())) << dye::yellow("\n   EXP Total: ") << dye::yellow(this->INT_Total_EXP) << endl << endl;
 }
 
 void Player::getPlayerElements()
@@ -60,7 +60,19 @@ void Player::getPlayerElements()
 	int INDEX_Element = 0;
 	while (INDEX_Element < 7)
 	{
-		cout << ".  " << VEC_Element_Names[INDEX_Element] << ": " << MAP_Elements.find(VEC_Element_Names[INDEX_Element])->second << endl;
+		cout << ".  " << VEC_Element_Names[INDEX_Element] << ": ";
+		if (MAP_Elements.find(VEC_Element_Names[INDEX_Element])->second == "Wk")
+		{
+			cout << dye::light_yellow("Wk\n");
+		}
+		else if (MAP_Elements.find(VEC_Element_Names[INDEX_Element])->second == "Rst")
+		{
+			cout << dye::light_red("Rst\n");
+		}
+		else
+		{
+			cout << "-\n";
+		}
 		INDEX_Element++;
 	}
 }
@@ -255,4 +267,6 @@ void Player::setLevelXP(int N_Tot, int N_Next)
 {
 	this->INT_Total_EXP = N_Tot;
 	this->FLT_Next_EXP = N_Next;
+	this->FLT_Curr_EXP = 0;
+	this->notLevelUp();
 }
