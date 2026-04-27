@@ -182,9 +182,17 @@ void Player::notLevelUp()
 void Player::increaseExp(float INT_Amount)
 {
 	// Increases EXP
-	this->FLT_Curr_EXP += INT_Amount;
 	this->INT_Total_EXP += INT_Amount;
-	while (FLT_Curr_EXP >= FLT_Next_EXP)
+	if (this->INT_Level == 99)
+	{
+		FLT_Curr_EXP = 0;
+		FLT_Next_EXP = 0;
+	}
+	else
+	{
+		this->FLT_Curr_EXP += INT_Amount;
+	}
+	while (FLT_Curr_EXP >= FLT_Next_EXP && this->INT_Level != 99)
 	{
 		if (this->INT_Level < 99)
 		{

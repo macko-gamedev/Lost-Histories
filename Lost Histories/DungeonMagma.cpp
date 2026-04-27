@@ -164,6 +164,16 @@ void DungeonMagma::elementSetter(Enemy& ENEMY_Enemy)
 		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with repellent to everything
 		ENEMY_Enemy.setElements({ {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
+	else if (ENEMY_Enemy.getName() == "Mutated Mastermind")
+	{
+		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with repellent to everything
+		ENEMY_Enemy.setElements({ {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+	}
+	else if (ENEMY_Enemy.getName() == "Keeper of The Device")
+	{
+		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with repellent to everything
+		ENEMY_Enemy.setElements({ {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+	}
 }
 
 Enemy DungeonMagma::newEnemy()

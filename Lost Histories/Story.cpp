@@ -166,6 +166,12 @@ Story::Story(string N_Player_Name)
 		{ "The Mastermind > *sprints towards " + STR_Player_Name + "*" },
 		{ STR_Player_Name + " > What the fu-" },
 		{ "END DIALOGUE" },
+		{ "..." },
+		{ "You just barely managed to defeat the man" },
+		{ "You're exhausted, but so close to the end" },
+		{ "The compass is glowing blue whilst the pointer is in the north direction" },
+		{ "You travel north, in hopes to find The Device, and finally restore the balance of the planet" },
+		{ "7 hours of painful walking, and you reach " },
 	};
 	this->INDEX_Dialogue = 1;
 	this->BOOL_Event = false;

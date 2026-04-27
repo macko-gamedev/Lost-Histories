@@ -73,7 +73,7 @@ void Enemy::update(Player& PLAYER_Player)
 	
 	if (this->ENUM_State == battleState::WAITING)
 	{
-		if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind")
+		if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind" || this->getName() == "Keeper of The Device")
 		{
 			this->INT_Boss_Stat_Cycle++;
 			if (this->INT_Boss_Stat_Cycle == 4)
@@ -170,6 +170,8 @@ void Enemy::update(Player& PLAYER_Player)
 							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (BLOCK) ";
 						}
 						if (this->getName() == "The Mastermind") INT_Calculated_Damage *= 1.25;
+						if (this->getName() == "Mutated Mastermind") INT_Calculated_Damage *= 1.5;
+						if (this->getName() == "Keeper of The Device") INT_Calculated_Damage *= 1.75;
 						PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 					}
 					this->INT_Stamina -= SKILL_Skill_Selected.getStaminaCost();
@@ -179,6 +181,7 @@ void Enemy::update(Player& PLAYER_Player)
 					INT_Calculated_Damage = this->getDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
 					if (this->getName() == "The Mastermind") INT_Calculated_Damage *= 1.25;
 					if (this->getName() == "Mutated Mastermind") INT_Calculated_Damage *= 1.5;
+					if (this->getName() == "Keeper of The Device") INT_Calculated_Damage *= 1.75;
 					this->STR_Turn_Phrase = "\n   " + this->STR_Name + " attacked you dealing " + to_string(INT_Calculated_Damage) + " damage ";
 					PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 				}

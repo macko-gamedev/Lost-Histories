@@ -171,6 +171,14 @@ int main()
 		PLAYER_Player.setPlayerAttribute("Magic", 99);
 		PLAYER_Player.setPlayerAttribute("Endurance", 99);
 	}
+	else if (INT_Save == 4)
+	{
+		PLAYER_Player = Player("Maxi", 0, 1, 79, 686, 374);
+		PLAYER_Player.setLevelXP(1422860, 53594);
+		PLAYER_Player.setPlayerAttribute("Strength", 80);
+		PLAYER_Player.setPlayerAttribute("Magic", 76);
+		PLAYER_Player.setPlayerAttribute("Endurance", 1);
+	}
 
 	// Instantiates object of type Story
 	Story STORY_Story = Story(STR_Player_Name);
@@ -415,6 +423,35 @@ int main()
 				break;
 			}
 		}
+		while (ENUM_Story_Status == storyStatus::ACT_SEVEN && ENUM_Game_Status == gameStatus::DIALOGUE)
+		{
+			clock_t start = clock();
+
+			cout << "\n   " << STORY_Story.getDialogue() << endl;
+			STORY_Story.increaseDialogueIndex();
+			if (STORY_Story.getDialogue() == "END DIALOGUE")
+			{
+				STORY_Story.endOfDialogue();
+			}
+			_getch();
+			clock_t end = clock();
+			int ms_duration = end - start;
+			int ms_remaining = 33 - ms_duration;
+			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
+
+			if (STORY_Story.isEvent())
+			{
+				// STORY BATTLE 
+				Enemy ENEMY_New_Enemy = Enemy("Keeper of The Device", 99, 2523, 2092, { Skill("Freiladia") }, new Item("Trophy of Lost Histories", "You have completed this game! Congratulations!", 5), true, 201);
+				play_audio("Boss - The Mastermind Pt 2");
+				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+				STORY_Story.startOfDialogue();
+				STORY_Story.increaseDialogueIndex();
+				ENUM_Story_Status = storyStatus::ACT_SEVEN;
+				ENUM_Game_Status = gameStatus::DUNGEON;
+				break;
+			}
+		}
 		
 		play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 
@@ -501,6 +538,7 @@ int main_menu()
 		cout << dye::grey("   Lukas\n") << dye::light_yellow("   Lv 30") << " | Atlantis Ruins F3\n\n";
 		cout << dye::grey("   Will\n") << dye::light_yellow("   Lv 30") << " | Atlantis Ruins F6\n\n";
 		cout << dye::grey("   Macko\n") << dye::light_yellow("   Lv 40") << " | Facility F1\n\n";
+		cout << dye::grey("   Maxi\n") << dye::light_yellow("   Lv 79") << " | Magma Fields F4\n\n";
 		cout << "   > ";
 		string STR_Save_Name_Selected;
 		getline(cin, STR_Save_Name_Selected);

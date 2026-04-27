@@ -232,6 +232,10 @@ void DungeonFacility::elementSetter(Enemy& ENEMY_Enemy)
 	{
 		ENEMY_Enemy.setElements({ {"Fire", "Abs"}, {"Water", "Abs"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Nul"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
+	else if (ENEMY_Enemy.getName() == "Reincarnation of George Shaw")
+	{
+		ENEMY_Enemy.setElements({ {"Fire", "Nul"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Abs"}, {"Wind", "Nul"}, {"Curse", "Wk"}, {"Bless", "-"} });
+	}
 }
 
 Enemy DungeonFacility::newEnemy()
