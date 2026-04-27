@@ -65,6 +65,7 @@ enum storyStatus
 	ACT_FIVE,
 	ACT_SIX,
 	ACT_SEVEN,
+	COMPLETE
 };
 
 // Enumerator for game status, what game state is the player in
@@ -178,6 +179,16 @@ int main()
 		PLAYER_Player.setPlayerAttribute("Strength", 80);
 		PLAYER_Player.setPlayerAttribute("Magic", 76);
 		PLAYER_Player.setPlayerAttribute("Endurance", 1);
+		PLAYER_Player.addItem(new ItemSkill("High Skill 1", "From your save file", 5, Skill("Flamadia")));
+		PLAYER_Player.addItem(new ItemSkill("Mid Skill 1", "From your save file", 5, Skill("Splashan")));
+		PLAYER_Player.addItem(new ItemSkill("High Skill 2", "From your save file", 5, Skill("Freezadia")));
+		PLAYER_Player.addItem(new ItemSkill("High Skill 3", "From your save file", 5, Skill("Eye of the Spark")));
+		PLAYER_Player.addItem(new ItemSkill("High Skill 4", "From your save file", 5, Skill("Eye of the Storm")));
+		PLAYER_Player.addItem(new ItemSkill("High Skill 5", "From your save file", 5, Skill("Hexaon")));
+		PLAYER_Player.addItem(new ItemSkill("High Skill 6", "From your save file", 5, Skill("Blightaon")));
+		PLAYER_Player.addItem(new ItemSkill("High Skill 7", "From your save file", 5, Skill("Death")));
+		Item* ITEM_MELEE_Player = new ItemMelee("Blunt Kunai", "A replica of George Shaw's favourite video game character's melee skin from 2026", 5, 224, true);
+		PLAYER_Player.addItem(ITEM_MELEE_Player);
 	}
 
 	// Instantiates object of type Story
@@ -221,8 +232,9 @@ int main()
 		ENUM_Game_Status = gameStatus::DUNGEON;
 		ENUM_Story_Status = storyStatus::ACT_TWO;
 	}
-	else if (PLAYER_Player.getName() == "Macko")
+	else if (PLAYER_Player.getName() == "Maxi")
 	{
+		system("CLS");
 		DUNGEON_Current_Dungeon = new DungeonGlacier();
 		DUNGEON_Current_Dungeon->fillWithEnemies();
 		DUNGEON_Current_Dungeon->fillWithChests();
@@ -239,8 +251,9 @@ int main()
 		DUNGEON_Current_Dungeon->fillWithEnemies();
 		DUNGEON_Current_Dungeon->fillWithChests();
 		VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-		ENUM_Game_Status = gameStatus::DUNGEON;
-		ENUM_Story_Status = storyStatus::ACT_FIVE;
+		STORY_Story.setDialogueIndex(161);
+		ENUM_Game_Status = gameStatus::DIALOGUE;
+		ENUM_Story_Status = storyStatus::ACT_SEVEN;
 	}
 	else
 	{
@@ -423,6 +436,7 @@ int main()
 				break;
 			}
 		}
+		
 		while (ENUM_Story_Status == storyStatus::ACT_SEVEN && ENUM_Game_Status == gameStatus::DIALOGUE)
 		{
 			clock_t start = clock();
@@ -443,16 +457,38 @@ int main()
 			{
 				// STORY BATTLE 
 				Enemy ENEMY_New_Enemy = Enemy("Keeper of The Device", 99, 2523, 2092, { Skill("Freiladia") }, new Item("Trophy of Lost Histories", "You have completed this game! Congratulations!", 5), true, 201);
-				play_audio("Boss - The Mastermind Pt 2");
+				play_audio("Boss - Finale");
 				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 				STORY_Story.startOfDialogue();
 				STORY_Story.increaseDialogueIndex();
-				ENUM_Story_Status = storyStatus::ACT_SEVEN;
-				ENUM_Game_Status = gameStatus::DUNGEON;
+				ENUM_Story_Status = storyStatus::COMPLETE;
+				ENUM_Game_Status = gameStatus::DIALOGUE;
 				break;
 			}
 		}
 		
+		while (ENUM_Story_Status == storyStatus::COMPLETE && ENUM_Game_Status == gameStatus::DIALOGUE)
+		{
+			clock_t start = clock();
+
+			cout << "\n   " << STORY_Story.getDialogue() << endl;
+			STORY_Story.increaseDialogueIndex();
+			if (STORY_Story.getDialogue() == "END DIALOGUE")
+			{
+				STORY_Story.endOfDialogue();
+			}
+			_getch();
+			clock_t end = clock();
+			int ms_duration = end - start;
+			int ms_remaining = 33 - ms_duration;
+			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
+
+			if (STORY_Story.isEvent())
+			{
+				ENUM_Game_Status = gameStatus::DUNGEON;
+				break;
+			}
+		}
 		play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 
 		while (ENUM_Game_Status == gameStatus::DUNGEON)
@@ -533,7 +569,7 @@ int main_menu()
 	if (STR_Menu_Choice == "load game")
 	{
 		system("CLS");
-		map<string, int> MAP_Save_Names = { { "Lukas", 1 }, { "Will", 2 }, { "Macko", 3 } };
+		map<string, int> MAP_Save_Names = { { "Lukas", 1 }, { "Will", 2 }, { "Macko", 3 }, { "Maxi", 4 } };
 		cout << "\n   " << dye::black_on_bright_white(" Current Save Files \n");
 		cout << dye::grey("   Lukas\n") << dye::light_yellow("   Lv 30") << " | Atlantis Ruins F3\n\n";
 		cout << dye::grey("   Will\n") << dye::light_yellow("   Lv 30") << " | Atlantis Ruins F6\n\n";
@@ -2170,6 +2206,10 @@ void play_audio(string to_play)
 	else if (to_play == "Boss - The Mastermind Pt 1")
 	{
 		PlaySound(TEXT("music/boss_the_mastermind_part_2.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Boss - Finale")
+	{
+		PlaySound(TEXT("music/boss_keeper_of_the_device.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Story Battle")
 	{

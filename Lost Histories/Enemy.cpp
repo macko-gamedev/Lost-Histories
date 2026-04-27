@@ -130,6 +130,19 @@ void Enemy::update(Player& PLAYER_Player)
 					}
 				}
 				int INT_Skill_Chance = (rand() % 10) + 1;
+				int INT_Boss_Multiplier = 1;
+				if (this->getName() == "The Mastermind")
+				{
+					INT_Boss_Multiplier = 1.25;
+				}
+				else if (this->getName() == "Mutated Mastermind")
+				{
+					INT_Boss_Multiplier = 1.5;
+				}
+				else if (this->getName() == "Keeper of The Device")
+				{
+					INT_Boss_Multiplier = 1.75;
+				}
 				if (this->getStamina() >= SKILL_Skill_Selected.getStaminaCost() && INT_Skill_Chance > 3)
 				{
 					if (SKILL_Skill_Selected.getType() == "Support")
@@ -146,22 +159,22 @@ void Enemy::update(Player& PLAYER_Player)
 					{
 						if (SKILL_Skill_Selected.getType() == "Nuclear")
 						{
-							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
+							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
 							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage ";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
 						{
-							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
+							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
 							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage ";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
 						{
-							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 1.5;
+							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 1.5 * INT_Boss_Multiplier;
 							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (WEAK) ";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
 						{
-							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 0.5;
+							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 0.5 * INT_Boss_Multiplier;
 							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (RESIST) ";
 						}
 						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
@@ -169,19 +182,13 @@ void Enemy::update(Player& PLAYER_Player)
 							INT_Calculated_Damage = 0;
 							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (BLOCK) ";
 						}
-						if (this->getName() == "The Mastermind") INT_Calculated_Damage *= 1.25;
-						if (this->getName() == "Mutated Mastermind") INT_Calculated_Damage *= 1.5;
-						if (this->getName() == "Keeper of The Device") INT_Calculated_Damage *= 1.75;
 						PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 					}
 					this->INT_Stamina -= SKILL_Skill_Selected.getStaminaCost();
 				}
 				else
 				{
-					INT_Calculated_Damage = this->getDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
-					if (this->getName() == "The Mastermind") INT_Calculated_Damage *= 1.25;
-					if (this->getName() == "Mutated Mastermind") INT_Calculated_Damage *= 1.5;
-					if (this->getName() == "Keeper of The Device") INT_Calculated_Damage *= 1.75;
+					INT_Calculated_Damage = this->getDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
 					this->STR_Turn_Phrase = "\n   " + this->STR_Name + " attacked you dealing " + to_string(INT_Calculated_Damage) + " damage ";
 					PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 				}
