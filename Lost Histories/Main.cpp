@@ -2105,6 +2105,13 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			battle = false;
 			play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 		}
+		else if (PLAYER_Player.getHealth() <= 0)
+		{
+			system("CLS");
+			cout << "\n   " << dye::red_on_light_red(" GAME OVER \n") << "   Better luck on your next playthrough\n\n   ";
+			system("pause");
+			exit(0);
+		}
 		else
 		{
 			while (!BOOL_Player_Turn)
