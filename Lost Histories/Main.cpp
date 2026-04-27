@@ -224,6 +224,8 @@ int main()
 					DUNGEON_Current_Dungeon->fillWithChests();
 					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 					PLAYER_Player.update();
+					STORY_Story.setDialogueIndex(46);
+					ENUM_Story_Status = storyStatus::ACT_TWO;
 				}
 				else if (PLAYER_Player.getName() == "Macko")
 				{
@@ -243,6 +245,7 @@ int main()
 					DUNGEON_Current_Dungeon->fillWithEnemies();
 					DUNGEON_Current_Dungeon->fillWithChests();
 					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+					ENUM_Story_Status = storyStatus::ACT_FIVE;
 				}
 				else
 				{
@@ -252,11 +255,11 @@ int main()
 					ENEMY_New_Enemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, new ItemSkill("Ice Core", "A strange looking block of ice", 1, Skill("Freeze")), false, 12);
 					play_audio("Story Battle");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+					ENUM_Story_Status = storyStatus::ACT_ONE;
 				}
+				ENUM_Game_Status = gameStatus::DUNGEON;
 				STORY_Story.startOfDialogue();
 				STORY_Story.increaseDialogueIndex();
-				ENUM_Story_Status = storyStatus::ACT_ONE;
-				ENUM_Game_Status = gameStatus::DUNGEON;
 				break;
 			}
 		}

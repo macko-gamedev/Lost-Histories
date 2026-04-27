@@ -51,6 +51,7 @@ Story::Story(string N_Player_Name)
 		{ "The barricade snaps after you kick it multiple times" },
 		{ "What lies ahead?" },
 		{ "END DIALOGUE" },
+		{ "..." },
 		{ "Yourself > Well this looks depressing" },
 		{ "Ruins of what looked like a fine underwater city lies ahead" },
 		{ "You can hear faint shouting from within" },
