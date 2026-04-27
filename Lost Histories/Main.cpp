@@ -63,6 +63,8 @@ enum storyStatus
 	ACT_THREE,
 	ACT_FOUR,
 	ACT_FIVE,
+	ACT_SIX,
+	ACT_SEVEN,
 };
 
 // Enumerator for game status, what game state is the player in
@@ -78,7 +80,7 @@ string convert_string_toupper(string text); // Quite obvious 2
 void set_starting_elements(int& weak_element, int& resist_element); // Sets the starting elements (weakness and resistant)
 void show_enemy_stats(Enemy ENEMY_Enemy); // Shows the ENEMY_Enemy's battle stats
 void show_battle_stats(Player PLAYER_Player); // Shows the PLAYER_Player's battle stats (name, hp, sta)
-void show_skill(Player PLAYER_Player, int INDEX_Skill); // Shows the PLAYER_Player's current skill
+void show_skill(Player PLAYER_Player, int INDEX_Skill, Enemy ENEMY_Enemy); // Shows the PLAYER_Player's current skill
 void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Dungeon*> VEC_Visited_Dungeons, Dungeon*& DUNGEON_Current_Dungeon); // Story PLAYER_Player input
 int main_menu(); // Main menu when the game is executed
 void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY_Enemy); // Battle sequence
@@ -173,7 +175,7 @@ int main()
 	while (STR_Intro_Choice != "y" && STR_Intro_Choice != "n")
 	{
 		system("CLS");
-		cout << "\n   You are playing Prototype 2\n   . This build includes Dungeon 1, Dungeon 2 and up to Floor 3 of Dungeon 3\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
+		cout << "\n   You are playing v04_26.05\n   . This build includes Dungeons 1-4, and the second phase of the final boss fight\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
 		getline(cin, STR_Intro_Choice);
 		if (STR_Intro_Choice == "y")
 		{
@@ -181,7 +183,7 @@ int main()
 		}
 		if (STR_Intro_Choice == "n") break;
 	}
-	cout << "\n\n   ! For dialogue scenes, press any key to advance\n   ! Whilst dungeon exploring, press SPACE to make an input\n\n   Have Fun!\n\n\n   ";
+	cout << "\n\n   ! For dialogue scenes, press ENTER to advance\n   ! Whilst dungeon exploring, press SPACE to make an input\n\n   ? Recommended Levels:\n   Dungeon 1: Lv 1-20, Dungeon 2: Lv 20-40, Dungeon 3: Lv 40-65, Dungeon 4: Lv 65+, Final Boss on Dungeon 4: Lv 85+\n\n   Have Fun!\n\n\n   ";
 	system("pause");
 	system("CLS");
 
@@ -362,6 +364,41 @@ int main()
 				break;
 			}
 		}
+		
+		while (ENUM_Story_Status == storyStatus::ACT_SIX && ENUM_Game_Status == gameStatus::DIALOGUE)
+		{
+			clock_t start = clock();
+
+			cout << "\n   " << STORY_Story.getDialogue() << endl;
+			STORY_Story.increaseDialogueIndex();
+			if (STORY_Story.getDialogue() == "END DIALOGUE")
+			{
+				STORY_Story.endOfDialogue();
+			}
+			_getch();
+			clock_t end = clock();
+			int ms_duration = end - start;
+			int ms_remaining = 33 - ms_duration;
+			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
+
+			if (STORY_Story.isEvent())
+			{
+				// STORY BATTLE
+				DUNGEON_Current_Dungeon->fillWithEnemies();
+				DUNGEON_Current_Dungeon->fillWithChests();
+				VEC_Visited_Dungeons[3] = DUNGEON_Current_Dungeon;
+
+				Enemy ENEMY_New_Enemy = Enemy("Mutated Mastermind", 95, 2193, 1948, { Skill("Eye of the Sun") }, new ItemSkill("Gem of Mass Destruction", "Suprisingly, it has an in-built mp3 player playing tunes from Lotus Juice himself", 5, Skill("End of the World")), true, 189);
+				play_audio("Boss - The Mastermind Pt 2");
+				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+				STORY_Story.startOfDialogue();
+				STORY_Story.increaseDialogueIndex();
+				ENUM_Story_Status = storyStatus::ACT_SEVEN;
+				ENUM_Game_Status = gameStatus::DUNGEON;
+				break;
+			}
+		}
+		
 		play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 
 		while (ENUM_Game_Status == gameStatus::DUNGEON)
@@ -428,9 +465,9 @@ int main_menu()
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
-		cout << "             v04_26.04          " << endl;
+		cout << "             v04_26.05          " << endl;
 		cout << "\n\n";
-		cout << "--> New Game\n--> Quit\n\n> ";
+		cout << "--> New Game\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
 		STR_Menu_Choice = convert_string_tolower(STR_Menu_Choice);
 	}
@@ -438,16 +475,6 @@ int main_menu()
 	if (STR_Menu_Choice == "new game")
 	{
 		return 0;
-	}
-	if (STR_Menu_Choice == "load game")
-	{
-		cout << "Sorry but this feature doesn't exist yet, please restart the game\n";
-		exit(0);
-	}
-	if (STR_Menu_Choice == "settings")
-	{
-		cout << "Sorry but this feature doesn't exist yet, please restart the game\n";
-		exit(0);
 	}
 	if (STR_Menu_Choice == "credits")
 	{
@@ -801,6 +828,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					STORY_Story.increaseDialogueIndex();
 					ENUM_Story_Status = storyStatus::ACT_TWO;
 					ENUM_Game_Status = gameStatus::DIALOGUE;
+					play_audio("Confront");
 				}
 			}
 		}
@@ -973,6 +1001,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					STORY_Story.increaseDialogueIndex();
 					ENUM_Story_Status = storyStatus::ACT_THREE;
 					ENUM_Game_Status = gameStatus::DIALOGUE;
+					play_audio("Confront");
 				}
 			}
 		}
@@ -1097,6 +1126,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					STORY_Story.increaseDialogueIndex();
 					ENUM_Story_Status = storyStatus::ACT_FOUR;
 					ENUM_Game_Status = gameStatus::DIALOGUE;
+					play_audio("Confront");
 				}
 			}
 		}
@@ -1111,11 +1141,29 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				// Initiates dialogue sequence
 				play_audio("Encounter");
 				_getch(); cout << "\33[2K\r" << flush;
-				cout << "   ??? > need to code dialogue";
+				cout << "   ??? > Well well well";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   ??? > Look who decided to finally show up";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   ??? > " << PLAYER_Player.getName();
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   " << PLAYER_Player.getName() << " > Who... are you?";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   ??? > The one you are in persuit of...";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   ??? > ...The Mastermind";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   The Mastermind > I quickly relocated The Device upon hearing about your coming";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   The Mastermind > I am terribly sorry, but your little adventure must end here";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   The Mastermind > You have caused quite the disturbance in my plan";
+				_getch(); cout << "\33[2K\r" << flush;
+				cout << "   The Mastermind > Prepare to face your consequences";
 				_getch(); cout << "\33[2K\r" << flush;
 
 				// Assigns the Enemy object a custom Enemy, this being the Main Boss of the dungeon
-				// Gimmick: every 2 FULL turns, it's skills and elemental coverage changes randomly
+				// Gimmick: every 4 FULL turns, it's skills and elemental coverage changes randomly
 				Enemy ENEMY_New_Enemy = Enemy("The Mastermind", 90, 1982, 1752, { Skill("Flamadia") }, new Item("Device Compass", "A small metallic compass pointing directly towards The Device, you're almost there!", 5), true, 148);
 
 				// Starts battle
@@ -1125,7 +1173,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				// Once out of the battle gameplay loop, start dialogue and story between dungeons
 				STORY_Story.startOfDialogue();
 				STORY_Story.increaseDialogueIndex();
-				ENUM_Story_Status = storyStatus::ACT_THREE;
+				ENUM_Story_Status = storyStatus::ACT_SIX;
 				ENUM_Game_Status = gameStatus::DIALOGUE;
 			}
 		}
@@ -1622,7 +1670,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 				}
 				else
 				{
-					show_skill(PLAYER_Player, INT_Skill_Index);
+					show_skill(PLAYER_Player, INT_Skill_Index, ENEMY_Enemy);
 					cout << "\n\n--> Next\n--> Back\n--> Return\n\n  > ";
 					getline(cin, STR_Battle_Choice);
 					STR_Battle_Choice = convert_string_tolower(STR_Battle_Choice);
@@ -1862,7 +1910,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			bool BOOL_Item_Dupe = false;
 			if (ENEMY_Enemy.getName() == "Gold Entity I" || ENEMY_Enemy.getName() == "Gold Entity II" || ENEMY_Enemy.getName() == "Gold Entity III" || ENEMY_Enemy.getName() == "Gold Entity IV" || ENEMY_Enemy.getName() == "Gold Entity V" || ENEMY_Enemy.getName() == "Gold Entity VI")
 			{
-				FLT_EXP_Earned = int(ENEMY_Enemy.getMaxHealth() * 7.7);
+				FLT_EXP_Earned = int(ENEMY_Enemy.getMaxHealth() * 7.77);
 			}
 			else if (ENEMY_Enemy.isBoss())
 			{
@@ -1883,7 +1931,7 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			}
 			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields")
 			{
-				FLT_EXP_Earned *= 3.5;
+				FLT_EXP_Earned *= 4;
 			}
 
 			for (Item* ITEM_Item : PLAYER_Player.getItems())
@@ -1906,13 +1954,13 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 				Sleep(10);
 				system("CLS");
 				PLAYER_Player.increaseExp(FLT_EXP_Earned / 20);
-				cout << "\n   You gained " << FLT_EXP_Earned << " experience" << endl << endl;
+				cout << dye::green("\n   You gained ") << dye::light_green(int(FLT_EXP_Earned)) << dye::green(" experience") << endl << endl;
 				cout << "   " << ENEMY_Enemy.getName() << " dropped " << enemyDrop->getName() << "!" << endl;
 				if (!BOOL_Item_Dupe)
 				{
 					if (enemyDrop->canInheritSkill())
 					{
-						cout << "   + Unlocked Skill: " << enemyDrop->getSkill().getName() << endl;
+						cout << dye::purple("   + Unlocked Skill: ") << dye::light_purple(enemyDrop->getSkill().getName()) << endl;
 					}
 				}
 				cout << "\n   Level " << PLAYER_Player.getLevel() << " | Next EXP: " << int(PLAYER_Player.getNextEXP());
@@ -2037,7 +2085,7 @@ void play_audio(string to_play)
 	}
 	else if (to_play == "Dungeon Battle")
 	{
-		PlaySound(TEXT("music/dungeon_battle_custom.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/dungeon_battle.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Mini Boss")
 	{
@@ -2047,9 +2095,13 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/dungeon_main_boss.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Boss - The Mastermind Pt 1")
+	else if (to_play == "Boss - The Mastermind Pt 2")
 	{
 		PlaySound(TEXT("music/boss_the_mastermind_part_1.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Boss - The Mastermind Pt 1")
+	{
+		PlaySound(TEXT("music/boss_the_mastermind_part_2.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Story Battle")
 	{
@@ -2062,6 +2114,10 @@ void play_audio(string to_play)
 	else if (to_play == "Encounter")
 	{
 		PlaySound(TEXT("music/encounter.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Confront")
+	{
+		PlaySound(TEXT("music/confront.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Macko Fight")
 	{
@@ -2103,7 +2159,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 		system("CLS");
 		cout <<
 			"\n   /help      : Displays this menu!" <<
-			"\n\n   items      : Displays all of your items + melee weapon" <<
+			"\n\n   items      : Displays your inventory:\n   items, weapons, consumables, skills, all" <<
 			"\n\n   stats      : Displays your stats" <<
 			"\n\n   travel     : Quick travel between dungeons" <<
 			"\n\n   debugfight : Initiate a fight at Lv 99 for testing purposes\n\n";
@@ -2601,7 +2657,7 @@ void show_enemy_stats(Enemy ENEMY_Enemy)
 {
 	cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(ENEMY_Enemy.getName()) << dye::grey_on_white(" ") << dye::white_on_grey(" Lv ") << dye::white_on_grey(ENEMY_Enemy.getLevel()) << dye::white_on_grey(" ");
 	cout << dye::light_green("\n   HP: ") << dye::light_green(ENEMY_Enemy.getHealth()) << dye::light_green(" / ") << dye::light_green(ENEMY_Enemy.getMaxHealth()) << " | " << dye::light_aqua("STA: ") << dye::light_aqua(ENEMY_Enemy.getStamina()) << dye::light_aqua(" / ") << dye::light_aqua(ENEMY_Enemy.getMaxStamina()) << endl << endl;
-	vector<string> VEC_Element_Names = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless"};
+	vector<string> VEC_Element_Names = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless" };
 	for (int i = 0; i < 7; i++)
 	{
 		cout << ".  " << VEC_Element_Names[i] << ": " << ENEMY_Enemy.getElements().find(VEC_Element_Names[i])->second << "\n";
@@ -2624,21 +2680,47 @@ void show_battle_stats(Player PLAYER_Player)
 }
 
 // Outputs a specific Skill whilst in battle
-void show_skill(Player PLAYER_Player, int INDEX_Skill)
+void show_skill(Player PLAYER_Player, int INDEX_Skill, Enemy ENEMY_Enemy)
 {
 	vector<Skill> TEMP_Player_Skills = PLAYER_Player.getSkills();
-	cout << "   " << dye::black_on_white(" ") << dye::black_on_white(TEMP_Player_Skills[INDEX_Skill].getName()) << dye::black_on_white(" ") << endl;
-	cout << "   Type: " << TEMP_Player_Skills[INDEX_Skill].getType() << endl;
-	cout << "   Desc: " << TEMP_Player_Skills[INDEX_Skill].getDesc() << endl;
-	cout << dye::aqua("   STA: ") << dye::aqua(TEMP_Player_Skills[INDEX_Skill].getStaminaCost()) << endl;
-	if (TEMP_Player_Skills[INDEX_Skill].getName() == "Heal" || TEMP_Player_Skills[INDEX_Skill].getName() == "Healan" || TEMP_Player_Skills[INDEX_Skill].getName() == "Healadia")
+	int INT_INDEX = INDEX_Skill;
+	cout << "   " << dye::black_on_white(" ") << dye::black_on_white(TEMP_Player_Skills[INT_INDEX].getName()) << dye::black_on_white(" ");
+
+	if (TEMP_Player_Skills[INT_INDEX].getType() != "Nuclear" && TEMP_Player_Skills[INT_INDEX].getType() != "Support")
 	{
-		cout << dye::green("   HP+: ") << dye::green(TEMP_Player_Skills[INDEX_Skill].getHPGain()) << endl;
+		if (ENEMY_Enemy.getElements().find(TEMP_Player_Skills[INT_INDEX].getType())->second == "Wk")
+		{
+			cout << dye::black_on_yellow(" WEAK ");
+		}
+		else if (ENEMY_Enemy.getElements().find(TEMP_Player_Skills[INT_INDEX].getType())->second == "Rst")
+		{
+			cout << dye::black_on_red(" RESIST ");
+		}
+		else if (ENEMY_Enemy.getElements().find(TEMP_Player_Skills[INT_INDEX].getType())->second == "Nul")
+		{
+			cout << dye::black_on_grey(" BLOCK ");
+		}
+		else if (ENEMY_Enemy.getElements().find(TEMP_Player_Skills[INT_INDEX].getType())->second == "Rpl")
+		{
+			cout << dye::red_on_light_red(" REPEL ");
+		}
+		else if (ENEMY_Enemy.getElements().find(TEMP_Player_Skills[INT_INDEX].getType())->second == "Abs")
+		{
+			cout << dye::red_on_grey(" ABSORB ");
+		}
+	}
+
+	cout << "\n   Type: " << TEMP_Player_Skills[INT_INDEX].getType() << endl;
+	cout << "   Desc: " << TEMP_Player_Skills[INT_INDEX].getDesc() << endl;
+	cout << dye::light_aqua("   STA: ") << dye::light_aqua(TEMP_Player_Skills[INT_INDEX].getStaminaCost()) << endl;
+	if (TEMP_Player_Skills[INT_INDEX].getName() == "Heal" || TEMP_Player_Skills[INT_INDEX].getName() == "Healan" || TEMP_Player_Skills[INT_INDEX].getName() == "Healadia")
+	{
+		cout << dye::green("   HP+: ") << dye::green(TEMP_Player_Skills[INT_INDEX].getHPGain()) << endl;
 	}
 	else
 	{
-		cout << dye::light_red("   DMG: ") << dye::light_red(TEMP_Player_Skills[INDEX_Skill].getBaseDamage()) << endl;
+		cout << dye::light_red("   DMG: ") << dye::light_red(TEMP_Player_Skills[INT_INDEX].getBaseDamage()) << endl;
 	}
-	cout << "   [Skill " << (INDEX_Skill + 1) << " of " << TEMP_Player_Skills.size() << "]";
+	cout << "   [Skill " << (INT_INDEX + 1) << " of " << TEMP_Player_Skills.size() << "]";
 }
 

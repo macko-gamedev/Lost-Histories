@@ -5,7 +5,7 @@
 DungeonMagma::DungeonMagma()
 {
 	this->STR_Dungeon_Name = "Magma Fields";
-	this->INT_Dungeon_Room = 4;
+	this->INT_Dungeon_Room = 1;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 7;
 	this->VEC_Dungeon_Map =

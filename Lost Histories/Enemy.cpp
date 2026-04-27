@@ -73,14 +73,14 @@ void Enemy::update(Player& PLAYER_Player)
 	
 	if (this->ENUM_State == battleState::WAITING)
 	{
-		if (this->getName() == "The Mastermind")
+		if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind")
 		{
 			this->INT_Boss_Stat_Cycle++;
 			if (this->INT_Boss_Stat_Cycle == 4)
 			{
 				this->INT_Boss_Stat_Cycle = 0;
 				vector<string> VEC_Ailments = { "-", "Wk", "Rst", "Rpl", "Abs", "Nul" };
-				vector<Skill> VEC_Skills_Available = { Skill("Flamadia"), Skill("Meflamadia"), Skill("Eye of the Sun"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Eye of the 'Berg"), Skill("Splashadia"), Skill("Mesplashadia"), Skill("Eye of the Ocean"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Eye of the Spark"), Skill("Gustadia"), Skill("Megustadia"), Skill("Eye of the Storm"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Frei"), Skill("Freiladia"), Skill("Healan") };
+				vector<Skill> VEC_Skills_Available = { Skill("Flamadia"), Skill("Meflamadia"), Skill("Eye of the Sun"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Eye of the 'Berg"), Skill("Splashadia"), Skill("Mesplashadia"), Skill("Eye of the Ocean"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Eye of the Spark"), Skill("Gustadia"), Skill("Megustadia"), Skill("Eye of the Storm"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Freila"), Skill("Freiladia"), Skill("Healan") };
 
 				this->VEC_Skills = { };
 				for (int i = 0; i < 8; i++)
@@ -88,7 +88,7 @@ void Enemy::update(Player& PLAYER_Player)
 					VEC_Skills.push_back(VEC_Skills_Available[rand() % VEC_Skills_Available.size()]);
 				}
 				this->setElements({ {"Fire", VEC_Ailments[rand() % 6]},{"Water", VEC_Ailments[rand() % 6]},{"Ice", VEC_Ailments[rand() % 6]},{"Electric", VEC_Ailments[rand() % 6]},{"Wind", VEC_Ailments[rand() % 6]},{"Curse", VEC_Ailments[rand() % 6]}, { "Bless", VEC_Ailments[rand() % 6] } });
-				this->STR_Turn_Phrase = "\n   The Mastermind is shifting their elemental coverage and magic attacks!";
+				this->STR_Turn_Phrase = "\n   " + this->getName() + " is shifting their elemental coverage and magic attacks!";
 			}
 			else
 			{
@@ -178,6 +178,7 @@ void Enemy::update(Player& PLAYER_Player)
 				{
 					INT_Calculated_Damage = this->getDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier;
 					if (this->getName() == "The Mastermind") INT_Calculated_Damage *= 1.25;
+					if (this->getName() == "Mutated Mastermind") INT_Calculated_Damage *= 1.5;
 					this->STR_Turn_Phrase = "\n   " + this->STR_Name + " attacked you dealing " + to_string(INT_Calculated_Damage) + " damage ";
 					PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 				}
