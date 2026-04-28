@@ -128,7 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Artefact.h" />
     <ClInclude Include="BattleStat.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="DungeonAtlantis.h" />
@@ -145,7 +144,6 @@
     <ClInclude Include="Story.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Artefact.cpp" />
     <ClCompile Include="BattleStat.cpp" />
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="DungeonAtlantis.cpp" />

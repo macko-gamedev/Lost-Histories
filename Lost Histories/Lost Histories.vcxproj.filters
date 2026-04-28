@@ -51,9 +51,6 @@
     <ClInclude Include="DungeonAtlantis.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Artefact.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DungeonFacility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -99,9 +96,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DungeonAtlantis.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Artefact.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DungeonFacility.cpp">

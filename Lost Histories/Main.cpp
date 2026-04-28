@@ -34,13 +34,14 @@ Last Updated: 21/04/26 (13:44)
 . Item			 # Contains name, description and rarity of an item
                  : ItemMelee, ItemSkill, ItemConsumable
 . Dungeon        # Contains name, floor number
-				 : DungeonGlacier, DungeonAtlantis, DungeonFacility
+				 : DungeonGlacier, DungeonAtlantis, DungeonFacility, Dungeon Magma
 
 --- Child Classes ---
 . Enemy		      : Inherits BattleStat
 . DungeonAtlantis : Inherits Dungeon, dungeon 2 of the game
 . DungeonFacility : Inherits Dungeon, dungeon 3 of the game
 . DungeonGlacier  : Inherits Dungeon, dungeon 1 of the game
+. DungeonMagma    : Inherits Dungeon, dungeon 4 of the game
 . ItemConsumable  : Inherits Item, an item which can be used in battle
 . ItemMelee       : Inherits Item, an item which can be equipped as a Melee
 . ItemSkill       : Inherits Item, an item which contains a skill the PLAYER_Player can inherit
@@ -126,6 +127,7 @@ int main()
 		PLAYER_Player.setLevelXP(0, 22);
 
 	}
+
 	// Loading data from Prototype 1/2
 	else if (INT_Save == 1)
 	{
@@ -174,10 +176,10 @@ int main()
 	}
 	else if (INT_Save == 4)
 	{
-		PLAYER_Player = Player("Maxi", 0, 1, 79, 686, 374);
-		PLAYER_Player.setLevelXP(1422860, 53594);
+		PLAYER_Player = Player("Maxi", 0, 1, 88, 749, 410);
+		PLAYER_Player.setLevelXP(1972860, 64366);
 		PLAYER_Player.setPlayerAttribute("Strength", 80);
-		PLAYER_Player.setPlayerAttribute("Magic", 76);
+		PLAYER_Player.setPlayerAttribute("Magic", 94);
 		PLAYER_Player.setPlayerAttribute("Endurance", 1);
 		PLAYER_Player.addItem(new ItemSkill("High Skill 1", "From your save file", 5, Skill("Flamadia")));
 		PLAYER_Player.addItem(new ItemSkill("Mid Skill 1", "From your save file", 5, Skill("Splashan")));
@@ -202,7 +204,7 @@ int main()
 		while (STR_Intro_Choice != "y" && STR_Intro_Choice != "n")
 		{
 			system("CLS");
-			cout << "\n   You are playing v04_26.05\n   . This build includes Dungeons 1-4, and the second phase of the final boss fight\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
+			cout << "\n   You are playing v04_26.06\n   . This build includes all 4 dungeons, and the final boss fight!\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
 			getline(cin, STR_Intro_Choice);
 			if (STR_Intro_Choice == "y")
 			{
@@ -251,9 +253,9 @@ int main()
 		DUNGEON_Current_Dungeon->fillWithEnemies();
 		DUNGEON_Current_Dungeon->fillWithChests();
 		VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-		STORY_Story.setDialogueIndex(161);
-		ENUM_Game_Status = gameStatus::DIALOGUE;
-		ENUM_Story_Status = storyStatus::ACT_SEVEN;
+		STORY_Story.setDialogueIndex(119);
+		ENUM_Game_Status = gameStatus::DUNGEON;
+		ENUM_Story_Status = storyStatus::COMPLETE;
 	}
 	else
 	{
@@ -555,7 +557,7 @@ int main_menu()
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
-		cout << "             v04_26.05          " << endl;
+		cout << "             v04_26.06          " << endl;
 		cout << "\n\n";
 		cout << "--> New Game\n--> Load Game\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
@@ -573,8 +575,7 @@ int main_menu()
 		cout << "\n   " << dye::black_on_bright_white(" Current Save Files \n");
 		cout << dye::grey("   Lukas\n") << dye::light_yellow("   Lv 30") << " | Atlantis Ruins F3\n\n";
 		cout << dye::grey("   Will\n") << dye::light_yellow("   Lv 30") << " | Atlantis Ruins F6\n\n";
-		cout << dye::grey("   Macko\n") << dye::light_yellow("   Lv 40") << " | Facility F1\n\n";
-		cout << dye::grey("   Maxi\n") << dye::light_yellow("   Lv 79") << " | Magma Fields F4\n\n";
+		cout << dye::grey("   Maxi ") << dye::yellow("*\n") << dye::light_yellow("   Lv 88") << " | Magma Fields F1\n\n";
 		cout << "   > ";
 		string STR_Save_Name_Selected;
 		getline(cin, STR_Save_Name_Selected);
@@ -582,8 +583,33 @@ int main_menu()
 	}
 	if (STR_Menu_Choice == "credits")
 	{
-		cout << "Sorry but this feature doesn't exist yet, please restart the game\n";
-		exit(0);
+		system("CLS");
+		cout << "\n   " << dye::black_on_white(" General ");
+		cout << "\n   This game is heavily inspired by the Persona franchise, it's my favourite video game series!";
+		cout << "\n\n   The concept of 'Lost Histories':\n   The planet gets too hot and you (the player) unfreeze from a block of ice! Figure out what's going on by exploring, and save the planet!\n\n";
+		cout << "\n   " << dye::black_on_white(" Music "); 
+		cout << dye::yellow("\n   Main Menu") << " - " << dye::grey("TEMPLE - Riddle School, Jonochrome/pepsileo") << endl;
+		cout << dye::yellow("   Dungeon: Glacier Wasteland F1-F5") << " - " << dye::grey("Abyss of Time - Persona 3 FES, ATLUS") << endl;
+		cout << dye::yellow("   Dungeon: Atlantis Ruins F1-F4") << " - " << dye::grey("Secret Base - Persona 4, ATLUS") << endl;
+		cout << dye::yellow("   Dungeon: Atlantis Ruins F5-F6") << " - " << dye::grey("Devil's Peak - Persona 1 (PSP), ATLUS") << endl;
+		cout << dye::yellow("   Dungeon: Facility F1-F5") << " - " << dye::grey("The Snow Queen - Persona 3 FES, ATLUS") << endl;
+		cout << dye::yellow("   Dungeon: Magma Fields F1-F3") << " - " << dye::grey("World 8 - New Super Mario Bros. Wii, Nintendo") << endl;
+		cout << dye::yellow("   Dungeon: Glacier Wasteland F6, Atlantis Ruins F7, Facility F6") << " - " << dye::grey("Corridor - Persona 4, ATLUS") << endl;
+		cout << dye::yellow("   Dungeon: Magma Fields F4") << " - " << dye::grey("Final World - Super Mario Bros. Wonder, Nintendo") << endl;
+		cout << dye::yellow("   Battle: Dungeon") << " - " << dye::grey("Master of Tarturus - Persona 3, ATLUS") << endl;
+		cout << dye::yellow("   Battle: Key Boss") << " - " << dye::grey("Never Let Up! - Mario and Luigi: Dream Team, Nintendo") << endl;
+		cout << dye::yellow("   Battle: Dungeon Boss") << " - " << dye::grey("I'll Face Myself -Battle- - Persona 4, ATLUS") << endl;
+		cout << dye::yellow("   Battle: Victory") << " - " << dye::grey("After the Battle - Persona 3, ATLUS") << endl;
+		cout << dye::yellow("   Boss: Reincarnation of George Shaw") << " - " << dye::grey("Unavoidable Battle - Persona 3, ATLUS") << endl;
+		cout << dye::yellow("   Boss: The Mastermind") << " - " << dye::grey("New World Fool - Persona 4, ATLUS") << endl;
+		cout << dye::yellow("   Boss: Mutated Mastermind") << " - " << dye::grey("The Almighty - Persona 4, ATLUS") << endl;
+		cout << dye::yellow("   Boss: Keeper of The Device") << " - " << dye::grey("Darkness - Persona 3 FES, ATLUS") << endl;
+		cout << dye::yellow("   Encounter: Dungeon") << " - " << dye::grey("That Which Escaped the Darkness - Persona 3, ATLUS") << endl;
+		cout << dye::yellow("   Encounter: Story") << " - " << dye::grey("Borderline of Madness - Persona 4, ATLUS") << endl;
+		cout << "\n   " << dye::green("Press any key to begin NEW GAME\n\n   ");
+		_getch();
+		system("CLS");
+		return 0;
 	}
 	if (STR_Menu_Choice == "quit")
 	{
