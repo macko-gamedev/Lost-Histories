@@ -1,0 +1,16 @@
+MackoMan
+2
+0
+29
+20
+3
+1
+1
+Glacier Wasteland
+1
+skill
+Freeze
+Ice Core
+A strange looking block of ice
+1
+1

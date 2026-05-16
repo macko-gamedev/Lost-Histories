@@ -2737,7 +2737,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 		{
 			VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 		}
-		for (int i = 3; i > -1; i--)
+		for (int i = (VEC_Visited_Dungeons.size() - 1); i > -1; i--)
 		{
 			file << VEC_Visited_Dungeons[i]->getDungeonName() << "\n" << VEC_Visited_Dungeons[i]->getDungeonRoom() << "\n";
 		}
