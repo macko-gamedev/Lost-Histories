@@ -1,0 +1,141 @@
+Dev
+93
+145350
+179430
+2240520
+88
+96
+1
+Magma Fields
+4
+Facility
+6
+Atlantis Ruins
+7
+Glacier Wasteland
+6
+skill
+Flamadia
+High Skill 1
+From your save file
+4
+1
+skill
+Splashan
+Mid Skill 1
+A skill you aquired from playing Prototype 2
+3
+1
+skill
+Freezadia
+High Skill 2
+A skill you aquired from playing Prototype 2
+4
+1
+skill
+Hexaon
+High Skill 3
+A skill you aquired from playing Prototype 2
+4
+1
+skill
+Blightaon
+High Skill 4
+A skill you aquired from playing Prototype 2
+4
+1
+skill
+Death
+instant_kill_single_target
+dev_purpose_only
+5
+1
+melee
+224
+Blunt Kunai
+A replica of George Shaw's favourite video game character's melee skin from 2026
+5
+1
+consumable
+STA
+180
+Lighter of Life
+Modified lighter which burns life essence
+4
+1
+melee
+175
+Volcanic Blade
+Sharp blade created by civilians who lived near the volcanoes
+3
+1
+item
+Bag of Ash
+Leather bag filled with dried, coolen ash
+2
+2
+consumable
+HP
+400
+Hot Heart in a Bottle
+A scorching hot human heart trapped inside a bottle, blood still leaking from the organ
+4
+1
+consumable
+HP
+999
+Emergency Defibrillator
+Last chance of survival, only use when absolutely necessary
+5
+2
+skill
+Eye of the Storm
+F5 Twister in a Barrel
+Wreck havoc!!!
+5
+2
+item
+Glacier F3 Key
+An item you aquired from playing Prototype 1
+3
+1
+item
+Glacier F5 Key
+An item you aquired from playing Prototype 1
+3
+1
+item
+Atlantis F2 Key
+An item you aquired from playing Prototype 1
+3
+1
+item
+Atlantis F4 Key
+An item you aquired from playing Prototype 2
+3
+1
+item
+Atlantis F5 Key A
+An item you aquired from playing Prototype 2
+3
+1
+item
+Atlantis F5 Key B
+An item you aquired from playing Prototype 2
+3
+1
+item
+Facility F3 Key
+An item you aquired from playing Prototype 2
+3
+1
+item
+Facility F5 Key A
+An item you aquired from playing Prototype 2
+3
+1
+item
+Facility F5 Key B
+An item you aquired from playing Prototype 2
+3
+1

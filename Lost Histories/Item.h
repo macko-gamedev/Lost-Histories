@@ -20,7 +20,6 @@ protected:
 	Skill inherit_skill;
 	double amount;
 	string type;
-
 	bool BOOL_Has_Element;
 	bool BOOL_Has_Attribute;
 	string STR_Modified_Name;

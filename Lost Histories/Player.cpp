@@ -52,7 +52,7 @@ Player::Player(string name, int weak_element, int resist_element, int INT_Level,
 void Player::getPlayerStats()
 {
 	cout << dye::light_green("\n   HP: ") << dye::light_green(this->getHealth()) << dye::light_green(" / ") << dye::light_green(this->getMaxHealth()) << " | " << dye::light_aqua("STA: ") << dye::light_aqua(this->getStamina()) << dye::light_aqua(" / ") << dye::light_aqua(this->getMaxStamina()) << endl << endl;
-	cout << dye::light_yellow("   Level ") << dye::light_yellow(this->INT_Level) << dye::yellow("\n   EXP Next: ") << dye::yellow(int(this->getNextEXP())) << dye::yellow("\n   EXP Total: ") << dye::yellow(this->INT_Total_EXP) << endl << endl;
+	cout << dye::light_yellow("   Level ") << dye::light_yellow(this->INT_Level) << dye::yellow("\n   EXP Next: ") << dye::yellow(int(this->getNextEXP() - this->getCurrEXP())) << dye::yellow("\n   EXP Total: ") << dye::yellow(this->INT_Total_EXP) << endl << endl;
 }
 
 void Player::getPlayerElements()
@@ -135,7 +135,17 @@ int Player::getLevelStats()
 
 int Player::getNextEXP()
 {
-	return this->FLT_Next_EXP - this->FLT_Curr_EXP;
+	return this->FLT_Next_EXP;
+}
+
+int Player::getCurrEXP()
+{
+	return this->FLT_Curr_EXP;
+}
+
+int Player::getTotEXP()
+{
+	return this->INT_Total_EXP;
 }
 
 bool Player::isGuard()
@@ -271,10 +281,10 @@ void Player::setLevelStats(int N_Level, int N_Health, int N_Stamina)
 	this->fullStamina();
 }
 
-void Player::setLevelXP(int N_Tot, int N_Next)
+void Player::setLevelXP(int N_Tot, int N_Curr, int N_Next)
 {
 	this->INT_Total_EXP = N_Tot;
 	this->FLT_Next_EXP = N_Next;
-	this->FLT_Curr_EXP = 0;
+	this->FLT_Curr_EXP = N_Curr;
 	this->notLevelUp();
 }
