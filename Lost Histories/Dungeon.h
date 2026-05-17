@@ -35,10 +35,9 @@ public:
 	void changePosY(int INT_Amount);
 	void exploredRoom();
 	void virtual elementSetter(Enemy& ENEMY_Enemy);
-	void virtual fillWithEnemies();
-	void virtual fillWithChests();
+	void fillWithEnemies();
+	void fillWithChests();
 	virtual Enemy newEnemy();
-	virtual Item* getItemFromLootTable(string STR_Enemy_Name);
 	virtual Item* getItemFromChest();
 };
 

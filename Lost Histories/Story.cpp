@@ -22,7 +22,7 @@ Story::Story(string N_Player_Name)
 		{ "+ Received Melee: Sharp Stick" },
 		{ ("??? > Here it comes " + STR_Player_Name + "!") },
 		{ "END DIALOGUE" },
-		{ "..." },
+		{ "..." }, //17
 		{ "Yourself > How am I alive?" },
 		{ "Yourself > And what was that thing?" },
 		{ "Yourself > That... thing... dropped something" },
@@ -31,7 +31,7 @@ Story::Story(string N_Player_Name)
 		{ "Yourself > I should probably explore for now" },
 		{ "Yourself > It's cold..." },
 		{ "END DIALOGUE" },
-		{ "..." },
+		{ "..." }, //26
 		{ "Russian Sergeant > How... did... you... beat me?" },
 		{ "Russian Sergeant > I have let HIM down" },
 		{ "Russian Sergeant > You will never find the artifact in Atlantis" },
@@ -51,14 +51,14 @@ Story::Story(string N_Player_Name)
 		{ "The barricade snaps after you kick it multiple times" },
 		{ "What lies ahead?" },
 		{ "END DIALOGUE" },
-		{ "..." },
+		{ "..." },//46
 		{ "Yourself > Well this looks depressing" },
 		{ "Ruins of what looked like a fine underwater city lies ahead" },
 		{ "You can hear faint shouting from within" },
 		{ "Yourself > I may encounter a problem along the way" },
 		{ "Yourself > By the sounds of it, the next room..." },
 		{ "END DIALOGUE" },
-		{ "..." },
+		{ "..." },//53
 		{ "Reawoken Guardian of Atlantis > Just as we thought things were finally going well for us..." },
 		{ "Reawoken Guardian of Atlantis > You come along and ruin everything!" },
 		{ STR_Player_Name + " > Well I'm on a mission to save the world, and you was stood in my way I guess..." },
@@ -90,7 +90,7 @@ Story::Story(string N_Player_Name)
 		{ "Yourself > Perhaps this machine part could some in handy somewhere" },
 		{ "Yourself > I should look around" },
 		{ "END DIALOGUE" },
-		{ "..." },
+		{ "..." },//85
 		{ "Master of the Facility > You bastard..." },
 		{ "Master of the Facility > How DARE you oppose me, and manage to strike me down" },
 		{ "Master of the Facility > Give that part back now!" },
@@ -123,13 +123,13 @@ Story::Story(string N_Player_Name)
 		{ STR_Player_Name + " > You, in a way, revived my dead friend to make me fight him?? You're sick!" },
 		{ "??? > *charges towards " + STR_Player_Name + "*" },
 		{ "END DIALOGUE" },
-		{ "..." },
+		{ "..." },//118
 		{ "Yourself > That was a close one." },
 		{ "Yourself > I can't believe I just did that..." },
 		{ "Yourself > Kill my friend. I mean, it wasn't actually him, but..." },
 		{ "Yourself > I need to find this damn machine" },
 		{ "END DIALOGUE" },
-		{ "..." },
+		{ "..." },//124
 		{ "The Mastermind > I'll give ya that, you do put up a hella a fight" },
 		{ "The Mastermind > But say little kiddo, I think you should-" },
 		{ "The Mastermind > GIVE" },
@@ -166,7 +166,7 @@ Story::Story(string N_Player_Name)
 		{ "The Mastermind > *sprints towards " + STR_Player_Name + "*" },
 		{ STR_Player_Name + " > What the fu-" },
 		{ "END DIALOGUE" },
-		{ "..." },
+		{ "..." },//161
 		{ "You just barely managed to defeat the man" },
 		{ "You're exhausted, but so close to the end" },
 		{ "The compass is glowing blue whilst the pointer is in the north direction" },
@@ -186,7 +186,7 @@ Story::Story(string N_Player_Name)
 		{ STR_Player_Name + " > No more after this..." },
 		{ "??? > *lunges towards " + STR_Player_Name + "*" },
 		{ "END DIALOGUE" },
-		{ "..." },
+		{ "..." },//181
 		{ STR_Player_Name + " > Is it over?" },
 		{ "You have access to The Device, finally, after all of your efforts" },
 		{ "You insert the Mysterious Machine Part into a socket" },

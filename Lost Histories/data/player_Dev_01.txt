@@ -1,0 +1,157 @@
+Dev_01
+99
+0
+0
+9572944
+99
+99
+99
+Special Passage
+5
+Magma Fields
+4
+Facility
+6
+Atlantis Ruins
+7
+Glacier Wasteland
+6
+skill
+Death
+Instakill
+Developer purpose only
+5
+1
+item
+Trophy of Lost Histories
+Congratulations on beating the game!
+5
+2
+melee
+111
+Sword of Lost Histories
+A gift from playing Prototype 1
+5
+1
+melee
+222
+Sword of More Lost Histories
+A gift from playing Prototype 2
+5
+1
+consumable
+HP
+40
+Thawn Bandage
+Could still be used for a scratch
+1
+1
+item
+Rainbow Crystal
+A sparkling rainbow crystal from the special realm!
+5
+23
+item
+Shark Tooth
+Caution, may be sharp
+2
+1
+item
+Scratched Coin
+A coin coated in scratches, the date on it says 2026
+2
+1
+item
+Special F2 Unlocker
+An unlocker device from a special realm, maybe can be used for something?
+3
+2
+item
+Emerald
+A natural chunk of raw emerald from the earth
+5
+1
+skill
+Eye of the Storm
+F5 Twister in a Barrel
+Wreck havoc!!!
+5
+1
+item
+Device Compass
+A small metallic compass pointing directly towards The Device, you're almost there!
+5
+2
+skill
+End of the World
+Gem of Mass Destruction
+Suprisingly, it has an in-built mp3 player playing tunes from Lotus Juice himself
+5
+2
+consumable
+HP
+400
+Hot Heart in a Bottle
+A scorching hot human heart trapped inside a bottle, blood still leaking from the organ
+4
+1
+consumable
+ATK
+7
+Power Supplements 50mg
+Drugs used to increase users power massively
+5
+1
+skill
+Mehexo
+Dark Staff
+Some foul play is at work here...
+4
+1
+item
+Test Tube
+Empty glass test tube for lab purposes
+1
+3
+item
+Chemical Pipette
+Used for transferring liquids
+3
+1
+item
+Special F3 Unlocker
+An unlocker device from a special realm, maybe can be used for something?
+3
+1
+item
+Magma Rock
+Hot piece of magma rock
+1
+1
+item
+Bag of Ash
+Leather bag filled with dried, coolen ash
+2
+1
+item
+Special F4 Unlocker
+An unlocker device from a special realm, maybe can be used for something?
+3
+1
+melee
+125
+AK-47
+Brr brr brrrrrrrrr!
+3
+1
+melee
+216
+Golden Tachi
+A deeply curved sword used by the Samurai before the 15th Century, coated in gold
+4
+1
+item
+Special F5 Unlocker
+An unlocker device from a special realm, maybe can be used for something?
+3
+1

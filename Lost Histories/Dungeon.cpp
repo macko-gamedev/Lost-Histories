@@ -83,20 +83,55 @@ void Dungeon::changePosY(int INT_Amount)
 	this->INT_Pos_Y += INT_Amount;
 }
 
-void Dungeon::fillWithChests() { }
+void Dungeon::fillWithEnemies()
+{
+	// 15% chance for each tile to have an enemy
+	for (int r = 0; r < this->VEC_Dungeon_Map.size(); r++)
+	{
+		for (int i = 0; i < 15; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+				if (this->getDungeonMap()[r][i][j] == ' ')
+				{
+					int INT_Spawn_Chance = (rand() % 100) + 1;
+					if (INT_Spawn_Chance > 84)
+					{
+						this->setPosition(r, i, j, '!');
+					}
+				}
+			}
+		}
+	}
+}
 
-void Dungeon::fillWithEnemies() { }
+void Dungeon::fillWithChests()
+{
+	// 8% chance for each tile to have a chest
+	for (int r = 0; r < this->VEC_Dungeon_Map.size(); r++)
+	{
+		for (int i = 0; i < 15; i++)
+		{
+			for (int j = 0; j < 15; j++)
+			{
+				if (this->getDungeonMap()[r][i][j] == ' ')
+				{
+					int INT_Spawn_Chance = (rand() % 100) + 1;
+					if (INT_Spawn_Chance > 92)
+					{
+						this->setPosition(r, i, j, '*');
+					}
+				}
+			}
+		}
+	}
+}
 
 void Dungeon::elementSetter(Enemy& ENEMY_Enemy) { }
 
 Enemy Dungeon::newEnemy()
 {
-	return Enemy("", 1, 1, 1, { }, new Item("", "", 1), false, 0);
-}
-
-Item* Dungeon::getItemFromLootTable(string STR_Enemy_Name)
-{
-	return new Item("", "", 1);
+	return Enemy("", 1, 1, 1, { }, false, 0);
 }
 
 Item* Dungeon::getItemFromChest()

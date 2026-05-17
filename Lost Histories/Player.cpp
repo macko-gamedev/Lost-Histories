@@ -92,12 +92,6 @@ string Player::getLocation()
 	return this->STR_Location;
 }
 
-
-map<string, string> Player::getElements()
-{
-	return this->MAP_Elements;
-}
-
 vector<Skill> Player::getSkills()
 {
 	return this->VEC_Skills;
@@ -265,8 +259,10 @@ void Player::update()
 					{
 						VEC_Items_With_Skill.push_back(ITEM_Item->getSkill());
 					}
+					if (VEC_Items_With_Skill.size() >= 8) break;
 				}
 			}
+			if (VEC_Items_With_Skill.size() >= 8) break;
 		}
 		this->setSkills(VEC_Items_With_Skill);
 	}

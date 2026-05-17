@@ -21,7 +21,6 @@ private:
 	vector<Skill> VEC_Skills;
 	vector<Item*> VEC_Items;
 	map<string, int> MAP_Player_Attributes;
-	map<string, string> MAP_Elements;
 	float FLT_Curr_EXP;
 	float FLT_Next_EXP;
 	float FLT_Melee_Attack_Multiplier;
@@ -42,7 +41,6 @@ public:
 	void setMelee(ItemMelee nMelee);
 	vector<Item*> getItems();
 	map<string, int> getPlayerAttributes();
-	map<string, string> getElements();
 	int getLevelStats();
 	int getNextEXP();
 	int getCurrEXP();

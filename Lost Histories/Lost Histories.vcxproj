@@ -134,6 +134,7 @@
     <ClInclude Include="DungeonFacility.h" />
     <ClInclude Include="DungeonGlacier.h" />
     <ClInclude Include="DungeonMagma.h" />
+    <ClInclude Include="DungeonSpecial.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemConsumable.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="DungeonFacility.cpp" />
     <ClCompile Include="DungeonGlacier.cpp" />
     <ClCompile Include="DungeonMagma.cpp" />
+    <ClCompile Include="DungeonSpecial.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemConsumable.cpp" />

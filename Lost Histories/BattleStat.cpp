@@ -43,6 +43,11 @@ int BattleStat::getMaxStamina()
 	return this->INT_Max_Stamina;
 }
 
+map<string, string> BattleStat::getElements()
+{
+	return this->MAP_Elements;
+}
+
 void BattleStat::changeHealth(int INT_Amount)
 {
 	this->INT_Health += INT_Amount;
@@ -69,6 +74,11 @@ void BattleStat::fullHealth()
 void BattleStat::fullStamina()
 {
 	this->INT_Stamina = this->INT_Max_Stamina;
+}
+
+void BattleStat::setElements(map<string, string> nElements)
+{
+	this->MAP_Elements = nElements;
 }
 
 void BattleStat::update(Player& PLAYER_Player)
