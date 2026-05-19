@@ -34,7 +34,6 @@ public:
 	void changePosX(int INT_Amount);
 	void changePosY(int INT_Amount);
 	void exploredRoom();
-	void virtual elementSetter(Enemy& ENEMY_Enemy);
 	void fillWithEnemies();
 	void fillWithChests();
 	virtual Enemy newEnemy();

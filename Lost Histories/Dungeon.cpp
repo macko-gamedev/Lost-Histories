@@ -127,8 +127,6 @@ void Dungeon::fillWithChests()
 	}
 }
 
-void Dungeon::elementSetter(Enemy& ENEMY_Enemy) { }
-
 Enemy Dungeon::newEnemy()
 {
 	return Enemy("", 1, 1, 1, { }, false, 0);

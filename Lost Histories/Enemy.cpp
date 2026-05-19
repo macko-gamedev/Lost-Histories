@@ -386,6 +386,10 @@ Item* Enemy::getItemFromLootTable()
 	else if (this->getName() == "Mutated Security Sector 16A")
 	{
 		VEC_Enemy_Drops = { new Item("Facility F5 Keycard B", "Shiny keycard from Facility, maybe can be used for something?", 3) };
+		}
+	else if (this->getName() == "Mutated Security Sector 46D")
+	{
+		VEC_Enemy_Drops = { new Item("Facility F6 Keycard", "Shiny keycard from Facility, maybe can be used for something?", 3) };
 	}
 	else if (this->getName() == "Ghost of Katie Cooper")
 	{
@@ -433,7 +437,11 @@ Item* Enemy::getItemFromLootTable()
 	{
 		VEC_Enemy_Drops = { new Item("Trophy of Lost Histories", "You have completed this game! Congratulations!", 5) };
 	}
-	
+	else if (this->getName() == "Tyson Mondeo")
+	{
+		VEC_Enemy_Drops = { new Item("Golden Super Macko Plush", "A golden plushie of the Super Macko tower from ENobia!", 5) };
+		}
+
 	return VEC_Enemy_Drops[rand() % VEC_Enemy_Drops.size()];
 }
 
@@ -641,6 +649,10 @@ void Enemy::elementSetter()
 		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with repellent to everything
 		this->setElements({ {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
+	else if (this->getName() == "Tyson Mondeo")
+	{
+		this->setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "N ul"}, {"Wind", "Rpl"}, {"Curse", "-"}, {"Bless", "-"} });
+		}
 
 	// Rare Enemies
 	else if (this->getName() == "Gold Entity I")

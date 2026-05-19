@@ -21,7 +21,7 @@
 #include <fstream>
 #include "include/dirent.h"
 #include "include/color.hpp"
-
+#include <cstring>
 #pragma comment(lib, "winmm.lib")
 
 using namespace std;
@@ -29,7 +29,7 @@ using namespace std;
 /* 
 
 ###### LOST HISTORIES ######
-Last Updated: 07/05/26 (21:54)
+Last Updated: 19/05/26 (15:31)
 
 --- Parent Classes ---
 . BattleStat	 # Contains key variables to battles such as health and stamina values
@@ -82,7 +82,6 @@ enum gameStatus
 
 string convert_string_tolower(string text); // Quite obvious 1
 string convert_string_toupper(string text); // Quite obvious 2
-void set_starting_elements(int& weak_element, int& resist_element); // Sets the starting elements (weakness and resistant)
 void show_enemy_stats(Enemy ENEMY_Enemy); // Shows the ENEMY_Enemy's battle stats
 void show_battle_stats(Player PLAYER_Player); // Shows the PLAYER_Player's battle stats (name, hp, sta)
 void show_skill(Player PLAYER_Player, int INDEX_Skill, Enemy ENEMY_Enemy); // Shows the PLAYER_Player's current skill
@@ -116,75 +115,30 @@ int main()
 	Player PLAYER_Player;
 	string STR_Player_Name;
 
+	// Instantiates object of type Story
+	Story STORY_Story = Story();
+	string STR_Intro_Choice = "";
+	string STR_Dialogue_Choice;
+
+	// NEW GAME
 	if (VEC_Save_Data[0] == "NONE")
 	{
 		// Setting up the Player
 		cout << "\n   Your Character Name: ";
 		getline(cin, STR_Player_Name);
-		int weak_element = -1;
-		int resist_element = -1;
-		set_starting_elements(weak_element, resist_element);	
 		
 		// Instantiates object of type Player
-		PLAYER_Player = Player(STR_Player_Name, weak_element, resist_element, 1, 140, 62);
+		PLAYER_Player = Player(STR_Player_Name, 1, 140, 62);
 		PLAYER_Player.setLevelXP(0, 0, 22);
+		PLAYER_Player.setStartingElements();
 
-	}
-
-	// Loading data from Prototype 1/2
-	else
-	{
-		PLAYER_Player = Player(VEC_Save_Data[0], 0, 1, stoi(VEC_Save_Data[1]), ((stoi(VEC_Save_Data[1]) * 7) + 133), ((stoi(VEC_Save_Data[1]) * 4) + 58));
-		PLAYER_Player.setLevelXP(stoi(VEC_Save_Data[4]), stoi(VEC_Save_Data[2]), stoi(VEC_Save_Data[3]));
-		PLAYER_Player.setPlayerAttribute("Strength", stoi(VEC_Save_Data[5]));
-		PLAYER_Player.setPlayerAttribute("Magic", stoi(VEC_Save_Data[6]));
-		PLAYER_Player.setPlayerAttribute("Endurance", stoi(VEC_Save_Data[7]));
-		
-		// Adding items to inventory
-		for (int i = 0; i < VEC_Save_Data.size(); i++)
-		{
-			if (VEC_Save_Data[i] == "item")
-			{
-				Item* ITEM_To_Add = new Item(VEC_Save_Data[(i + 1)], VEC_Save_Data[(i + 2)], stoi(VEC_Save_Data[(i + 3)]));
-				ITEM_To_Add->increaseQuantity(stoi(VEC_Save_Data[(i + 4)]) - 1);
-				PLAYER_Player.addItem(ITEM_To_Add);
-			}
-			else if (VEC_Save_Data[i] == "skill")
-			{
-				Item* ITEM_To_Add = new ItemSkill(VEC_Save_Data[(i + 2)], VEC_Save_Data[(i + 3)], stoi(VEC_Save_Data[(i + 4)]), Skill(VEC_Save_Data[(i + 1)]));
-				ITEM_To_Add->increaseQuantity(stoi(VEC_Save_Data[(i + 5)]) - 1);
-				PLAYER_Player.addItem(ITEM_To_Add);
-			}
-			else if (VEC_Save_Data[i] == "melee")
-			{
-				Item* ITEM_To_Add = new ItemMelee(VEC_Save_Data[(i + 2)], VEC_Save_Data[(i + 3)], stoi(VEC_Save_Data[(i + 4)]), stoi(VEC_Save_Data[(i + 1)]), true);
-				ITEM_To_Add->increaseQuantity(stoi(VEC_Save_Data[(i + 5)]) - 1);
-				PLAYER_Player.addItem(ITEM_To_Add);
-			}
-			else if (VEC_Save_Data[i] == "consumable")
-			{
-				Item* ITEM_To_Add = new ItemConsumable(VEC_Save_Data[(i + 3)], VEC_Save_Data[(i + 4)], stoi(VEC_Save_Data[(i + 5)]), VEC_Save_Data[(i + 1)], stof(VEC_Save_Data[(i + 2)]));
-				ITEM_To_Add->increaseQuantity(stoi(VEC_Save_Data[(i + 6)]) - 1);
-				PLAYER_Player.addItem(ITEM_To_Add);
-			}
-		}
-		PLAYER_Player.update();
-	}
-
-	// Instantiates object of type Story
-	Story STORY_Story = Story(STR_Player_Name);
-	string STR_Intro_Choice = "";
-	string STR_Dialogue_Choice;
-
-	// Setting up Prototype 2
-	if (VEC_Save_Data[0] == "NONE")
-	{
+		string STR_Intro_Choice = "";
 		ENUM_Game_Status = gameStatus::DIALOGUE;
 		ENUM_Story_Status = storyStatus::INTRO;
 		while (STR_Intro_Choice != "y" && STR_Intro_Choice != "n")
 		{
 			system("CLS");
-			cout << "\n   You are playing v05_26.01\n   . This build includes all 4 dungeons, and the final boss fight!\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
+			cout << "\n   You are playing Release 1.1\n   . This build includes all 4 main dungeons + 1 special dungeon on completion\n   . Please note that this version is still in development and may contain issues\n\n   . Try and break the game if you feel like it\n\n   This game through self playtest may be challenging, would you like to add a insta-kill skill in battle? [y]/[n]\n   > ";
 			getline(cin, STR_Intro_Choice);
 			if (STR_Intro_Choice == "y")
 			{
@@ -196,9 +150,11 @@ int main()
 		system("pause");
 		system("CLS");
 	}
-
-	else if (VEC_Save_Data[0] != "NONE")
+	// LOAD GAME
+	else
 	{
+		PLAYER_Player = Player(VEC_Save_Data[0], stoi(VEC_Save_Data[1]), ((stoi(VEC_Save_Data[1]) * 7) + 133), ((stoi(VEC_Save_Data[1]) * 4) + 58));
+		PLAYER_Player.loadData(VEC_Save_Data); 
 		ENUM_Game_Status = gameStatus::DUNGEON;
 		for (int i = 0; i < VEC_Save_Data.size(); i++)
 		{
@@ -256,16 +212,13 @@ int main()
 		reverse(VEC_Visited_Dungeons.begin(), VEC_Visited_Dungeons.end());
 		DUNGEON_Current_Dungeon = VEC_Visited_Dungeons[VEC_Visited_Dungeons.size() - 1];
 	}
-
+	STORY_Story.setPlayerReference(PLAYER_Player);
 
 	// Main Gameplay Loop
 	while (true)
 	{
-		// INTRO DIALOGUE/TUTORIAL BATTLE
-		while (ENUM_Story_Status == storyStatus::INTRO)
+		while (ENUM_Game_Status == gameStatus::DIALOGUE)
 		{
-			clock_t start = clock();
-
 			cout << "   " << STORY_Story.getDialogue() << endl << endl;
 			STORY_Story.increaseDialogueIndex();
 			if (STORY_Story.getDialogue() == "END DIALOGUE")
@@ -273,220 +226,112 @@ int main()
 				STORY_Story.endOfDialogue();
 			}
 			_getch();
-			clock_t end = clock();
-			int ms_duration = end - start;
-			int ms_remaining = 33 - ms_duration;
-			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
 
 			if (STORY_Story.isEvent())
 			{
-				// DUNGEON 1: GLACIER WASTELAND
-				ENUM_Game_Status = gameStatus::BATTLE;
-				DUNGEON_Current_Dungeon = new DungeonGlacier();
-				DUNGEON_Current_Dungeon->fillWithEnemies();
-				DUNGEON_Current_Dungeon->fillWithChests();
-				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-				ENEMY_New_Enemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, false, 12);
-				play_audio("Story Battle");
-				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
-				ENUM_Story_Status = storyStatus::ACT_ONE;
-				ENUM_Game_Status = gameStatus::DUNGEON;
-				STORY_Story.startOfDialogue();
-				STORY_Story.increaseDialogueIndex();
+				// INTRO -> Dungeon 1: Glacier Wasteland
+				if (ENUM_Story_Status == storyStatus::INTRO)
+				{
+					ENUM_Game_Status = gameStatus::BATTLE;
+					DUNGEON_Current_Dungeon = new DungeonGlacier();
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+					ENEMY_New_Enemy = Enemy("Ice Monster", 1, 10, 24, { Skill("Freeze") }, false, 12);
+					play_audio("Story Battle");
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+					ENUM_Story_Status = storyStatus::ACT_ONE;
+					ENUM_Game_Status = gameStatus::DUNGEON;
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+				}
+				// Dungeon 1 -> Dungeon 2: Atlantis Ruins
+				else if (ENUM_Story_Status == storyStatus::ACT_TWO)
+				{
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+					DUNGEON_Current_Dungeon = new DungeonAtlantis();
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Game_Status = gameStatus::DUNGEON;
+				}
+				// Dungeon 2 -> Dungeon 3: Facility
+				else if (ENUM_Story_Status == storyStatus::ACT_THREE)
+				{
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons[1] = DUNGEON_Current_Dungeon;
+					DUNGEON_Current_Dungeon = new DungeonFacility();
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Game_Status = gameStatus::DUNGEON;
+				}
+				// Dungeon 3 -> Story Boss Fight: Reincarnation of George Shaw
+				else if (ENUM_Story_Status == storyStatus::ACT_FOUR)
+				{
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons[2] = DUNGEON_Current_Dungeon;
+
+					ENEMY_New_Enemy = Enemy("Reincarnation of George Shaw", 65, 1145, 532, { Skill("Flamadia"), Skill("Eye of the Sun"), Skill("Zapadia"), Skill("Eye of the Spark"), Skill("Hexaon"), Skill("Freiladia"), Skill("Healan") }, false, 60);
+					play_audio("Story Battle");
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+					DUNGEON_Current_Dungeon = new DungeonMagma();
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Story_Status = storyStatus::ACT_FIVE;
+					ENUM_Game_Status = gameStatus::DUNGEON;
+				}
+				// Dungeon 4 -> Story Boss Fight: Mutated Mastermind
+				else if (ENUM_Story_Status == storyStatus::ACT_SIX)
+				{
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons[3] = DUNGEON_Current_Dungeon;
+
+					Enemy ENEMY_New_Enemy = Enemy("Mutated Mastermind", 95, 2193, 1948, { Skill("Eye of the Sun") }, true, 189);
+					play_audio("Boss - The Mastermind Pt 2");
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Story_Status = storyStatus::ACT_SEVEN;
+					ENUM_Game_Status = gameStatus::DIALOGUE;
+				}
+				// Story Boss Fight: Mutated Mastermind -> Story Boss Fight: Keeper of The Device
+				else if (ENUM_Story_Status == storyStatus::ACT_SEVEN)
+				{
+					Enemy ENEMY_New_Enemy = Enemy("Keeper of The Device", 99, 2523, 2092, { Skill("Freiladia") }, true, 201);
+					play_audio("Boss - Finale");
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Story_Status = storyStatus::COMPLETE;
+					ENUM_Game_Status = gameStatus::DIALOGUE;
+				}
+				// Story Boss Fight: Keeper of The Device -> Dungeon 5: Special Passage, * on Save File
+				else if (ENUM_Story_Status == storyStatus::COMPLETE)
+				{
+					Dungeon* DUNGEON_New = new DungeonSpecial();
+					DUNGEON_New->fillWithChests();
+					DUNGEON_New->fillWithEnemies();
+					VEC_Visited_Dungeons.push_back(DUNGEON_New);
+					PLAYER_Player.setSpecificStarOnFile("Main Story", '*');
+					ENUM_Game_Status = gameStatus::DUNGEON;
+				}
 				break;
 			}
 		}
-
-		while (ENUM_Story_Status == storyStatus::ACT_TWO && ENUM_Game_Status == gameStatus::DIALOGUE)
-		{
-			clock_t start = clock();
-
-			cout << "\n   " << STORY_Story.getDialogue() << endl;
-			STORY_Story.increaseDialogueIndex();
-			if (STORY_Story.getDialogue() == "END DIALOGUE")
-			{
-				STORY_Story.endOfDialogue();
-			}
-			_getch();
-			clock_t end = clock();
-			int ms_duration = end - start;
-			int ms_remaining = 33 - ms_duration;
-			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
-
-			if (STORY_Story.isEvent())
-			{
-				// DUNGEON 2: ATLANTIS RUINS
-				DUNGEON_Current_Dungeon->fillWithEnemies();
-				DUNGEON_Current_Dungeon->fillWithChests();
-				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-				DUNGEON_Current_Dungeon = new DungeonAtlantis();
-				DUNGEON_Current_Dungeon->fillWithEnemies();
-				DUNGEON_Current_Dungeon->fillWithChests();
-				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-				STORY_Story.startOfDialogue();
-				STORY_Story.increaseDialogueIndex();
-				ENUM_Game_Status = gameStatus::DUNGEON;
-				break;
-			}
-		}
-
-		while (ENUM_Story_Status == storyStatus::ACT_THREE && ENUM_Game_Status == gameStatus::DIALOGUE)
-		{
-			clock_t start = clock();
-
-			cout << "\n   " << STORY_Story.getDialogue() << endl;
-			STORY_Story.increaseDialogueIndex();
-			if (STORY_Story.getDialogue() == "END DIALOGUE")
-			{
-				STORY_Story.endOfDialogue();
-			}
-			_getch();
-			clock_t end = clock();
-			int ms_duration = end - start;
-			int ms_remaining = 33 - ms_duration;
-			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
-
-			if (STORY_Story.isEvent())
-			{
-				// DUNGEON 3: FACILITY
-				DUNGEON_Current_Dungeon->fillWithEnemies();
-				DUNGEON_Current_Dungeon->fillWithChests();
-				VEC_Visited_Dungeons[1] = DUNGEON_Current_Dungeon;
-				DUNGEON_Current_Dungeon = new DungeonFacility();
-				DUNGEON_Current_Dungeon->fillWithEnemies();
-				DUNGEON_Current_Dungeon->fillWithChests();
-				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-				STORY_Story.startOfDialogue();
-				STORY_Story.increaseDialogueIndex();
-				ENUM_Game_Status = gameStatus::DUNGEON;
-				break;
-			}
-		}
-
-		while (ENUM_Story_Status == storyStatus::ACT_FOUR && ENUM_Game_Status == gameStatus::DIALOGUE)
-		{
-			clock_t start = clock();
-
-			cout << "\n   " << STORY_Story.getDialogue() << endl;
-			STORY_Story.increaseDialogueIndex();
-			if (STORY_Story.getDialogue() == "END DIALOGUE")
-			{
-				STORY_Story.endOfDialogue();
-			}
-			_getch();
-			clock_t end = clock();
-			int ms_duration = end - start;
-			int ms_remaining = 33 - ms_duration;
-			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
-
-			if (STORY_Story.isEvent())
-			{
-				// STORY BATTLE
-				DUNGEON_Current_Dungeon->fillWithEnemies();
-				DUNGEON_Current_Dungeon->fillWithChests();
-				VEC_Visited_Dungeons[2] = DUNGEON_Current_Dungeon;
-
-				ENEMY_New_Enemy = Enemy("Reincarnation of George Shaw", 65, 1145, 532, { Skill("Flamadia"), Skill("Eye of the Sun"), Skill("Zapadia"), Skill("Eye of the Spark"), Skill("Hexaon"), Skill("Freiladia"), Skill("Healan") }, false, 60);
-				play_audio("Story Battle");
-				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
-				DUNGEON_Current_Dungeon = new DungeonMagma();
-				DUNGEON_Current_Dungeon->fillWithEnemies();
-				DUNGEON_Current_Dungeon->fillWithChests();
-				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
-				STORY_Story.startOfDialogue();
-				STORY_Story.increaseDialogueIndex();
-				ENUM_Story_Status = storyStatus::ACT_FIVE;
-				ENUM_Game_Status = gameStatus::DUNGEON;
-				break;
-			}
-		}
-		
-		while (ENUM_Story_Status == storyStatus::ACT_SIX && ENUM_Game_Status == gameStatus::DIALOGUE)
-		{
-			clock_t start = clock();
-
-			cout << "\n   " << STORY_Story.getDialogue() << endl;
-			STORY_Story.increaseDialogueIndex();
-			if (STORY_Story.getDialogue() == "END DIALOGUE")
-			{
-				STORY_Story.endOfDialogue();
-			}
-			_getch();
-			clock_t end = clock();
-			int ms_duration = end - start;
-			int ms_remaining = 33 - ms_duration;
-			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
-
-			if (STORY_Story.isEvent())
-			{
-				// STORY BATTLE
-				DUNGEON_Current_Dungeon->fillWithEnemies();
-				DUNGEON_Current_Dungeon->fillWithChests();
-				VEC_Visited_Dungeons[3] = DUNGEON_Current_Dungeon;
-
-				Enemy ENEMY_New_Enemy = Enemy("Mutated Mastermind", 95, 2193, 1948, { Skill("Eye of the Sun") }, true, 189);
-				play_audio("Boss - The Mastermind Pt 2");
-				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
-				STORY_Story.startOfDialogue();
-				STORY_Story.increaseDialogueIndex();
-				ENUM_Story_Status = storyStatus::ACT_SEVEN;
-				ENUM_Game_Status = gameStatus::DIALOGUE;
-				break;
-			}
-		}
-		
-		while (ENUM_Story_Status == storyStatus::ACT_SEVEN && ENUM_Game_Status == gameStatus::DIALOGUE)
-		{
-			clock_t start = clock();
-
-			cout << "\n   " << STORY_Story.getDialogue() << endl;
-			STORY_Story.increaseDialogueIndex();
-			if (STORY_Story.getDialogue() == "END DIALOGUE")
-			{
-				STORY_Story.endOfDialogue();
-			}
-			_getch();
-			clock_t end = clock();
-			int ms_duration = end - start;
-			int ms_remaining = 33 - ms_duration;
-			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
-
-			if (STORY_Story.isEvent())
-			{
-				// STORY BATTLE 
-				Enemy ENEMY_New_Enemy = Enemy("Keeper of The Device", 99, 2523, 2092, { Skill("Freiladia") }, true, 201);
-				play_audio("Boss - Finale");
-				battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
-				STORY_Story.startOfDialogue();
-				STORY_Story.increaseDialogueIndex();
-				ENUM_Story_Status = storyStatus::COMPLETE;
-				ENUM_Game_Status = gameStatus::DIALOGUE;
-				break;
-			}
-		}
-		
-		while (ENUM_Story_Status == storyStatus::COMPLETE && ENUM_Game_Status == gameStatus::DIALOGUE)
-		{
-			clock_t start = clock();
-
-			cout << "\n   " << STORY_Story.getDialogue() << endl;
-			STORY_Story.increaseDialogueIndex();
-			if (STORY_Story.getDialogue() == "END DIALOGUE")
-			{
-				STORY_Story.endOfDialogue();
-			}
-			_getch();
-			clock_t end = clock();
-			int ms_duration = end - start;
-			int ms_remaining = 33 - ms_duration;
-			this_thread::sleep_for(chrono::milliseconds(ms_remaining));
-
-			if (STORY_Story.isEvent())
-			{
-				ENUM_Game_Status = gameStatus::DUNGEON;
-				break;
-			}
-		}
+						
 		play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 
 		while (ENUM_Game_Status == gameStatus::DUNGEON)
@@ -542,7 +387,7 @@ vector<string> main_menu()
 {
 	play_audio("Menu");
 
-	cout << "\n   v05_26.02\n\n   New:\n   / Added Dungeon 5: Special Passage\n     + Unlocked after beating the game\n     + Contains 7 floors\n   / Improvements to Data Saving (v05_26.01)\n   / Rewritten and Optimised code for Dungeon and BattleStat parent classes and for their child classes to be more efficient\n\n\n   Happy Playing!";
+	cout << "\n   Release 1.1\n\n   New:\n   / Added Dungeon 5: Special Passage\n     + Unlocked after beating the game\n     + Contains 7 floors\n   / Added Stars * to save files\n\n   Changes:\n   / Improvements to Data Saving (v05_26.01)\n   / Rewritten and optimised code for Dungeon and BattleStat parent classes and for their child classes to be more efficient\n   / Rewritten and optimised code for data saving being a function of Player instead\n\n\n   Happy Playing!";
 	_getch();
 	system("CLS");
 
@@ -558,7 +403,7 @@ vector<string> main_menu()
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
-		cout << "             v05_26.02          " << endl;
+		cout << "             v05_26.03          " << endl;
 		cout << "\n\n";
 		cout << "--> New Game\n--> Load Game\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
@@ -602,7 +447,10 @@ vector<string> main_menu()
 								CURRENT_SAVE_Data.push_back(line);
 							}
 							cout << "   " << dye::grey(CURRENT_SAVE_Data[0]);
-							if (CURRENT_SAVE_Data[CURRENT_SAVE_Data.size() - 1] == "*") cout << dye::yellow(" * ");
+							if (CURRENT_SAVE_Data[CURRENT_SAVE_Data.size() - 1] == "*") cout << dye::yellow(" *");
+							if (CURRENT_SAVE_Data[CURRENT_SAVE_Data.size() - 2] == "*") cout << dye::yellow(" *");
+							if (CURRENT_SAVE_Data[CURRENT_SAVE_Data.size() - 3] == "*") cout << dye::yellow(" *");
+							if (CURRENT_SAVE_Data[CURRENT_SAVE_Data.size() - 4] == "*") cout << dye::yellow(" *");
 							cout << dye::light_yellow("\n   Lv ") << dye::light_yellow(CURRENT_SAVE_Data[1]) << " | " << CURRENT_SAVE_Data[8] << " F" << CURRENT_SAVE_Data[9];
 							ALL_SAVE_Data.push_back(CURRENT_SAVE_Data);
 							file.close();
@@ -1508,7 +1356,18 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				this_thread::sleep_for(chrono::seconds(2));
 			}
 			}
-	}
+		else if (DUNGEON_Current_Dungeon->getDungeonName() == "Special Passage" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6 && DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1)) == '?')
+		{
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), DUNGEON_Current_Dungeon->getPosX(), ' ');
+			DUNGEON_Current_Dungeon->setPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() + 1), '+');
+			DUNGEON_Current_Dungeon->changePosY(1);
+
+			Enemy ENEMY_New_Enemy = Enemy("Tyson Mondeo", 99, 3397, 5254, { Skill("Eye of the Sun"), Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("Eye of the Spark"), Skill("Eye of the Storm"), Skill("Blightaon"), Skill("Hexaon"), Skill("Freiladia") }, true, 229);
+			play_audio("Boss - Tyson Mondeo");
+			battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+			}
+
+}
 	if (STR_Dialogue_Choice == "a")
 	{
 		if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == ' ')
@@ -2449,6 +2308,10 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/boss_keeper_of_the_device.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
+	else if (to_play == "Boss - Tyson Mondeo")
+	{
+		PlaySound(TEXT("music/boss_tyson_mondeo.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
 	else if (to_play == "Story Battle")
 	{
 		PlaySound(TEXT("music/story_battle.wav"), NULL, SND_ASYNC | SND_LOOP);
@@ -2813,7 +2676,11 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 	else if (STR_Dialogue_Choice == "stats")
 	{
 		system("CLS");	
-		cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(PLAYER_Player.getName()) << dye::grey_on_white(" ");
+		cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(PLAYER_Player.getName()) << dye::grey_on_white(" ") << " ";
+		if (PLAYER_Player.getStarsOnFile().find("Main Story")->second == '*') cout << dye::yellow("*");
+		if (PLAYER_Player.getStarsOnFile().find("Special World")->second == '*') cout << dye::yellow("*");
+		if (PLAYER_Player.getStarsOnFile().find("Lv 99")->second == '*') cout << dye::yellow("*");
+		if (PLAYER_Player.getStarsOnFile().find("Secret")->second == '*') cout << dye::yellow("*");
 		PLAYER_Player.getPlayerStats();
 		PLAYER_Player.getPlayerElements();
 		cout << "\n.  St: ";
@@ -2825,7 +2692,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 		}
 		for (int i = 0; i < (99 - PLAYER_Player.getPlayerAttributes().find("Strength")->second); i++)
 		{
-			cout << dye::black_on_white(" ");
+			cout << dye::black_on_grey(" ");
 		}
 		cout << "\n.  Ma: ";
 		if (PLAYER_Player.getPlayerAttributes().find("Magic")->second < 10) cout << "0";
@@ -2836,7 +2703,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 		}
 		for (int i = 0; i < (99 - PLAYER_Player.getPlayerAttributes().find("Magic")->second); i++)
 		{
-			cout << dye::black_on_white(" ");
+			cout << dye::black_on_grey(" ");
 		}
 		cout <<  "\n.  En: ";
 		if (PLAYER_Player.getPlayerAttributes().find("Endurance")->second < 10) cout << "0";
@@ -2847,7 +2714,7 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 		}
 		for (int i = 0; i < (99 - PLAYER_Player.getPlayerAttributes().find("Endurance")->second); i++)
 		{
-			cout << dye::black_on_white(" ");
+			cout << dye::black_on_grey(" ");
 		}
 		cout << endl << endl;
 		cout << "   Equipped Skills:";
@@ -2918,35 +2785,13 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 	else if (STR_Dialogue_Choice == "save")
 	{
 		ofstream file("data/player_" + PLAYER_Player.getName() + ".txt");
-		file << PLAYER_Player.getName() << "\n" << PLAYER_Player.getLevel() << "\n" << PLAYER_Player.getCurrEXP() << "\n" << PLAYER_Player.getNextEXP() << "\n" << PLAYER_Player.getTotEXP() << "\n";
-		file << PLAYER_Player.getPlayerAttributes().find("Strength")->second << endl << PLAYER_Player.getPlayerAttributes().find("Magic")->second << endl << PLAYER_Player.getPlayerAttributes().find("Endurance")->second << "\n";
-		for (int i = (VEC_Visited_Dungeons.size() - 1); i > -1; i--)
+		vector<string> VEC_Player_Data = PLAYER_Player.saveData(VEC_Visited_Dungeons);
+		for (string STR_Data_Line : VEC_Player_Data)
 		{
-			file << VEC_Visited_Dungeons[i]->getDungeonName() << "\n" << VEC_Visited_Dungeons[i]->getDungeonRoom() << "\n";
-		}
-		for (Item* ITEM_Item : PLAYER_Player.getItems())
-		{
-			if (ITEM_Item->getName() != "Sharp Stick" && ITEM_Item->getName() != "Torn Backpack")
-			{
-				if (ITEM_Item->isConsumable())
-				{
-					file << "consumable\n" << ITEM_Item->getType() << "\n" << ITEM_Item->getAmount() << "\n";
-				}
-				else if (ITEM_Item->isMeleeWeapon())
-				{
-					file << "melee\n" << ITEM_Item->getMeleeDamage() << "\n";
-				}
-				else if (ITEM_Item->canInheritSkill())
-				{
-					file << "skill\n" << ITEM_Item->getSkill().getName() << "\n";
-				}
-				else file << "item\n";
-				file << ITEM_Item->getName() << "\n" << ITEM_Item->getDesc() << "\n" << ITEM_Item->getRarity() << "\n" << ITEM_Item->getQuantity() << "\n";
-			}
+			file << STR_Data_Line << "\n";
 		}
 		file.close();
-		cout << "\n\n";
-		cout << dye::light_green("   Saved sucessfully!\n");
+		cout << dye::light_green("\n\n   Saved sucessfully!\n");
 		cout << dye::green("   Your player data was sent to: data/player_") << dye::green(PLAYER_Player.getName()) << dye::green(".txt\n\n   ");
 		system("pause");
 	}
@@ -2959,96 +2804,6 @@ void dialogue_input(Player& PLAYER_Player, string STR_Dialogue_Choice, vector<Du
 	else
 	{
 		cout << "\033[A" << "\33[2K\r" << endl;
-	}
-}
-
-// Sets the starting elements for the Player: 1 Weak and 1 Resistant
-void set_starting_elements(int& weak_element, int& resist_element)
-{
-	bool BOOL_Valid_Option = false;
-	vector<string> VEC_List_Of_Elements = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless"};
-	string inp_we, inp_re;
-	while (true)
-	{
-		cout << "\n   Choose an element to be weak to:\n   Fire, Water, Ice, Electric, Wind, Curse, Bless\n   > "; cin >> inp_we;
-		for (string element : VEC_List_Of_Elements)
-		{
-			if (inp_we == element)
-			{
-				BOOL_Valid_Option = true;
-			}
-		}
-		if (BOOL_Valid_Option) break;
-	}
-	if (inp_we == "Fire")
-	{
-		weak_element = 0;
-	}
-	else if (inp_we == "Water")
-	{
-		weak_element = 1;
-	}
-	else if (inp_we == "Ice")
-	{
-		weak_element = 2;
-	}
-	else if (inp_we == "Electric")
-	{
-		weak_element = 3;
-	}
-	else if (inp_we == "Wind")
-	{
-		weak_element = 4;
-	}
-	else if (inp_we == "Curse")
-	{
-		weak_element = 5;
-	}
-	else if (inp_we == "Bless")
-	{
-		weak_element = 6;
-	}
-
-	BOOL_Valid_Option = false;
-	while (true)
-	{
-		cout << "\n   Choose an element to be resistant to:\n   Fire, Water, Ice, Electric, Wind, Curse, Bless   \n   > "; cin >> inp_re;
-		for (string element : VEC_List_Of_Elements)
-		{
-			if (inp_re == element)
-			{
-				BOOL_Valid_Option = true;
-			}
-		}
-		if (BOOL_Valid_Option) break;
-	}
-	if (inp_re == "Fire")
-	{
-		resist_element = 0;
-	}
-	else if (inp_re == "Water")
-	{
-		resist_element = 1;
-	}
-	else if (inp_re == "Ice")
-	{
-		resist_element = 2;
-	}
-	else if (inp_re == "Electric")
-	{
-		resist_element = 3;
-	}
-	else if (inp_re == "Wind")
-	{
-		resist_element = 4;
-	}
-	else if (inp_re == "Curse")
-	{
-		resist_element = 5;
-	}
-	else if (inp_re == "Bless")
-	{
-		resist_element = 6;
 	}
 }
 

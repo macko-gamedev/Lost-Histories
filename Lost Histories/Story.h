@@ -1,19 +1,20 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include "Player.h"
 
 using namespace std;
 
 class Story
 {
 private:
-	vector<string> VEC_Dialogue;
-	string STR_Player_Name;
 	int INDEX_Dialogue;
+	string STR_Player_Name;
 	bool BOOL_Event;
+	vector<string> VEC_Dialogue;
+	Player PLAYER_Reference;
 public:
 	Story();
-	Story(string N_Player_Name);
 	string getDialogue();
 	int getDialogueIndex();
 	void setDialogueIndex(int N_Index);
@@ -21,5 +22,6 @@ public:
 	void increaseDialogueIndex();
 	void startOfDialogue();
 	void endOfDialogue();
+	void setPlayerReference(Player N_Player);
 };
 

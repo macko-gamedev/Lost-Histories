@@ -1,13 +1,19 @@
 MackoMan
-28
-1323
-8601
-69480
-25
-27
-5
+84
+32809
+105150
+2757180
+69
+71
+29
+Special Passage
+2
+Magma Fields
+4
+Facility
+6
 Atlantis Ruins
-5
+7
 Glacier Wasteland
 6
 skill
@@ -15,44 +21,37 @@ Freeze
 Ice Core
 A strange looking block of ice
 1
-1
+3
 skill
 Flame
 Shattered Molotov
 Ash remains inside the bottle
 1
-2
+5
 melee
 19
 Nail Board
 Plank of frozen wood with a nail pointing out the end
 2
 1
-consumable
-HP
-40
-Thawn Bandage
-Could still be used for a scratch
-1
-7
 melee
 22
 Nail Board
 Plank of frozen wood with a nail pointing out the end
 2
-1
+2
 consumable
 STA
 35
 Bottle o' Spirit
 A strange looking bottle containing dead souls
 2
-5
+8
 item
 Snowball
 A cold ball of snow, perfect for throwing at people!
 1
-4
+6
 skill
 Blight
 Old Cross
@@ -63,13 +62,13 @@ item
 Ripped Shoes
 A pair of ripped shoes
 1
-2
+3
 skill
 Freezan
 Crystalised Flake
 A snowflake fully crystalised, emitting a frosty aura
 3
-2
+3
 melee
 11
 Sharp Icicle
@@ -97,19 +96,12 @@ item
 Foreign Coin
 A coin which you don't recognise
 2
-5
+12
 melee
 63
 Wingman
 Familiar looking revolver, it seems damaged but could still work
 4
-1
-consumable
-STA
-15
-Energy Pills
-Unopened tub of energy pills
-1
 1
 skill
 Zapao
@@ -121,7 +113,7 @@ item
 Glacier F5 Key
 Frozen key lost in time, maybe can be used for something?
 3
-1
+2
 item
 Gun Fragment
 A piece of fragment from a Soldiers gun
@@ -131,20 +123,13 @@ item
 Scratched Coin
 A coin coated in scratches, the date on it says 2026
 2
-2
+7
 skill
 Mezapao
 Battery Reserve
 Incase of power cut emergencies
 4
 1
-consumable
-HP
-100
-Worn Field Kit
-Can still be used for emergencies
-2
-3
 melee
 59
 Rusty Anchor
@@ -160,7 +145,7 @@ item
 Crocodile Floaty
 For a nice summers day
 1
-2
+3
 melee
 68
 Trident
@@ -177,7 +162,7 @@ Heal
 Old Pendant
 An old heart pendant emitting a healthy aura
 3
-3
+4
 skill
 Healan
 Glass Pendant
@@ -188,20 +173,13 @@ item
 Half Eaten Sandwich
 Some would call it a penguin classic(s)
 1
-3
+4
 melee
 79
 Trident
 Sharp spike-like ends perfect for impaling
 3
 1
-consumable
-HP
-200
-Medkit
-For a quick patch up
-3
-4
 skill
 Mehex
 Squid Head
@@ -218,7 +196,7 @@ Mesplash
 Water Balloon
 May annoy some people
 2
-1
+3
 melee
 66
 Trident
@@ -229,14 +207,7 @@ item
 Gold Coin
 Made of real gold!
 3
-4
-consumable
-STA
-80
-Holy Water
-Drinking this feels godly
-3
-1
+5
 melee
 53
 Rusty Anchor
@@ -259,10 +230,374 @@ Hex
 Vial of Ink
 An old vial with ink emitting a curseful aura
 1
-1
+5
 skill
 Flamadia
 Waterproof Flamethrower
 How this combination works is beyond comprehension
 4
+2
+item
+Atlantis F5 Key A
+Rusted key from Atlantis, maybe can be used for something?
+3
 1
+skill
+Frei
+Radioactive Core
+May need a suit for this one!
+3
+3
+skill
+Splashan
+Water Blaster 9000
+Graded PSA 10, worth an absolute fortune!
+3
+1
+item
+Atlantis F5 Key B
+Rusted key from Atlantis, maybe can be used for something?
+3
+1
+item
+£10 Coin
+Since when were £10 coins a thing?
+3
+1
+melee
+12
+Sharp Icicle
+Caution, fragile!
+1
+1
+skill
+Meflame
+Box of Matches
+Withered box of fire matches, can they still alight?
+2
+1
+item
+Chipped Diamond
+Exposed diamond which appears chipped and frozen over, might still carry some value
+4
+1
+item
+Mysterious Machine Part
+It seems like some sort of part from a machine, maybe this could play a vital part in saving the world?
+4
+1
+item
+Test Tube
+Empty glass test tube for lab purposes
+1
+7
+skill
+Blightaon
+Book of God - 2049 Edition
+A book dedicated to god, created and published in 2049, emits an overwhelming blessful aura
+4
+5
+item
+Jar of Substance
+Weird purple goo in a jar
+2
+7
+melee
+76
+Glass Shard
+Prone to shattering immediately
+2
+1
+skill
+Freezadia
+Bag of Powdered Snow
+The coldness even hurts just grabbing it out of the bag
+4
+3
+melee
+77
+Glass Shard
+Prone to shattering immediately
+2
+1
+melee
+37
+Screwdriver
+Can be used lethally
+1
+1
+melee
+38
+Screwdriver
+Can be used lethally
+1
+1
+consumable
+STA
+999
+Enhancement Flask
+A shiny purple tint covers the flask, drinking this makes you feel more alive
+5
+3
+skill
+Blighta
+Holy Cross
+A crucifix emitting a blessful aura
+3
+1
+item
+Facility F3 Keycard
+Shiny keycard from Facility, maybe can be used for something?
+3
+1
+melee
+71
+Glass Shard
+Prone to shattering immediately
+2
+1
+melee
+121
+AK-47
+Brr brr brrrrrrrrr!
+3
+1
+skill
+Healadia
+Enchanted Pendant
+An enchanted heart pendant emitting an overwhelming healthy aura
+5
+1
+item
+Chemical Pipette
+Used for transferring liquids
+3
+4
+consumable
+STA
+150
+Potion of Mutated Souls
+Screaming can be heard inside the bottle
+4
+2
+melee
+36
+Screwdriver
+Can be used lethally
+1
+1
+melee
+39
+Screwdriver
+Can be used lethally
+1
+2
+item
+Cracked Syringe
+Used for injections
+1
+4
+skill
+Hexaon
+Orb of Dark Matter
+A mysterious black orb emitting an overwhelming curseful aura
+4
+3
+melee
+69
+Glass Shard
+Prone to shattering immediately
+2
+1
+item
+Facility F5 Keycard A
+Shiny keycard from Facility, maybe can be used for something?
+3
+1
+melee
+74
+Glass Shard
+Prone to shattering immediately
+2
+1
+melee
+40
+Screwdriver
+Can be used lethally
+1
+1
+melee
+67
+Glass Shard
+Prone to shattering immediately
+2
+2
+item
+Facility F5 Keycard B
+Shiny keycard from Facility, maybe can be used for something?
+3
+1
+melee
+147
+Breach Hammer
+Designed for house raids
+4
+1
+consumable
+HP
+350
+Potion of Instant Health
+Red liquid fills the blocky bottle
+4
+3
+consumable
+HP
+200
+Medkit
+For a quick patch up
+3
+3
+consumable
+HP
+100
+Worn Field Kit
+Can still be used for emergencies
+2
+1
+melee
+67
+Trident
+Sharp spike-like ends perfect for impaling
+3
+1
+melee
+61
+Rusty Anchor
+A ship's anchor mainly covered in rust
+2
+1
+skill
+Gustadia
+Suction Device
+No one stands a chance once hit with the extreme wind force
+4
+1
+item
+Emerald
+A natural chunk of raw emerald from the earth
+5
+1
+item
+Facility F6 Keycard
+Shiny keycard from Facility, maybe can be used for something?
+3
+1
+item
+Frozen Crystal of Bitter Cold
+This is the core component of a machine, its purpose is to restore the balance between hot and cold on the planet
+5
+1
+melee
+224
+Blunt Kunai
+A replica of George Shaw's favourite video game character's melee skin from 2026
+5
+1
+item
+Generic Stone
+Just a random piece of stone
+1
+2
+item
+Bag of Ash
+Leather bag filled with dried, coolen ash
+2
+3
+item
+Magma Rock
+Hot piece of magma rock
+1
+5
+consumable
+STA
+180
+Lighter of Life
+Modified lighter which burns life essence
+4
+2
+melee
+132
+Sword of Fire Aspect
+A purple tinted sword which ignites it's opponent in flames
+2
+1
+item
+Obsidian
+A natural chunk of raw obsidian from the earth
+5
+2
+item
+Cube of Basalt
+A piece of the earth's crust in cube form
+2
+1
+skill
+Eye of the Ocean
+Batra's Staff of Reckoning
+Let's turn the tide!
+5
+1
+melee
+184
+Volcanic Blade
+Sharp blade created by civilians who lived near the volcanoes
+3
+1
+melee
+220
+Golden Tachi
+A deeply curved sword used by the Samurai before the 15th Century, coated in gold
+4
+1
+melee
+236
+Poison Tipped Knife
+A knife coated in poison dripping, perfect for eliminating targets, quietly...
+4
+1
+melee
+123
+Sword of Fire Aspect
+A purple tinted sword which ignites it's opponent in flames
+2
+1
+item
+Diamond
+A natural chunk of raw diamond from the earth
+5
+3
+item
+Device Compass
+A small metallic compass pointing directly towards The Device, you're almost there!
+5
+1
+skill
+End of the World
+Gem of Mass Destruction
+Suprisingly, it has an in-built mp3 player playing tunes from Lotus Juice himself
+5
+1
+item
+Trophy of Lost Histories
+You have completed this game! Congratulations!
+5
+1
+item
+Rainbow Crystal
+A sparkling rainbow crystal from the special realm!
+5
+7
+*
+-
+-
+-

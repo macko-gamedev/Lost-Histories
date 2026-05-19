@@ -229,6 +229,27 @@ Enemy DungeonFacility::newEnemy()
 			return Enemy("German Soldier", ((rand() % 6) + 57), 282, 57, { Skill("Flamadia"), Skill("Zapao"), Skill("Zapadia"), Skill("Gustan"), Skill("Gustadia") }, false, 95);
 		}
 	}
+	else if (this->getDungeonRoom() == 6)
+	{
+		// Enemy level for this floor: 60-69		German Soldier: 60-64   French Soldier: 62-67   American Soldier: 64-69   Gold Entity VI: 65
+		int INT_Enemy_Spawn_Chance = (rand() % 20) + 1;
+		if (INT_Enemy_Spawn_Chance > 18)
+		{
+			return Enemy("Gold Entity VI", 65, 500, 0, { }, true, 10);
+		}
+		else if (INT_Enemy_Spawn_Chance > 12)
+		{
+			return Enemy("American Soldier", ((rand() % 6) + 64), 269, 83, { Skill("Zapadia"), Skill("Hexo"), Skill("Hexaon"), Skill("Blighta"), Skill("Blightaon") }, false, 106);
+		}
+		else if (INT_Enemy_Spawn_Chance > 5)
+		{
+			return Enemy("French Soldier", ((rand() % 6) + 62), 278, 68, { Skill("Splashadia"), Skill("Freezan"), Skill("Freezadia"), Skill("Gustan"), Skill("Gustadia") }, false, 101);
+		}
+		else
+		{
+			return Enemy("German Soldier", ((rand() % 5) + 60), 282, 57, { Skill("Flamadia"), Skill("Zapao"), Skill("Zapadia"), Skill("Gustan"), Skill("Gustadia") }, false, 95);
+		}
+	}
 }
 
 Item* DungeonFacility::getItemFromChest()
