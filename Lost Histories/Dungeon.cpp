@@ -2,10 +2,11 @@
 
 Dungeon::Dungeon() {}
 
-Dungeon::Dungeon(Player& PLAYER_Player)
+Dungeon::Dungeon(string N_Name)
 {
 	this->INT_Pos_X = 0;
 	this->INT_Pos_Y = 0;
+	this->STR_Player_Name = N_Name;
 }
 
 vector<vector<vector<char>>> Dungeon::getDungeonMap()
@@ -135,4 +136,14 @@ Enemy Dungeon::newEnemy()
 Item* Dungeon::getItemFromChest()
 {
 	return new Item("", "", 1);
+}
+
+vector<string> Dungeon::getEncounterDialogue()
+{
+	return MAP_Encounter_Dialogue.find(this->getDungeonRoom())->second;
+}
+
+Enemy Dungeon::getEncounterEnemy()
+{
+	return MAP_Encounter_Enemy.find(this->getDungeonRoom())->second;
 }

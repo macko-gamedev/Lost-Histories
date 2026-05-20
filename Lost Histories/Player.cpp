@@ -98,6 +98,7 @@ vector<Skill> Player::getSkills()
 	return this->VEC_Skills;
 }
 
+// Sets manually the Player's equipped skills
 void Player::setSkills(vector<Skill> nSkills)
 {
 	this->VEC_Skills = nSkills;
@@ -417,10 +418,18 @@ vector<string> Player::saveData(vector<Dungeon*> N_Visited_Dungeons)
 			SAVE_Data.push_back(to_string(ITEM_Item->getRarity()));
 			SAVE_Data.push_back(to_string(ITEM_Item->getQuantity()));
 		}
-		SAVE_Data.push_back(to_string(this->getStarsOnFile().find("Main Story")->second));
-		SAVE_Data.push_back(to_string(this->getStarsOnFile().find("Special World")->second));
-		SAVE_Data.push_back(to_string(this->getStarsOnFile().find("Lv 99")->second));
-		SAVE_Data.push_back(to_string(this->getStarsOnFile().find("Secret")->second));
+	}
+	vector<string> VEC_Star_Names = { "Main Story", "Special World", "Lv 99", "Secret" };
+	for (string STR_Star_Name : VEC_Star_Names)
+	{
+		if (this->getStarsOnFile().find(STR_Star_Name)->second == '*')
+		{
+			SAVE_Data.push_back("*");
+		}
+		else
+		{
+			SAVE_Data.push_back("-");
+		}
 	}
 	return SAVE_Data;
 }

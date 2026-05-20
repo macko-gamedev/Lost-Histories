@@ -5,7 +5,7 @@ class DungeonAtlantis : public Dungeon
 {
 private:
 public:
-	DungeonAtlantis();
+	DungeonAtlantis(string N_Name);
 	Enemy newEnemy() override;
 	Item* getItemFromChest() override;
 };

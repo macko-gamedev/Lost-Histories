@@ -4,12 +4,13 @@
 
 //DungeonAtlantis::DungeonAtlantis() { }
 
-DungeonAtlantis::DungeonAtlantis()
+DungeonAtlantis::DungeonAtlantis(string N_Name)
 {
 	this->STR_Dungeon_Name = "Atlantis Ruins";
 	this->INT_Dungeon_Room = 1;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 7;
+	this->STR_Player_Name = N_Name;
 	this->VEC_Dungeon_Map =
 	{
 		{
@@ -48,13 +49,13 @@ DungeonAtlantis::DungeonAtlantis()
 		},
 		{
 			{ 'X', 'X', 'X', 'O', 'O', 'X', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-			{ 'O', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'O' },
-			{ 'O', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'O' },
+			{ 'O', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'O' },
+			{ 'O', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '?', 'O' },
 			{ 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ 'O', 'O', 'X', ' ', ' ', 'X', 'O', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'O' },
 			{ 'O', 'X', 'X', ' ', ' ', 'X', 'O', 'X', ' ', 'X', 'O', 'X', ' ', 'X', 'O' },
 			{ 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X' },
-			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '>' },
+			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '|', '>' },
 			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ 'O', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
 			{ 'O', 'O', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
@@ -64,7 +65,7 @@ DungeonAtlantis::DungeonAtlantis()
 			{ 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
 		},
 		{
-			{ 'X', 'X', 'X', 'X', 'O', 'X', ' ', 'X', 'O', 'O', 'X', 'X', 'X', 'O', 'O' },
+			{ 'X', 'X', 'X', 'X', 'O', 'X', 'O', 'X', 'O', 'O', 'X', 'X', 'X', 'O', 'O' },
 			{ 'O', ' ', ' ', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'O' },
 			{ 'O', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ 'X', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'O' },
@@ -91,8 +92,8 @@ DungeonAtlantis::DungeonAtlantis()
 			{ 'X', ' ', 'X', 'O', '<', '+', ' ', '*', ' ', ' ', 'X', ' ', ' ', '|', '>' },
 			{ 'X', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X' },
 			{ 'X', ' ', 'X', ' ', ' ', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', ' ', '|', ' ', 'X' },
-			{ 'X', ' ', 'X', 'X', 'X', 'X', 'X', '?', ' ', 'X', 'X', 'X', 'X', ' ', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X' },
+			{ 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' }
@@ -137,11 +138,75 @@ DungeonAtlantis::DungeonAtlantis()
 	{
 		{ 1, { "..." } },
 		{ 2, { "...", "You feel a strong presence in this section", "The next area looks to be locked behind a door", "Perhaps try searching for the key", "Yourself > Theres more locked doors here too!? "} },
-		{ 3, { "...", "Yourself > Compared to the last area, this place 'looks' more peaceful", "Yourself > Maybe without the monsters"} },
-		{ 4, { "...", "You feel a strong presence in this section", "The next area looks to be locked behind a door", "Perhaps try searching for the key", "Yourself > Can I catch a break?" } },
-		{ 5, { "...", "You feel two strong presences in this section", "The next area looks to be locked behind two doors", "Yourself > This is a joke", "Yourself > Sometimes I wished I never unfronze..." } },
+		{ 3, { "...", "You feel a strong presence in this section", "The next area looks to be locked behind a door", "Yourself > Compared to the last area, this place 'looks' more peaceful", "Yourself > Maybe without the monsters"} },
+		{ 4, { "...", "You feel a strong presence in this section", "The next area looks to be locked behind a door", "Yourself > Can I catch a break?" } },
+		{ 5, { "...", "You feel a strong presence in this section", "The next area looks to be locked behind a door", "Yourself > This is a joke", "Yourself > Sometimes I wished I never unfronze..." } },
 		{ 6, { "...", "A tunnel leads downwards and splits off two ways with one exit", "Yourself > Is it even worth fighting anymore..." } },
 		{ 7, { "...", "This seems to be the last room of the dungeon", "The room is full of soldiers and a formidable opponent", "Make sure you're ready for whats up ahead" } },
+	};
+	this->MAP_Encounter_Dialogue =
+	{
+		{ 2, {
+				"??? > Who the fuck are you? What are you doing here!?",
+				(STR_Player_Name + " > I beat that Russian Sergeant back in the Glacier Wastelands, and now I am here"),
+				"??? > Russian Sergeant? You mean the russians are here?",
+				(STR_Player_Name + " > Uh... yeah..."),
+				"??? > Bloody outrageous! I am a soldier from the UK, how can they be here already!",
+				"British Soldier > What are your intentions anyway? Can't you see we're busy?",
+				(STR_Player_Name + " > I'm not sure... but I want answers, why am I here? I thought I was a goner 41 years ago!"),
+				(STR_Player_Name + " > So if I was you I'd hand over that key so I can advance..."),
+				"British Soldier > Christ almighty! Aren't you a tough guy?",
+				"British Soldier > We've been experimenting with reanimations with all this new uncovered knowledge",
+				"British Soldier > Why don't you fight one of our little subjects?"
+			 }
+		},
+		{ 3, {
+				"Yourself > Heyyyy, could you like lowkey gimme that key?",
+				"??? > ...",
+				"??? > *gargling*",
+				"British Soldier > You beat that mermaid thingy?",
+				"British Soldier > Bloody hell! That subject was useless!",
+				"British Soldier > Well behold! Our 'newest' creation!",
+				"British Soldier > We dragged the dead corpses of one of the many civilizations that used to inhabit here",
+				"British Soldier > Isn't that right, Jellyfisherman?",
+				"Reanimated Jellyfisherman > *gargles more*",
+				("Reanimated Jellyfisherman > *shoots bolts towards " + STR_Player_Name + "*")
+			 }
+		},
+		{ 4, {
+				"You notice something feels off",
+				"British Soldier > Notice the radical looking hazmat?",
+				"??? > *gargling*",
+				"British Soldier > Looks like that Jellyfisherman was utter pointless aswell!",
+				"British Soldier > Blooming heck! Can anything round here be useful?",
+				"The soldier storms off in a fit of rage",
+				"The air feels poisonous",
+				("??? > *lunges towards " + STR_Player_Name + "*")
+			 }
+		},
+		{ 5, {
+				"??? > *gargles*",
+				("??? > *charges at " + STR_Player_Name + "*")
+			 }
+	    },
+		{ 7, {
+				"??? > Why must you come here!??",
+				"??? > Our sancturary!",
+				"??? > Why must another pest such as yourself come here and ruin everything!?",
+				(STR_Player_Name + " > I don't even know who you are..."),
+				"A small object is glowing on the creatures waistband",
+				(STR_Player_Name + " > That object seems important, give it to me or I'll take it by force"),
+				"??? > ARGHHHHH!!!!!"
+			 }
+		}
+	};
+	this->MAP_Encounter_Enemy =
+	{
+		{ 2, Enemy("Reanimated Mermaid", 20, 586, 126, { Skill("Flame"), Skill("Flamao"), Skill("Flamadia"), Skill("Zapao"), Skill("Hexo"), Skill("Blighta") }, true, 53) },
+		{ 3, Enemy("Reanimated Jellyfisherman", 25, 636, 174, { Skill("Splashan"), Skill("Splashadia"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Hexo"), Skill("Blighta") }, true, 28) },
+		{ 4, Enemy("Radioactive Atlantis Survivor", 28, 746, 214, { Skill("Splashadia"), Skill("Mesplashadia"), Skill("Frei"), Skill("Heal") }, true, 6) },
+		{ 5, Enemy("Radioactive Atlantis Guard", 30, 813, 214, { Skill("Meflamao"), Skill("Mesplashan"), Skill("Zapao"), Skill("Hexaon"), Skill("Frei"), Skill("Heal") }, true, 95) },
+		{ 7, Enemy("Reawoken Guardian of Atlantis", 35, 976, 214, { Skill("Flamao"), Skill("Splashan"), Skill("Splashadia"), Skill("Freezan"), Skill("Hexo"), Skill("Mehexaon"), Skill("Heal") }, true, 47) }
 	};
 }
 

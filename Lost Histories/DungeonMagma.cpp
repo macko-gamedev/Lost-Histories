@@ -2,12 +2,13 @@
 
 // X = Wall, ! = Enemy, > = Next Room, <  = Last Room, + = Player
 
-DungeonMagma::DungeonMagma()
+DungeonMagma::DungeonMagma(string N_Name)
 {
 	this->STR_Dungeon_Name = "Magma Fields";
 	this->INT_Dungeon_Room = 1;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 7;
+	this->STR_Player_Name = N_Name;
 	this->VEC_Dungeon_Map =
 	{
 		{
@@ -87,6 +88,26 @@ DungeonMagma::DungeonMagma()
 		{ 2, { "...", "Yourself > This place is so hot, compared to the last locations I've explored", "Yourself > I feel like I'm getting closer to the end" } },
 		{ 3, { "...", "Yourself > I'm sweating buckets", "Yourself > Where can one find a fan around here?", "Yourself > I sense that the next area may be the last", "Yourself > I should be extra prepared" } },
 		{ 4, { "...", "This is the final room", "This will be the hardest battle you've fought yet, and maybe the last", "Make sure you are fully prepared for what's ahead", "You can travel to previous locations to make sure you have found everything you are looking for [SPACE + travel]", "Yourself > Let's do this!" } },
+	};
+	this->MAP_Encounter_Dialogue =
+	{
+		{ 4, {
+				"??? > Well well well",
+				"??? > Look who decided to finally show up",
+				("??? > " + STR_Player_Name),
+				(STR_Player_Name + " > Who... are you?"),
+				"??? > The one you are in persuit of...",
+				"??? > ...The Mastermind",
+				"The Mastermind > I quickly relocated The Device upon hearing about your coming",
+				"The Mastermind > I am terribly sorry, but your little adventure must end here",
+				"The Mastermind > You have caused quite the disturbance in my plan",
+				"The Mastermind > Prepare to face your consequences"
+			 }
+		}
+	};
+	this->MAP_Encounter_Enemy =
+	{
+		{ 4, Enemy("The Mastermind", 90, 1982, 1752, { Skill("Flamadia") }, true, 148) }
 	};
 }
 

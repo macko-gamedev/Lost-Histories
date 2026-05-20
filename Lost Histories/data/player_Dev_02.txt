@@ -1,0 +1,425 @@
+Dev_02
+99
+0
+0
+13537904
+99
+99
+99
+Special Passage
+1
+Magma Fields
+4
+Facility
+7
+Atlantis Ruins
+7
+Glacier Wasteland
+6
+skill
+Death
+Instakill
+Developer purpose only
+5
+1
+skill
+Freeze
+Ice Core
+A strange looking block of Ice
+1
+3
+item
+Ripped Shoes
+A pair of ripped shoes
+1
+3
+skill
+Mefreeze
+Ice Shard
+A sharp ended icicle which could shatter
+2
+1
+melee
+16
+Sharp Icicle
+Caution, fragile!
+1
+1
+item
+Scratched Coin
+A coin coated in scratches, the date on it says 2026
+2
+2
+item
+Snowball
+A cold ball of snow, perfect for throwing at people!
+1
+4
+skill
+Flame
+Shattered Molotov
+Ash remains inside the bottle
+1
+2
+consumable
+HP
+40.000000
+Thawn Bandage
+Could still be used for a scratch
+1
+5
+skill
+Freezan
+Crystalised Flake
+A snowflake fully crystalised, emitting a frosty aura
+3
+3
+consumable
+STA
+35.000000
+Bottle o' Spirit
+A strange looking bottle containing dead souls
+2
+5
+item
+Glacier Wasteland F3 Key
+Frozen key lost in time, maybe can be used for something?
+3
+1
+skill
+Megust
+Goat Horn
+Remains of what looks like a goat, what is it even doing here?
+2
+4
+skill
+Zapao
+Electrical Wire
+Exposed electric wire that still packs some spark
+3
+1
+item
+Glacier Wasteland F5 Key
+Frozen key lost in time, maybe can be used for something?
+3
+1
+melee
+78
+Glock-17
+Perfect for quick execution
+3
+1
+item
+Gun Fragment
+A piece of fragment from a Soldiers gun
+3
+1
+melee
+44
+Ice Crossbow
+Icified crossbow which fires icicles
+3
+1
+consumable
+STA
+80.000000
+Holy Water
+Drinking this feels godly
+3
+2
+skill
+Mezapao
+Battery Reserve
+Incase of power cut emergencies
+4
+1
+item
+Half Eaten Sandwich
+Some would call it a penguin classic(s)
+1
+3
+melee
+54
+Rusty Anchor
+A ship's anchor mainly covered in rust
+2
+1
+item
+Atlantis Ruins F2 Key
+Rusted key from Atlantis, maybe can be used for something?
+3
+1
+item
+Crocodile Floaty
+For a nice summers day
+1
+4
+item
+Atlantis Ruins F3 Key
+Rusted key from Atlantis, maybe can be used for something?
+3
+1
+item
+Atlantis Ruins F4 Key
+Rusted key from Atlantis, maybe can be used for something?
+3
+1
+item
+Shark Tooth
+Caution, may be sharp
+2
+1
+skill
+Splashan
+Water Blaster 9000
+Graded PSA 10, worth an absolute fortune!
+3
+1
+item
+Fish Tooth
+Caution, may be sharp
+2
+1
+item
+Seaweed
+Lonely strand of seaweed
+1
+1
+consumable
+MAG
+2.500000
+Concentration Pills
+Drugs used to increase users concentration
+3
+2
+skill
+Flamadia
+Waterproof Flamethrower
+How this combination works is beyond comprehension
+4
+2
+melee
+61
+Rusty Anchor
+A ship's anchor mainly covered in rust
+2
+1
+melee
+71
+Glock-17
+Perfect for quick execution
+3
+1
+item
+Atlantis Ruins F5 Key
+Rusted key from Atlantis, maybe can be used for something?
+3
+1
+item
+Gold Coin
+Made of real gold!
+3
+1
+consumable
+HP
+200.000000
+Medkit
+For a quick patch up
+3
+1
+item
+Foreign Coin
+A coin which you don't recognise
+2
+7
+skill
+Hex
+Vial of Ink
+An old vial with ink emitting a curseful aura
+1
+1
+item
+£10 Coin
+Since when were £10 coins a thing?
+3
+1
+consumable
+ATK
+2.500000
+Power Supplements
+Drugs used to increase users power moderately
+3
+1
+skill
+Heal
+Old Pendant
+An old heart pendant emitting a healthy aura
+3
+1
+skill
+Gustan
+Cold Hairdryer
+Lethalised hairdryer from the 2040s, the air is even more colder.
+3
+1
+item
+Mysterious Machine Part
+It seems like some sort of part from a machine, maybe this could play a vital part in saving the world?
+4
+1
+skill
+Zapadia
+Jellyfish Tenticle
+Dead or Alive it still carries some current
+4
+1
+item
+Cracked Syringe
+Used for injections
+1
+2
+item
+10 Euro Coin
+Since when were ten euro coins a thing?
+3
+1
+item
+Chemical Pipette
+Used for transferring liquids
+3
+1
+consumable
+MAG
+4.000000
+Concentration Pills X
+Drugs used to increase users concentration significantly
+4
+1
+melee
+72
+Glass Shard
+Prone to shattering immediately
+2
+1
+melee
+77
+Glass Shard
+Prone to shattering immediately
+2
+2
+item
+Facility F3 Key
+Shiny keycard from Facility, maybe can be used for something?
+3
+1
+consumable
+ATK
+7.000000
+Power Supplements 50mg
+Drugs used to increase users power massively
+5
+2
+melee
+123
+AK-47
+Brr brr brrrrrrrrr!
+3
+1
+melee
+113
+AK-47
+Brr brr brrrrrrrrr!
+3
+1
+item
+Facility F6 Key
+Shiny keycard from Facility, maybe can be used for something?
+3
+1
+item
+Frozen Crystal of Bitter Cold
+This is the core component of a machine, its purpose is to restore the balance between hot and cold on the planet
+5
+2
+melee
+224
+Blunt Kunai
+A replica of George Shaw's favourite video game character's melee skin from 2026
+5
+1
+item
+10 Yen Coin
+Since when were ten yen coins a thing?
+3
+2
+melee
+125
+Sword of Fire Aspect
+A purple tinted sword which ignites it's opponent in flames
+2
+1
+item
+Cube of Basalt
+A piece of the earth's crust in cube form
+2
+1
+item
+Bag of Ash
+Leather bag filled with dried, coolen ash
+2
+1
+item
+Ruby
+A natural chunk of raw ruby from the earth
+5
+3
+item
+Magma Rock
+Hot piece of magma rock
+1
+1
+consumable
+HP
+400.000000
+Hot Heart in a Bottle
+A scorching hot human heart trapped inside a bottle, blood still leaking from the organ
+4
+1
+skill
+Eye of the Spark
+Paquette Pylon
+'Fuses set and capacitors charged'
+5
+1
+melee
+142
+Sword of Fire Aspect
+A purple tinted sword which ignites it's opponent in flames
+2
+1
+melee
+136
+Sword of Fire Aspect
+A purple tinted sword which ignites it's opponent in flames
+2
+1
+skill
+End of the World
+Gem of Mass Destruction
+Suprisingly, it has an in-built mp3 player playing tunes from Lotus Juice himself
+5
+2
+item
+Trophy of Lost Histories
+You have completed this game! Congratulations!
+5
+2
+item
+Device Compass
+A small metallic compass pointing directly towards The Device, you're almost there!
+5
+1
+*
+*
+*
+*

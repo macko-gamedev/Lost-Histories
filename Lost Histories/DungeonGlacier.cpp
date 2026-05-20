@@ -4,12 +4,13 @@
  
 //DungeonGlacier::DungeonGlacier() { }
 
-DungeonGlacier::DungeonGlacier()
+DungeonGlacier::DungeonGlacier(string N_Name)
 {
 	this->STR_Dungeon_Name = "Glacier Wasteland";
 	this->INT_Dungeon_Room = 1;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 10;
+	this->STR_Player_Name = N_Name;
 	this->VEC_Dungeon_Map =
 	{
 		{
@@ -124,6 +125,47 @@ DungeonGlacier::DungeonGlacier()
 		{ 4, { "...", "An overwhelming panic is starting to set in", "Yourself > What is this place!?" } },
 		{ 5, { "...", "You feel a strong presence in this section", "The next area looks to be locked behind a door", "Perhaps try searching for the key", "Yourself > Another locked door?", "Yourself > The last strong 'thing' was hard enough..."} },
 		{ 6, { "...", "The land is void of enemies but two guards and a formidable opponent", "Make sure you're ready for whats up ahead" } }
+	};
+	this->MAP_Encounter_Dialogue =
+	{
+		{ 3, { 
+				"Yourself > What is this creature...",
+				"Yourself > Regardless, it seems to have a key embedded on it's torso",
+				"Yourself > I should probably try grabbing it",
+				"??? > *growls angrily*",
+				("??? > *charges towards " + STR_Player_Name + "*")
+			 }
+		},
+		{ 5, { 
+				"Duty Soldier > Aha! Another worthless twat trying to get in our way!",
+				"Yourself > There seems to be a key dangling on his belt",
+				"Yourself > Perhaps I need to grab it by force",
+				"Duty Soldier > Come here little one let me put you out of your misery...",
+				(STR_Player_Name + " > Bring it!")
+	         } 
+	    },
+		{ 6, {
+				"??? > Who goes there!?",
+				"??? > Only authorised personal can go enter this unexplored point of interest",
+				(this->STR_Player_Name + " > What's going on?"),
+				(this->STR_Player_Name + " > What year even is it??"),
+				"??? > The year is 2067, the date is the 31st of January. And who are you weakling?",
+				(this->STR_Player_Name + " > " + this->STR_Player_Name + "."),
+				"??? > I'm an active sergeant for the russians who currently compromise this area",
+				"Russian Sergeant > State your reason for being here",
+				(this->STR_Player_Name + " > I want to know what's going on"),
+				"Russian Sergeant > I'm afraid I cannot tell you",
+				"Russian Sergeant > If you can prove to me you are capable, I may let you pass",
+				(this->STR_Player_Name + " > Huh? Prove to you what?"),
+				"Russian Sergeant > This..."
+			 }
+		}
+	}; 
+	this->MAP_Encounter_Enemy =
+	{
+		{ 3, Enemy("Snow Golem", 10, 232, 54, { Skill("Mefreeze"), Skill("Freezan"), Skill("Hex") }, true, 31) },
+		{ 5, Enemy("Duty Soldier", 12, 384, 67, { Skill("Flame"), Skill("Zap"), Skill("Zapao"), Skill("Blight")}, true, 37) },
+		{ 6, Enemy("Russian Sergeant", 15, 537, 93, { Skill("Meflamao"), Skill("Freezan"), Skill("Gust"), Skill("Meblight"), Skill("Hex") }, true, 56) }
 	};
 }
 

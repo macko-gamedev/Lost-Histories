@@ -353,59 +353,59 @@ Item* Enemy::getItemFromLootTable()
 	// Dungeon Mini Bosses
 	else if (this->getName() == "Snow Golem")
 	{
-		VEC_Enemy_Drops = { new Item("Glacier F3 Key", "Frozen key lost in time, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Glacier Wasteland F3 Key", "Frozen key lost in time, maybe can be used for something?", 3) };
 	}
 	else if (this->getName() == "Duty Soldier")
 	{
-		VEC_Enemy_Drops = { new Item("Glacier F5 Key", "Frozen key lost in time, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Glacier Wasteland F5 Key", "Frozen key lost in time, maybe can be used for something?", 3) };
 	}
 	else if (this->getName() == "Reanimated Mermaid")
 	{
-		VEC_Enemy_Drops = { new Item("Atlantis F2 Key", "Rusted key from Atlantis, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Atlantis Ruins F2 Key", "Rusted key from Atlantis, maybe can be used for something?", 3) };
 	}
 	else if (this->getName() == "Reanimated Jellyfisherman")
 	{
-		VEC_Enemy_Drops = { new Item("Atlantis F4 Key", "Rusted key from Atlantis, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Atlantis Ruins F3 Key", "Rusted key from Atlantis, maybe can be used for something?", 3) };
 		}
 	else if (this->getName() == "Radioactive Atlantis Survivor")
 	{
-		VEC_Enemy_Drops = { new Item("Atlantis F5 Key A", "Rusted key from Atlantis, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Atlantis Ruins F4 Key", "Rusted key from Atlantis, maybe can be used for something?", 3) };
 		}
 	else if (this->getName() == "Radioactive Atlantis Guard")
 	{
-		VEC_Enemy_Drops = { new Item("Atlantis F5 Key B", "Rusted key from Atlantis, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Atlantis Ruins F5 Key", "Rusted key from Atlantis, maybe can be used for something?", 3) };
 	}
 	else if (this->getName() == "Mutated Lab Researcher")
 	{
-		VEC_Enemy_Drops = { new Item("Facility F3 Keycard", "Shiny keycard from Facility, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Facility F3 Key", "Shiny keycard from Facility, maybe can be used for something?", 3) };
 		}
 	else if (this->getName() == "Mutated Security Sector 4B")
 	{
-		VEC_Enemy_Drops = { new Item("Facility F5 Keycard A", "Shiny keycard from Facility, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Facility F5 Key", "Shiny keycard from Facility, maybe can be used for something?", 3) };
 		}
 	else if (this->getName() == "Mutated Security Sector 16A")
 	{
-		VEC_Enemy_Drops = { new Item("Facility F5 Keycard B", "Shiny keycard from Facility, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Facility Treasure Room Keycard", "Shiny keycard from Facility, has 'TREASURE' engraved on the card", 3) };
 		}
 	else if (this->getName() == "Mutated Security Sector 46D")
 	{
-		VEC_Enemy_Drops = { new Item("Facility F6 Keycard", "Shiny keycard from Facility, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Facility F6 Key", "Shiny keycard from Facility, maybe can be used for something?", 3) };
 	}
 	else if (this->getName() == "Ghost of Katie Cooper")
 	{
-		VEC_Enemy_Drops = { new Item("Special F2 Unlocker", "An unlocker device from a special realm, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Special Passage F2 Key", "An unlocker device from a special realm, maybe can be used for something?", 3) };
 	}
 	else if (this->getName() == "Rice Monster of Tooley")
 	{
-		VEC_Enemy_Drops = { new Item("Special F3 Unlocker", "An unlocker device from a special realm, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Special Passage F3 Key", "An unlocker device from a special realm, maybe can be used for something?", 3) };
 	}
 	else if (this->getName() == "Mucus Poocus")
 	{
-		VEC_Enemy_Drops = { new Item("Special F4 Unlocker", "An unlocker device from a special realm, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Special Passage F4 Key", "An unlocker device from a special realm, maybe can be used for something?", 3) };
 		}
 	else if (this->getName() == "Performative Boxer")
 	{
-		VEC_Enemy_Drops = { new Item("Special F5 Unlocker", "An unlocker device from a special realm, maybe can be used for something?", 3) };
+		VEC_Enemy_Drops = { new Item("Special Passage F5 Key", "An unlocker device from a special realm, maybe can be used for something?", 3) };
 		}
 
 	// Dungeon Bosses
@@ -441,6 +441,10 @@ Item* Enemy::getItemFromLootTable()
 	{
 		VEC_Enemy_Drops = { new Item("Golden Super Macko Plush", "A golden plushie of the Super Macko tower from ENobia!", 5) };
 		}
+	else if (this->getName() == "???")
+	{
+		VEC_Enemy_Drops = { new Item("Facility F7 Key", "You should probably go back a couple steps", 5) };
+	}
 
 	return VEC_Enemy_Drops[rand() % VEC_Enemy_Drops.size()];
 }
@@ -651,8 +655,12 @@ void Enemy::elementSetter()
 	}
 	else if (this->getName() == "Tyson Mondeo")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "N ul"}, {"Wind", "Rpl"}, {"Curse", "-"}, {"Bless", "-"} });
-		}
+		this->setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Rpl"}, {"Curse", "-"}, {"Bless", "-"} });
+	}
+	else if (this->getName() == "???")
+	{
+		this->setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+	}
 
 	// Rare Enemies
 	else if (this->getName() == "Gold Entity I")

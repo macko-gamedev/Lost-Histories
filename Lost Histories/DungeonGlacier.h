@@ -5,7 +5,7 @@ class DungeonGlacier : public Dungeon
 {
 private:
 public:
-	DungeonGlacier();
+	DungeonGlacier(string N_Name);
 	Enemy newEnemy() override;
 	Item* getItemFromChest() override;
 };

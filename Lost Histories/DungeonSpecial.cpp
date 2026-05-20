@@ -2,12 +2,13 @@
 
 // X = Wall, ! = Enemy, > = Next Room, <  = Last Room, + = Player
 
-DungeonSpecial::DungeonSpecial()
+DungeonSpecial::DungeonSpecial(string N_Name)
 {
 	this->STR_Dungeon_Name = "Special Passage";
 	this->INT_Dungeon_Room = 1;
 	this->INT_Pos_X = 3;
 	this->INT_Pos_Y = 7;
+	this->STR_Player_Name = N_Name;
 	this->VEC_Dungeon_Map =
 	{
 		{
@@ -101,7 +102,7 @@ DungeonSpecial::DungeonSpecial()
 			{ 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O' },
 			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
 			{ 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O' },
-			{ 'X', '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ 'X', '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '>', 'X' },
 			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
 			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O' },
 			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
@@ -112,9 +113,26 @@ DungeonSpecial::DungeonSpecial()
 			{ 'O', 'X', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', '?', 'X' },
 			{ 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'O' },
 		},
+		{
+			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
+			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O' },
+			{ 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O' },
+			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
+			{ 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O' },
+			{ 'X', '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
+			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O' },
+			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
+			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
+			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
+			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
+			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', 'X', ' ', ' ', ' ', 'X', 'O' },
+			{ 'O', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'O', 'O', 'X', 'X', ' ', 'X', 'X' },
+			{ 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'O' },
+		},
 	};
 
-	this->VEC_Explored_Rooms = { true, true, true, true, true, true };
+	this->VEC_Explored_Rooms = { true, true, true, true, true, true, true };
 	this->MAP_New_Room_Text =
 	{
 		{ 1, { "..." } },
@@ -122,7 +140,26 @@ DungeonSpecial::DungeonSpecial()
 		{ 3, { "..." } },
 		{ 4, { "..." } },
 		{ 5, { "..." } },
-		{ 6, { "..." } }
+		{ 6, { "..." } },
+		{ 7, { "..." } }
+	};
+	this->MAP_Encounter_Dialogue =
+	{
+		{ 2, { "..." } },
+		{ 3, { "..." } },
+		{ 4, { "..." } },
+		{ 5, { "..." } },
+		{ 6, { "..." } },
+		{ 7, { "..." } }
+	};
+	this->MAP_Encounter_Enemy =
+	{
+		{ 2, Enemy("Ghost of Katie Cooper", 90, 2019, 3897, { Skill("Eye of the Sun"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm"), Skill("Hexaon"), Skill("Freila"), Skill("Healan") }, true, 167) },
+		{ 3, Enemy("Rice Monster of Tooley", 90, 2393, 2852, { Skill("Eye of the Sun"), Skill("Eye of the Storm"), Skill("Eye of the Spark"), Skill("Blightaon"), Skill("Freila"), Skill("Healan") }, true, 172) },
+		{ 4, Enemy("Mucus Poocus", 95, 2683, 4039, { Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("End of the World"), Skill("Freiladia"), Skill("Healan") }, true, 217) },
+		{ 5, Enemy("Performative Boxer", 95, 2980, 903, { Skill("Flamadia"), Skill("Zapadia"), Skill("Hexaon"), Skill("Freiladia") }, true, 398) },
+		{ 6, Enemy("Tyson Mondeo", 99, 3397, 5254, { Skill("Eye of the Sun"), Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("Eye of the Spark"), Skill("Eye of the Storm"), Skill("Blightaon"), Skill("Hexaon"), Skill("Freiladia") }, true, 229) },
+		{ 7, Enemy("???", 99, 3928, 7083, { Skill("Eye of the Sun"), Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("Eye of the Spark"), Skill("Eye of the Storm"), Skill("Blightaon"), Skill("Hexaon"), Skill("Freiladia"), Skill("End of the World"), Skill("Healan") }, true, 248)},
 	};
 }
 
@@ -226,27 +263,45 @@ Enemy DungeonSpecial::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 6) + 1;
 		if (INT_Enemy_Spawn_Chance == 1)
 		{
-			return Enemy("Japanese Soldier", ((rand() % 4) + 96), 302, 189, { Skill("Splashadia"), Skill("Eye of the Ocean"), Skill("Eye of the Storm"), Skill("Blightaon") },  false, 89);
+			return Enemy("Japanese Soldier", ((rand() % 4) + 96), 302, 189, { Skill("Splashadia"), Skill("Eye of the Ocean"), Skill("Eye of the Storm"), Skill("Blightaon") }, false, 89);
 		}
 		else if (INT_Enemy_Spawn_Chance == 2)
 		{
-			return Enemy("American Soldier", ((rand() % 4) + 96), 269, 83, { Skill("Eye of the Spark"), Skill("Hexo"), Skill("Hexaon"), Skill("Blighta"), Skill("Blightaon") },  false, 106);
+			return Enemy("American Soldier", ((rand() % 4) + 96), 269, 83, { Skill("Eye of the Spark"), Skill("Hexo"), Skill("Hexaon"), Skill("Blighta"), Skill("Blightaon") }, false, 106);
 		}
 		else if (INT_Enemy_Spawn_Chance == 3)
 		{
-			return Enemy("German Soldier", ((rand() % 4) + 96), 282, 57, { Skill("Eye of the Sun"), Skill("Eye of the Spark"), Skill("Zapadia"), Skill("Eye of the Storm"), Skill("Gustadia") },  false, 95);
+			return Enemy("German Soldier", ((rand() % 4) + 96), 282, 57, { Skill("Eye of the Sun"), Skill("Eye of the Spark"), Skill("Zapadia"), Skill("Eye of the Storm"), Skill("Gustadia") }, false, 95);
 		}
 		else if (INT_Enemy_Spawn_Chance == 4)
 		{
-			return Enemy("French Soldier", ((rand() % 4) + 96), 278, 68, { Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("Freezadia"), Skill("Eye of the Storm"), Skill("Gustadia") },  false, 101);
+			return Enemy("French Soldier", ((rand() % 4) + 96), 278, 68, { Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("Freezadia"), Skill("Eye of the Storm"), Skill("Gustadia") }, false, 101);
 		}
 		else if (INT_Enemy_Spawn_Chance == 5)
 		{
-			return Enemy("British Soldier", ((rand() % 4) + 96), 241, 27, { Skill("Eye of the Storm"), Skill("Eye of the Spark"), Skill("Blighta"), Skill("Blightaon"), Skill("Healan") },  false, 84);
+			return Enemy("British Soldier", ((rand() % 4) + 96), 241, 27, { Skill("Eye of the Storm"), Skill("Eye of the Spark"), Skill("Blighta"), Skill("Blightaon"), Skill("Healan") }, false, 84);
 		}
 		else if (INT_Enemy_Spawn_Chance == 6)
 		{
-			return Enemy("Gold Entity X", 99, 800, 0, { Skill("End of the World"), Skill("Healadia") },  true, 10);
+			return Enemy("Gold Entity X", 99, 800, 0, { Skill("End of the World"), Skill("Healadia") }, true, 10);
+		}
+	}
+	else if (this->getDungeonRoom() == 6)
+	{
+		// Enemy level for this floor: 96-99		British Soldier: 96-99   German Soldier: 96-99   American Soldier: 96-99   French Soldier: 96-99   Japanese Soldier: 96-99   Gold Entity X: 99
+		int INT_Enemy_Spawn_Chance = (rand() % 6) + 1;
+		if (true)
+		{
+			return Enemy("Gold Entity X", 99, 800, 0, { Skill("End of the World"), Skill("Healadia") }, true, 10);
+		}
+		}
+	else if (this->getDungeonRoom() == 7)
+	{
+		// Enemy level for this floor: 96-99		British Soldier: 96-99   German Soldier: 96-99   American Soldier: 96-99   French Soldier: 96-99   Japanese Soldier: 96-99   Gold Entity X: 99
+		int INT_Enemy_Spawn_Chance = (rand() % 6) + 1;
+		if (true)
+		{
+			return Enemy("Gold Entity X", 99, 800, 0, { Skill("End of the World"), Skill("Healadia") }, true, 10);
 		}
 	}
 }

@@ -5,7 +5,7 @@ class DungeonMagma : public Dungeon
 {
 private:
 public:
-	DungeonMagma();
+	DungeonMagma(string N_Name);
 	Enemy newEnemy() override;
 	Item* getItemFromChest() override;
 };
