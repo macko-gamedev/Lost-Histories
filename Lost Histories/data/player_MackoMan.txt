@@ -1,17 +1,17 @@
 MackoMan
-84
-32809
-105150
-2757180
-69
-71
-29
+90
+14891
+125551
+3419320
+73
+77
+31
 Special Passage
-2
+6
 Magma Fields
 4
 Facility
-6
+7
 Atlantis Ruins
 7
 Glacier Wasteland
@@ -42,11 +42,11 @@ Plank of frozen wood with a nail pointing out the end
 2
 consumable
 STA
-35
+35.000000
 Bottle o' Spirit
 A strange looking bottle containing dead souls
 2
-8
+6
 item
 Snowball
 A cold ball of snow, perfect for throwing at people!
@@ -185,7 +185,7 @@ Mehex
 Squid Head
 Squirts black genetically modified ink
 2
-1
+2
 item
 Atlantis F2 Key
 Rusted key from Atlantis, maybe can be used for something?
@@ -301,7 +301,7 @@ item
 Jar of Substance
 Weird purple goo in a jar
 2
-7
+8
 melee
 76
 Glass Shard
@@ -334,11 +334,11 @@ Can be used lethally
 1
 consumable
 STA
-999
+999.000000
 Enhancement Flask
 A shiny purple tint covers the flask, drinking this makes you feel more alive
 5
-3
+2
 skill
 Blighta
 Holy Cross
@@ -372,14 +372,7 @@ item
 Chemical Pipette
 Used for transferring liquids
 3
-4
-consumable
-STA
-150
-Potion of Mutated Souls
-Screaming can be heard inside the bottle
-4
-2
+5
 melee
 36
 Screwdriver
@@ -396,7 +389,7 @@ item
 Cracked Syringe
 Used for injections
 1
-4
+5
 skill
 Hexaon
 Orb of Dark Matter
@@ -445,25 +438,18 @@ Designed for house raids
 1
 consumable
 HP
-350
+350.000000
 Potion of Instant Health
 Red liquid fills the blocky bottle
 4
 3
 consumable
 HP
-200
+200.000000
 Medkit
 For a quick patch up
 3
-3
-consumable
-HP
-100
-Worn Field Kit
-Can still be used for emergencies
 2
-1
 melee
 67
 Trident
@@ -518,13 +504,6 @@ Magma Rock
 Hot piece of magma rock
 1
 5
-consumable
-STA
-180
-Lighter of Life
-Modified lighter which burns life essence
-4
-2
 melee
 132
 Sword of Fire Aspect
@@ -542,7 +521,7 @@ A piece of the earth's crust in cube form
 2
 1
 skill
-Eye of the Ocean
+Tsunami
 Batra's Staff of Reckoning
 Let's turn the tide!
 5
@@ -596,7 +575,44 @@ item
 Rainbow Crystal
 A sparkling rainbow crystal from the special realm!
 5
-7
+22
+item
+Special Passage F2 Key
+An unlocker device from a special realm, maybe can be used for something?
+3
+1
+item
+Facility F6 Key
+Shiny keycard from Facility, maybe can be used for something?
+3
+1
+skill
+Freila
+Radioactive Chunk
+A small intake of this could spell the end
+4
+1
+item
+Special Passage F3 Key
+An unlocker device from a special realm, maybe can be used for something?
+3
+1
+melee
+192
+Volcanic Blade
+Sharp blade created by civilians who lived near the volcanoes
+3
+1
+item
+Special Passage F4 Key
+An unlocker device from a special realm, maybe can be used for something?
+3
+1
+item
+Special Passage F5 Key
+An unlocker device from a special realm, maybe can be used for something?
+3
+1
 *
 -
 -

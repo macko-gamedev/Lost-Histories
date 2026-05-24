@@ -1,0 +1,55 @@
+Release 1.2
+Updated May 24th, 2026
+
+New :
+/ Added additional story content:
+  // Added Dungeon 6: Domain
+    . Unlocked after completing Facility F10
+    . Contains 15 floors
+  // New story bosses
+/ Added loading save file logging
+  . You can now see what is being loaded and if sucessful
+
+Changes:
+/ Dungeons:
+  // Facility:
+    + Added 3 more floors
+    ! Moved the main boss from F6 -> F7
+  // Special Passage:
+    + Added 1 more floor
+    + New main boss now drops a story related Item
+/ Skills:
+  // Added Physical attacks:
+     . Each attack has a chance to be critical
+     . Attacks cost HP instead of STA
+     . Attacks increased by the Strength attribute
+     + Sucker Punch - 30 DMG, 12% HP
+     + Hacker Slash - 26 DMG, 15% HP, hits x2
+     + Quick Jab - 73 DMG, 18% HP
+     + Sickle Dance - 91 DMG, 24% HP, hits x2
+     + Decisive Strike - 329 DMG, 30% HP
+     + God's Power Punch - 578 DMG, 35% HP
+     + Impulse Strike - 253 DMG, 32% HP, hits x2
+     + Decaying Chucks - 57 DMG, 40% HP, hits x8
+  // Added tier 4 attack skills:
+     + Flamadiaran - 262 DMG, 98 STA
+     + Splashadiran - 246 DMG, 94 STA
+     + Freezadiaran - 246 DMG, 94 STA
+     + Zapadiaran - 262 DMG, 98 STA
+     + Gustadiaran - 246 DMG, 94 STA
+     + Hexaonia - 308 DMG, 102 STA
+     + Blightaonia - 308 DMG, 102 STA
+     + Freiladiaran - 612 DMG, 110 STA
+  // Current tier 4 skills are now tier 5:
+     + End of the World damage increased from 666 -> 974
+     - End of the World STA increased from 88 -> 148
+     ! Other stats remain unchanged
+/ Attack Boosters:
+  // Tier 1 Multipliers:
+     - Single from 2.5 -> 1.75
+  // Tier 2 Multipliers:
+     - Single from 4.0 -> 2.5
+     - Dual from 2.5 -> 1.75
+  // Tier 3 Multipliers:
+     - Single 7.0 -> 3.5
+     - Dual 4.0 -> 2.5

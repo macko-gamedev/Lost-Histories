@@ -12,51 +12,51 @@ DungeonFacility::DungeonFacility(string N_Name)
 	this->VEC_Dungeon_Map =
 	{
 		{
-			{ 'O', 'X', 'O', 'O', 'X', 'O', 'O', 'O', 'X', 'O', 'O', 'X', 'X', 'X', 'X' },
-			{ 'O', 'X', ' ', ' ', 'X', 'O', 'O', 'O', 'X', ' ', ' ', 'X', ' ', ' ', 'X' },
-			{ 'O', 'X', ' ', ' ', 'X', 'X', 'X', 'O', 'X', ' ', ' ', 'X', ' ', 'X', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'O' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'O' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X' },
 			{ 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X' },
-			{ 'O', ' ', ' ', '+', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'X', ' ', ' ', 'X' },
+			{ 'X', ' ', ' ', '+', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X' },
 			{ 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', '>' },
-			{ 'O', 'X', 'X', 'X', ' ', ' ', 'X', 'O', 'O', 'X', ' ', ' ', 'X', 'X', 'X' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', 'X', 'O', 'O', 'X', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', 'O', 'O', 'X', 'O', 'O', 'X', 'O', 'O', 'X', 'O', 'O' }
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', '>' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'O', 'X', 'O', 'O', 'X', 'O' },
-			{ 'O', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'O', 'X', ' ', ' ', 'X', 'O' },
-			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O', 'X', ' ', ' ', 'X', 'O' },
-			{ 'O', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'O', 'X', ' ', ' ', 'X', 'O' },
-			{ 'O', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'O' },
-			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
-			{ 'O', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O', 'X', ' ', ' ', ' ', '>' },
-			{ 'O', 'X', ' ', ' ', 'X', '*', 'X', ' ', 'X', 'O', 'X', ' ', ' ', 'X', 'X' },
-			{ 'X', 'X', ' ', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'O' },
-			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O' },
-			{ 'O', 'X', 'O', 'O', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' }
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', '>' },
+			{ 'X', 'X', ' ', ' ', 'X', '*', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
 		},
 		{
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'X' },
-			{ 'O', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X' },
-			{ 'O', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', '|', '>' },
+			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', '|', '>' },
 			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
-			{ '<', '+', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'O' },
-			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', ' ', 'X', '?', 'X', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'O' },
+			{ '<', '+', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', '?', 'X', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X' },
 			{ 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
@@ -67,17 +67,17 @@ DungeonFacility::DungeonFacility(string N_Name)
 			{ 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X' },
 			{ 'X', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X' },
-			{ 'O', 'X', ' ', ' ', 'X', 'O', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X' },
 			{ 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', 'X' },
-			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
+			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
-			{ 'O', 'X', ' ', ' ', 'X', ' ', ' ', ' ', '?', 'X', 'X', ' ', ' ', ' ', '>' },
-			{ 'O', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
-			{ 'X', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'O' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O' }
+			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', '?', 'X', 'X', ' ', ' ', ' ', '>' },
+			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
 		},
 		{
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
@@ -85,46 +85,46 @@ DungeonFacility::DungeonFacility(string N_Name)
 			{ 'X', ' ', ' ', ' ', ' ', 'X', '*', '*', '*', ' ', 'X', ' ', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', 'X', '*', '*', '*', ' ', 'X', ' ', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', 'X', '*', '*', '*', ' ', 'X', ' ', 'X', 'X', 'X' },
-			{ 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'O' },
-			{ 'X', ' ', ' ', ' ', 'X', 'O', 'X', ' ', '|', ' ', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', '|', ' ', 'X', ' ', ' ', 'X', 'X' },
 			{ 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', ' ', ' ', '>' },
 			{ 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', 'X' },
-			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', '?', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O' }
+			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', '?', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'X', 'X', 'X', 'X', 'X', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-			{ 'X', '?', ' ', ' ', 'X', 'O', 'X', ' ', ' ', ' ', ' ', '*', '*', '*', 'X' },
-			{ 'X', 'X', 'X', ' ', 'X', 'O', 'X', ' ', 'X', 'X', 'X', '*', '*', '*', 'X' },
-			{ 'O', 'O', 'X', ' ', 'X', 'O', 'X', ' ', '|', ' ', 'X', '*', '*', '*', 'X' },
-			{ 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', '?', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', '*', '*', '*', 'X' },
+			{ 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', '*', '*', '*', 'X' },
+			{ 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', '|', ' ', 'X', '*', '*', '*', 'X' },
+			{ 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ '<', '+', ' ', ' ', ' ', ' ', '|', ' ', ' ', ' ', ' ', ' ', ' ', '>', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
-			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' }
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
 		},
 		{
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X' },
-			{ 'X', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', 'X' },
+			{ 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X' },
 			{ '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '?', '|', ' ', ' ', '>' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-			{ 'X', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', 'X' },
+			{ 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
@@ -160,13 +160,30 @@ DungeonFacility::DungeonFacility(string N_Name)
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
+		},
+		{
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', '<', '+', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
 		}
 	};
 
-	this->VEC_Explored_Rooms = { true, false, false, false, false, false, false, false, false };
+	this->VEC_Explored_Rooms = { true, false, false, false, false, false, false, false, false, false };
 	this->MAP_New_Room_Text =
 	{
 		{ 1, { "..." } },
@@ -177,7 +194,8 @@ DungeonFacility::DungeonFacility(string N_Name)
 		{ 6, { "...", "The last entity roaming this place is beyond a locked door", "There is one last guard standing in your way" } },
 	    { 7, { "...", "The enemy awaits you ahead", "This will be the hardest battle you've fought yet", "Make sure you are fully prepared for what's ahead", "You can travel to previous locations to make sure you have found everything you are looking for [SPACE + travel]", "Yourself > *gulp*" } },
 		{ 8, { "...", "Hey! How did you get here!?", "This is simply out of bounds!", "Go back if you know what's good for you!!!"} },
-		{ 9, { "...", "You're really pushing your luck " + STR_Player_Name, "Why won't you listen?"} }
+		{ 9, { "...", "You're really pushing your luck " + STR_Player_Name, "Why won't you listen?"} },
+		{ 10, { "...", "There really is nothing to see back here!", "You beat the game already!", "What's the point in carrying on?", "You won't like what you see", "This is your last warning " + STR_Player_Name, "Turn back whilst you still can..." } }
 	};
 	this->MAP_Encounter_Dialogue =
 	{
@@ -212,6 +230,19 @@ DungeonFacility::DungeonFacility(string N_Name)
 				"??? > I wont make it so easy though",
 				(STR_Player_Name + " > Bring it!")
 			 }
+		},
+		{ 10, {
+				"??? > Why are you here?",
+				"??? > You already completed Lost Histories.",
+				"??? > Does your achievement not satisfy you enough?",
+				"??? > You are clever " + STR_Player_Name,
+				"??? > Seems like you remembered what Master of the Facility said",
+				"??? > And you came back!",
+				"??? > You want the true ending don't you?",
+				"??? > That little fourth star on your save file",
+				"??? > You can fight me all you want, you may be here a while though",
+				"??? > Shall we get to it then?"
+			  }
 		}
 	};				
 
@@ -221,7 +252,8 @@ DungeonFacility::DungeonFacility(string N_Name)
 		{ 4, Enemy("Mutated Security Sector 16A", 55, 924, 246, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Gustadia"), Skill("Megustadia"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Healan") }, true, 135)},
 		{ 5, Enemy("Mutated Security Sector 4B", 55, 901, 293, { Skill("Splashadia"), Skill("Meplashadia"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Healan") }, true, 142) },
 		{ 6, Enemy("Mutated Security Sector 46D", 60, 952, 394, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Gustadia"), Skill("Megustadia"), Skill("Healan") }, true, 163) },
-		{ 7, Enemy("Master of the Facility", 60, 1092, 482, { Skill("Flamadia"), Skill("Freezadia"), Skill("Gustadia"), Skill("Blightaon"), Skill("Eye of the 'Berg"), Skill("Eye of the Spark"), Skill("Healan") }, true, 90) }
+		{ 7, Enemy("Master of the Facility", 60, 1092, 482, { Skill("Flamadia"), Skill("Freezadia"), Skill("Gustadia"), Skill("Blightaon"), Skill("Freezadiaran"), Skill("Zapadiaran"), Skill("Healan") }, true, 90) },
+		{ 10, Enemy("Macko?", 99, 4530, 8407, { Skill("End of the World") }, true, 381) }
 	};
 }
 
@@ -357,14 +389,19 @@ Enemy DungeonFacility::newEnemy()
 		{
 			return Enemy("Gold Entity VI", 65, 500, 0, { }, true, 10);
 		}
-		else if (INT_Enemy_Spawn_Chance > 10)
+		else if (INT_Enemy_Spawn_Chance > 8)
 		{
 			return Enemy("American Soldier", ((rand() % 5) + 66), 269, 83, { Skill("Zapadia"), Skill("Hexo"), Skill("Hexaon"), Skill("Blighta"), Skill("Blightaon") }, false, 106);
 		}
-		else if (INT_Enemy_Spawn_Chance > 5)
+		else
 		{
 			return Enemy("French Soldier", ((rand() % 5) + 63), 278, 68, { Skill("Splashadia"), Skill("Freezan"), Skill("Freezadia"), Skill("Gustan"), Skill("Gustadia") }, false, 101);
 		}
+	}
+	else if (this->getDungeonRoom() >= 8)
+	{
+		// Enemy level for this floor: 93-99		ErRoR: 93-99
+		return Enemy("ErRoR", ((rand() % 7) + 93), 463, 666, { Skill("End of the World") }, false, 1);	
 	}
 }
 
@@ -379,8 +416,8 @@ Item* DungeonFacility::getItemFromChest()
 	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new Item("Jar of Substance", "Weird purple goo in a jar", 2));
 	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Glass Shard", "Prone to shattering immediately", 2, (((rand() % 13) - 6) + 73), true));
 	for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Holy Cross", "A crucifix emitting a blessful aura", 3, Skill("Blighta")));
-	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 4));
-	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 4));
+	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 2.5));
+	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 2.5));
 	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Potion of Instant Health", "Red liquid fills the blocky bottle", 4, "HP", 350));
 	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Potion of Mutated Souls", "Screaming can be heard inside the bottle", 4, "STA", 150));
 	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Bag of Powdered Snow", "The coldness even hurts just grabbing it out of the bag", 4, Skill("Freezadia")));
@@ -401,15 +438,20 @@ Item* DungeonFacility::getItemFromChest()
 	if (this->INT_Dungeon_Room >= 4)
 	{
 		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new Item("Chemical Pipette", "Used for transferring liquids", 3));
-		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemSkill("Paquette Pylon", "'Fuses set and capacitors charged'", 5, Skill("Eye of the Spark")));
-		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Power Supplements 50mg", "Drugs used to increase users power massively", 5, "ATK", 7));
-		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Concentration Pills 50mg", "Drugs used to increase users concentration massively", 5, "MAG", 7));
+		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemSkill("Paquette Pylon", "'Fuses set and capacitors charged'", 5, Skill("Zapadiaran")));
+		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Power Supplements 50mg", "Drugs used to increase users power massively", 5, "ATK", 3.5));
+		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Concentration Pills 50mg", "Drugs used to increase users concentration massively", 5, "MAG", 3.5));
 	}
 	if (this->INT_Dungeon_Room >= 5)
 	{
 		for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Suction Device", "No one stands a chance once hit with the extreme wind force", 4, Skill("Gustadia")));
 		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemSkill("Reactor Heart", "Those who are in it's presence are said to die within minutes", 5, Skill("Freiladia")));
-		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemSkill("Fitzroy Motherload", "'Motherlode's droppin'. Hold onto ya hats'", 5, Skill("Eye of the Sun")));
+		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemSkill("Fitzroy Motherload", "'Motherlode's droppin'. Hold onto ya hats'", 5, Skill("Flamadiaran")));
+	}
+	if (this->INT_Dungeon_Room >= 8)
+	{
+		VEC_Chest_Loot = { };
+		VEC_Chest_Loot.push_back(new Item("Purple and Black Square", "Exception: ErRoR.png not found in directory 'Lost Histories/'", 5));
 	}
 
 	Item* ITEM_New_Item = VEC_Chest_Loot[rand() % (VEC_Chest_Loot.size())];

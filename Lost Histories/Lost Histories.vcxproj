@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BattleStat.h" />
+    <ClInclude Include="DungeonDomain.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="DungeonAtlantis.h" />
     <ClInclude Include="DungeonFacility.h" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BattleStat.cpp" />
+    <ClCompile Include="DungeonDomain.cpp" />
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="DungeonAtlantis.cpp" />
     <ClCompile Include="DungeonFacility.cpp" />

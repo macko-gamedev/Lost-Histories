@@ -12,127 +12,127 @@ DungeonSpecial::DungeonSpecial(string N_Name)
 	this->VEC_Dungeon_Map =
 	{
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '>', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', '+', ' ', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', 'X', 'O' },
-			{ 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'O', 'O' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', ' ', '+', ' ', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
 			{ 'X', '<', '+', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', '|', '>', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', ' ', ' ', ' ', 'X', 'X', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', 'X', 'O' },
-			{ 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'O', 'O' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
 			{ 'X', '<', '+', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', '|', '>', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', ' ', ' ', ' ', 'X', 'X', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', 'X', 'O' },
-			{ 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'O', 'O' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
 			{ 'X', '<', '+', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', '|', '>', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', ' ', ' ', ' ', 'X', 'X', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', 'X', 'O' },
-			{ 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'O', 'O' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
 			{ 'X', '<', '+', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', '|', '>', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', ' ', ' ', ' ', 'X', 'X', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', 'X', 'O' },
-			{ 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'O', 'O' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
 			{ 'X', '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '>', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', ' ', '?', 'X' },
-			{ 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', '?', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'X', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
 			{ 'X', '<', '+', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'O', 'O' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', 'X', ' ', ' ', ' ', 'X', 'O' },
-			{ 'O', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'O', 'O', 'X', 'X', ' ', 'X', 'X' },
-			{ 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X', 'X', ' ', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		},
 	};
 
-	this->VEC_Explored_Rooms = { true, true, true, true, true, true, true };
+	this->VEC_Explored_Rooms = { true, true, true, true, true, false, false };
 	this->MAP_New_Room_Text =
 	{
 		{ 1, { "..." } },
@@ -141,7 +141,7 @@ DungeonSpecial::DungeonSpecial(string N_Name)
 		{ 4, { "..." } },
 		{ 5, { "..." } },
 		{ 6, { "..." } },
-		{ 7, { "..." } }
+		{ 7, { "6520-38976t ng-3t829hg9-8t h2-", "n 9028h34-08 qhg 9n-w[osn", "piow jg#] hgw90hgw987u b", "???" } }
 	};
 	this->MAP_Encounter_Dialogue =
 	{
@@ -149,19 +149,20 @@ DungeonSpecial::DungeonSpecial(string N_Name)
 		{ 3, { "..." } },
 		{ 4, { "..." } },
 		{ 5, { "..." } },
-		{ 6, { "..." } },
-		{ 7, { "..." } }
+		{ 6, { "A tall figure stands before you...", "Oddly enough in a purple cat suit", "Tyson Mondeo...", "From the hit game ENobia", "What's he doing here!?" } },
+		{ 7, { "iaepjt aioegthngioernaIP}GnAPOEGn[aopega", "gapioweNhgaiseonginaPN=0-932U085H23=0", "098GHWJNSI0GNSOP[HINW-08HNB0Q83"} }
 	};
 	this->MAP_Encounter_Enemy =
 	{
-		{ 2, Enemy("Ghost of Katie Cooper", 90, 2019, 3897, { Skill("Eye of the Sun"), Skill("Eye of the 'Berg"), Skill("Eye of the Storm"), Skill("Hexaon"), Skill("Freila"), Skill("Healan") }, true, 167) },
-		{ 3, Enemy("Rice Monster of Tooley", 90, 2393, 2852, { Skill("Eye of the Sun"), Skill("Eye of the Storm"), Skill("Eye of the Spark"), Skill("Blightaon"), Skill("Freila"), Skill("Healan") }, true, 172) },
-		{ 4, Enemy("Mucus Poocus", 95, 2683, 4039, { Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("End of the World"), Skill("Freiladia"), Skill("Healan") }, true, 217) },
+		{ 2, Enemy("Ghost of Katie Cooper", 90, 2019, 3897, { Skill("Flamadiaran"), Skill("Freezadiaran"), Skill("Gustadiaran"), Skill("Hexaon"), Skill("Freila"), Skill("Healan") }, true, 167) },
+		{ 3, Enemy("Rice Monster of Tooley", 90, 2393, 2852, { Skill("Flamadiaran"), Skill("Gustadiaran"), Skill("Zapadiaran"), Skill("Blightaon"), Skill("Freila"), Skill("Healan") }, true, 172) },
+		{ 4, Enemy("Mucus Poocus", 95, 2683, 4039, { Skill("Splashadiaran"), Skill("Freezadiaran"), Skill("Freiladiaran"), Skill("Freiladia"), Skill("Healan") }, true, 217) },
 		{ 5, Enemy("Performative Boxer", 95, 2980, 903, { Skill("Flamadia"), Skill("Zapadia"), Skill("Hexaon"), Skill("Freiladia") }, true, 398) },
-		{ 6, Enemy("Tyson Mondeo", 99, 3397, 5254, { Skill("Eye of the Sun"), Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("Eye of the Spark"), Skill("Eye of the Storm"), Skill("Blightaon"), Skill("Hexaon"), Skill("Freiladia") }, true, 229) },
-		{ 7, Enemy("???", 99, 3928, 7083, { Skill("Eye of the Sun"), Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("Eye of the Spark"), Skill("Eye of the Storm"), Skill("Blightaon"), Skill("Hexaon"), Skill("Freiladia"), Skill("End of the World"), Skill("Healan") }, true, 248)},
+		{ 6, Enemy("Tyson Mondeo", 99, 3397, 5254, { Skill("Flamadiaran"), Skill("Splashadiaran"), Skill("Freezadiaran"), Skill("Zapadiaran"), Skill("Gustadiaran"), Skill("Blightaon"), Skill("Hexaon"), Skill("Freiladia") }, true, 229) },
+		{ 7, Enemy("???", 99, 3928, 7083, { Skill("Flamadiaran"), Skill("Splashadiaran"), Skill("Freezadiaran"), Skill("Zapadiaran"), Skill("Gustadiaran"), Skill("Blightaon"), Skill("Hexaon"), Skill("Freiladia"), Skill("Freiladiaran"), Skill("Healan") }, true, 248)},
 	};
 }
+
 
 Enemy DungeonSpecial::newEnemy()
 {
@@ -175,11 +176,11 @@ Enemy DungeonSpecial::newEnemy()
 		}
 		else if (INT_Enemy_Spawn_Chance == 2)
 		{
-			return Enemy("Bergmite", ((rand() % 3) + 89), 62, 27, { Skill("Eye of the 'Berg"), Skill("Gustan") },  false, 26);
+			return Enemy("Bergmite", ((rand() % 3) + 89), 62, 27, { Skill("Freezadiaran"), Skill("Gustan") },  false, 26);
 		}
 		else if (INT_Enemy_Spawn_Chance == 3)
 		{
-			return Enemy("Ice Fiend", ((rand() % 4) + 87), 45, 18, { Skill("Freezadia"), Skill("Eye of the 'Berg") },  false, 21);
+			return Enemy("Ice Fiend", ((rand() % 4) + 87), 45, 18, { Skill("Freezadia"), Skill("Freezadiaran") },  false, 21);
 		}
 		else if (INT_Enemy_Spawn_Chance == 4)
 		{
@@ -196,19 +197,19 @@ Enemy DungeonSpecial::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 5) + 1;
 		if (INT_Enemy_Spawn_Chance == 1)
 		{
-			return Enemy("Reanimated Entity", ((rand() % 3) + 93), ((rand() % 50) + 175), 100, { Skill("Eye of the Sun"), Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("Eye of the Spark"), Skill("Eye of the Storm"), Skill("Hexaon"), Skill("Blightaon") },  false, 67);
+			return Enemy("Reanimated Entity", ((rand() % 3) + 93), ((rand() % 50) + 175), 100, { Skill("Flamadiaran"), Skill("Splashadiaran"), Skill("Freezadiaran"), Skill("Zapadiaran"), Skill("Gustadiaran"), Skill("Hexaon"), Skill("Blightaon") },  false, 67);
 		}
 		else if (INT_Enemy_Spawn_Chance == 2)
 		{
-			return Enemy("Sharkman", ((rand() % 4) + 91), 192, 156, { Skill("Splashan"), Skill("Eye of the Ocean"), Skill("Eye of the Storm"), Skill("Blightaon") },  false, 56);
+			return Enemy("Sharkman", ((rand() % 4) + 91), 192, 156, { Skill("Splashan"), Skill("Splashadiaran"), Skill("Gustadiaran"), Skill("Blightaon") },  false, 56);
 		}
 		else if (INT_Enemy_Spawn_Chance == 3)
 		{
-			return Enemy("Royal Guard", ((rand() % 4) + 89), 173, 69, { Skill("Eye of the Sun"), Skill("Eye of the 'Berg"), Skill("Hexaon"), Skill("Blightaon") },  false, 67);
+			return Enemy("Royal Guard", ((rand() % 4) + 89), 173, 69, { Skill("Flamadiaran"), Skill("Freezadiaran"), Skill("Hexaon"), Skill("Blightaon") },  false, 67);
 		}
 		else if (INT_Enemy_Spawn_Chance == 4)
 		{
-			return Enemy("Lab Fish", ((rand() % 5) + 88), 125, 109, { Skill("Eye of the 'Berg"), Skill("Eye of the Spark"), Skill("Zapadia"), Skill("Hexaon") },  false, 33);
+			return Enemy("Lab Fish", ((rand() % 5) + 88), 125, 109, { Skill("Freezadiaran"), Skill("Zapadiaran"), Skill("Zapadia"), Skill("Hexaon") },  false, 33);
 		}
 		else if (INT_Enemy_Spawn_Chance == 5)
 		{
@@ -221,15 +222,15 @@ Enemy DungeonSpecial::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 4) + 1;
 		if (INT_Enemy_Spawn_Chance == 1)
 		{
-			return Enemy("Corrupt Researcher", ((rand() % 3) + 95), 257, 189, { Skill("Eye of the Sun"), Skill("Flamadia"), Skill("Blightaon"), Skill("Hexaon"), Skill("Healadia") },  false, 24);
+			return Enemy("Corrupt Researcher", ((rand() % 3) + 95), 257, 189, { Skill("Flamadiaran"), Skill("Flamadia"), Skill("Blightaon"), Skill("Hexaon"), Skill("Healadia") },  false, 24);
 		}
 		else if (INT_Enemy_Spawn_Chance == 2)
 		{
-			return Enemy("Nuclear Spirit", ((rand() % 4) + 93), 231, 189, { Skill("Eye of the Sun"), Skill("Freiladia"), Skill("Freila") },  false, 24);
+			return Enemy("Nuclear Spirit", ((rand() % 4) + 93), 231, 189, { Skill("Flamadiaran"), Skill("Freiladia"), Skill("Freila") },  false, 24);
 		}
 		else if (INT_Enemy_Spawn_Chance == 3)
 		{
-			return Enemy("Unknown Creature", ((rand() % 4) + 91), 277, 57, { Skill("Eye of the 'Berg"), Skill("Eye of the Storm"), Skill("Blighta"), Skill("Blightaon"), Skill("Hexaon") },  false, 35);
+			return Enemy("Unknown Creature", ((rand() % 4) + 91), 277, 57, { Skill("Freezadiaran"), Skill("Gustadiaran"), Skill("Blighta"), Skill("Blightaon"), Skill("Hexaon") },  false, 35);
 		}
 		else if (INT_Enemy_Spawn_Chance == 4)
 		{
@@ -242,15 +243,15 @@ Enemy DungeonSpecial::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 4) + 1;
 		if (INT_Enemy_Spawn_Chance == 1)
 		{
-			return Enemy("Master's Servant", ((rand() % 3) + 97), 316, 163, { Skill("Zapadia"), Skill("Eye of the Spark"), Skill("Gustadia"), Skill("Eye of the Storm"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Healadia") },  false, 109);
+			return Enemy("Master's Servant", ((rand() % 3) + 97), 316, 163, { Skill("Zapadia"), Skill("Zapadiaran"), Skill("Gustadia"), Skill("Gustadiaran"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Healadia") },  false, 109);
 		}
 		else if (INT_Enemy_Spawn_Chance == 2)
 		{
-			return Enemy("Fire Prowler", ((rand() % 3) + 96), 287, 92, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Eye of the Sun"), Skill("Eye of the Spark") },  false, 57);
+			return Enemy("Fire Prowler", ((rand() % 3) + 96), 287, 92, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Flamadiaran"), Skill("Zapadiaran") },  false, 57);
 		}
 		else if (INT_Enemy_Spawn_Chance == 3)
 		{
-			return Enemy("Lava Spirit", ((rand() % 3) + 94), 264, 57, { Skill("Flamadia"), Skill("Eye of the Sun"), Skill("Eye of the 'Berg"), Skill("Freiladia"), Skill("Healadia") },  false, 45);
+			return Enemy("Lava Spirit", ((rand() % 3) + 94), 264, 57, { Skill("Flamadia"), Skill("Flamadiaran"), Skill("Freezadiaran"), Skill("Freiladia"), Skill("Healadia") },  false, 45);
 		}
 		else if (INT_Enemy_Spawn_Chance == 4)
 		{
@@ -263,23 +264,23 @@ Enemy DungeonSpecial::newEnemy()
 		int INT_Enemy_Spawn_Chance = (rand() % 6) + 1;
 		if (INT_Enemy_Spawn_Chance == 1)
 		{
-			return Enemy("Japanese Soldier", ((rand() % 4) + 96), 302, 189, { Skill("Splashadia"), Skill("Eye of the Ocean"), Skill("Eye of the Storm"), Skill("Blightaon") }, false, 89);
+			return Enemy("Japanese Soldier", ((rand() % 4) + 96), 302, 189, { Skill("Splashadia"), Skill("Splashadiaran"), Skill("Gustadiaran"), Skill("Blightaon") }, false, 89);
 		}
 		else if (INT_Enemy_Spawn_Chance == 2)
 		{
-			return Enemy("American Soldier", ((rand() % 4) + 96), 269, 83, { Skill("Eye of the Spark"), Skill("Hexo"), Skill("Hexaon"), Skill("Blighta"), Skill("Blightaon") }, false, 106);
+			return Enemy("American Soldier", ((rand() % 4) + 96), 269, 83, { Skill("Zapadiaran"), Skill("Hexo"), Skill("Hexaon"), Skill("Blighta"), Skill("Blightaon") }, false, 106);
 		}
 		else if (INT_Enemy_Spawn_Chance == 3)
 		{
-			return Enemy("German Soldier", ((rand() % 4) + 96), 282, 57, { Skill("Eye of the Sun"), Skill("Eye of the Spark"), Skill("Zapadia"), Skill("Eye of the Storm"), Skill("Gustadia") }, false, 95);
+			return Enemy("German Soldier", ((rand() % 4) + 96), 282, 57, { Skill("Flamadiaran"), Skill("Zapadiaran"), Skill("Zapadia"), Skill("Gustadiaran"), Skill("Gustadia") }, false, 95);
 		}
 		else if (INT_Enemy_Spawn_Chance == 4)
 		{
-			return Enemy("French Soldier", ((rand() % 4) + 96), 278, 68, { Skill("Eye of the Ocean"), Skill("Eye of the 'Berg"), Skill("Freezadia"), Skill("Eye of the Storm"), Skill("Gustadia") }, false, 101);
+			return Enemy("French Soldier", ((rand() % 4) + 96), 278, 68, { Skill("Splashadiaran"), Skill("Freezadiaran"), Skill("Freezadia"), Skill("Gustadiaran"), Skill("Gustadia") }, false, 101);
 		}
 		else if (INT_Enemy_Spawn_Chance == 5)
 		{
-			return Enemy("British Soldier", ((rand() % 4) + 96), 241, 27, { Skill("Eye of the Storm"), Skill("Eye of the Spark"), Skill("Blighta"), Skill("Blightaon"), Skill("Healan") }, false, 84);
+			return Enemy("British Soldier", ((rand() % 4) + 96), 241, 27, { Skill("Gustadiaran"), Skill("Zapadiaran"), Skill("Blighta"), Skill("Blightaon"), Skill("Healan") }, false, 84);
 		}
 		else if (INT_Enemy_Spawn_Chance == 6)
 		{
@@ -298,7 +299,6 @@ Enemy DungeonSpecial::newEnemy()
 	else if (this->getDungeonRoom() == 7)
 	{
 		// Enemy level for this floor: 96-99		British Soldier: 96-99   German Soldier: 96-99   American Soldier: 96-99   French Soldier: 96-99   Japanese Soldier: 96-99   Gold Entity X: 99
-		int INT_Enemy_Spawn_Chance = (rand() % 6) + 1;
 		if (true)
 		{
 			return Enemy("Gold Entity X", 99, 800, 0, { Skill("End of the World"), Skill("Healadia") }, true, 10);

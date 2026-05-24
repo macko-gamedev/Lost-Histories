@@ -1,13 +1,13 @@
 Dev_02
 99
 0
-0
+220672
 13537904
 99
 99
 99
 Special Passage
-1
+7
 Magma Fields
 4
 Facility
@@ -414,11 +414,6 @@ Trophy of Lost Histories
 You have completed this game! Congratulations!
 5
 2
-item
-Device Compass
-A small metallic compass pointing directly towards The Device, you're almost there!
-5
-1
 *
 *
 *

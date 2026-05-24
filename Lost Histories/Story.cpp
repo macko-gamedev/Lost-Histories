@@ -206,6 +206,29 @@ Story::Story(string N_Player_Name)
 		{ "Max > Well, I've been so kind to restock each dungeon for you" },
 		{ "Max > If you stick around, enjoy I guess?" },
 		{ "END DIALOGUE" },
+		{ "..." },//199
+		{ "Yourself > What?" },
+		{ "Yourself > Who?" },
+		{ "Your vision blurs" },
+		{ "You feel dizzy" },
+		{ "Macko? > You need to touch some grass" },
+		{ "Macko? > You managed to beat me, that is quite the feat" },
+		{ "Macko? > I was coded as the hardest boss after all" },
+		{ "Macko? > But really." },
+		{ "Macko? > There is nothing else to see" },
+		{ "Macko? > To prove a point, here is a portal!" },
+		{ "Macko? > Wow! How exciting!" },
+		{ "Macko? > And no, you don't feel dizzy, and your vision isn't blurred" },
+		{ "Macko? > I coded that in, don't be fooled player" },
+		{ "Macko? > Walk through this awesome looking portal! "},
+		{ "Macko? > It will only send you back to the beginning..." },
+		{ "Macko? > Bye bye!" },
+		{ "END DIALOGUE" },
+		{ "..." },//217
+		{ "Yourself > I feel like I've been here before" },
+		{ "The location is a carbon copy of Glacier Wasteland" },
+		{ "However, something doesn't feel right" },
+		{ "END DIALOGUE" }
 	};
 	this->INDEX_Dialogue = 1;
 	this->BOOL_Event = false;

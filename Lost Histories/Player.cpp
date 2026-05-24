@@ -263,42 +263,38 @@ void Player::increaseExp(float INT_Amount)
 	this->INT_Total_EXP += INT_Amount;
 	if (this->INT_Level == 99)
 	{
-		this->FLT_Curr_EXP = 0;
-		this->FLT_Next_EXP = 0;
 		this->setSpecificStarOnFile("Lv 99", '*');
 	}
-	else
+	this->FLT_Curr_EXP += INT_Amount;
+	while (this->FLT_Curr_EXP >= this->FLT_Next_EXP)
 	{
-		this->FLT_Curr_EXP += INT_Amount;
-	}
-	while (this->FLT_Curr_EXP >= this->FLT_Next_EXP && this->INT_Level != 99)
-	{
-		if (this->INT_Level < 99)
+		BOOL_Level_Up = true;
+		int TEMP_EXP_Value = this->FLT_Curr_EXP - this->FLT_Next_EXP;
+
+		// Increases Player Stats
+		this->INT_Level++;
+		this->INT_Max_Health += 7;
+		this->INT_Max_Stamina += 4;
+		this->INT_Health = this->INT_Max_Health;
+		this->INT_Stamina = this->INT_Max_Stamina;
+		this->FLT_Curr_EXP = TEMP_EXP_Value;
+
+		// Calculates next EXP required
+		if (this->INT_Level > 99)
 		{
-			BOOL_Level_Up = true;
-			int TEMP_EXP_Value = this->FLT_Curr_EXP - this->FLT_Next_EXP;
-
-			// Increases Player Stats
-			this->INT_Level++;
-			this->INT_Max_Health += 7;
-			this->INT_Max_Stamina += 4;
-			this->INT_Health = this->INT_Max_Health;
-			this->INT_Stamina = this->INT_Max_Stamina;
-			this->FLT_Curr_EXP = TEMP_EXP_Value;
-
-			// Calculates next EXP required
-			if (this->INT_Level > 49)
-			{
-				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.03);
-			}
-			else if (this->INT_Level > 19)
-			{
-				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.0725);
-			}
-			else
-			{
-				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.35);
-			}
+			this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.015);
+		}
+		else if (this->INT_Level > 49)
+		{
+			this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.03);
+		}
+		else if (this->INT_Level > 19)
+		{
+			this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.0725);
+		}
+		else
+		{
+			this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.35);
 		}
 	}
 }
@@ -334,39 +330,51 @@ void Player::setLevelXP(int N_Tot, int N_Curr, int N_Next)
 void Player::loadData(vector<string> N_Data)
 {
 	this->setLevelXP(stoi(N_Data[4]), stoi(N_Data[2]), stoi(N_Data[3]));
+	cout << dye::blue("\n   Loading player attributes");
 	this->setPlayerAttribute("Strength", stoi(N_Data[5]));
 	this->setPlayerAttribute("Magic", stoi(N_Data[6]));
 	this->setPlayerAttribute("Endurance", stoi(N_Data[7]));
+	cout << dye::blue("\n   Sucessfully loaded player attributes");
+	cout << dye::blue("\n   Loading game star states");
 	this->setSpecificStarOnFile("Main Story", N_Data[N_Data.size() - 4][0]);
 	this->setSpecificStarOnFile("Special World", N_Data[N_Data.size() - 3][0]);
 	this->setSpecificStarOnFile("Lv 99", N_Data[N_Data.size() - 2][0]);
 	this->setSpecificStarOnFile("Secret", N_Data[N_Data.size() - 1][0]);
+	cout << dye::blue("\n   Sucessfully loaded game star states");
 	// Adding items to inventory
 	for (int i = 0; i < N_Data.size(); i++)
 	{
 		if (N_Data[i] == "item")
 		{
+			cout << dye::blue("\n   Loading item " + N_Data[(i + 1)]);
 			Item* ITEM_To_Add = new Item(N_Data[(i + 1)], N_Data[(i + 2)], stoi(N_Data[(i + 3)]));
 			ITEM_To_Add->increaseQuantity(stoi(N_Data[(i + 4)]) - 1);
 			this->addItem(ITEM_To_Add);
+			cout << dye::blue("\n   Sucessfully added item " + N_Data[(i + 1)] + " to player inventory");
 		}
 		else if (N_Data[i] == "skill")
 		{
+			cout << dye::blue("\n   Loading item " + N_Data[(i + 2)]);
 			Item* ITEM_To_Add = new ItemSkill(N_Data[(i + 2)], N_Data[(i + 3)], stoi(N_Data[(i + 4)]), Skill(N_Data[(i + 1)]));
 			ITEM_To_Add->increaseQuantity(stoi(N_Data[(i + 5)]) - 1);
 			this->addItem(ITEM_To_Add);
+			cout << dye::blue("\n   Sucessfully added item " + N_Data[(i + 2)] + " to player inventory");
 		}
 		else if (N_Data[i] == "melee")
 		{
+			cout << dye::blue("\n   Loading item " + N_Data[(i + 2)]);
 			Item* ITEM_To_Add = new ItemMelee(N_Data[(i + 2)], N_Data[(i + 3)], stoi(N_Data[(i + 4)]), stoi(N_Data[(i + 1)]), true);
 			ITEM_To_Add->increaseQuantity(stoi(N_Data[(i + 5)]) - 1);
 			this->addItem(ITEM_To_Add);
+			cout << dye::blue("\n   Sucessfully added item " + N_Data[(i + 2)] + " to player inventory");
 		}
 		else if (N_Data[i] == "consumable")
 		{
+			cout << dye::blue("\n   Loading item " + N_Data[(i + 3)]);
 			Item* ITEM_To_Add = new ItemConsumable(N_Data[(i + 3)], N_Data[(i + 4)], stoi(N_Data[(i + 5)]), N_Data[(i + 1)], stof(N_Data[(i + 2)]));
 			ITEM_To_Add->increaseQuantity(stoi(N_Data[(i + 6)]) - 1);
 			this->addItem(ITEM_To_Add);
+			cout << dye::blue("\n   Sucessfully added item " + N_Data[(i + 3)] + " to player inventory");
 		}
 	}
 	this->update();

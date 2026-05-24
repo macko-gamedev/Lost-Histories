@@ -10,6 +10,7 @@
 #include "DungeonFacility.h"
 #include "DungeonMagma.h"
 #include "DungeonSpecial.h"
+#include "DungeonDomain.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -29,7 +30,7 @@ using namespace std;
 /* 
 
 ###### LOST HISTORIES ######
-Last Updated: 19/05/26 (15:31)
+Last Updated: 21/05/26 (20:27)
 
 --- Parent Classes ---
 . BattleStat	 # Contains key variables to battles such as health and stamina values
@@ -37,7 +38,7 @@ Last Updated: 19/05/26 (15:31)
 . Item			 # Contains name, description and rarity of an item
                  : ItemMelee, ItemSkill, ItemConsumable
 . Dungeon        # Contains name, floor number
-				 : DungeonGlacier, DungeonAtlantis, DungeonFacility, Dungeon Magma
+				 : DungeonGlacier, DungeonAtlantis, DungeonFacility, Dungeon Magma, DungeonSpecial
 
 --- Child Classes ---
 . Enemy		      : Inherits BattleStat
@@ -70,7 +71,9 @@ enum storyStatus
 	ACT_FIVE,
 	ACT_SIX,
 	ACT_SEVEN,
-	COMPLETE
+	COMPLETE,
+	TRUE_ONE,
+	TRUE_TWO,
 };
 
 // Enumerator for game status, what game state is the player in
@@ -102,6 +105,7 @@ int main()
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 	vector<string> VEC_Save_Data = main_menu();
+	system("CLS");
 
 	// Declaring Enums
 	storyStatus ENUM_Story_Status = storyStatus::INTRO;
@@ -156,6 +160,7 @@ int main()
 	else
 	{
 		PLAYER_Player = Player(VEC_Save_Data[0], stoi(VEC_Save_Data[1]), ((stoi(VEC_Save_Data[1]) * 7) + 133), ((stoi(VEC_Save_Data[1]) * 4) + 58));
+		cout << dye::blue("\n   Transferring save file data to Player()");
 		STORY_Story = Story(PLAYER_Player.getName());
 		PLAYER_Player.loadData(VEC_Save_Data); 
 		ENUM_Game_Status = gameStatus::DUNGEON;
@@ -163,6 +168,7 @@ int main()
 		{
 			if (VEC_Save_Data[i] == "Glacier Wasteland")
 			{
+				cout << dye::blue("\n   Loading dungeon: " + VEC_Save_Data[i]);
 				DUNGEON_Current_Dungeon = new DungeonGlacier(PLAYER_Player.getName());
 				DUNGEON_Current_Dungeon->fillWithChests();
 				DUNGEON_Current_Dungeon->fillWithEnemies();
@@ -170,9 +176,11 @@ int main()
 				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 				ENUM_Story_Status = storyStatus::ACT_ONE;
 				STORY_Story.endOfDialogue();
+				cout << dye::blue("\n   Sucessfully loaded dungeon: " + VEC_Save_Data[i]);
 			}
 			else if (VEC_Save_Data[i] == "Atlantis Ruins")
 			{
+				cout << dye::blue("\n   Loading dungeon: " + VEC_Save_Data[i]);
 				DUNGEON_Current_Dungeon = new DungeonAtlantis(PLAYER_Player.getName());
 				DUNGEON_Current_Dungeon->fillWithChests();
 				DUNGEON_Current_Dungeon->fillWithEnemies();
@@ -180,9 +188,11 @@ int main()
 				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 				ENUM_Story_Status = storyStatus::ACT_TWO;
 				STORY_Story.endOfDialogue();
+				cout << dye::blue("\n   Sucessfully loaded dungeon: " + VEC_Save_Data[i]);
 			}
 			else if (VEC_Save_Data[i] == "Facility")
 			{
+				cout << dye::blue("\n   Loading dungeon: " + VEC_Save_Data[i]);
 				DUNGEON_Current_Dungeon = new DungeonFacility(PLAYER_Player.getName());
 				DUNGEON_Current_Dungeon->fillWithChests();
 				DUNGEON_Current_Dungeon->fillWithEnemies();
@@ -190,9 +200,11 @@ int main()
 				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 				ENUM_Story_Status = storyStatus::ACT_THREE;
 				STORY_Story.endOfDialogue();
+				cout << dye::blue("\n   Sucessfully loaded dungeon: " + VEC_Save_Data[i]);
 			}
 			else if (VEC_Save_Data[i] == "Magma Fields")
 			{
+				cout << dye::blue("\n   Loading dungeon: " + VEC_Save_Data[i]);
 				DUNGEON_Current_Dungeon = new DungeonMagma(PLAYER_Player.getName());
 				DUNGEON_Current_Dungeon->fillWithChests();
 				DUNGEON_Current_Dungeon->fillWithEnemies();
@@ -200,9 +212,11 @@ int main()
 				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 				ENUM_Story_Status = storyStatus::ACT_FIVE;
 				STORY_Story.endOfDialogue();
+				cout << dye::blue("\n   Sucessfully loaded dungeon: " + VEC_Save_Data[i]);
 			}
 			else if (VEC_Save_Data[i] == "Special Passage")
 			{
+				cout << dye::blue("\n   Loading dungeon: " + VEC_Save_Data[i]);
 				DUNGEON_Current_Dungeon = new DungeonSpecial(PLAYER_Player.getName());
 				DUNGEON_Current_Dungeon->fillWithChests();
 				DUNGEON_Current_Dungeon->fillWithEnemies();
@@ -210,10 +224,25 @@ int main()
 				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
 				ENUM_Story_Status = storyStatus::COMPLETE;
 				STORY_Story.endOfDialogue();
+				cout << dye::blue("\n   Sucessfully loaded dungeon: " + VEC_Save_Data[i]);
+			}
+			else if (VEC_Save_Data[i] == "Domain")
+			{
+				cout << dye::blue("\n   Loading dungeon: " + VEC_Save_Data[i]);
+				DUNGEON_Current_Dungeon = new DungeonDomain(PLAYER_Player.getName());
+				DUNGEON_Current_Dungeon->fillWithChests();
+				DUNGEON_Current_Dungeon->fillWithEnemies();
+				DUNGEON_Current_Dungeon->changeDungeonRoom(stoi(VEC_Save_Data[(i + 1)]) - 1);
+				VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+				ENUM_Story_Status = storyStatus::TRUE_ONE;
+				STORY_Story.endOfDialogue();
+				cout << dye::blue("\n   Sucessfully loaded dungeon: " + VEC_Save_Data[i]);
 			}
 		}
 		reverse(VEC_Visited_Dungeons.begin(), VEC_Visited_Dungeons.end());
 		DUNGEON_Current_Dungeon = VEC_Visited_Dungeons[VEC_Visited_Dungeons.size() - 1];
+		cout << dye::green("\n   Loaded save file completed");
+		this_thread::sleep_for(chrono::seconds(1));
 	}
 
 	// Main Gameplay Loop
@@ -275,14 +304,14 @@ int main()
 					STORY_Story.increaseDialogueIndex();
 					ENUM_Game_Status = gameStatus::DUNGEON;
 				}
-				// Dungeon 3 -> Story Boss Fight: Reincarnation of George Shaw
+				// Dungeon 3 F7 -> Story Boss Fight: Reincarnation of George Shaw
 				else if (ENUM_Story_Status == storyStatus::ACT_FOUR)
 				{
 					DUNGEON_Current_Dungeon->fillWithEnemies();
 					DUNGEON_Current_Dungeon->fillWithChests();
 					VEC_Visited_Dungeons[2] = DUNGEON_Current_Dungeon;
 
-					ENEMY_New_Enemy = Enemy("Reincarnation of George Shaw", 65, 1145, 532, { Skill("Flamadia"), Skill("Eye of the Sun"), Skill("Zapadia"), Skill("Eye of the Spark"), Skill("Hexaon"), Skill("Freiladia"), Skill("Healan") }, false, 60);
+					ENEMY_New_Enemy = Enemy("Reincarnation of George Shaw", 65, 1145, 532, { Skill("Flamadia"), Skill("Flamadiaran"), Skill("Zapadia"), Skill("Zapadiaran"), Skill("Hexaon"), Skill("Freiladia"), Skill("Healan") }, false, 60);
 					play_audio("Story Battle");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 					DUNGEON_Current_Dungeon = new DungeonMagma(PLAYER_Player.getName());
@@ -301,7 +330,7 @@ int main()
 					DUNGEON_Current_Dungeon->fillWithChests();
 					VEC_Visited_Dungeons[3] = DUNGEON_Current_Dungeon;
 
-					Enemy ENEMY_New_Enemy = Enemy("Mutated Mastermind", 95, 2193, 1948, { Skill("Eye of the Sun") }, true, 189);
+					Enemy ENEMY_New_Enemy = Enemy("Mutated Mastermind", 95, 2193, 1948, { Skill("Flamadiaran") }, true, 189);
 					play_audio("Boss - The Mastermind Pt 2");
 					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
 					STORY_Story.startOfDialogue();
@@ -329,6 +358,20 @@ int main()
 					DUNGEON_New->fillWithEnemies();
 					VEC_Visited_Dungeons.push_back(DUNGEON_New);
 					PLAYER_Player.setSpecificStarOnFile("Main Story", '*');
+					ENUM_Game_Status = gameStatus::DUNGEON;
+				}
+				// Dungeon 3 F10 -> Dungeon 6: Domain
+				else if (ENUM_Story_Status == storyStatus::TRUE_ONE)
+				{
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons[2] = DUNGEON_Current_Dungeon;
+					DUNGEON_Current_Dungeon = new DungeonDomain(PLAYER_Player.getName());
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					VEC_Visited_Dungeons.push_back(DUNGEON_Current_Dungeon);
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
 					ENUM_Game_Status = gameStatus::DUNGEON;
 				}
 				break;
@@ -390,7 +433,26 @@ vector<string> main_menu()
 {
 	play_audio("Menu");
 
-	cout << "\n   " << dye::black_on_bright_white(" Release 1.1 ") << "\n\n   New : \n   / Added Dungeon 5: Special Passage\n     + Unlocked after beating the game\n     + Contains 7 floors\n   / Added Stars * to save files\n\n   Changes : \n   / Atlantis Ruins\n     + Added a key door to Floor 3\n     - Moved one of the Floor 5 bosses to Floor 4\n     - Moved the Floor 4 boss to Floor 3\n   / Facility\n     + Added Floor 7\n     + Added a treasure room to Floor 6\n     + Added an additional key door to Floor 6\n     - Removed a treasure room from Floor 5\n     - Moved one of the Floor 6 bosses to Floor 4\n     - Moved the main boss to Floor 7\n     + Added ???\n   / Improvements to Data Saving (v05_26.01)\n   / Rewritten and optimised code for Dungeon and BattleStat parent classes and for their child classes to be more efficient\n   / Rewritten and optimised code for data saving being a function of Player instead\n   / Rewritten and optimised code for map_movement(), reduced main.cpp by 1000+ lines!\n\n\n   Happy Playing!";
+	vector<string> VEC_Patch_Notes = { };
+	ifstream file("PATCH_NOTES.txt");
+	string line;
+	if (file.is_open())
+	{
+		while (getline(file, line))
+		{
+			VEC_Patch_Notes.push_back(line);
+		}
+	}
+	cout << "\n   " << dye::black_on_white(" ") << dye::black_on_white(VEC_Patch_Notes[0]) << dye::black_on_white(" ");
+	reverse(VEC_Patch_Notes.begin(), VEC_Patch_Notes.end());
+	VEC_Patch_Notes.pop_back();
+	reverse(VEC_Patch_Notes.begin(), VEC_Patch_Notes.end());
+	for (string STR_Update_Line : VEC_Patch_Notes)
+	{
+		cout << "\n   " << STR_Update_Line;
+	}
+	file.close();
+	cout << dye::light_yellow("\n\n   Happy Playing!\n");
 	_getch();
 	system("CLS");
 
@@ -406,7 +468,7 @@ vector<string> main_menu()
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
-		cout << "             v05_26.04          " << endl;
+		cout << "             v05_26.05          " << endl;
 		cout << "\n\n";
 		cout << "--> New Game\n--> Load Game\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
@@ -444,7 +506,6 @@ vector<string> main_menu()
 						if (file.is_open())
 						{
 							vector<string> CURRENT_SAVE_Data = { };
-							string line;
 							while (getline(file, line))
 							{
 								CURRENT_SAVE_Data.push_back(line);
@@ -492,14 +553,19 @@ vector<string> main_menu()
 		cout << dye::yellow("   Dungeon: Magma Fields F1-F3") << " - " << dye::grey("World 8 - New Super Mario Bros. Wii, Nintendo") << endl;
 		cout << dye::yellow("   Dungeon: Glacier Wasteland F6, Atlantis Ruins F7, Facility F6") << " - " << dye::grey("Corridor - Persona 4, ATLUS") << endl;
 		cout << dye::yellow("   Dungeon: Magma Fields F4") << " - " << dye::grey("Final World - Super Mario Bros. Wonder, Nintendo") << endl;
+		cout << dye::yellow("   Dungeon: Special Passage F1-F7") << " - " << dye::grey("World 9 - New Super Mario Bros. Wii, Nintendo") << endl;
+		cout << dye::yellow("   Dungeon: Domain") << " - " << dye::grey("Abandoned Factory - Persona 2 Eternal Punishment, ATLUS") << endl;
 		cout << dye::yellow("   Battle: Dungeon") << " - " << dye::grey("Master of Tarturus - Persona 3, ATLUS") << endl;
 		cout << dye::yellow("   Battle: Key Boss") << " - " << dye::grey("Never Let Up! - Mario and Luigi: Dream Team, Nintendo") << endl;
+		cout << dye::yellow("   Battle: Special Key Boss") << " - " << dye::grey("Keeper of Lust - Persona 5, ATLUS") << endl;
 		cout << dye::yellow("   Battle: Dungeon Boss") << " - " << dye::grey("I'll Face Myself -Battle- - Persona 4, ATLUS") << endl;
 		cout << dye::yellow("   Battle: Victory") << " - " << dye::grey("After the Battle - Persona 3, ATLUS") << endl;
 		cout << dye::yellow("   Boss: Reincarnation of George Shaw") << " - " << dye::grey("Unavoidable Battle - Persona 3, ATLUS") << endl;
 		cout << dye::yellow("   Boss: The Mastermind") << " - " << dye::grey("New World Fool - Persona 4, ATLUS") << endl;
 		cout << dye::yellow("   Boss: Mutated Mastermind") << " - " << dye::grey("The Almighty - Persona 4, ATLUS") << endl;
 		cout << dye::yellow("   Boss: Keeper of The Device") << " - " << dye::grey("Darkness - Persona 3 FES, ATLUS") << endl;
+		cout << dye::yellow("   Boss: Tyson Mondeo") << " - " << dye::grey("??? - ???") << endl;
+		cout << dye::yellow("   Boss: Macko?") << " - " << dye::grey("Rivers in the Desert Instrumental - Persona 5, ATLUS") << endl;
 		cout << dye::yellow("   Encounter: Dungeon") << " - " << dye::grey("That Which Escaped the Darkness - Persona 3, ATLUS") << endl;
 		cout << dye::yellow("   Encounter: Story") << " - " << dye::grey("Borderline of Madness - Persona 4, ATLUS") << endl;
 		cout << "\n   " << dye::green("Press any key to begin NEW GAME\n\n   ");
@@ -528,29 +594,6 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 			{
 				cout << dye::aqua("S") << " ";
 			}
-			else if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'O')
-			{
-				if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
-				{
-					cout << dye::black_on_bright_white("  ");
-				}
-				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins")
-				{
-					cout << dye::black_on_aqua("  ");
-				}
-				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility")
-				{
-					cout << dye::black_on_grey("  ");
-				}
-				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields")
-				{
-					cout << dye::black_on_light_red("  ");
-				}
-				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Special Passage")
-				{
-					cout << dye::black_on_light_yellow("  ");
-				}
-			}
 			else if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'X')
 			{
 				if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
@@ -572,6 +615,58 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Special Passage")
 				{
 					cout << dye::black_on_light_yellow(" ");
+				}
+				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Domain")
+				{
+					int INT_Random = (rand() % 12) + 1;
+					if (INT_Random == 1)
+					{
+						cout << dye::black_on_red(" ");
+					}
+					else if (INT_Random == 2)
+					{
+						cout << dye::black_on_light_red(" ");
+					}
+					else if (INT_Random == 3)
+					{
+						cout << dye::black_on_blue(" ");
+					}
+					else if (INT_Random == 4)
+					{
+						cout << dye::black_on_light_blue(" ");
+					}
+					else if (INT_Random == 5)
+					{
+						cout << dye::black_on_light_yellow(" ");
+					}
+					else if (INT_Random == 6)
+					{
+						cout << dye::black_on_yellow(" ");
+					}
+					else if (INT_Random == 7)
+					{
+						cout << dye::black_on_purple(" ");
+					}
+					else if (INT_Random == 8)
+					{
+						cout << dye::black_on_light_purple(" ");
+					}
+					else if (INT_Random == 9)
+					{
+						cout << dye::black_on_white(" ");
+					}
+					else if (INT_Random == 10)
+					{
+						cout << dye::black_on_grey(" ");
+					}
+					else if (INT_Random == 11)
+					{
+						cout << dye::black_on_green(" ");
+					}
+					else if (INT_Random == 12)
+					{
+						cout << dye::black_on_light_green(" ");
+					}
 				}
 				if ((j + 1) == 15 && DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][j] == 'X')
 				{
@@ -595,10 +690,62 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 					{
 						cout << dye::black_on_light_yellow(" ");
 					}
+					else if (DUNGEON_Current_Dungeon->getDungeonName() == "Domain")
+					{
+						int INT_Random = (rand() % 12) + 1;
+						if (INT_Random == 1)
+						{
+							cout << dye::black_on_red(" ");
+						}
+						else if (INT_Random == 2)
+						{
+							cout << dye::black_on_light_red(" ");
+						}
+						else if (INT_Random == 3)
+						{
+							cout << dye::black_on_blue(" ");
+						}
+						else if (INT_Random == 4)
+						{
+							cout << dye::black_on_light_blue(" ");
+						}
+						else if (INT_Random == 5)
+						{
+							cout << dye::black_on_light_yellow(" ");
+						}
+						else if (INT_Random == 6)
+						{
+							cout << dye::black_on_yellow(" ");
+						}
+						else if (INT_Random == 7)
+						{
+							cout << dye::black_on_purple(" ");
+						}
+						else if (INT_Random == 8)
+						{
+							cout << dye::black_on_light_purple(" ");
+						}
+						else if (INT_Random == 9)
+						{
+							cout << dye::black_on_white(" ");
+						}
+						else if (INT_Random == 10)
+						{
+							cout << dye::black_on_grey(" ");
+						}
+						else if (INT_Random == 11)
+						{
+							cout << dye::black_on_green(" ");
+						}
+						else if (INT_Random == 12)
+						{
+							cout << dye::black_on_light_green(" ");
+						}
+					}
 				}
 				else if ((j + 1) < 15)
 				{
-					if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][(j + 1)] == 'X' || DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][(j + 1)] == 'O')
+					if (DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][(j + 1)] == 'X' || DUNGEON_Current_Dungeon->getDungeonMap()[(DUNGEON_Current_Dungeon->getDungeonRoom() - 1)][i][(j + 1)] == 'X')
 					{
 						if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland")
 						{
@@ -619,6 +766,58 @@ void output_dungeon(Dungeon* DUNGEON_Current_Dungeon, Story STORY_Story)
 						else if (DUNGEON_Current_Dungeon->getDungeonName() == "Special Passage")
 						{
 							cout << dye::black_on_light_yellow(" ");
+						}
+						else if (DUNGEON_Current_Dungeon->getDungeonName() == "Domain")
+						{
+							int INT_Random = (rand() % 12) + 1;
+							if (INT_Random == 1)
+							{
+								cout << dye::black_on_red(" ");
+							}
+							else if (INT_Random == 2)
+							{
+								cout << dye::black_on_light_red(" ");
+							}
+							else if (INT_Random == 3)
+							{
+								cout << dye::black_on_blue(" ");
+							}
+							else if (INT_Random == 4)
+							{
+								cout << dye::black_on_light_blue(" ");
+							}
+							else if (INT_Random == 5)
+							{
+								cout << dye::black_on_light_yellow(" ");
+							}
+							else if (INT_Random == 6)
+							{
+								cout << dye::black_on_yellow(" ");
+							}
+							else if (INT_Random == 7)
+							{
+								cout << dye::black_on_purple(" ");
+							}
+							else if (INT_Random == 8)
+							{
+								cout << dye::black_on_light_purple(" ");
+							}
+							else if (INT_Random == 9)
+							{
+								cout << dye::black_on_white(" ");
+							}
+							else if (INT_Random == 10)
+							{
+								cout << dye::black_on_grey(" ");
+							}
+							else if (INT_Random == 11)
+							{
+								cout << dye::black_on_green(" ");
+							}
+							else if (INT_Random == 12)
+							{
+								cout << dye::black_on_light_green(" ");
+							}
 						}
 					}
 					else
@@ -737,7 +936,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		{
 			// Changes the Dungeon Room number by 1
 			DUNGEON_Current_Dungeon->changeDungeonRoom(1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7) || (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4))
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 5) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 8) || (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4))
 			{
 				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 			}
@@ -811,7 +1010,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				}
 
 				// Starts battle
-				if ((DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7))
+				if (ENEMY_New_Enemy.getName() == "Russian Sergeant" || ENEMY_New_Enemy.getName() == "Reawoken Guardian of Atlantis" || ENEMY_New_Enemy.getName() == "Master of the Facility")
 				{
 					play_audio("Dungeon Main Boss");
 				}
@@ -819,11 +1018,15 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				{
 					play_audio("Boss - The Mastermind Pt 1");
 				}
-				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Special Passage" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6)
+				else if (ENEMY_New_Enemy.getName() == "Macko?")
+				{
+					play_audio("Boss - Macko?");
+				}
+				else if (ENEMY_New_Enemy.getName() == "Tyson Mondeo")
 				{
 					play_audio("Boss - Tyson Mondeo");
 				}
-				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Special Passage" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7)
+				else if (ENEMY_New_Enemy.getName() == "???")
 				{
 					play_audio("Story Battle");
 				}
@@ -875,6 +1078,15 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					ENUM_Game_Status = gameStatus::DIALOGUE;
 					play_audio("Confront");
 				}
+				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 10)
+				{
+					STORY_Story.setDialogueIndex(199);
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Story_Status = storyStatus::TRUE_ONE;
+					ENUM_Game_Status = gameStatus::DIALOGUE;
+					play_audio("Confront");
+				}
 			}
 		}
 	}
@@ -898,7 +1110,7 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 		else if (DUNGEON_Current_Dungeon->getPosition((DUNGEON_Current_Dungeon->getDungeonRoom() - 1), DUNGEON_Current_Dungeon->getPosY(), (DUNGEON_Current_Dungeon->getPosX() - 1)) == '<')
 		{
 			DUNGEON_Current_Dungeon->changeDungeonRoom(-1);
-			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6) || (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields" && DUNGEON_Current_Dungeon->getDungeonRoom() == 3))
+			if (DUNGEON_Current_Dungeon->getDungeonName() == "Glacier Wasteland" || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 4) || (DUNGEON_Current_Dungeon->getDungeonName() == "Atlantis Ruins" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 6) || (DUNGEON_Current_Dungeon->getDungeonName() == "Facility" && DUNGEON_Current_Dungeon->getDungeonRoom() == 7) || (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields" && DUNGEON_Current_Dungeon->getDungeonRoom() == 3))
 			{
 				play_audio(DUNGEON_Current_Dungeon->getDungeonName() + " F" + to_string(DUNGEON_Current_Dungeon->getDungeonRoom()));
 			}
@@ -1454,6 +1666,10 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			{
 				FLT_EXP_Earned = int(ENEMY_Enemy.getMaxHealth() * 7.77);
 			}
+			if (ENEMY_Enemy.getName() == "Gold Entity VII" || ENEMY_Enemy.getName() == "Gold Entity VIII" || ENEMY_Enemy.getName() == "Gold Entity IX" || ENEMY_Enemy.getName() == "Gold Entity X")
+			{
+				FLT_EXP_Earned = int(ENEMY_Enemy.getMaxHealth() * 9.99);
+			}
 			else if (ENEMY_Enemy.isBoss())
 			{
 				FLT_EXP_Earned = ENEMY_Enemy.getMaxHealth() * 5;
@@ -1474,6 +1690,14 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Magma Fields")
 			{
 				FLT_EXP_Earned *= 4;
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Special Passage")
+			{
+				FLT_EXP_Earned *= 5;
+			}
+			else if (DUNGEON_Current_Dungeon->getDungeonName() == "Domain")
+			{
+				FLT_EXP_Earned *= 6.6;
 			}
 
 			for (Item* ITEM_Item : PLAYER_Player.getItems())
@@ -1622,6 +1846,10 @@ void play_audio(string to_play)
 	}
 	else if (to_play == "Facility F1" || to_play == "Facility F2" || to_play == "Facility F3" || to_play == "Facility F4" || to_play == "Facility F5" || to_play == "Facility F6")
 	{
+		PlaySound(TEXT("music/facility_above_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Facility F8" || to_play == "Facility F9" || to_play == "Facility F10")
+	{
 		PlaySound(TEXT("music/facility_below_floors.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Magma Fields F1" || to_play == "Magma Fields F2" || to_play == "Magma Fields F3")
@@ -1635,6 +1863,10 @@ void play_audio(string to_play)
 	else if (to_play == "Special Passage F1" || to_play == "Special Passage F2" || to_play == "Special Passage F3" || to_play == "Special Passage F4" || to_play == "Special Passage F5" || to_play == "Special Passage F6" || to_play == "Special Passage F7")
 	{
 		PlaySound(TEXT("music/special_passage.wav"), NULL, SND_ASYNC | SND_LOOP);
+	}
+	else if (to_play == "Domain F1" || to_play == "Domain F2" || to_play == "Domain F3" || to_play == "Domain F4" || to_play == "Domain F5" || to_play == "Domain F6" || to_play == "Domain F7" || to_play == "Domain F8" || to_play == "Domain F9" || to_play == "Domain F10" || to_play == "Domain F11" || to_play == "Domain F12" || to_play == "Domain F13" || to_play == "Domain F14" || to_play == "Domain F15")
+	{
+		PlaySound(TEXT("music/domain.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 	else if (to_play == "Dungeon Battle")
 	{
@@ -1688,9 +1920,9 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/confront_last.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
-	else if (to_play == "Macko Fight")
+	else if (to_play == "Boss - Macko?")
 	{
-		PlaySound(TEXT("music/macko_fight.wav"), NULL, SND_ASYNC | SND_LOOP);
+		PlaySound(TEXT("music/battle_fake_macko.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
 }
 

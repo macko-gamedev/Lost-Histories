@@ -13,6 +13,7 @@ Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> 
 	this->BOOL_Boss = nBoss;
 	this->INT_Damage = nDamage;
 	this->INT_Boss_Stat_Cycle = 2;
+	this->ENUM_State = battleState::WAITING;
 }
 
 vector<Skill> Enemy::getSkills()
@@ -106,8 +107,8 @@ Item* Enemy::getItemFromLootTable()
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("Gold Coin", "Made of real gold!", 3));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 1.75));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 1.75));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Radioactive Core", "May need a suit for this one!", 3, Skill("Frei")));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Glock-17", "Perfect for quick execution", 3, (((rand() % 15) - 7) + 78), true));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Waterproof Flamethrower", "How this combination works is beyond comprehension", 4, Skill("Flamadia")));
@@ -116,8 +117,8 @@ Item* Enemy::getItemFromLootTable()
 	{
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Shark Tooth", "Caution, may be sharp", 2));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("Gold Coin", "Made of real gold!", 3));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 2.5));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 2.5));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power", 3, "ATK", 1.75));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration", 3, "MAG", 1.75));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Water Blaster 9000", "Graded PSA 10, worth an absolute fortune!", 3, Skill("Splashan")));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Fire Hydrant", "Very powerful water beam!", 4, Skill("Splashadia")));
 	}
@@ -142,13 +143,13 @@ Item* Enemy::getItemFromLootTable()
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("£10 Coin", "Since when were £10 coins a thing?", 3));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power moderately", 3, "ATK", 2.5));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration moderately", 3, "MAG", 2.5));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power moderately", 3, "ATK", 1.75));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration moderately", 3, "MAG", 1.75));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Glock-17", "Perfect for quick execution", 3, (((rand() % 15) - 7) + 78), true));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Breach Hammer", "Designed for house raids", 4, (((rand() % 19) - 9) + 139), true));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Overpower Capsules", "Drugs used to increase users power and concentration moderately", 4, "ATK/MAG", 2.5));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 4));
-		/* 4 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 4));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Overpower Capsules", "Drugs used to increase users power and concentration moderately", 4, "ATK/MAG", 1.75));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 2.5));
+		/* 4 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 2.5));
 	}
 	// Dungeon 3: Facility
 	else if (this->getName() == "Unknown Creature")
@@ -181,13 +182,13 @@ Item* Enemy::getItemFromLootTable()
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("10 Euro Coin", "Since when were ten euro coins a thing?", 3));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Medkit", "For a quick patch up", 3, "HP", 200));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power moderately", 3, "ATK", 2.5));
-		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration moderately", 3, "MAG", 2.5));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements", "Drugs used to increase users power moderately", 3, "ATK", 1.75));
+		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills", "Drugs used to increase users concentration moderately", 3, "MAG", 1.75));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemMelee("AK-47", "Brr brr brrrrrrrrr!", 3, (((rand() % 21) - 10) + 120), true));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Breach Hammer", "Designed for house raids", 4, (((rand() % 19) - 9) + 139), true));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Overpower Capsules", "Drugs used to increase users power and concentration moderately", 4, "ATK/MAG", 2.5));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 4));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 4));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Overpower Capsules", "Drugs used to increase users power and concentration moderately", 4, "ATK/MAG", 1.75));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 2.5));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 2.5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Frosted Railgun", "Has incredible piercing capabilities", 5, Skill("Mefreezadia")));
 	}
 	else if (this->getName() == "French Soldier")
@@ -196,9 +197,9 @@ Item* Enemy::getItemFromLootTable()
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("10 Euro Coin", "Since when were ten euro coins a thing?", 3));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemMelee("AK-47", "Brr brr brrrrrrrrr!", 3, (((rand() % 21) - 10) + 120), true));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Breach Hammer", "Designed for house raids", 4, (((rand() % 19) - 9) + 139), true));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Overpower Capsules", "Drugs used to increase users power and concentration moderately", 4, "ATK/MAG", 2.5));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 4));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 4));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Overpower Capsules", "Drugs used to increase users power and concentration moderately", 4, "ATK/MAG", 1.75));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 2.5));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 2.5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemMelee("M6 Gerand", "One bullet is all it takes to end a life", 5, (((rand() % 29) - 14) + 194), true));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Explosive TNT", "Set it off to set enemies ablaze!", 5, Skill("Meflamadia")));
 	}
@@ -207,14 +208,18 @@ Item* Enemy::getItemFromLootTable()
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("10 Dollar Coin", "Since when were ten dollar coins a thing?", 3));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new ItemMelee("AK-47", "Brr brr brrrrrrrrr!", 3, (((rand() % 21) - 10) + 120), true));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Overpower Capsules", "Drugs used to increase users power and concentration moderately", 4, "ATK/MAG", 2.5));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 4));
-		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 4));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Overpower Capsules", "Drugs used to increase users power and concentration moderately", 4, "ATK/MAG", 1.75));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements X", "Drugs used to increase users power significantly", 4, "ATK", 2.5));
+		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills X", "Drugs used to increase users concentration significantly", 4, "MAG", 2.5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemMelee("M6 Gerand", "One bullet is all it takes to end a life", 5, (((rand() % 29) - 14) + 194), true));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Kraber 50-Caliber", "This could be used in a FaZe montages, if... they're still a thing...", 5, ((rand() % 21) + 210), true));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("F5 Twister in a Barrel", "Wreck havoc!!!", 5, Skill("Eye of the Storm")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("F5 Twister in a Barrel", "Wreck havoc!!!", 5, Skill("Gustadiaran")));
 	}
-	
+	else if (this->getName() == "ErRoR")
+	{
+		VEC_Enemy_Drops = { new Item("Purple and Black Square", "Exception: ErRoR.png not found in directory 'Lost Histories/'", 5) };
+	}
+
 	// Dungeon 4: Magma Fields
 	else if (this->getName() == "Lava Spirit")
 	{
@@ -228,10 +233,10 @@ Item* Enemy::getItemFromLootTable()
 		/* 2 STAR */ for (int i = 0; i < 4; i++) VEC_Enemy_Drops.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
 		/* 3 STAR */ for (int i = 0; i < 3; i++) VEC_Enemy_Drops.push_back(new Item("10 Yen Coin", "Since when were ten yen coins a thing?", 3));
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Golden Tachi", "A deeply curved sword used by the Samurai before the 15th Century, coated in gold", 4, (((rand() % 37) - 18) + 233), true));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Body Morphing Drugs", "Drugs used to increase users power and concentration significantly", 5, "ATK/MAG", 4));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements 50mg", "Drugs used to increase users power massively", 5, "ATK", 7));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills 50mg", "Drugs used to increase users concentration massively", 5, "MAG", 7));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Batra's Staff of Reckoning", "Let's turn the tide!", 5, Skill("Eye of the Ocean")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Body Morphing Drugs", "Drugs used to increase users power and concentration significantly", 5, "ATK/MAG", 2.5));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements 50mg", "Drugs used to increase users power massively", 5, "ATK", 3.5));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills 50mg", "Drugs used to increase users concentration massively", 5, "MAG", 3.5));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Batra's Staff of Reckoning", "Let's turn the tide!", 5, Skill("Splashadiaran")));
 	}
 	else if (this->getName() == "Fire Prowler")
 	{
@@ -245,9 +250,9 @@ Item* Enemy::getItemFromLootTable()
 	else if (this->getName() == "Master's Servant")
 	{
 		/* 4 STAR */ for (int i = 0; i < 2; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Poison Tipped Knife", "A knife coated in poison dripping, perfect for eliminating targets, quietly...", 4, (((rand() % 45) - 22) + 241), true));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Body Morphing Drugs", "Drugs used to increase users power and concentration significantly", 5, "ATK/MAG", 4));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements 50mg", "Drugs used to increase users power massively", 5, "ATK", 7));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills 50mg", "Drugs used to increase users concentration massively", 5, "MAG", 7));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Body Morphing Drugs", "Drugs used to increase users power and concentration significantly", 5, "ATK/MAG", 2.5));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Power Supplements 50mg", "Drugs used to increase users power massively", 5, "ATK", 3.5));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Concentration Pills 50mg", "Drugs used to increase users concentration massively", 5, "MAG", 3.5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Diamond", "A natural chunk of raw diamond from the earth", 5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Emerald", "A natural chunk of raw emerald from the earth", 5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Ruby", "A natural chunk of raw ruby from the earth", 5));
@@ -314,10 +319,10 @@ Item* Enemy::getItemFromLootTable()
 	}
 	else if (this->getName() == "Gold Entity VI")
 	{
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Fitzroy Motherload", "'Motherlode's droppin'. Hold onto ya hats'", 5, Skill("Eye of the Sun")));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Paquette Pylon", "'Fuses set and capacitors charged'", 5, Skill("Eye of the Spark")));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("F5 Twister in a Barrel", "Wreck havoc!!!", 5, Skill("Eye of the Storm")));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Red Button", "A scratched engraving reads 'KJU'", 5, Skill("End of the World")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Fitzroy Motherload", "'Motherlode's droppin'. Hold onto ya hats'", 5, Skill("Flamadiaran")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Paquette Pylon", "'Fuses set and capacitors charged'", 5, Skill("Zapadiaran")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("F5 Twister in a Barrel", "Wreck havoc!!!", 5, Skill("Gustadiaran")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Red Button", "A scratched engraving reads 'KJU'", 5, Skill("Freiladiaran")));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Prototype Heat Rod", "Flame spouted rod, can burn through anything!", 5, (((rand() % 25) - 12) + 214), true));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Diamond", "A natural chunk of raw diamond from the earth", 5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Emerald", "A natural chunk of raw emerald from the earth", 5));
@@ -325,13 +330,13 @@ Item* Enemy::getItemFromLootTable()
 	}
 	else if (this->getName() == "Gold Entity VII")
 	{
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Fitzroy Motherload", "'Motherlode's droppin'. Hold onto ya hats'", 5, Skill("Eye of the Sun")));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Batra's Staff of Reckoning", "Let's turn the tide!", 5, Skill("Eye of the Ocean")));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Paquette Pylon", "'Fuses set and capacitors charged'", 5, Skill("Eye of the Spark")));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("F5 Twister in a Barrel", "Wreck havoc!!!", 5, Skill("Eye of the Storm")));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Red Button", "A scratched engraving reads 'KJU'", 5, Skill("End of the World")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Fitzroy Motherload", "'Motherlode's droppin'. Hold onto ya hats'", 5, Skill("Flamadiaran")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Batra's Staff of Reckoning", "Let's turn the tide!", 5, Skill("Splashadiaran")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Paquette Pylon", "'Fuses set and capacitors charged'", 5, Skill("Zapadiaran")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("F5 Twister in a Barrel", "Wreck havoc!!!", 5, Skill("Gustadiaran")));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemSkill("Red Button", "A scratched engraving reads 'KJU'", 5, Skill("Freiladiaran")));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemMelee("Magma Forged Sword", "A sword forged from molten magma, gloves need to be worn", 5, (((rand() % 45) - 22) + 286), true));
-		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Body Morphing Drugs", "Drugs used to increase users power and concentration significantly", 5, "ATK/MAG", 4));
+		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new ItemConsumable("Body Morphing Drugs", "Drugs used to increase users power and concentration significantly", 5, "ATK/MAG", 2.5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Diamond", "A natural chunk of raw diamond from the earth", 5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Emerald", "A natural chunk of raw emerald from the earth", 5));
 		/* 5 STAR */ for (int i = 0; i < 1; i++) VEC_Enemy_Drops.push_back(new Item("Ruby", "A natural chunk of raw ruby from the earth", 5));
@@ -407,6 +412,14 @@ Item* Enemy::getItemFromLootTable()
 	{
 		VEC_Enemy_Drops = { new Item("Special Passage F5 Key", "An unlocker device from a special realm, maybe can be used for something?", 3) };
 		}
+	else if (this->getName() == "Domain Keeper 1")
+	{
+		VEC_Enemy_Drops = { new Item("Domain F3 Key", "Are you sure you want this? Can be used for something.", 3) };
+		}
+	else if (this->getName() == "Domain Keeper 2")
+	{
+		VEC_Enemy_Drops = { new Item("Domain F5 Key", "Are you sure you want this? Can be used for something.", 3) };
+		}
 
 	// Dungeon Bosses
 	else if (this->getName() == "Russian Sergeant")
@@ -444,7 +457,11 @@ Item* Enemy::getItemFromLootTable()
 	else if (this->getName() == "???")
 	{
 		VEC_Enemy_Drops = { new Item("Facility F7 Key", "You should probably go back a couple steps", 5) };
-	}
+		}
+	else if (this->getName() == "Macko?")
+	{
+		VEC_Enemy_Drops = { new Item("Tartarus Figurine", "Special edition from the hit game Persona 3!", 5) };
+		}
 
 	return VEC_Enemy_Drops[rand() % VEC_Enemy_Drops.size()];
 }
@@ -562,6 +579,10 @@ void Enemy::elementSetter()
 	{
 		this->setElements({ {"Fire", "Rpl"}, {"Water", "-"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Abs"}, {"Bless", "Wk"} });
 	}
+	else if (this->getName() == "ErRoR")
+	{
+		this->setElements({ {"Fire", "Nul"}, {"Water", "Nul"}, {"Ice", "Nul"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
+	}
 	
 	// Mini Bosses
 	else if (this->getName() == "Snow Golem")
@@ -620,6 +641,14 @@ void Enemy::elementSetter()
 	{
 		this->setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Wk"} });
 		}
+	else if (this->getName() == "Domain Keeper 1")
+	{
+		this->setElements({ {"Fire", "Nul"}, {"Water", "-"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Wk"}, {"Bless", "Rpl"} });
+		}
+	else if (this->getName() == "Domain Keeper 2")
+	{
+		this->setElements({ {"Fire", "Wk"}, {"Water", "Rpl"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "-"} });
+		}
 
 	// Dungeon Bosses
 	else if (this->getName() == "Russian Sergeant")
@@ -660,6 +689,11 @@ void Enemy::elementSetter()
 	else if (this->getName() == "???")
 	{
 		this->setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		}
+	else if (this->getName() == "Macko?")
+	{
+		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with nullify to everything
+		this->setElements({ {"Fire", "Nul"}, {"Water", "Nul"}, {"Ice", "Nul"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
 	}
 
 	// Rare Enemies
@@ -717,21 +751,31 @@ void Enemy::update(Player& PLAYER_Player)
 	
 	if (this->ENUM_State == battleState::WAITING)
 	{
-		if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind" || this->getName() == "Keeper of The Device")
+		if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind" || this->getName() == "Keeper of The Device" || this->getName() == "Macko?")
 		{
 			this->INT_Boss_Stat_Cycle++;
 			if (this->INT_Boss_Stat_Cycle == 4)
 			{
 				this->INT_Boss_Stat_Cycle = 0;
-				vector<string> VEC_Ailments = { "-", "Wk", "Rst", "Rpl", "Abs", "Nul" };
-				vector<Skill> VEC_Skills_Available = { Skill("Flamadia"), Skill("Meflamadia"), Skill("Eye of the Sun"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Eye of the 'Berg"), Skill("Splashadia"), Skill("Mesplashadia"), Skill("Eye of the Ocean"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Eye of the Spark"), Skill("Gustadia"), Skill("Megustadia"), Skill("Eye of the Storm"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Freila"), Skill("Freiladia"), Skill("Healan") };
+				vector<string> VEC_Ailments;
+				vector<Skill> VEC_Skills_Available;
+				if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind" || this->getName() == "Keeper of The Device")
+				{
+					VEC_Ailments = { "-", "Wk", "Rst", "Rpl", "Abs", "Nul" };
+					VEC_Skills_Available = { Skill("Flamadia"), Skill("Meflamadia"), Skill("Flamadiaran"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Freezadiaran"), Skill("Splashadia"), Skill("Mesplashadia"), Skill("Splashadiaran"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Zapadiaran"), Skill("Gustadia"), Skill("Megustadia"), Skill("Gustadiaran"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Freila"), Skill("Freiladia"), Skill("Healan") };
+				}
+				else
+				{
+					VEC_Ailments = { "-", "Rst", "Rpl", "Nul" };
+					VEC_Skills_Available = { Skill("Flamadiaran"), Skill("Inferno"), Skill("Freezadiaran"), Skill("Blizzard"), Skill("Splashadiaran"), Skill("Tsunami"), Skill("Zapadiaran"), Skill("Thunder Bolt"), Skill("Gustadiaran"), Skill("Crucifix of Death"), Skill("Hexaonia"), Skill("Fist of Justice"), Skill("Blightaonia"), Skill("Freiladia"), Skill("Freiladiaran"), Skill("Healan") };
 
+				}
 				this->VEC_Skills = { };
 				for (int i = 0; i < 8; i++)
 				{
 					VEC_Skills.push_back(VEC_Skills_Available[rand() % VEC_Skills_Available.size()]);
 				}
-				this->setElements({ {"Fire", VEC_Ailments[rand() % 6]},{"Water", VEC_Ailments[rand() % 6]},{"Ice", VEC_Ailments[rand() % 6]},{"Electric", VEC_Ailments[rand() % 6]},{"Wind", VEC_Ailments[rand() % 6]},{"Curse", VEC_Ailments[rand() % 6]}, { "Bless", VEC_Ailments[rand() % 6] } });
+				this->setElements({ {"Fire", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Water", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Ice", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Electric", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Wind", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Curse", VEC_Ailments[rand() % VEC_Ailments.size()]}, {"Bless", VEC_Ailments[rand() % VEC_Ailments.size()]}});
 				this->STR_Turn_Phrase = "\n   " + this->getName() + " is shifting their elemental coverage and magic attacks!";
 			}
 			else
@@ -775,7 +819,7 @@ void Enemy::update(Player& PLAYER_Player)
 				}
 				int INT_Skill_Chance = (rand() % 10) + 1;
 				int INT_Boss_Multiplier = 1;
-				if (this->getName() == "The Mastermind")
+				if (this->getName() == "The Mastermind" || this->getName() == "Macko?")
 				{
 					INT_Boss_Multiplier = 1.25;
 				}

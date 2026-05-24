@@ -12,72 +12,72 @@ DungeonMagma::DungeonMagma(string N_Name)
 	this->VEC_Dungeon_Map =
 	{
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-			{ 'O', 'O', 'O', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
-			{ 'O', 'O', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '>' },
-			{ 'O', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'O', 'X', 'X', 'X' },
-			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'X' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'X' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'X' },
-			{ 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'X' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'X', ' ', '+', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'X', 'X', ' ', ' ', ' ', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '>' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', '+', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X', 'X', 'X', 'O' },
-			{ 'X', 'X', 'X', 'X', 'O', 'X', 'X', 'X', 'O', 'O', 'X', 'X', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X' },
 			{ 'X', ' ', ' ', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X' },
 			{ '<', '+', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', 'X', 'X' },
 			{ 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X' },
-			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'O', 'X', 'X', ' ', 'X', 'O', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X' },
 			{ 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X' },
-			{ 'O', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', ' ', '>' },
-			{ 'O', 'O', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'O', 'O' },
-			{ 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'O', 'O', 'O', 'X', 'X', 'O', 'O', 'O' },
+			{ 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', 'X', 'X', ' ', ' ', '>' },
+			{ 'X', 'X', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', 'X', 'X', 'X', 'O', 'X', 'X', 'X', 'X', 'O', 'O' },
-			{ 'O', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'O' },
-			{ 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'O' },
-			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', 'X', 'X' },
 			{ 'X', ' ', 'X', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', ' ', ' ', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', 'X', ' ', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', 'X', ' ', ' ', '>' },
-			{ 'O', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X' },
 			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ '<', '+', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X' },
 			{ 'X', 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X' },
-			{ 'O', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'O', 'X', 'X', 'X', 'O', 'O' },
-			{ 'O', 'O', 'X', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
+			{ 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		},
 		{
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', 'X', ' ', 'X', 'X', ' ', ' ', 'X', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'O' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X' },
 			{ 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X' },
 			{ 'X', ' ', ' ', 'X', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ', 'X', 'X' },
-			{ '<', '+', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'O' },
-			{ 'X', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', 'O', 'O', 'O' },
-			{ 'O', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'O', 'O', 'O' },
-			{ 'O', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O' },
-			{ 'O', 'O', 'O', 'X', 'X', 'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O' },
+			{ '<', '+', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', 'X', 'X', ' ', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		}
 	};
 
@@ -123,11 +123,11 @@ Enemy DungeonMagma::newEnemy()
 		}
 		else if (INT_Enemy_Spawn_Chance > 5)
 		{
-			return Enemy("Japanese Soldier", ((rand() % 6) + 70), 302, 189, { Skill("Splashadia"), Skill("Eye of the Ocean"), Skill("Gustadia"), Skill("Blightaon") }, false, 89);
+			return Enemy("Japanese Soldier", ((rand() % 6) + 70), 302, 189, { Skill("Splashadia"), Skill("Splashadiaran"), Skill("Gustadia"), Skill("Blightaon") }, false, 89);
 		}
 		else
 		{
-			return Enemy("Lava Spirit", ((rand() % 7) + 65), 264, 57, { Skill("Flamadia"), Skill("Eye of the Sun"), Skill("Freezadia"), Skill("Frei"), Skill("Healan") }, false, 45);
+			return Enemy("Lava Spirit", ((rand() % 7) + 65), 264, 57, { Skill("Flamadia"), Skill("Flamadiaran"), Skill("Freezadia"), Skill("Frei"), Skill("Healan") }, false, 45);
 		}
 	}
 	else if (this->getDungeonRoom() == 2)
@@ -140,15 +140,15 @@ Enemy DungeonMagma::newEnemy()
 		}
 		else if (INT_Enemy_Spawn_Chance > 11)
 		{
-			return Enemy("Japanese Soldier", ((rand() % 7) + 74), 302, 189, { Skill("Splashadia"), Skill("Eye of the Ocean"), Skill("Gustadia"), Skill("Blightaon") }, false, 89);
+			return Enemy("Japanese Soldier", ((rand() % 7) + 74), 302, 189, { Skill("Splashadia"), Skill("Splashadiaran"), Skill("Gustadia"), Skill("Blightaon") }, false, 89);
 		}
 		else if (INT_Enemy_Spawn_Chance > 5)
 		{
-			return Enemy("Fire Prowler", ((rand() % 5) + 76), 287, 92, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Eye of the Sun"), Skill("Zapadia") }, false, 57);
+			return Enemy("Fire Prowler", ((rand() % 5) + 76), 287, 92, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Flamadiaran"), Skill("Zapadia") }, false, 57);
 		}
 		else
 		{
-			return Enemy("Lava Spirit", ((rand() % 5) + 72), 264, 57, { Skill("Flamadia"), Skill("Eye of the Sun"), Skill("Freezadia"), Skill("Frei"), Skill("Healan") }, false, 45);
+			return Enemy("Lava Spirit", ((rand() % 5) + 72), 264, 57, { Skill("Flamadia"), Skill("Flamadiaran"), Skill("Freezadia"), Skill("Frei"), Skill("Healan") }, false, 45);
 		}
 	}
 	else if (this->getDungeonRoom() == 3)
@@ -161,15 +161,15 @@ Enemy DungeonMagma::newEnemy()
 		}
 		else if (INT_Enemy_Spawn_Chance > 11)
 		{
-			return Enemy("Japanese Soldier", ((rand() % 7) + 78), 302, 189, { Skill("Splashadia"), Skill("Eye of the Ocean"), Skill("Gustadia"), Skill("Blightaon") }, false, 89);
+			return Enemy("Japanese Soldier", ((rand() % 7) + 78), 302, 189, { Skill("Splashadia"), Skill("Splashadiaran"), Skill("Gustadia"), Skill("Blightaon") }, false, 89);
 		}
 		else if (INT_Enemy_Spawn_Chance > 5)
 		{
-			return Enemy("Fire Prowler", ((rand() % 5) + 80), 287, 92, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Eye of the Sun"), Skill("Zapadia") }, false, 57);
+			return Enemy("Fire Prowler", ((rand() % 5) + 80), 287, 92, { Skill("Flamadia"), Skill("Meflamadia"), Skill("Flamadiaran"), Skill("Zapadia") }, false, 57);
 		}
 		else
 		{
-			return Enemy("Master's Servant", ((rand() % 5) + 82), 316, 163, { Skill("Zapadia"), Skill("Eye of the Spark"), Skill("Gustadia"), Skill("Eye of the Storm"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Healan") }, false, 109);
+			return Enemy("Master's Servant", ((rand() % 5) + 82), 316, 163, { Skill("Zapadia"), Skill("Zapadiaran"), Skill("Gustadia"), Skill("Gustadiaran"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Healan") }, false, 109);
 		}
 	}
 	else if (this->getDungeonRoom() == 4)
@@ -182,7 +182,7 @@ Enemy DungeonMagma::newEnemy()
 		}
 		else
 		{
-			return Enemy("Master's Servant", ((rand() % 5) + 82), 316, 163, { Skill("Zapadia"), Skill("Eye of the Spark"), Skill("Gustadia"), Skill("Eye of the Storm"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Healan") }, false, 109);
+			return Enemy("Master's Servant", ((rand() % 5) + 82), 316, 163, { Skill("Zapadia"), Skill("Zapadiaran"), Skill("Gustadia"), Skill("Gustadiaran"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Healan") }, false, 109);
 		}
 	}
 }
@@ -198,8 +198,8 @@ Item* DungeonMagma::getItemFromChest()
 	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Sword of Fire Aspect", "A purple tinted sword which ignites it's opponent in flames", 2, (((rand() % 21) - 10) + 132), true));
 	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Hot Heart in a Bottle", "A scorching hot human heart trapped inside a bottle, blood still leaking from the organ", 4, "HP", 400));
 	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Lighter of Life", "Modified lighter which burns life essence", 4, "STA", 180));
-	for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Power Supplements 50mg", "Drugs used to increase users power massively", 5, "ATK", 7));
-	for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Concentration Pills 50mg", "Drugs used to increase users concentration massively", 5, "MAG", 7));
+	for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Power Supplements 50mg", "Drugs used to increase users power massively", 5, "ATK", 3.5));
+	for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Concentration Pills 50mg", "Drugs used to increase users concentration massively", 5, "MAG", 3.5));
 
 	// Additional Loot added per Room
 	if (this->INT_Dungeon_Room >= 2)

@@ -13,6 +13,8 @@ private:
 	int INT_Base_Damage;
 	int INT_Health_Gain;
 	int INT_Stamina_Cost;
+	int INT_Physical_Hit_Amount;
+	float FLT_Health_Cost;
 	bool BOOL_Single_Target;
 	bool BOOL_Is_Valid_Skill;
 
@@ -25,6 +27,8 @@ public:
 	int getBaseDamage();
 	int getStaminaCost();
 	int getHPGain();
+	int getPhysicalHitAmount();
+	float getHealthCostMultiplier();
 	bool isSingleTarget();
 	bool isValid();
 };

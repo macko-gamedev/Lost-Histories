@@ -8,6 +8,80 @@ Skill::Skill(string N_NAME)
 	this->BOOL_Is_Valid_Skill = true;
 	// All skills which can be obtained
 
+	// ATTACK : PHYSICAL
+	if (this->STR_Skill_Name == "Sucker Punch")
+	{
+		this->STR_Skill_Type = "Physical";
+		this->STR_Skill_Desc = "Deal low physical damage to one enemy";
+		this->INT_Base_Damage = 30;
+		this->INT_Physical_Hit_Amount = 1;
+		this->FLT_Health_Cost = 0.12;
+		this->BOOL_Single_Target = true;
+	}
+	else if (this->STR_Skill_Name == "Hacker Slash")
+	{
+		this->STR_Skill_Type = "Physical";
+		this->STR_Skill_Desc = "Deal low physical damage to one enemy, hits 2 times";
+		this->INT_Base_Damage = 26;
+		this->INT_Physical_Hit_Amount = 2;
+		this->FLT_Health_Cost = 0.15;
+		this->BOOL_Single_Target = true;
+	}
+	else if (this->STR_Skill_Name == "Quick Jab")
+	{
+		this->STR_Skill_Type = "Physical";
+		this->STR_Skill_Desc = "Deal medium physical damage to one enemy";
+		this->INT_Base_Damage = 73;
+		this->INT_Physical_Hit_Amount = 1;
+		this->FLT_Health_Cost = 0.18;
+		this->BOOL_Single_Target = true;
+	}
+	else if (this->STR_Skill_Name == "Sickle Dance")
+	{
+		this->STR_Skill_Type = "Physical";
+		this->STR_Skill_Desc = "Deal medium physical damage to one enemy, hits 2 times";
+		this->INT_Base_Damage = 91;
+		this->INT_Physical_Hit_Amount = 2;
+		this->FLT_Health_Cost = 0.24;
+		this->BOOL_Single_Target = true;
+	}
+	else if (this->STR_Skill_Name == "Decisive Strike")
+	{
+		this->STR_Skill_Type = "Physical";
+		this->STR_Skill_Desc = "Deal massive physical damage to one enemy";
+		this->INT_Base_Damage = 329;
+		this->INT_Physical_Hit_Amount = 1;
+		this->FLT_Health_Cost = 0.3;
+		this->BOOL_Single_Target = true;
+	}
+	else if (this->STR_Skill_Name == "God's Power Punch")
+	{
+		this->STR_Skill_Type = "Physical";
+		this->STR_Skill_Desc = "Deal colossal physical damage to one enemy";
+		this->INT_Base_Damage = 578;
+		this->INT_Physical_Hit_Amount = 1;
+		this->FLT_Health_Cost = 0.35;
+		this->BOOL_Single_Target = true;
+	}
+	else if (this->STR_Skill_Name == "Impulse Strike")
+	{
+		this->STR_Skill_Type = "Physical";
+		this->STR_Skill_Desc = "Deal heavy physical damage to one enemy, hits 2 times";
+		this->INT_Base_Damage = 253;
+		this->INT_Physical_Hit_Amount = 2;
+		this->FLT_Health_Cost = 0.32;
+		this->BOOL_Single_Target = true;
+	}
+	else if (this->STR_Skill_Name == "Decaying Chucks")
+	{
+		this->STR_Skill_Type = "Physical";
+		this->STR_Skill_Desc = "Deal low physical damage to one enemy, hits 8 times";
+		this->INT_Base_Damage = 57;
+		this->INT_Physical_Hit_Amount = 8;
+		this->FLT_Health_Cost = 0.4;
+		this->BOOL_Single_Target = true;
+	}
+
 	// ATTACK : FIRE
 	if (this->STR_Skill_Name == "Flame")
 	{
@@ -57,12 +131,20 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 24;
 		this->BOOL_Single_Target = false;
 	}
-	else if (this->STR_Skill_Name == "Eye of the Sun")
+	else if (this->STR_Skill_Name == "Flamadiaran")
 	{
 		this->STR_Skill_Type = "Fire";
-		this->STR_Skill_Desc = "Channel the inner heat of the sun upon one foe";
-		this->INT_Base_Damage = 445;
+		this->STR_Skill_Desc = "Deal massive fire damage to one enemy";
+		this->INT_Base_Damage = 262;
 		this->INT_Stamina_Cost = 64;
+		this->BOOL_Single_Target = true;
+	}
+	else if (this->STR_Skill_Name == "Inferno")
+	{
+		this->STR_Skill_Type = "Fire";
+		this->STR_Skill_Desc = "Deal colossal fire damage to one enemy";
+		this->INT_Base_Damage = 485;
+		this->INT_Stamina_Cost = 98;
 		this->BOOL_Single_Target = true;
 	}
 
@@ -115,12 +197,20 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 20;
 		this->BOOL_Single_Target = false;
 	}
-	else if (this->STR_Skill_Name == "Eye of the Ocean")
+	else if (this->STR_Skill_Name == "Splashadiaran")
 	{
 		this->STR_Skill_Type = "Water";
-		this->STR_Skill_Desc = "Channel the inner water of the ocean upon one foe";
-		this->INT_Base_Damage = 380;
+		this->STR_Skill_Desc = "Deal massive water damage to one enemy";
+		this->INT_Base_Damage = 246;
 		this->INT_Stamina_Cost = 60;
+		this->BOOL_Single_Target = true;
+		}
+	else if (this->STR_Skill_Name == "Tsunami")
+	{
+		this->STR_Skill_Type = "Water";
+		this->STR_Skill_Desc = "Deal colossal water damage to one enemy";
+		this->INT_Base_Damage = 445;
+		this->INT_Stamina_Cost = 94;
 		this->BOOL_Single_Target = true;
 	}
 
@@ -173,14 +263,22 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 20;
 		this->BOOL_Single_Target = false;
 	}
-	else if (this->STR_Skill_Name == "Eye of the 'Berg")
+	else if (this->STR_Skill_Name == "Freezadiaran")
 	{
 		this->STR_Skill_Type = "Ice";
-		this->STR_Skill_Desc = "Channel the inner cold of an iceberg upon one foe";
-		this->INT_Base_Damage = 380;
+		this->STR_Skill_Desc = "Deal massive ice damage to one enemy";
+		this->INT_Base_Damage = 246;
 		this->INT_Stamina_Cost = 60;
 		this->BOOL_Single_Target = true;
 	}
+	else if (this->STR_Skill_Name == "Blizzard")
+	{
+		this->STR_Skill_Type = "Ice";
+		this->STR_Skill_Desc = "Deal colossal water damage to one enemy";
+		this->INT_Base_Damage = 445;
+		this->INT_Stamina_Cost = 94;
+		this->BOOL_Single_Target = true;
+		}
 
 	// ATTACK : ELECTRIC
 	else if (this->STR_Skill_Name == "Zap")
@@ -231,14 +329,22 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 24;
 		this->BOOL_Single_Target = false;
 	}
-	else if (this->STR_Skill_Name == "Eye of the Spark")
+	else if (this->STR_Skill_Name == "Zapadiaran")
 	{
 		this->STR_Skill_Type = "Electric";
-		this->STR_Skill_Desc = "Channel the inner static of electricity upon one foe";
-		this->INT_Base_Damage = 445;
+		this->STR_Skill_Desc = "Deal massive electric damage to one enemy";
+		this->INT_Base_Damage = 262;
 		this->INT_Stamina_Cost = 64;
 		this->BOOL_Single_Target = true;
 	}
+	else if (this->STR_Skill_Name == "Thunder Bolt")
+	{
+		this->STR_Skill_Type = "Electric";
+		this->STR_Skill_Desc = "Deal colossal electric damage to one enemy";
+		this->INT_Base_Damage = 485;
+		this->INT_Stamina_Cost = 98;
+		this->BOOL_Single_Target = true;
+		}
 
 	// ATTACK : WIND
 	else if (this->STR_Skill_Name == "Gust")
@@ -289,14 +395,22 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 20;
 		this->BOOL_Single_Target = false;
 	}
-	else if (this->STR_Skill_Name == "Eye of the Storm")
+	else if (this->STR_Skill_Name == "Gustadiaran")
 	{
 		this->STR_Skill_Type = "Wind";
-		this->STR_Skill_Desc = "Channel the inner power of the storm upon one foe";
-		this->INT_Base_Damage = 445;
-		this->INT_Stamina_Cost = 64;
+		this->STR_Skill_Desc = "Deal massive wind damage to one enemy";
+		this->INT_Base_Damage = 246;
+		this->INT_Stamina_Cost = 60;
 		this->BOOL_Single_Target = true;
-	}
+		}
+	else if (this->STR_Skill_Name == "Hurricane")
+	{
+		this->STR_Skill_Type = "Wind";
+		this->STR_Skill_Desc = "Deal colossal wind damage to one enemy";
+		this->INT_Base_Damage = 445;
+		this->INT_Stamina_Cost = 94;
+		this->BOOL_Single_Target = true;
+		}
 
 	// ATTACK : CURSE
 	else if (this->STR_Skill_Name == "Hex")
@@ -347,11 +461,20 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 28;
 		this->BOOL_Single_Target = false;
 	}
-	else if (this->STR_Skill_Name == "Hex of Death")
+	else if (this->STR_Skill_Name == "Hexaonia")
 	{
 		this->STR_Skill_Type = "Curse";
-		this->STR_Skill_Desc = "Curse attack with a chance of insta-kill to one enemy";
-		this->INT_Stamina_Cost = 40;
+		this->STR_Skill_Desc = "Deal massive curse damage to one enemy";
+		this->INT_Base_Damage = 308;
+		this->INT_Stamina_Cost = 76;
+		this->BOOL_Single_Target = true;
+		}
+	else if (this->STR_Skill_Name == "Crucifix of Death")
+	{
+		this->STR_Skill_Type = "Curse";
+		this->STR_Skill_Desc = "Deal colossal curse damage to one enemy";
+		this->INT_Base_Damage = 535;
+		this->INT_Stamina_Cost = 104;
 		this->BOOL_Single_Target = true;
 	}
 
@@ -404,11 +527,20 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 28;
 		this->BOOL_Single_Target = false;
 	}
-	else if (this->STR_Skill_Name == "Heavenly Judgement")
+	else if (this->STR_Skill_Name == "Blightaonia")
 	{
 		this->STR_Skill_Type = "Bless";
-		this->STR_Skill_Desc = "Bless attack with a chance of insta-kill to one enemy";
-		this->INT_Stamina_Cost = 40;
+		this->STR_Skill_Desc = "Deal massive bless damage to one enemy";
+		this->INT_Base_Damage = 308;
+		this->INT_Stamina_Cost = 76;
+		this->BOOL_Single_Target = true;
+	}
+	else if (this->STR_Skill_Name == "Fist of Justice")
+	{
+		this->STR_Skill_Type = "Bless";
+		this->STR_Skill_Desc = "Deal colossal bless damage to one enemy";
+		this->INT_Base_Damage = 535;
+		this->INT_Stamina_Cost = 104;
 		this->BOOL_Single_Target = true;
 	}
 
@@ -437,14 +569,22 @@ Skill::Skill(string N_NAME)
 		this->INT_Stamina_Cost = 48;
 		this->BOOL_Single_Target = false;
 		}
-	else if (this->STR_Skill_Name == "End of the World")
+	else if (this->STR_Skill_Name == "Freiladiaran")
 	{
 		this->STR_Skill_Type = "Nuclear";
 		this->STR_Skill_Desc = "Deal massive nuclear damage to all enemies";
-		this->INT_Base_Damage = 666;
-		this->INT_Stamina_Cost = 88;
+		this->INT_Base_Damage = 612;
+		this->INT_Stamina_Cost = 110;
 		this->BOOL_Single_Target = false;
 		}
+	else if (this->STR_Skill_Name == "End of the World")
+	{
+		this->STR_Skill_Type = "Nuclear";
+		this->STR_Skill_Desc = "Deal colossal nuclear damage to all enemies";
+		this->INT_Base_Damage = 974;
+		this->INT_Stamina_Cost = 148;
+		this->BOOL_Single_Target = false;
+		} 
 	else if (this->STR_Skill_Name == "Death")
 	{
 		this->STR_Skill_Type = "Nuclear";
