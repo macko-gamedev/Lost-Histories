@@ -12,7 +12,8 @@ using namespace std;
 enum battleState
 {
 	WAITING,
-	ATTACKING
+	ATTACKING,
+	AILMENTCHANGE,
 };
 
 class Enemy : public BattleStat
@@ -25,6 +26,7 @@ private:
 	bool BOOL_Boss;
 	int INT_Damage;
 	int INT_Boss_Stat_Cycle;
+	int INT_Turns_Left;
 	string STR_Turn_Phrase;
 public:
 	Enemy();
@@ -33,6 +35,7 @@ public:
 	bool isBoss();
 	vector<Skill> getSkills();
 	int getDamage();
+	int getTurnsLeft();
 	Item* getDroppedItem();
 	Item* getItemFromLootTable();
 	string getTurnPhrase();

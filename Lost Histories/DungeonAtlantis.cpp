@@ -362,6 +362,7 @@ Item* DungeonAtlantis::getItemFromChest()
 	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
 	for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Trident", "Sharp spike-like ends perfect for impaling", 3, (((rand() % 15) - 7) + 73), true));
 	for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Old Pendant", "An old heart pendant emitting a healthy aura", 3, Skill("Heal")));
+	for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Silver Jab Stick", "They use these in the olympics!", 3, Skill("Quick Jab")));
 
 	// Additional Loot added per Room
 	if (this->INT_Dungeon_Room >= 2)
@@ -380,6 +381,7 @@ Item* DungeonAtlantis::getItemFromChest()
 	{
 		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new Item("Gold Coin", "Made of real gold!", 3));
 		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Holy Water", "Drinking this feels godly", 3, "STA", 80));
+		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemSkill("Pair of Sickles", "Twice the slice!", 3, Skill("Sickle Dance")));
 	}
 	if (this->INT_Dungeon_Room >= 5)
 	{

@@ -74,6 +74,7 @@ enum storyStatus
 	COMPLETE,
 	TRUE_ONE,
 	TRUE_TWO,
+	TRUE_COMPLETE,
 };
 
 // Enumerator for game status, what game state is the player in
@@ -159,7 +160,7 @@ int main()
 	// LOAD GAME
 	else
 	{
-		PLAYER_Player = Player(VEC_Save_Data[0], stoi(VEC_Save_Data[1]), ((stoi(VEC_Save_Data[1]) * 7) + 133), ((stoi(VEC_Save_Data[1]) * 4) + 58));
+		PLAYER_Player = Player(VEC_Save_Data[0], stoi(VEC_Save_Data[3]), stoi(VEC_Save_Data[1]), (stoi(VEC_Save_Data[2])));
 		cout << dye::blue("\n   Transferring save file data to Player()");
 		STORY_Story = Story(PLAYER_Player.getName());
 		PLAYER_Player.loadData(VEC_Save_Data); 
@@ -374,6 +375,24 @@ int main()
 					STORY_Story.increaseDialogueIndex();
 					ENUM_Game_Status = gameStatus::DUNGEON;
 				}
+				// Story Boss Fight: Macko -> Story Boss Fight: Max
+				else if (ENUM_Story_Status == storyStatus::TRUE_TWO)
+				{
+					Enemy ENEMY_New_Enemy = Enemy("Max", 150, 6784, 15262, { Skill("End of the World") }, false, 426);
+					play_audio("Boss - Max");
+					battle(PLAYER_Player, DUNGEON_Current_Dungeon, ENEMY_New_Enemy);
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Story_Status = storyStatus::TRUE_COMPLETE;
+				}
+				// Story Boss Fight: Max -> * on Save File
+				else if (ENUM_Story_Status == storyStatus::TRUE_COMPLETE)
+				{
+					DUNGEON_Current_Dungeon->fillWithEnemies();
+					DUNGEON_Current_Dungeon->fillWithChests();
+					PLAYER_Player.setSpecificStarOnFile("Secret", '*');
+					ENUM_Game_Status = gameStatus::DUNGEON;
+				}
 				break;
 			}
 		}
@@ -468,7 +487,7 @@ vector<string> main_menu()
 		cout << "   #####    ###    ####      #   " << endl;
 		cout << "\n";
 		cout << "         H I S T O R I E S       " << endl;
-		cout << "             v05_26.05          " << endl;
+		cout << "             v05_26.06          " << endl;
 		cout << "\n\n";
 		cout << "--> New Game\n--> Load Game\n--> Credits\n--> Quit\n\n> ";
 		getline(cin, STR_Menu_Choice);
@@ -515,7 +534,7 @@ vector<string> main_menu()
 							if (CURRENT_SAVE_Data[CURRENT_SAVE_Data.size() - 2] == "*") cout << dye::yellow(" *");
 							if (CURRENT_SAVE_Data[CURRENT_SAVE_Data.size() - 3] == "*") cout << dye::yellow(" *");
 							if (CURRENT_SAVE_Data[CURRENT_SAVE_Data.size() - 4] == "*") cout << dye::yellow(" *");
-							cout << dye::light_yellow("\n   Lv ") << dye::light_yellow(CURRENT_SAVE_Data[1]) << " | " << CURRENT_SAVE_Data[8] << " F" << CURRENT_SAVE_Data[9];
+							cout << dye::light_yellow("\n   Lv ") << dye::light_yellow(CURRENT_SAVE_Data[3]) << " | " << CURRENT_SAVE_Data[10] << " F" << CURRENT_SAVE_Data[11];
 							ALL_SAVE_Data.push_back(CURRENT_SAVE_Data);
 							file.close();
 						}
@@ -1022,6 +1041,14 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 				{
 					play_audio("Boss - Macko?");
 				}
+				else if (ENEMY_New_Enemy.getName() == "Macko")
+				{
+					play_audio("Boss - Macko");
+				}
+				else if (ENEMY_New_Enemy.getName() == "Max")
+				{
+					play_audio("Boss - Max");
+				}
 				else if (ENEMY_New_Enemy.getName() == "Tyson Mondeo")
 				{
 					play_audio("Boss - Tyson Mondeo");
@@ -1086,6 +1113,15 @@ void map_movement(string STR_Dialogue_Choice, Player& PLAYER_Player, Enemy& ENEM
 					ENUM_Story_Status = storyStatus::TRUE_ONE;
 					ENUM_Game_Status = gameStatus::DIALOGUE;
 					play_audio("Confront");
+				}
+				else if (DUNGEON_Current_Dungeon->getDungeonName() == "Domain" && DUNGEON_Current_Dungeon->getDungeonRoom() == 15)
+				{
+					STORY_Story.setDialogueIndex(222);
+					STORY_Story.startOfDialogue();
+					STORY_Story.increaseDialogueIndex();
+					ENUM_Story_Status = storyStatus::TRUE_TWO;
+					ENUM_Game_Status = gameStatus::DIALOGUE;
+					play_audio("Last Confront");
 				}
 			}
 		}
@@ -1312,6 +1348,10 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 			while ((STR_Player_Page != "melee") && (STR_Player_Page != "skill") && (STR_Player_Page != "item") && (STR_Player_Page != "guard") && (STR_Player_Page != "analyse"))
 			{
 				show_battle_stats(PLAYER_Player);
+				if (ENEMY_Enemy.getName() == "Macko" || ENEMY_Enemy.getName() == "Max")
+				{
+					cout << dye::light_red("   Turns left: ") << dye::red(ENEMY_Enemy.getTurnsLeft()) << endl;
+				}
 				cout << "\n--> Melee";
 				if (PLAYER_Player.getMeleeAttackMultiplier() != 1.0) cout << " ^^";
 				cout << "\n--> Skill";
@@ -1431,93 +1471,131 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 					// Validates if the skill selected exists
 					for (Skill skill : PLAYER_Player.getSkills())
 					{
-						if ((STR_Battle_Choice == convert_string_tolower(skill.getName())) && (PLAYER_Player.getStamina() >= skill.getStaminaCost()))
+						if ((STR_Battle_Choice == convert_string_tolower(skill.getName())) && ((PLAYER_Player.getStamina() >= skill.getStaminaCost()) || (PLAYER_Player.getHealth() >= int(PLAYER_Player.getMaxHealth() * skill.getHealthCostMultiplier()) && skill.getType() == "Physical")))
 						{
 							Skill SKILL_Skill_Selected = skill;
-							system("CLS");
-							show_battle_stats(PLAYER_Player);
-							// Determines what the skill does
-							if (SKILL_Skill_Selected.getType() == "Support")
+							int INT_Repeat_Attack = SKILL_Skill_Selected.getPhysicalHitAmount();
+							int INT_Accumulated_Damage = 0;
+							for (int i = 0; i < INT_Repeat_Attack; i++)
 							{
-								// Heal the PLAYER_Player
-								PLAYER_Player.changeHealth(SKILL_Skill_Selected.getHPGain());
-								cout << "\n   You have healed yourself restoring " << SKILL_Skill_Selected.getHPGain() << " health\n\n";
-							}
-							else
-							{
-								// Damage the ENEMY_Enemy
-								int INT_Calculated_Damage; // Player Skill Damage after calculations
-								float FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Magic")->second) / 25); // Player Attribute "Magic" Multiplier
-								if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute() && PLAYER_Player.getMeleeWeapon().getAttributeType() == "Magic")
+								system("CLS");
+								show_battle_stats(PLAYER_Player);
+								// Determines what the skill does
+								if (SKILL_Skill_Selected.getType() == "Support")
 								{
-									FLT_Attribute_Multiplier *= PLAYER_Player.getMeleeWeapon().getBonusValue();
-								}
-
-								if (SKILL_Skill_Selected.getType() == "Nuclear")
-								{
-									INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
-									cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon all enemies dealing " << INT_Calculated_Damage << " damage ";
+									// Heal the PLAYER_Player
+									PLAYER_Player.changeHealth(SKILL_Skill_Selected.getHPGain());
+									cout << "\n   You have healed yourself restoring " << SKILL_Skill_Selected.getHPGain() << " health\n\n";
 								}
 								else
 								{
-									if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
-									{
-										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
-										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage ";
-									}
-									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
-									{
-										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 1.5 * PLAYER_Player.getMagicAttackMultiplier();
-										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage " << dye::black_on_yellow(" WEAK ") << " ";
-									}
-									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
-									{
-										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 0.5 * PLAYER_Player.getMagicAttackMultiplier();
-										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage " << dye::black_on_red(" RESIST ") << " ";
-									}
-									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
-									{
-										INT_Calculated_Damage = 0;
-										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage " << dye::black_on_grey(" BLOCK ") << " ";
-									}
-									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Abs")
-									{
-										INT_Calculated_Damage = -(SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier());
-										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " which absorbed your attack restoring " << -INT_Calculated_Damage << " health " << dye::black_on_green(" ABSORB ") << " ";
-									}
-									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rpl")
-									{
-										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
-										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " which repelled your attack dealing " << INT_Calculated_Damage << " damage to yourself " << dye::red_on_light_red(" REPEL ") << " ";
-									}
-								}
+									// Damage the ENEMY_Enemy
+									int INT_Calculated_Damage; // Player Skill Damage after calculations
+									float FLT_Attribute_Multiplier;
+									int INT_Critical_Chance = (rand() % 100) + 1; // Number 1-100, if >79 deal a Critical Hit
 
-								if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute() && PLAYER_Player.getMeleeWeapon().getAttributeType() == "Magic")
-								{
-									cout << dye::aqua_on_light_aqua(" BONUS ");
-								}
-								cout << "\n\n";
-								if (SKILL_Skill_Selected.getType() != "Nuclear")
-								{
-									if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rpl")
+									if (SKILL_Skill_Selected.getType() == "Physical")
 									{
-										PLAYER_Player.changeHealth(-INT_Calculated_Damage);
+										FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Strength")->second) / 25); // Player Attribute "Strength" Multiplier
 									}
-									else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Abs")
+									else
 									{
-										ENEMY_Enemy.changeHealth(INT_Calculated_Damage);
+										FLT_Attribute_Multiplier = 1 + (float(PLAYER_Player.getPlayerAttributes().find("Magic")->second) / 25); // Player Attribute "Magic" Multiplier
+									}
+									if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute() && PLAYER_Player.getMeleeWeapon().getAttributeType() == "Magic")
+									{
+										FLT_Attribute_Multiplier *= PLAYER_Player.getMeleeWeapon().getBonusValue();
+									}
+									if (SKILL_Skill_Selected.getType() == "Physical" && INT_Critical_Chance >= 85)
+									{
+										FLT_Attribute_Multiplier *= 2;
+									}
+
+									if (SKILL_Skill_Selected.getType() == "Nuclear")
+									{
+										INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
+										cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon all enemies dealing " << INT_Calculated_Damage << " damage ";
+									}
+									else
+									{
+										if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
+										{
+											INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
+											cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage ";
+										}
+										else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
+										{
+											INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 1.5 * PLAYER_Player.getMagicAttackMultiplier();
+											cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage " << dye::black_on_yellow(" WEAK ") << " ";
+										}
+										else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
+										{
+											INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * 0.5 * PLAYER_Player.getMagicAttackMultiplier();
+											cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage " << dye::black_on_red(" RESIST ") << " ";
+										}
+										else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
+										{
+											INT_Calculated_Damage = 0;
+											cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " dealing " << INT_Calculated_Damage << " damage " << dye::black_on_grey(" BLOCK ") << " ";
+										}
+										else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Abs")
+										{
+											INT_Calculated_Damage = -(SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier());
+											cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " which absorbed your attack restoring " << -INT_Calculated_Damage << " health " << dye::black_on_green(" ABSORB ") << " ";
+										}
+										else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rpl")
+										{
+											INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMagicAttackMultiplier();
+											cout << "\n   You casted " << SKILL_Skill_Selected.getName() << " upon " << ENEMY_Enemy.getName() << " which repelled your attack dealing " << INT_Calculated_Damage << " damage to yourself " << dye::red_on_light_red(" REPEL ") << " ";
+										}
+
+
+										if (SKILL_Skill_Selected.getPhysicalHitAmount() > 1)
+										{
+											INT_Accumulated_Damage += INT_Calculated_Damage;
+											cout << " " << dye::grey_on_white(" ") << dye::red_on_white(INT_Accumulated_Damage) << dye::grey_on_white(" Total ");
+										}
+
+										if (SKILL_Skill_Selected.getType() == "Physical" && INT_Critical_Chance >= 85)
+										{
+											cout << dye::blue_on_aqua(" CRITICAL ") << " ";
+										}
+										if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute() && PLAYER_Player.getMeleeWeapon().getAttributeType() == "Magic")
+										{
+											cout << dye::aqua_on_light_aqua(" BONUS ");
+										}
+									}
+									cout << "\n\n";
+									if (SKILL_Skill_Selected.getType() != "Nuclear")
+									{
+										if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Rpl")
+										{
+											PLAYER_Player.changeHealth(-INT_Calculated_Damage);
+										}
+										else if (ENEMY_Enemy.getElements().find(SKILL_Skill_Selected.getType())->second == "Abs")
+										{
+											ENEMY_Enemy.changeHealth(INT_Calculated_Damage);
+										}
+										else
+										{
+											ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
+										}
 									}
 									else
 									{
 										ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
 									}
 								}
-								else
-								{
-									ENEMY_Enemy.changeHealth(-INT_Calculated_Damage);
-								}
+								this_thread::sleep_for(chrono::milliseconds(225));
 							}
-							PLAYER_Player.changeStamina(-SKILL_Skill_Selected.getStaminaCost());
+							if (SKILL_Skill_Selected.getType() == "Physical")
+							{
+								PLAYER_Player.changeHealth(-int(PLAYER_Player.getMaxHealth() * SKILL_Skill_Selected.getHealthCostMultiplier()));
+							}
+							else
+							{
+								PLAYER_Player.changeStamina(-SKILL_Skill_Selected.getStaminaCost());
+							}
 							PLAYER_Player.setMagicAttackMultiplier(1.0);
 							BOOL_Player_Turn = false;
 							break;
@@ -1586,14 +1664,17 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 					if (INT_Critical_Chance > 79)
 					{
 						INT_Calculated_Damage = PLAYER_Player.getMeleeWeapon().getMeleeDamage() * FLT_Attribute_Multiplier * 2 * PLAYER_Player.getMeleeAttackMultiplier();
-						cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " landing a CRITICAL HIT dealing " << INT_Calculated_Damage << " damage ";
 					}
 					else
 					{
 						INT_Calculated_Damage = PLAYER_Player.getMeleeWeapon().getMeleeDamage() * FLT_Attribute_Multiplier * PLAYER_Player.getMeleeAttackMultiplier();
-						cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " dealing " << INT_Calculated_Damage << " damage ";
 					}
 
+					cout << "\n   You attacked " << ENEMY_Enemy.getName() << " using " << PLAYER_Player.getMeleeWeapon().getName() << " dealing " << INT_Calculated_Damage << " damage ";
+					if (INT_Critical_Chance >= 78)
+					{
+						cout << dye::blue_on_aqua(" CRITICAL ") << " ";
+					}
 					if ((PLAYER_Player.getMeleeWeapon().hasModifiedAttribute() && PLAYER_Player.getMeleeWeapon().getAttributeType() == "Melee") || (PLAYER_Player.getMeleeWeapon().hasElementCoverage() && ENEMY_Enemy.getElements().find(PLAYER_Player.getMeleeWeapon().getElementalType())->second == "Wk"))
 					{
 						cout << dye::aqua_on_light_aqua(" BONUS ");
@@ -1786,17 +1867,13 @@ void battle(Player& PLAYER_Player, Dungeon* DUNGEON_Current_Dungeon, Enemy ENEMY
 				system("CLS");
 				show_battle_stats(PLAYER_Player);
 				ENEMY_Enemy.update(PLAYER_Player);
-				cout << ENEMY_Enemy.getTurnPhrase();
 				this_thread::sleep_for(chrono::seconds(1));
-				system("CLS");
-				show_battle_stats(PLAYER_Player);
-				cout << ENEMY_Enemy.getTurnPhrase();
 
 				if (PLAYER_Player.getMeleeWeapon().hasModifiedAttribute() && PLAYER_Player.getMeleeWeapon().getAttributeType() == "Endurance")
 				{
 					cout << dye::aqua_on_light_aqua(" REDUCED ");
 				}
-				this_thread::sleep_for(chrono::seconds(2));
+				this_thread::sleep_for(chrono::seconds(1));
 				BOOL_Player_Turn = true;
 				break;
 			}
@@ -1924,6 +2001,14 @@ void play_audio(string to_play)
 	{
 		PlaySound(TEXT("music/battle_fake_macko.wav"), NULL, SND_ASYNC | SND_LOOP);
 	}
+	else if (to_play == "Boss - Macko")
+	{
+		PlaySound(TEXT("music/boss_macko.wav"), NULL, SND_ASYNC | SND_LOOP);
+		}
+	else if (to_play == "Boss - Max")
+	{
+		PlaySound(TEXT("music/boss_max.wav"), NULL, SND_ASYNC | SND_LOOP);
+		}
 }
 
 // Converts strings to LOWERCASE
@@ -2400,9 +2485,9 @@ void show_enemy_stats(Enemy ENEMY_Enemy)
 {
 	cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(ENEMY_Enemy.getName()) << dye::grey_on_white(" ") << dye::white_on_grey(" Lv ") << dye::white_on_grey(ENEMY_Enemy.getLevel()) << dye::white_on_grey(" ");
 	cout << dye::light_green("\n   HP: ") << dye::light_green(ENEMY_Enemy.getHealth()) << dye::light_green(" / ") << dye::light_green(ENEMY_Enemy.getMaxHealth()) << " | " << dye::light_aqua("STA: ") << dye::light_aqua(ENEMY_Enemy.getStamina()) << dye::light_aqua(" / ") << dye::light_aqua(ENEMY_Enemy.getMaxStamina()) << endl << endl;
-	vector<string> VEC_Element_Names = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless" };
+	vector<string> VEC_Element_Names = { "Physical", "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless" };
 	cout << "   " << dye::black_on_white(" Elements \n");
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		cout << ".  " << VEC_Element_Names[i] << ": ";
 		if (ENEMY_Enemy.getElements().find(VEC_Element_Names[i])->second == "Wk")
@@ -2422,7 +2507,47 @@ void show_enemy_stats(Enemy ENEMY_Enemy)
 	cout << "   " << dye::black_on_white(" Skills ");
 	for (int i = 0; i < ENEMY_Enemy.getSkills().size(); i++)
 	{
-		cout << "\n   " << dye::light_purple(ENEMY_Enemy.getSkills()[i].getName());
+		cout << "\n   ";
+		if (ENEMY_Enemy.getSkills()[i].getType() == "Physical")
+		{
+			cout << dye::grey(ENEMY_Enemy.getSkills()[i].getName());
+		}
+		else if (ENEMY_Enemy.getSkills()[i].getType() == "Fire")
+		{
+			cout << dye::light_red(ENEMY_Enemy.getSkills()[i].getName());
+		}
+		else if (ENEMY_Enemy.getSkills()[i].getType() == "Water")
+		{
+			cout << dye::light_blue(ENEMY_Enemy.getSkills()[i].getName());
+		}
+		else if (ENEMY_Enemy.getSkills()[i].getType() == "Ice")
+		{
+			cout << dye::blue(ENEMY_Enemy.getSkills()[i].getName());
+		}
+		else if (ENEMY_Enemy.getSkills()[i].getType() == "Electric")
+		{
+			cout << dye::yellow(ENEMY_Enemy.getSkills()[i].getName());
+		}
+		else if (ENEMY_Enemy.getSkills()[i].getType() == "Wind")
+		{
+			cout << dye::green(ENEMY_Enemy.getSkills()[i].getName());
+		}
+		else if (ENEMY_Enemy.getSkills()[i].getType() == "Curse")
+		{
+			cout << dye::light_purple(ENEMY_Enemy.getSkills()[i].getName());
+		}
+		else if (ENEMY_Enemy.getSkills()[i].getType() == "Bless")
+		{
+			cout << dye::light_yellow(ENEMY_Enemy.getSkills()[i].getName());
+		}
+		else if (ENEMY_Enemy.getSkills()[i].getType() == "Support")
+		{
+			cout << dye::light_green(ENEMY_Enemy.getSkills()[i].getName());
+		}
+		else if (ENEMY_Enemy.getSkills()[i].getType() == "Nuclear")
+		{
+			cout << dye::aqua(ENEMY_Enemy.getSkills()[i].getName());
+		}
 	}
 	cout << endl;
 }
@@ -2466,9 +2591,50 @@ void show_skill(Player PLAYER_Player, int INDEX_Skill, Enemy ENEMY_Enemy)
 		}
 	}
 
-	cout << "\n   Type: " << TEMP_Player_Skills[INT_INDEX].getType() << endl;
+	cout << "\n   Type: ";
+	if (TEMP_Player_Skills[INT_INDEX].getType() == "Physical")
+	{
+		cout << dye::grey(TEMP_Player_Skills[INT_INDEX].getType());
+	}
+	else if (TEMP_Player_Skills[INT_INDEX].getType() == "Fire")
+	{
+		cout << dye::light_red(TEMP_Player_Skills[INT_INDEX].getType());
+	}
+	else if (TEMP_Player_Skills[INT_INDEX].getType() == "Water")
+	{
+		cout << dye::light_blue(TEMP_Player_Skills[INT_INDEX].getType());
+	}
+	else if (TEMP_Player_Skills[INT_INDEX].getType() == "Ice")
+	{
+		cout << dye::blue(TEMP_Player_Skills[INT_INDEX].getType());
+	}
+	else if (TEMP_Player_Skills[INT_INDEX].getType() == "Electric")
+	{
+		cout << dye::yellow(TEMP_Player_Skills[INT_INDEX].getType());
+	}
+	else if (TEMP_Player_Skills[INT_INDEX].getType() == "Wind")
+	{
+		cout << dye::green(TEMP_Player_Skills[INT_INDEX].getType());
+	}
+	else if (TEMP_Player_Skills[INT_INDEX].getType() == "Curse")
+	{
+		cout << dye::light_purple(TEMP_Player_Skills[INT_INDEX].getType());
+	}
+	else if (TEMP_Player_Skills[INT_INDEX].getType() == "Bless")
+	{
+		cout << dye::light_yellow(TEMP_Player_Skills[INT_INDEX].getType());
+	}
+	else if (TEMP_Player_Skills[INT_INDEX].getType() == "Support")
+	{
+		cout << dye::light_green(TEMP_Player_Skills[INT_INDEX].getType());
+	}
+	else if (TEMP_Player_Skills[INT_INDEX].getType() == "Nuclear")
+	{
+		cout << dye::aqua(TEMP_Player_Skills[INT_INDEX].getType());
+	}
+	cout << endl;
 	cout << "   Desc: " << TEMP_Player_Skills[INT_INDEX].getDesc() << endl;
-	cout << dye::light_aqua("   STA: ") << dye::light_aqua(TEMP_Player_Skills[INT_INDEX].getStaminaCost()) << endl;
+
 	if (TEMP_Player_Skills[INT_INDEX].getName() == "Heal" || TEMP_Player_Skills[INT_INDEX].getName() == "Healan" || TEMP_Player_Skills[INT_INDEX].getName() == "Healadia")
 	{
 		cout << dye::green("   HP+: ") << dye::green(TEMP_Player_Skills[INT_INDEX].getHPGain()) << endl;
@@ -2476,6 +2642,16 @@ void show_skill(Player PLAYER_Player, int INDEX_Skill, Enemy ENEMY_Enemy)
 	else
 	{
 		cout << dye::light_red("   DMG: ") << dye::light_red(TEMP_Player_Skills[INT_INDEX].getBaseDamage()) << endl;
+	}
+
+	if (TEMP_Player_Skills[INT_INDEX].getType() == "Physical")
+	{
+		cout << dye::light_green("   HP: ") << dye::light_green(int(PLAYER_Player.getMaxHealth() * TEMP_Player_Skills[INT_INDEX].getHealthCostMultiplier())) << endl;
+		cout << dye::light_yellow("   Hits: ") << dye::light_yellow(TEMP_Player_Skills[INT_INDEX].getPhysicalHitAmount()) << endl;
+	}
+	else
+	{
+		cout << dye::light_aqua("   STA: ") << dye::light_aqua(TEMP_Player_Skills[INT_INDEX].getStaminaCost()) << endl;
 	}
 	cout << "   [Skill " << (INT_INDEX + 1) << " of " << TEMP_Player_Skills.size() << "]";
 }

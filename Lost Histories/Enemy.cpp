@@ -7,13 +7,21 @@ Enemy::Enemy() { }
 
 Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> nSkills, bool nBoss, int nDamage) : BattleStat(nName, nLevel, nHealth, nStamina)
 {
-	this->MAP_Elements = { {"Fire", "-"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} };
+	this->MAP_Elements = { { "Physical", "-" }, { "Fire", "-" }, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} };
 	this->VEC_Skills = nSkills;
 	this->ITEM_Dropped_Item = this->getItemFromLootTable();
 	this->BOOL_Boss = nBoss;
 	this->INT_Damage = nDamage;
 	this->INT_Boss_Stat_Cycle = 2;
 	this->ENUM_State = battleState::WAITING;
+	if (nName == "Macko")
+	{
+		this->INT_Turns_Left = 30;
+	}
+	else if (nName == "Max")
+	{
+		this->INT_Turns_Left = 40;
+	}
 }
 
 vector<Skill> Enemy::getSkills()
@@ -420,6 +428,14 @@ Item* Enemy::getItemFromLootTable()
 	{
 		VEC_Enemy_Drops = { new Item("Domain F5 Key", "Are you sure you want this? Can be used for something.", 3) };
 		}
+	else if (this->getName() == "Domain Keeper 3")
+	{
+		VEC_Enemy_Drops = { new Item("Domain F9 Key", "Are you sure you want this? Can be used for something.", 3) };
+		}
+	else if (this->getName() == "Domain Keeper 4")
+	{
+		VEC_Enemy_Drops = { new Item("Domain F14 Key", "Are you sure you want this? Can be used for something.", 3) };
+		}
 
 	// Dungeon Bosses
 	else if (this->getName() == "Russian Sergeant")
@@ -462,6 +478,14 @@ Item* Enemy::getItemFromLootTable()
 	{
 		VEC_Enemy_Drops = { new Item("Tartarus Figurine", "Special edition from the hit game Persona 3!", 5) };
 		}
+	else if (this->getName() == "Macko")
+	{
+		VEC_Enemy_Drops = { new ItemSkill("Aigis Figurine", "A figure of the character Aigis, from Persona 3!", 5, Skill("Akasha Arts")) };
+		}
+	else if (this->getName() == "Max")
+	{
+		VEC_Enemy_Drops = { new ItemMelee("Sword of Lost Histories", "You really did it! A token of my appreciation -Max", 5, 444, true) };
+		}
 
 	return VEC_Enemy_Drops[rand() % VEC_Enemy_Drops.size()];
 }
@@ -481,6 +505,11 @@ int Enemy::getDamage()
 	return this->INT_Damage;
 }
 
+int Enemy::getTurnsLeft()
+{
+	return this->INT_Turns_Left;
+}
+
 void Enemy::setHealth()
 {
 	this->INT_Health = int(float(this->INT_Health) * ((float(INT_Level) / 10) + 1));
@@ -497,250 +526,281 @@ void Enemy::elementSetter()
 	// Normal Enemies
 	if (this->getName() == "Ice Monster")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, { "Fire", "Wk" }, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Ice Fiend")
 	{
-		this->setElements({ {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Bergmite")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Wasteland Spirit")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Wk"} });
 	}
 	else if (this->getName() == "Patrol Soldier")
 	{
-		this->setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "-"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Lab Fish")
 	{
-		this->setElements({ {"Fire", "-"}, {"Water", "Rst"}, {"Ice", "-"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "-"}, {"Water", "Rst"}, {"Ice", "-"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Wk"} });
 	}
 	else if (this->getName() == "Royal Guard")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Rpl"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Rpl"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "Wk"} });
 	}
 	else if (this->getName() == "Armed Soldier")
 	{
-		this->setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Rpl"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Rpl"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Sharkman")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Abs"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "Rst"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Abs"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "Rst"} });
 	}
 	else if (this->getName() == "Reanimated Entity")
 	{
-		this->setElements({ {"Fire", "-"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "Wk"}, {"Curse", "Rst"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "-"}, {"Water", "Nul"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "Wk"}, {"Curse", "Rst"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "British Soldier")
 	{
-		this->setElements({ {"Fire", "-"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Rpl"}, {"Wind", "Nul"}, {"Curse", "Wk"}, {"Bless", "Abs"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "-"}, {"Water", "Rst"}, {"Ice", "Wk"}, {"Electric", "Rpl"}, {"Wind", "Nul"}, {"Curse", "Wk"}, {"Bless", "Abs"} });
 	}
 	else if (this->getName() == "Unknown Creature")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 	}
 	else if (this->getName() == "Nuclear Spirit")
 	{
-		this->setElements({ {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "Rst"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Nul"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Corrupt Researcher")
 	{
-		this->setElements({ {"Fire", "Abs"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Wk"}, {"Bless", "Abs"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Abs"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Wk"}, {"Bless", "Abs"} });
 	}
 	else if (this->getName() == "German Soldier")
 	{
-		this->setElements({ {"Fire", "Rst"}, {"Water", "Wk"}, {"Ice", "Wk"}, {"Electric", "Rpl"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rst"}, {"Water", "Wk"}, {"Ice", "Wk"}, {"Electric", "Rpl"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "French Soldier")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rpl"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rpl"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "American Soldier")
 	{
-		this->setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "Abs"}, {"Electric", "Nul"}, {"Wind", "Wk"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "-"}, {"Water", "-"}, {"Ice", "Abs"}, {"Electric", "Nul"}, {"Wind", "Wk"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 	}
 	else if (this->getName() == "Lava Spirit")
 	{
-		this->setElements({ {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "Rpl"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "Rpl"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Japanese Soldier")
 	{
-		this->setElements({ {"Fire", "-"}, {"Water", "Abs"}, {"Ice", "-"}, {"Electric", "Wk"}, {"Wind", "Rpl"}, {"Curse", "Wk"}, {"Bless", "Abs"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "-"}, {"Water", "Abs"}, {"Ice", "-"}, {"Electric", "Wk"}, {"Wind", "Rpl"}, {"Curse", "Wk"}, {"Bless", "Abs"} });
 	}
 	else if (this->getName() == "Fire Prowler")
 	{
-		this->setElements({ {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Rpl"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Rpl"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Master's Servant")
 	{
-		this->setElements({ {"Fire", "Rpl"}, {"Water", "-"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Abs"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rpl"}, {"Water", "-"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Abs"}, {"Bless", "Wk"} });
 	}
 	else if (this->getName() == "ErRoR")
 	{
-		this->setElements({ {"Fire", "Nul"}, {"Water", "Nul"}, {"Ice", "Nul"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Nul"}, {"Water", "Nul"}, {"Ice", "Nul"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
 	}
 	
 	// Mini Bosses
 	else if (this->getName() == "Snow Golem")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "Abs"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "-"}, {"Ice", "Abs"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Duty Soldier")
 	{
-		this->setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "-"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Reanimated Mermaid")
 	{
-		this->setElements({ {"Fire", "Nul"}, {"Water", "Abs"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Nul"}, {"Water", "Abs"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "Reanimated Jellyfisherman")
 	{
-		this->setElements({ {"Fire", "-"}, {"Water", "Abs"}, {"Ice", "-"}, {"Electric", "Abs"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "-"}, {"Water", "Abs"}, {"Ice", "-"}, {"Electric", "Abs"}, {"Wind", "-"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 	}
 	else if (this->getName() == "Radioactive Atlantis Survivor")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Rpl"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Rpl"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
 	else if (this->getName() == "Radioactive Atlantis Guard")
 	{
-		this->setElements({ {"Fire", "Rst"}, {"Water", "Rpl"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rst"}, {"Water", "Rpl"}, {"Ice", "Wk"}, {"Electric", "-"}, {"Wind", "Rst"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
 	else if (this->getName() == "Mutated Lab Researcher")
 	{
-		this->setElements({ {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Wk"}, {"Wind", "Nul"}, {"Curse", "Abs"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Abs"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Wk"}, {"Wind", "Nul"}, {"Curse", "Abs"}, {"Bless", "Wk"} });
 		}
 	else if (this->getName() == "Mutated Security Sector 4B")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Rst"}, {"Ice", "-"}, {"Electric", "Rpl"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Rst"}, {"Ice", "-"}, {"Electric", "Rpl"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Rpl"} });
 		}
 	else if (this->getName() == "Mutated Security Sector 16A")
 	{
-		this->setElements({ {"Fire", "Rst"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rst"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "-"} });
 		}
 	else if (this->getName() == "Mutated Security Sector 46D")
 	{
-		this->setElements({ {"Fire", "Nul"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Nul"}, {"Water", "-"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "-"} });
 		}
 	else if (this->getName() == "Ghost of Katie Cooper")
 	{
-		this->setElements({ {"Fire", "Rpl"}, {"Water", "-"}, {"Ice", "Rpl"}, {"Electric", "-"}, {"Wind", "Rpl"}, {"Curse", "Wk"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rpl"}, {"Water", "-"}, {"Ice", "Rpl"}, {"Electric", "-"}, {"Wind", "Rpl"}, {"Curse", "Wk"}, {"Bless", "Rpl"} });
 		}
 	else if (this->getName() == "Rice Monster of Tooley")
 	{
-		this->setElements({ {"Fire", "Rpl"}, {"Water", "-"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "-"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rpl"}, {"Water", "-"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "-"}, {"Bless", "Wk"} });
 		}
 	else if (this->getName() == "Mucus Poocus")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Rpl"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Rpl"}, {"Electric", "Rst"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} });
 		}
 	else if (this->getName() == "Performative Boxer")
 	{
-		this->setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Wk"} });
 		}
 	else if (this->getName() == "Domain Keeper 1")
 	{
-		this->setElements({ {"Fire", "Nul"}, {"Water", "-"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Wk"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Nul"}, {"Water", "-"}, {"Ice", "Nul"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Wk"}, {"Bless", "Rpl"} });
 		}
 	else if (this->getName() == "Domain Keeper 2")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Rpl"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Rpl"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "-"} });
+		}
+	else if (this->getName() == "Domain Keeper 3")
+	{
+		this->setElements({ { "Physical", "Rst" }, {"Fire", "-"}, {"Water", "-"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "Nul"} });
+		}
+	else if (this->getName() == "Domain Keeper 4")
+	{
+		this->setElements({ { "Physical", "Nul" }, {"Fire", "Nul"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Rpl"}, {"Wind", "Rst"}, {"Curse", "-"}, {"Bless", "Rst"} });
 		}
 
 	// Dungeon Bosses
 	else if (this->getName() == "Russian Sergeant")
 	{
-		this->setElements({ {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rpl"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rst"}, {"Water", "-"}, {"Ice", "Rpl"}, {"Electric", "Wk"}, {"Wind", "Rst"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
 	}
 	else if (this->getName() == "Reawoken Guardian of Atlantis")
 	{
-		this->setElements({ {"Fire", "Rst"}, {"Water", "Abs"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rpl"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rst"}, {"Water", "Abs"}, {"Ice", "Rst"}, {"Electric", "Wk"}, {"Wind", "Rpl"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
 	}
 	else if (this->getName() == "Master of the Facility")
 	{
-		this->setElements({ {"Fire", "Abs"}, {"Water", "Abs"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Nul"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Abs"}, {"Water", "Abs"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Nul"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 		}
 	else if (this->getName() == "Reincarnation of George Shaw")
 	{
-		this->setElements({ {"Fire", "Nul"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Abs"}, {"Wind", "Nul"}, {"Curse", "Wk"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Nul"}, {"Water", "Wk"}, {"Ice", "-"}, {"Electric", "Abs"}, {"Wind", "Nul"}, {"Curse", "Wk"}, {"Bless", "-"} });
 		}
 	else if (this->getName() == "The Mastermind")
 	{
 		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with repellent to everything
-		this->setElements({ {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
 	else if (this->getName() == "Mutated Mastermind")
 	{
 		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with repellent to everything
-		this->setElements({ {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
 	else if (this->getName() == "Keeper of The Device")
 	{
 		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with repellent to everything
-		this->setElements({ {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "Rpl" }, {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 	}
 	else if (this->getName() == "Tyson Mondeo")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Rpl"}, {"Curse", "-"}, {"Bless", "-"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Nul"}, {"Ice", "Wk"}, {"Electric", "Nul"}, {"Wind", "Rpl"}, {"Curse", "-"}, {"Bless", "-"} });
 	}
 	else if (this->getName() == "???")
 	{
-		this->setElements({ {"Fire", "-"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "Wk" }, {"Fire", "-"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 		}
 	else if (this->getName() == "Macko?")
 	{
 		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with nullify to everything
-		this->setElements({ {"Fire", "Nul"}, {"Water", "Nul"}, {"Ice", "Nul"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
-	}
+		this->setElements({ { "Physical", "Rpl" }, {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		}
+	else if (this->getName() == "Macko")
+	{
+		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with nullify to everything
+		this->setElements({ { "Physical", "Rpl" }, {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		}
+	else if (this->getName() == "Max")
+	{
+		// Gimmick: Every 2 turns, it's element coverage changes randomly, first 2 turns starts with nullify to everything
+		this->setElements({ { "Physical", "Rpl" }, {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		}
 
 	// Rare Enemies
 	else if (this->getName() == "Gold Entity I")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Wk"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Wk"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
 	}
 	else if (this->getName() == "Gold Entity II")
 	{
-		this->setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 	}
 	else if (this->getName() == "Gold Entity III")
 	{
-		this->setElements({ {"Fire", "Nul"}, {"Water", "Abs"}, {"Ice", "Nul"}, {"Electric", "Abs"}, {"Wind", "Nul"}, {"Curse", "Abs"}, {"Bless", "Nul"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Nul"}, {"Water", "Abs"}, {"Ice", "Nul"}, {"Electric", "Abs"}, {"Wind", "Nul"}, {"Curse", "Abs"}, {"Bless", "Nul"} });
 	}
 	else if (this->getName() == "Gold Entity IV")
 	{
-		this->setElements({ {"Fire", "Nul"}, {"Water", "Nul"}, {"Ice", "Nul"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Nul"}, {"Water", "Nul"}, {"Ice", "Nul"}, {"Electric", "Nul"}, {"Wind", "Nul"}, {"Curse", "Nul"}, {"Bless", "Nul"} });
 		}
 	else if (this->getName() == "Gold Entity V")
 	{
-		this->setElements({ {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 		}
 	else if (this->getName() == "Gold Entity VI")
 	{
-		this->setElements({ {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Wk"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Wk"}, {"Water", "Wk"}, {"Ice", "Wk"}, {"Electric", "Wk"}, {"Wind", "Wk"}, {"Curse", "Wk"}, {"Bless", "Wk"} });
 		}
 	else if (this->getName() == "Gold Entity VII")
 	{
-		this->setElements({ {"Fire", "Rpl"}, {"Water", "Abs"}, {"Ice", "Rpl"}, {"Electric", "Abs"}, {"Wind", "Rpl"}, {"Curse", "Abs"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rpl"}, {"Water", "Abs"}, {"Ice", "Rpl"}, {"Electric", "Abs"}, {"Wind", "Rpl"}, {"Curse", "Abs"}, {"Bless", "Rpl"} });
 		}
 	else if (this->getName() == "Gold Entity VIII")
 	{
-		this->setElements({ {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rpl"}, {"Water", "Rpl"}, {"Ice", "Rpl"}, {"Electric", "Rpl"}, {"Wind", "Rpl"}, {"Curse", "Rpl"}, {"Bless", "Rpl"} });
 		}
 	else if (this->getName() == "Gold Entity IX")
 	{
-		this->setElements({ {"Fire", "Abs"}, {"Water", "Abs"}, {"Ice", "Abs"}, {"Electric", "Abs"}, {"Wind", "Abs"}, {"Curse", "Abs"}, {"Bless", "Abs"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Abs"}, {"Water", "Abs"}, {"Ice", "Abs"}, {"Electric", "Abs"}, {"Wind", "Abs"}, {"Curse", "Abs"}, {"Bless", "Abs"} });
 		}
 	else if (this->getName() == "Gold Entity X")
 	{
-		this->setElements({ {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
+		this->setElements({ { "Physical", "-" }, {"Fire", "Rst"}, {"Water", "Rst"}, {"Ice", "Rst"}, {"Electric", "Rst"}, {"Wind", "Rst"}, {"Curse", "Rst"}, {"Bless", "Rst"} });
 		}
 }
 
 void Enemy::update(Player& PLAYER_Player)
 {
+	if (this->STR_Name == "Macko" || this->STR_Name == "Max")
+	{
+		this->INT_Turns_Left -= 1;
+		if (this->INT_Turns_Left == 0)
+		{
+			this->ENUM_State = battleState::ATTACKING;
+		}
+	}
+	if (this->INT_Boss_Stat_Cycle == 0)
+	{
+		this->ENUM_State = battleState::WAITING;
+	}
+	this->INT_Boss_Stat_Cycle += rand() % 3;
 	srand(time(0));
 	vector<string> VEC_Waiting_Phases = { (this->STR_Name + " is waiting..."), (this->STR_Name + " is staring at you intensly..."),  (this->STR_Name + " is planning their next move...") };
 	
@@ -748,45 +808,48 @@ void Enemy::update(Player& PLAYER_Player)
 	{
 		this->ENUM_State = battleState::ATTACKING;
 	}
-	
-	if (this->ENUM_State == battleState::WAITING)
+	if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind" || this->getName() == "Keeper of The Device" || this->getName() == "Macko?" || this->getName() == "Macko" || this->getName() == "Max")
 	{
-		if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind" || this->getName() == "Keeper of The Device" || this->getName() == "Macko?")
+		if (this->INT_Boss_Stat_Cycle >= 8)
 		{
-			this->INT_Boss_Stat_Cycle++;
-			if (this->INT_Boss_Stat_Cycle == 4)
+			this->ENUM_State = battleState::AILMENTCHANGE;
+			this->INT_Boss_Stat_Cycle = 0;
+			vector<string> VEC_Ailments;
+			vector<Skill> VEC_Skills_Available;
+			if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind" || this->getName() == "Keeper of The Device")
 			{
-				this->INT_Boss_Stat_Cycle = 0;
-				vector<string> VEC_Ailments;
-				vector<Skill> VEC_Skills_Available;
-				if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind" || this->getName() == "Keeper of The Device")
-				{
-					VEC_Ailments = { "-", "Wk", "Rst", "Rpl", "Abs", "Nul" };
-					VEC_Skills_Available = { Skill("Flamadia"), Skill("Meflamadia"), Skill("Flamadiaran"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Freezadiaran"), Skill("Splashadia"), Skill("Mesplashadia"), Skill("Splashadiaran"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Zapadiaran"), Skill("Gustadia"), Skill("Megustadia"), Skill("Gustadiaran"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Freila"), Skill("Freiladia"), Skill("Healan") };
-				}
-				else
-				{
-					VEC_Ailments = { "-", "Rst", "Rpl", "Nul" };
-					VEC_Skills_Available = { Skill("Flamadiaran"), Skill("Inferno"), Skill("Freezadiaran"), Skill("Blizzard"), Skill("Splashadiaran"), Skill("Tsunami"), Skill("Zapadiaran"), Skill("Thunder Bolt"), Skill("Gustadiaran"), Skill("Crucifix of Death"), Skill("Hexaonia"), Skill("Fist of Justice"), Skill("Blightaonia"), Skill("Freiladia"), Skill("Freiladiaran"), Skill("Healan") };
-
-				}
-				this->VEC_Skills = { };
-				for (int i = 0; i < 8; i++)
-				{
-					VEC_Skills.push_back(VEC_Skills_Available[rand() % VEC_Skills_Available.size()]);
-				}
-				this->setElements({ {"Fire", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Water", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Ice", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Electric", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Wind", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Curse", VEC_Ailments[rand() % VEC_Ailments.size()]}, {"Bless", VEC_Ailments[rand() % VEC_Ailments.size()]}});
-				this->STR_Turn_Phrase = "\n   " + this->getName() + " is shifting their elemental coverage and magic attacks!";
+				VEC_Ailments = { "-", "Wk", "Rst", "Rpl", "Abs", "Nul" };
+				VEC_Skills_Available = { Skill("Decisive Strike"), Skill("Impulse Strike"), Skill("Flamadia"), Skill("Meflamadia"), Skill("Flamadiaran"), Skill("Freezadia"), Skill("Mefreezadia"), Skill("Freezadiaran"), Skill("Splashadia"), Skill("Mesplashadia"), Skill("Splashadiaran"), Skill("Zapadia"), Skill("Mezapadia"), Skill("Zapadiaran"), Skill("Gustadia"), Skill("Megustadia"), Skill("Gustadiaran"), Skill("Hexaon"), Skill("Mehexaon"), Skill("Blightaon"), Skill("Meblightaon"), Skill("Freila"), Skill("Freiladia"), Skill("Healan") };
+			}
+			else if (this->getName() == "Max")
+			{
+				VEC_Ailments = { "-", "Rst", "Rpl", "Nul" };
+				VEC_Skills_Available = { Skill("Decaying Chucks"), Skill("Akasha Arts"), Skill("Gaming Splash"), Skill("Inferno"), Skill("Volcanic Blast"), Skill("Blizzard"), Skill("Ice Age"), Skill("Tsunami"), Skill("Waternado"), Skill("Thunder Bolt"), Skill("Voltage Shock"), Skill("Hurricane"), Skill("Whirlwind"), Skill("Crucifix of Death"), Skill("Fist of Justice"), Skill("End of the World"), Skill("Healadia") };
 			}
 			else
 			{
-				this->STR_Turn_Phrase = "\n   " + VEC_Waiting_Phases[rand() % 3];
+				VEC_Ailments = { "-", "Rst", "Rpl", "Nul" };
+				VEC_Skills_Available = { Skill("Decisive Strike"), Skill("God's Power Punch"), Skill("Decaying Chucks"), Skill("Flamadiaran"), Skill("Inferno"), Skill("Freezadiaran"), Skill("Blizzard"), Skill("Splashadiaran"), Skill("Tsunami"), Skill("Zapadiaran"), Skill("Thunder Bolt"), Skill("Gustadiaran"), Skill("Hurricane"), Skill("Crucifix of Death"), Skill("Hexaonia"), Skill("Fist of Justice"), Skill("Blightaonia"), Skill("Freiladia"), Skill("Freiladiaran"), Skill("Healan") };
 			}
+			this->VEC_Skills = { };
+			vector<string>VEC_Skills_Available_Names = { };
+			for (Skill name : VEC_Skills_Available)
+			{
+				VEC_Skills_Available_Names.push_back(name.getName());
+			}
+			for (int i = 0; i < 8; i++)
+			{
+				string STR_Random_Random = VEC_Skills_Available_Names[rand() % VEC_Skills_Available_Names.size()];
+				VEC_Skills_Available_Names.erase(remove(VEC_Skills_Available_Names.begin(), VEC_Skills_Available_Names.end(), STR_Random_Random), VEC_Skills_Available_Names.end());
+				VEC_Skills.push_back(Skill(STR_Random_Random));
+			}
+			this->setElements({ {"Physical", VEC_Ailments[rand() % VEC_Ailments.size()]} ,{"Fire", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Water", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Ice", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Electric", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Wind", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Curse", VEC_Ailments[rand() % VEC_Ailments.size()]}, {"Bless", VEC_Ailments[rand() % VEC_Ailments.size()]} });
+			cout << "\n   " << this->getName() + " is shifting their elemental coverage and magic attacks!";
 		}
-		else
-		{
-			this->STR_Turn_Phrase = "\n   " + VEC_Waiting_Phases[rand() % 3];
-		}
+	}
+	if (this->ENUM_State == battleState::WAITING)
+	{
+		cout << "\n   " << VEC_Waiting_Phases[rand() % 3];
 		this->ENUM_State = battleState::ATTACKING;
 	}
 	else if (this->ENUM_State == battleState::ATTACKING)
@@ -798,7 +861,14 @@ void Enemy::update(Player& PLAYER_Player)
 			{
 				Skill SKILL_Skill_Selected;
 				SKILL_Skill_Selected = this->VEC_Skills[(rand() % this->VEC_Skills.size())];
+				if (this->INT_Turns_Left == 0 && (this->STR_Name == "Macko" || this->STR_Name == "Max"))
+				{
+					SKILL_Skill_Selected = Skill("Death");
+				}
 				int INT_Calculated_Damage;
+				int INT_Repeated_Attack = SKILL_Skill_Selected.getPhysicalHitAmount();
+				int INT_Accumulated_Damage = 0;
+				int INT_Critical_Chance = (rand() % 100) + 1;
 				float FLT_Attribute_Multiplier = 1 - (float(PLAYER_Player.getPlayerAttributes().find("Endurance")->second) / 200);
 				float FLT_Guard_Multiplier;
 				if (PLAYER_Player.isGuard())
@@ -831,60 +901,91 @@ void Enemy::update(Player& PLAYER_Player)
 				{
 					INT_Boss_Multiplier = 1.75;
 				}
-				if (this->getStamina() >= SKILL_Skill_Selected.getStaminaCost() && INT_Skill_Chance > 3)
+				else if (this->getName() == "Macko" || this->getName() == "Max")
 				{
-					if (SKILL_Skill_Selected.getType() == "Support")
+					INT_Boss_Multiplier = 2;
+				}
+				if (SKILL_Skill_Selected.getType() == "Physical" && INT_Critical_Chance >= 85)
+				{
+					INT_Boss_Multiplier *= 2;
+				}
+				if (this->getStamina() >= SKILL_Skill_Selected.getStaminaCost() && INT_Skill_Chance > 3 || SKILL_Skill_Selected.getType() == "Physical")
+				{
+					for (int i = 0; i < INT_Repeated_Attack; i++)
 					{
-						int INT_HP_Gain = SKILL_Skill_Selected.getHPGain() * 3;
-						this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " restoring " + to_string(INT_HP_Gain) + " HP";
-						this->INT_Health += INT_HP_Gain;
-						if (this->INT_Health > this->INT_Max_Health)
+						system("CLS");	cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(PLAYER_Player.getName()) << dye::grey_on_white(" ");
+						cout << dye::light_green("\n   HP: ") << dye::light_green(PLAYER_Player.getHealth()) << dye::light_green(" / ") << dye::light_green(PLAYER_Player.getMaxHealth()) << " | " << dye::light_aqua("STA: ") << dye::light_aqua(PLAYER_Player.getStamina()) << dye::light_aqua(" / ") << dye::light_aqua(PLAYER_Player.getMaxStamina()) << endl << endl;
+						if (SKILL_Skill_Selected.getType() == "Support")
 						{
-							this->INT_Health = this->INT_Max_Health;
+							int INT_HP_Gain = SKILL_Skill_Selected.getHPGain() * 3;
+							cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " restoring " << to_string(INT_HP_Gain) << " HP";
+							this->INT_Health += INT_HP_Gain;
+							if (this->INT_Health > this->INT_Max_Health)
+							{
+								this->INT_Health = this->INT_Max_Health;
+							}
 						}
+						else
+						{
+							if (SKILL_Skill_Selected.getType() == "Nuclear")
+							{
+								INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
+								cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage ";
+							}
+							else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
+							{
+								INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
+								cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage ";
+							}
+							else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
+							{
+								INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 1.5 * INT_Boss_Multiplier;
+								cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage " << dye::black_on_yellow(" WEAK ") << " ";
+							}
+							else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
+							{
+								INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 0.5 * INT_Boss_Multiplier;
+								cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage " << dye::black_on_red(" RESIST ") << " ";
+							}
+							else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
+							{
+								INT_Calculated_Damage = 0;
+								cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage " << dye::black_on_grey(" BLOCK ") << " ";
+							}
+							PLAYER_Player.changeHealth(-INT_Calculated_Damage);
+
+							if (SKILL_Skill_Selected.getPhysicalHitAmount() > 1)
+							{
+								INT_Accumulated_Damage += INT_Calculated_Damage;
+								cout << " " << dye::grey_on_white(" ") << dye::red_on_white(INT_Accumulated_Damage) << dye::grey_on_white(" Total ");
+							}
+							if (SKILL_Skill_Selected.getType() == "Physical" && INT_Critical_Chance >= 85)
+							{
+								cout << dye::blue_on_aqua(" CRITICAL ") << " ";
+							}
+						}
+						this_thread::sleep_for(chrono::milliseconds(250));
 					}
-					else
+					if (SKILL_Skill_Selected.getType() != "Physical")
 					{
-						if (SKILL_Skill_Selected.getType() == "Nuclear")
-						{
-							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
-							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage ";
-						}
-						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
-						{
-							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
-							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage ";
-						}
-						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
-						{
-							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 1.5 * INT_Boss_Multiplier;
-							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (WEAK) ";
-						}
-						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
-						{
-							INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 0.5 * INT_Boss_Multiplier;
-							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (RESIST) ";
-						}
-						else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
-						{
-							INT_Calculated_Damage = 0;
-							this->STR_Turn_Phrase = "\n   " + this->STR_Name + " casted " + SKILL_Skill_Selected.getName() + " dealing " + to_string(INT_Calculated_Damage) + " damage (BLOCK) ";
-						}
-						PLAYER_Player.changeHealth(-INT_Calculated_Damage);
+						this->INT_Stamina -= SKILL_Skill_Selected.getStaminaCost();
 					}
-					this->INT_Stamina -= SKILL_Skill_Selected.getStaminaCost();
 				}
 				else
 				{
 					INT_Calculated_Damage = this->getDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
-					this->STR_Turn_Phrase = "\n   " + this->STR_Name + " attacked you dealing " + to_string(INT_Calculated_Damage) + " damage ";
+					cout << "\n   " << this->STR_Name << " attacked you dealing " << INT_Calculated_Damage << " damage ";
 					PLAYER_Player.changeHealth(-INT_Calculated_Damage);
+					if (INT_Critical_Chance >= 85)
+					{
+						cout << dye::blue_on_aqua(" CRITICAL ") << " ";
+					}
 				}
 			}
 		}
 		else
 		{
-			this->STR_Turn_Phrase = "\n   " + this->STR_Name + " missed their attack!";
+			cout << "\n   " << this->STR_Name << " missed their attack!";
 		}
 		this->ENUM_State = battleState::WAITING;
 	}

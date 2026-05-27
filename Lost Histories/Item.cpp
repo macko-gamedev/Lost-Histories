@@ -146,8 +146,8 @@ void Item::applyModifications()
 	else if (INT_Modified_Chance > 10)
 	{
 		// Picks an Element to deal bonus damage to with a multiplier between 5% - 40%
-		vector<string> VEC_Elements = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless" };
-		this->STR_Elemental_Type = VEC_Elements[rand() % 7];
+		vector<string> VEC_Elements = { "Physical", "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless" };
+		this->STR_Elemental_Type = VEC_Elements[rand() % 8];
 		this->FLT_Bonus_Value = VEC_Bonus_Values[rand() % VEC_Bonus_Values.size()];
 		this->BOOL_Has_Element = true;
 	}

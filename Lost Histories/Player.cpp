@@ -36,8 +36,8 @@ Player::Player(string name, int INT_Level, int INT_Health, int INT_Stamina) : Ba
 	Nul - Deals 0.0x damage
 	Rpl - Attacks self
 	*/
-	this->MAP_Elements = { {"Fire", "-"}, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} };
-	this->VEC_Element_Names = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless", "Support", "Nuclear" };
+	this->MAP_Elements = { {"Physical", "-" }, { "Fire", "-" }, {"Water", "-"}, {"Ice", "-"}, {"Electric", "-"}, {"Wind", "-"}, {"Curse", "-"}, {"Bless", "-"} };
+	this->VEC_Element_Names = { "Physical", "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless", "Support", "Nuclear" };
 
 	// Items : Giving the player a backpack by default and equipping the player with a basic melee weapon
 	this->VEC_Items = { new Item("Torn Backpack", "Your trusty backpack for storing items, has seen better days", 1), new ItemMelee("Sharp Stick", "A long wooden stick with a pointy end", 1, 4, false)};
@@ -61,7 +61,7 @@ void Player::getPlayerStats()
 void Player::getPlayerElements()
 {
 	int INDEX_Element = 0;
-	while (INDEX_Element < 7)
+	while (INDEX_Element < 8)
 	{
 		cout << ".  " << VEC_Element_Names[INDEX_Element] << ": ";
 		if (MAP_Elements.find(VEC_Element_Names[INDEX_Element])->second == "Wk")
@@ -199,11 +199,11 @@ void Player::setPlayerAttribute(string STR_Attribute, int N_VALUE)
 void Player::setStartingElements()
 {
 	bool BOOL_Valid_Option = false;
-	vector<string> VEC_List_Of_Available_Elements = { "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless" };
+	vector<string> VEC_List_Of_Available_Elements = { "Physical", "Fire", "Water", "Ice", "Electric", "Wind", "Curse", "Bless" };
 	string STR_Element_Choice;
 	while (!BOOL_Valid_Option)
 	{
-		cout << "\n   Choose an element to be weak to:\n   Fire, Water, Ice, Electric, Wind, Curse, Bless\n   > ";
+		cout << "\n   Choose an element to be weak to:\n   Physical, Fire, Water, Ice, Electric, Wind, Curse, Bless\n   > ";
 		cin >> STR_Element_Choice;
 		for (int i = 0; i < VEC_List_Of_Available_Elements.size(); i++)
 		{
@@ -218,7 +218,7 @@ void Player::setStartingElements()
 	BOOL_Valid_Option = false;
 	while (!BOOL_Valid_Option)
 	{
-		cout << "\n   Choose an element to be resistant to:\n   Fire, Water, Ice, Electric, Wind, Curse, Bless   \n   > ";
+		cout << "\n   Choose an element to be resistant to:\n   Physical, Fire, Water, Ice, Electric, Wind, Curse, Bless   \n   > ";
 		cin >> STR_Element_Choice;
 		for (int i = 0; i < VEC_List_Of_Available_Elements.size(); i++)
 		{
@@ -261,41 +261,54 @@ void Player::increaseExp(float INT_Amount)
 {
 	// Increases EXP
 	this->INT_Total_EXP += INT_Amount;
-	if (this->INT_Level == 99)
+	if (this->INT_Level < 199)
 	{
-		this->setSpecificStarOnFile("Lv 99", '*');
+		if (this->INT_Level == 99)
+		{
+			this->setSpecificStarOnFile("Lv 99", '*');
+		}
+		this->FLT_Curr_EXP += INT_Amount;
+		while (this->FLT_Curr_EXP >= this->FLT_Next_EXP)
+		{
+			BOOL_Level_Up = true;
+			int TEMP_EXP_Value = this->FLT_Curr_EXP - this->FLT_Next_EXP;
+
+			// Increases Player Stats
+			this->INT_Level++;
+			this->FLT_Curr_EXP = TEMP_EXP_Value;
+
+			// Calculates next EXP required
+			if (this->INT_Level > 99)
+			{
+				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.015);
+				this->INT_Max_Health += 23;
+				this->INT_Max_Stamina += 11;
+			}
+			else if (this->INT_Level > 49)
+			{
+				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.03);
+				this->INT_Max_Health += 11;
+				this->INT_Max_Stamina += 7;
+			}
+			else if (this->INT_Level > 19)
+			{
+				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.0725);
+				this->INT_Max_Health += 8;
+				this->INT_Max_Stamina += 5;
+			}
+			else
+			{
+				this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.35);
+				this->INT_Max_Health += 7;
+				this->INT_Max_Stamina += 4;
+			}
+			this->INT_Health = this->INT_Max_Health;
+			this->INT_Stamina = this->INT_Max_Stamina;
+		}
 	}
-	this->FLT_Curr_EXP += INT_Amount;
-	while (this->FLT_Curr_EXP >= this->FLT_Next_EXP)
+	else
 	{
-		BOOL_Level_Up = true;
-		int TEMP_EXP_Value = this->FLT_Curr_EXP - this->FLT_Next_EXP;
-
-		// Increases Player Stats
-		this->INT_Level++;
-		this->INT_Max_Health += 7;
-		this->INT_Max_Stamina += 4;
-		this->INT_Health = this->INT_Max_Health;
-		this->INT_Stamina = this->INT_Max_Stamina;
-		this->FLT_Curr_EXP = TEMP_EXP_Value;
-
-		// Calculates next EXP required
-		if (this->INT_Level > 99)
-		{
-			this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.015);
-		}
-		else if (this->INT_Level > 49)
-		{
-			this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.03);
-		}
-		else if (this->INT_Level > 19)
-		{
-			this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.0725);
-		}
-		else
-		{
-			this->FLT_Next_EXP = int(((float)this->FLT_Next_EXP) * 1.35);
-		}
+		this->FLT_Curr_EXP = 0;
 	}
 }
 
@@ -329,11 +342,11 @@ void Player::setLevelXP(int N_Tot, int N_Curr, int N_Next)
 // Loads data from current save file
 void Player::loadData(vector<string> N_Data)
 {
-	this->setLevelXP(stoi(N_Data[4]), stoi(N_Data[2]), stoi(N_Data[3]));
+	this->setLevelXP(stoi(N_Data[6]), stoi(N_Data[4]), stoi(N_Data[5]));
 	cout << dye::blue("\n   Loading player attributes");
-	this->setPlayerAttribute("Strength", stoi(N_Data[5]));
-	this->setPlayerAttribute("Magic", stoi(N_Data[6]));
-	this->setPlayerAttribute("Endurance", stoi(N_Data[7]));
+	this->setPlayerAttribute("Strength", stoi(N_Data[7]));
+	this->setPlayerAttribute("Magic", stoi(N_Data[8]));
+	this->setPlayerAttribute("Endurance", stoi(N_Data[9]));
 	cout << dye::blue("\n   Sucessfully loaded player attributes");
 	cout << dye::blue("\n   Loading game star states");
 	this->setSpecificStarOnFile("Main Story", N_Data[N_Data.size() - 4][0]);
@@ -385,6 +398,8 @@ vector<string> Player::saveData(vector<Dungeon*> N_Visited_Dungeons)
 {
 	vector<string> SAVE_Data = { };
 	SAVE_Data.push_back(this->getName());
+	SAVE_Data.push_back(to_string(this->INT_Max_Health));
+	SAVE_Data.push_back(to_string(this->INT_Max_Stamina));
 	SAVE_Data.push_back(to_string(this->getLevel()));
 	SAVE_Data.push_back(to_string(this->getCurrEXP()));
 	SAVE_Data.push_back(to_string(this->getNextEXP()));

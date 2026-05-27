@@ -207,10 +207,15 @@ Item* DungeonMagma::getItemFromChest()
 		for (int i = 0; i < 3; i++) VEC_Chest_Loot.push_back(new ItemMelee("Volcanic Blade", "Sharp blade created by civilians who lived near the volcanoes", 3, (((rand() % 29) - 14) + 184), true));
 		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Emergency Defibrillator", "Last chance of survival, only use when absolutely necessary", 5, "HP", 999));
 		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Enhancement Flask", "A shiny purple tint covers the flask, drinking this makes you feel more alive", 5, "STA", 999));
+		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemSkill("Figurine of God - 2064 Edition", "A figure of what God is supposed to look like", 5, Skill("God's Power Punch")));
 	}
 	if (this->INT_Dungeon_Room >= 3)
 	{
 		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemMelee("Magma Forged Sword", "A sword forged from molten magma, gloves need to be worn", 5, (((rand() % 45) - 22) + 286), true));
+	}
+	if (this->INT_Dungeon_Room >= 3)
+	{
+		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemSkill("Nuclear Numchucks", "A hyper-solution to any threat!", 5, Skill("Decaying Chucks")));
 	}
 
 	Item* ITEM_New_Item = VEC_Chest_Loot[rand() % (VEC_Chest_Loot.size())];

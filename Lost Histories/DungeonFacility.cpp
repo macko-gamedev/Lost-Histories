@@ -422,6 +422,7 @@ Item* DungeonFacility::getItemFromChest()
 	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Potion of Mutated Souls", "Screaming can be heard inside the bottle", 4, "STA", 150));
 	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Bag of Powdered Snow", "The coldness even hurts just grabbing it out of the bag", 4, Skill("Freezadia")));
 	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Orb of Dark Matter", "A mysterious black orb emitting an overwhelming curseful aura", 4, Skill("Hexaon")));
+	for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Aimbot-Coded Gloves", "Hit your opponent with incredible accuracy!", 4, Skill("Decisive Strike")));
 
 	// Additional Loot added per Room
 	if (this->INT_Dungeon_Room >= 2)
@@ -445,6 +446,7 @@ Item* DungeonFacility::getItemFromChest()
 	if (this->INT_Dungeon_Room >= 5)
 	{
 		for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Suction Device", "No one stands a chance once hit with the extreme wind force", 4, Skill("Gustadia")));
+		for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemSkill("Double-tap Gloves", "Red leather gloves equipped with a so called 'double tap hop-up'", 4, Skill("Impulsive Strike")));
 		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemSkill("Reactor Heart", "Those who are in it's presence are said to die within minutes", 5, Skill("Freiladia")));
 		for (int i = 0; i < 1; i++) VEC_Chest_Loot.push_back(new ItemSkill("Fitzroy Motherload", "'Motherlode's droppin'. Hold onto ya hats'", 5, Skill("Flamadiaran")));
 	}

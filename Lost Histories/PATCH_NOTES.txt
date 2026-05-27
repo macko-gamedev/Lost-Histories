@@ -9,17 +9,9 @@ New :
   // New story bosses
 / Added loading save file logging
   . You can now see what is being loaded and if sucessful
-
-Changes:
-/ Dungeons:
-  // Facility:
-    + Added 3 more floors
-    ! Moved the main boss from F6 -> F7
-  // Special Passage:
-    + Added 1 more floor
-    + New main boss now drops a story related Item
-/ Skills:
-  // Added Physical attacks:
+/ Added new element: Physical
+/ Overhauled the Skill system:
+  // Added Physical magic attacks:
      . Each attack has a chance to be critical
      . Attacks cost HP instead of STA
      . Attacks increased by the Strength attribute
@@ -40,10 +32,21 @@ Changes:
      + Hexaonia - 308 DMG, 102 STA
      + Blightaonia - 308 DMG, 102 STA
      + Freiladiaran - 612 DMG, 110 STA
-  // Current tier 4 skills are now tier 5:
+  // Multi-target attacks now hit the enemy twice
+
+Changes:
+/ Dungeons:
+  // Facility:
+    + Added 3 more floors
+    ! Moved the main boss from F6 -> F7
+  // Special Passage:
+    + Added 1 more floor
+    + New main boss now drops a story related Item
+/ Skills:
+  // Current tier 4 skills are now tier 5
+  // Stat Changes:
      + End of the World damage increased from 666 -> 974
      - End of the World STA increased from 88 -> 148
-     ! Other stats remain unchanged
 / Attack Boosters:
   // Tier 1 Multipliers:
      - Single from 2.5 -> 1.75

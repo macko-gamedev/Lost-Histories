@@ -228,6 +228,21 @@ Story::Story(string N_Player_Name)
 		{ "Yourself > I feel like I've been here before" },
 		{ "The location is a carbon copy of Glacier Wasteland" },
 		{ "However, something doesn't feel right" },
+		{ "END DIALOGUE" },
+		{ "..." },//222
+		{ "Ha! You really thought that was it?" },
+		{ "Max > Well hello again!" },
+		{ "Max > I must say bye now though..." },
+		{ "Max > You know what they say" },
+		{ "Max > Curiosity killed the cat!" },
+		{ "END DIALOGUE" },
+		{ "..." },//229
+		{ "Max > Who would've thought I'd be the final boss huh?" },
+		{ "Max > Honestly... get a life!" },
+		{ "Max > This is a silly text adventure game made for university" },
+		{ "Max > Well... I guess you deserve a reward for all your hard work" },
+		{ "Max > Tada! A lovely star * on your save file!" },
+		{ "Max > Now scram! There is quite literally nothing left, you can close the game now!" },
 		{ "END DIALOGUE" }
 	};
 	this->INDEX_Dialogue = 1;

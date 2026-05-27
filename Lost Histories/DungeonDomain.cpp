@@ -255,7 +255,7 @@ DungeonDomain::DungeonDomain(string N_Name)
 			{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-			{ 'X', '<', '+', ' ', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ 'X', '<', '+', '?', ' ', 'X', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', ' ', ' ', ' ', ' ', '?', 'X' },
 			{ 'X', 'X', 'X', 'X', 'X', 'X', ' ', 'X', ' ', 'X', ' ', ' ', ' ', 'X', 'X' },
@@ -268,7 +268,7 @@ DungeonDomain::DungeonDomain(string N_Name)
 		}
 	};
 
-	this->VEC_Explored_Rooms = { true, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+	this->VEC_Explored_Rooms = { true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
 	this->MAP_New_Room_Text =
 	{
 		{ 1, { "..." } },
@@ -285,18 +285,34 @@ DungeonDomain::DungeonDomain(string N_Name)
 		{ 12, { "...", "Your patience is incredible", "I must really applaud you for that", "How can you keep playing?", "It's a silly little text game what could POSSIBLY be so interesting?"} },
 		{ 13, { "...", "Oooooooo, you're nearing the end!", "Or are you?", "I mean you wouldn't know", "Do me a favour and ALT + F4"} },
 		{ 14, { "...", "You feel a strong presence on this floor" } },
-		{ 15, { "...", "You feel a strong presence on this floor", "This is it...", "Are you happy?", "Are you satisfied?", "You're reaching the end", "Go on, fight him...", "Don't keep me waiting" } },
-		{ }
+		{ 15, { "...", "You feel a strong presence on this floor", "This is it...", "Are you happy?", "Are you satisfied?", "You're reaching the end", "Go on, fight him...", "Don't keep me waiting" } }
 	};
 	this->MAP_Encounter_Dialogue =
 	{
 		{ 3, {"..." } },
 		{ 5, {"..." } },
+		{ 9, {"..." } },
+		{ 14, {"..." } },
+		{ 15, {
+				"...",
+				"Macko > You really are relentless",
+				"Macko > Honestly, you really sat there and beaten the other 14 floors?",
+				"Macko > Now you're here...",
+				"Macko > Face to face with me",
+				"Macko > Ok then. Fine.",
+				"Macko > I won't hold back",
+				"Macko > I will really make this unfair for you",
+				"Macko > Are you ready?"
+			  }
+		}
 	};
 	this->MAP_Encounter_Enemy =
 	{
 		{ 3, Enemy("Domain Keeper 1", 110, 2861, 3809, { Skill("Inferno"), Skill("Freezadiaran"), Skill("Blizzard"), Skill("Blightaon"), Skill("Blightaonia") }, true, 213) },
-		{ 5, Enemy("Domain Keeper 2", 120, 3144, 4153, { Skill("Splashadiaran"), Skill("Tsunami"), Skill("Gustadiaran"), Skill("Hurricane"), Skill("Hexoania"), Skill("Healan") }, true, 225) }
+		{ 5, Enemy("Domain Keeper 2", 120, 3144, 4153, { Skill("Splashadiaran"), Skill("Tsunami"), Skill("Gustadiaran"), Skill("Hurricane"), Skill("Hexoania"), Skill("Healan") }, true, 225) },
+		{ 9, Enemy("Domain Keeper 3", 130, 3327, 2537, { Skill("Zapadiaran"), Skill("Thunder Bolt"), Skill("Blightaonia"), Skill("Fist of Justice"), Skill("Decaying Chucks"), Skill("Healan") }, true, 253) },
+		{ 14, Enemy("Domain Keeper 4", 140, 3896, 6467, { Skill("God's Power Punch"), Skill("Impulse Strike"), Skill("Flamadiaran"), Skill("Inferno"), Skill("Zapadiaran"), Skill("Gustadiaran") }, true, 268) },
+		{ 15, Enemy("Macko", 150, 5000, 12336, { Skill("End of the World") }, true, 333) }
 	};
 }
 

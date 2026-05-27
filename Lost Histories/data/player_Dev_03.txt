@@ -1,17 +1,21 @@
 Dev_03
-99
+3356
+1734
+199
 0
-220672
-13537904
+0
+0
 99
 99
 99
+Domain
+15
 Special Passage
-1
+7
 Magma Fields
 1
 Facility
-1
+10
 Atlantis Ruins
 1
 Glacier Wasteland
@@ -21,18 +25,56 @@ Death
 Instakill
 Developer purpose only
 5
-skill
-Sucker Punch
-Test Item
-Physical attack with single hit
-1
 1
 skill
-Hacker Slash
-Test Item
-Physical attack with multi hit
+Volcanic Blast
+Test Item 1
+Test
 1
 1
+skill
+Ice Age
+Test Item 2
+Test
+1
+1
+skill
+Waternado
+Test Item 3
+Test
+1
+1
+skill
+Voltage Shock
+Test Item 4
+Test
+1
+1
+skill
+Whirlwind
+Test Item 5
+Test
+1
+1
+skill
+Inferno
+Test Item 6
+Test
+1
+1
+skill
+Healadia
+Test Item 7
+Support skill for UI test
+1
+1
+consumable
+MAG
+3.5
+Magic boost
+hi lukas
+1
+99
 *
 -
 *

@@ -251,6 +251,7 @@ Item* DungeonGlacier::getItemFromChest()
 	for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new Item("Ripped Shoes", "A pair of ripped shoes", 1));
 	for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Old Cross", "An old church cross emitting a blessing aura", 1, Skill("Blight")));
 	for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Shattered Molotov", "Ash remains inside the bottle", 1, Skill("Flame")));
+	for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemSkill("Boxing Glove", "A blue boxing glove dated back to 2053", 1, Skill("Sucker Punch")));
 	for (int i = 0; i < 5; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Thawn Bandage", "Could still be used for a scratch", 1, "HP", 40));
 	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new Item("Foreign Coin", "A coin which you don't recognise", 2));
 	for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemMelee("Nail Board", "Plank of frozen wood with a nail pointing out the end", 2, (((rand() % 7) - 3) + 21), true));
@@ -269,6 +270,7 @@ Item* DungeonGlacier::getItemFromChest()
 	if (this->INT_Dungeon_Room >= 4)
 	{
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Goat Horn", "Remains of what looks like a goat, what is it even doing here?", 2, Skill("Megust")));
+		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemSkill("Blunt Claws", "A set of claws where the tips are slighly blunt", 2, Skill("Hacker Slash")));
 		for (int i = 0; i < 4; i++) VEC_Chest_Loot.push_back(new ItemConsumable("Worn Field Kit", "Can still be used for emergencies", 2, "HP", 100));
 		for (int i = 0; i < 2; i++) VEC_Chest_Loot.push_back(new ItemMelee("Wingman", "Familiar looking revolver, it seems damaged but could still work", 4, (((rand() % 15) - 7) + 67), true));
 	}

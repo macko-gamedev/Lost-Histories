@@ -159,7 +159,7 @@ DungeonSpecial::DungeonSpecial(string N_Name)
 		{ 4, Enemy("Mucus Poocus", 95, 2683, 4039, { Skill("Splashadiaran"), Skill("Freezadiaran"), Skill("Freiladiaran"), Skill("Freiladia"), Skill("Healan") }, true, 217) },
 		{ 5, Enemy("Performative Boxer", 95, 2980, 903, { Skill("Flamadia"), Skill("Zapadia"), Skill("Hexaon"), Skill("Freiladia") }, true, 398) },
 		{ 6, Enemy("Tyson Mondeo", 99, 3397, 5254, { Skill("Flamadiaran"), Skill("Splashadiaran"), Skill("Freezadiaran"), Skill("Zapadiaran"), Skill("Gustadiaran"), Skill("Blightaon"), Skill("Hexaon"), Skill("Freiladia") }, true, 229) },
-		{ 7, Enemy("???", 99, 3928, 7083, { Skill("Flamadiaran"), Skill("Splashadiaran"), Skill("Freezadiaran"), Skill("Zapadiaran"), Skill("Gustadiaran"), Skill("Blightaon"), Skill("Hexaon"), Skill("Freiladia"), Skill("Freiladiaran"), Skill("Healan") }, true, 248)},
+		{ 7, Enemy("???", 99, 3928, 7083, { Skill("Meflamadia"), Skill("Flamadiaran"), Skill("Splashadiaran"), Skill("Freezadiaran"), Skill("Zapadiaran"), Skill("Gustadiaran"), Skill("Blightaon"), Skill("Hexaon"), Skill("Freiladia"), Skill("Freiladiaran"), Skill("Healan") }, true, 248)},
 	};
 }
 

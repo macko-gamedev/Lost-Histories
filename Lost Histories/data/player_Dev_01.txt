@@ -1,13 +1,15 @@
 Dev_01
-109
-205173
-256094
-14849104
-73
-79
-69
+3356
+1734
+199
+0
+0
+0
+99
+99
+99
 Domain
-5
+15
 Special Passage
 7
 Magma Fields
@@ -285,4 +287,4 @@ A purple tinted sword which ignites it's opponent in flames
 *
 *
 *
-*
+-
