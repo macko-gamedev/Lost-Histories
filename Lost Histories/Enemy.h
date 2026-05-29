@@ -26,6 +26,7 @@ private:
 	bool BOOL_Boss;
 	int INT_Damage;
 	int INT_Boss_Stat_Cycle;
+	int INT_Boss_Stat_Cycle_Target;
 	int INT_Turns_Left;
 	string STR_Turn_Phrase;
 public:

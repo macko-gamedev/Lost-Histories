@@ -39,6 +39,7 @@ public:
 	void exploredRoom();
 	void fillWithEnemies();
 	void fillWithChests();
+	virtual void displayDungeon();
 
 	// Virtual: Returns a new Enemy object
 	virtual Enemy newEnemy();

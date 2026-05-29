@@ -128,6 +128,11 @@ void Dungeon::fillWithChests()
 	}
 }
 
+void Dungeon::displayDungeon()
+{
+
+}
+
 Enemy Dungeon::newEnemy()
 {
 	return Enemy("", 1, 1, 1, { }, false, 0);

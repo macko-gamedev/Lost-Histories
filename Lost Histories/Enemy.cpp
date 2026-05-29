@@ -13,6 +13,7 @@ Enemy::Enemy(string nName, int nLevel, int nHealth, int nStamina, vector<Skill> 
 	this->BOOL_Boss = nBoss;
 	this->INT_Damage = nDamage;
 	this->INT_Boss_Stat_Cycle = 2;
+	this->INT_Boss_Stat_Cycle_Target = 5;
 	this->ENUM_State = battleState::WAITING;
 	if (nName == "Macko")
 	{
@@ -800,7 +801,7 @@ void Enemy::update(Player& PLAYER_Player)
 	{
 		this->ENUM_State = battleState::WAITING;
 	}
-	this->INT_Boss_Stat_Cycle += rand() % 3;
+	this->INT_Boss_Stat_Cycle += 1;
 	srand(time(0));
 	vector<string> VEC_Waiting_Phases = { (this->STR_Name + " is waiting..."), (this->STR_Name + " is staring at you intensly..."),  (this->STR_Name + " is planning their next move...") };
 	
@@ -810,10 +811,11 @@ void Enemy::update(Player& PLAYER_Player)
 	}
 	if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind" || this->getName() == "Keeper of The Device" || this->getName() == "Macko?" || this->getName() == "Macko" || this->getName() == "Max")
 	{
-		if (this->INT_Boss_Stat_Cycle >= 8)
+		if (this->INT_Boss_Stat_Cycle >= this->INT_Boss_Stat_Cycle_Target)
 		{
 			this->ENUM_State = battleState::AILMENTCHANGE;
 			this->INT_Boss_Stat_Cycle = 0;
+			this->INT_Boss_Stat_Cycle_Target = (rand() % 4 + 4);
 			vector<string> VEC_Ailments;
 			vector<Skill> VEC_Skills_Available;
 			if (this->getName() == "The Mastermind" || this->getName() == "Mutated Mastermind" || this->getName() == "Keeper of The Device")
@@ -844,12 +846,12 @@ void Enemy::update(Player& PLAYER_Player)
 				VEC_Skills.push_back(Skill(STR_Random_Random));
 			}
 			this->setElements({ {"Physical", VEC_Ailments[rand() % VEC_Ailments.size()]} ,{"Fire", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Water", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Ice", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Electric", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Wind", VEC_Ailments[rand() % VEC_Ailments.size()]},{"Curse", VEC_Ailments[rand() % VEC_Ailments.size()]}, {"Bless", VEC_Ailments[rand() % VEC_Ailments.size()]} });
-			cout << "\n   " << this->getName() + " is shifting their elemental coverage and magic attacks!";
+			cout << "   " << this->getName() + " is shifting their elemental coverage and magic attacks!";
 		}
 	}
 	if (this->ENUM_State == battleState::WAITING)
 	{
-		cout << "\n   " << VEC_Waiting_Phases[rand() % 3];
+		cout << "   " << VEC_Waiting_Phases[rand() % 3];
 		this->ENUM_State = battleState::ATTACKING;
 	}
 	else if (this->ENUM_State == battleState::ATTACKING)
@@ -913,12 +915,12 @@ void Enemy::update(Player& PLAYER_Player)
 				{
 					for (int i = 0; i < INT_Repeated_Attack; i++)
 					{
-						system("CLS");	cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(PLAYER_Player.getName()) << dye::grey_on_white(" ");
-						cout << dye::light_green("\n   HP: ") << dye::light_green(PLAYER_Player.getHealth()) << dye::light_green(" / ") << dye::light_green(PLAYER_Player.getMaxHealth()) << " | " << dye::light_aqua("STA: ") << dye::light_aqua(PLAYER_Player.getStamina()) << dye::light_aqua(" / ") << dye::light_aqua(PLAYER_Player.getMaxStamina()) << endl << endl;
+						PLAYER_Player.showBattleStats();
+
 						if (SKILL_Skill_Selected.getType() == "Support")
 						{
 							int INT_HP_Gain = SKILL_Skill_Selected.getHPGain() * 3;
-							cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " restoring " << to_string(INT_HP_Gain) << " HP";
+							cout << "   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " restoring " << to_string(INT_HP_Gain) << " HP";
 							this->INT_Health += INT_HP_Gain;
 							if (this->INT_Health > this->INT_Max_Health)
 							{
@@ -930,27 +932,27 @@ void Enemy::update(Player& PLAYER_Player)
 							if (SKILL_Skill_Selected.getType() == "Nuclear")
 							{
 								INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
-								cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage ";
+								cout << "   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage ";
 							}
 							else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "-")
 							{
 								INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
-								cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage ";
+								cout << "   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage ";
 							}
 							else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Wk")
 							{
 								INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 1.5 * INT_Boss_Multiplier;
-								cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage " << dye::black_on_yellow(" WEAK ") << " ";
+								cout << "   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage " << dye::black_on_yellow(" WEAK ") << " ";
 							}
 							else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Rst")
 							{
 								INT_Calculated_Damage = SKILL_Skill_Selected.getBaseDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * 0.5 * INT_Boss_Multiplier;
-								cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage " << dye::black_on_red(" RESIST ") << " ";
+								cout << "   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage " << dye::black_on_red(" RESIST ") << " ";
 							}
 							else if (PLAYER_Player.getElements().find(SKILL_Skill_Selected.getType())->second == "Nul")
 							{
 								INT_Calculated_Damage = 0;
-								cout << "\n   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage " << dye::black_on_grey(" BLOCK ") << " ";
+								cout << "   " << this->STR_Name << " casted " << SKILL_Skill_Selected.getName() << " upon you dealing " << INT_Calculated_Damage << " damage " << dye::black_on_grey(" BLOCK ") << " ";
 							}
 							PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 
@@ -974,7 +976,7 @@ void Enemy::update(Player& PLAYER_Player)
 				else
 				{
 					INT_Calculated_Damage = this->getDamage() * FLT_Attribute_Multiplier * FLT_Guard_Multiplier * INT_Boss_Multiplier;
-					cout << "\n   " << this->STR_Name << " attacked you dealing " << INT_Calculated_Damage << " damage ";
+					cout << "   " << this->STR_Name << " attacked you dealing " << INT_Calculated_Damage << " damage ";
 					PLAYER_Player.changeHealth(-INT_Calculated_Damage);
 					if (INT_Critical_Chance >= 85)
 					{
@@ -985,7 +987,7 @@ void Enemy::update(Player& PLAYER_Player)
 		}
 		else
 		{
-			cout << "\n   " << this->STR_Name << " missed their attack!";
+			cout << "   " << this->STR_Name << " missed their attack!";
 		}
 		this->ENUM_State = battleState::WAITING;
 	}

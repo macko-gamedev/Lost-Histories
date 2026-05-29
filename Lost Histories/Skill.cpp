@@ -489,7 +489,7 @@ Skill::Skill(string N_NAME)
 	{
 		this->STR_Skill_Type = "Wind";
 		this->STR_Skill_Desc = "Deal medium wind damage to one enemy, hits 16x";
-		this->INT_Base_Damage = 36;
+		this->INT_Base_Damage = 60;
 		this->INT_Physical_Hit_Amount = 16;
 		this->INT_Stamina_Cost = 112;
 		this->BOOL_Single_Target = true;
@@ -637,7 +637,7 @@ Skill::Skill(string N_NAME)
 	else if (this->STR_Skill_Name == "Frei")
 	{
 		this->STR_Skill_Type = "Nuclear";
-		this->STR_Skill_Desc = "Deal low nuclear damage to one enemy, hits 2x";
+		this->STR_Skill_Desc = "Deal low nuclear damage to one enemy";
 		this->INT_Base_Damage = 98;
 		this->INT_Stamina_Cost = 20;
 		this->BOOL_Single_Target = false;
@@ -645,7 +645,7 @@ Skill::Skill(string N_NAME)
 	else if (this->STR_Skill_Name == "Freila")
 	{
 		this->STR_Skill_Type = "Nuclear";
-		this->STR_Skill_Desc = "Deal medium nuclear damage to one enemy, hits 2x";
+		this->STR_Skill_Desc = "Deal medium nuclear damage to one enemy";
 		this->INT_Base_Damage = 174;
 		this->INT_Stamina_Cost = 36;
 		this->BOOL_Single_Target = false;
@@ -653,7 +653,7 @@ Skill::Skill(string N_NAME)
 	else if (this->STR_Skill_Name == "Freiladia")
 	{
 		this->STR_Skill_Type = "Nuclear";
-		this->STR_Skill_Desc = "Deal heavy nuclear damage to one enemy, hits 2x";
+		this->STR_Skill_Desc = "Deal heavy nuclear damage to one enemy";
 		this->INT_Base_Damage = 269;
 		this->INT_Stamina_Cost = 48;
 		this->BOOL_Single_Target = false;
@@ -661,7 +661,7 @@ Skill::Skill(string N_NAME)
 	else if (this->STR_Skill_Name == "Freiladiaran")
 	{
 		this->STR_Skill_Type = "Nuclear";
-		this->STR_Skill_Desc = "Deal massive nuclear damage to one enemy, hits 2x";
+		this->STR_Skill_Desc = "Deal massive nuclear damage to one enemy";
 		this->INT_Base_Damage = 612;
 		this->INT_Stamina_Cost = 110;
 		this->BOOL_Single_Target = false;
@@ -669,7 +669,7 @@ Skill::Skill(string N_NAME)
 	else if (this->STR_Skill_Name == "End of the World")
 	{
 		this->STR_Skill_Type = "Nuclear";
-		this->STR_Skill_Desc = "Deal colossal nuclear damage to one enemy, hits 2x";
+		this->STR_Skill_Desc = "Deal colossal nuclear damage to one enemy";
 		this->INT_Base_Damage = 974;
 		this->INT_Stamina_Cost = 148;
 		this->BOOL_Single_Target = false;

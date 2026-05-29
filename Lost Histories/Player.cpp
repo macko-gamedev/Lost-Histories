@@ -339,6 +339,52 @@ void Player::setLevelXP(int N_Tot, int N_Curr, int N_Next)
 	this->notLevelUp();
 }
 
+void Player::showBattleStats()
+{
+	system("CLS");
+	cout << "\n   " << dye::grey_on_white(" ") << dye::grey_on_white(this->getName()) << dye::grey_on_white(" ");
+	if (this->getMagicAttackMultiplier() != 1.0 || this->getMeleeAttackMultiplier() != 1.0)
+	{
+		if (this->getMeleeAttackMultiplier() != 1.0)
+		{
+			cout << dye::light_yellow_on_light_red(" ATK ");
+		}
+		if (this->getMagicAttackMultiplier() != 1.0)
+		{
+			cout << dye::light_yellow_on_purple(" MAG ");
+		}
+	}
+	int INT_Whole_Div;
+	cout << dye::light_green("\n   HP: ") << dye::light_green(this->getHealth()) << " ";
+	INT_Whole_Div = float(this->getHealth()) / float(this->getMaxHealth()) * 20;
+	if (INT_Whole_Div == 0)
+	{
+		INT_Whole_Div = 1;
+	}
+	for (int i = 0; i < INT_Whole_Div; i++)
+	{
+		cout << dye::black_on_light_green(" ");
+	}
+	for (int i = 0; i < 20 - INT_Whole_Div; i++)
+	{
+		cout << dye::black_on_grey(" ");
+	}
+	//cout << " " << INT_Whole_Div;
+	cout << dye::light_aqua("   STA: ") << dye::light_aqua(this->getStamina()) << " ";
+	INT_Whole_Div = float(this->getStamina()) / float(this->getMaxStamina()) * 20;
+	for (int i = 0; i < INT_Whole_Div; i++)
+	{
+		cout << dye::black_on_light_aqua(" ");
+	}
+	for (int i = 0; i < 20 - INT_Whole_Div; i++)
+	{
+		cout << dye::black_on_grey(" ");
+	}
+	//cout << " " << INT_Whole_Div;
+	cout << "\n\n\n";
+}
+
+
 // Loads data from current save file
 void Player::loadData(vector<string> N_Data)
 {

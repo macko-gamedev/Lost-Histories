@@ -315,6 +315,224 @@ DungeonDomain::DungeonDomain(string N_Name)
 		{ 15, Enemy("Macko", 150, 5000, 12336, { Skill("End of the World") }, true, 333) }
 	};
 }
+void DungeonDomain::displayDungeon()
+{
+	system("CLS");
+	cout << "\n   " << dye::black_on_white(" ") << dye::black_on_white(this->getDungeonName()) << dye::black_on_white(" ") << dye::black_on_white(this->getDungeonRoom()) << dye::black_on_white("F \n\n");
+	for (int i = 0; i < 15; i++)
+	{
+		cout << "   ";
+		for (int j = 0; j < 15; j++)
+		{
+			if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == 'S')
+			{
+				cout << dye::aqua("S") << " ";
+			}
+			else if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == 'X')
+			{
+				int INT_Random = (rand() % 12) + 1;
+				if (INT_Random == 1)
+				{
+					cout << dye::black_on_red(" ");
+				}
+				else if (INT_Random == 2)
+				{
+					cout << dye::black_on_light_red(" ");
+				}
+				else if (INT_Random == 3)
+				{
+					cout << dye::black_on_blue(" ");
+				}
+				else if (INT_Random == 4)
+				{
+					cout << dye::black_on_light_blue(" ");
+				}
+				else if (INT_Random == 5)
+				{
+					cout << dye::black_on_light_yellow(" ");
+				}
+				else if (INT_Random == 6)
+				{
+					cout << dye::black_on_yellow(" ");
+				}
+				else if (INT_Random == 7)
+				{
+					cout << dye::black_on_purple(" ");
+				}
+				else if (INT_Random == 8)
+				{
+					cout << dye::black_on_light_purple(" ");
+				}
+				else if (INT_Random == 9)
+				{
+					cout << dye::black_on_white(" ");
+				}
+				else if (INT_Random == 10)
+				{
+					cout << dye::black_on_grey(" ");
+				}
+				else if (INT_Random == 11)
+				{
+					cout << dye::black_on_green(" ");
+				}
+				else if (INT_Random == 12)
+				{
+					cout << dye::black_on_light_green(" ");
+				}
+				if ((j + 1) == 15 && this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == 'X')
+				{
+					int INT_Random = (rand() % 12) + 1;
+					if (INT_Random == 1)
+					{
+						cout << dye::black_on_red(" ");
+					}
+					else if (INT_Random == 2)
+					{
+						cout << dye::black_on_light_red(" ");
+					}
+					else if (INT_Random == 3)
+					{
+						cout << dye::black_on_blue(" ");
+					}
+					else if (INT_Random == 4)
+					{
+						cout << dye::black_on_light_blue(" ");
+					}
+					else if (INT_Random == 5)
+					{
+						cout << dye::black_on_light_yellow(" ");
+					}
+					else if (INT_Random == 6)
+					{
+						cout << dye::black_on_yellow(" ");
+					}
+					else if (INT_Random == 7)
+					{
+						cout << dye::black_on_purple(" ");
+					}
+					else if (INT_Random == 8)
+					{
+						cout << dye::black_on_light_purple(" ");
+					}
+					else if (INT_Random == 9)
+					{
+						cout << dye::black_on_white(" ");
+					}
+					else if (INT_Random == 10)
+					{
+						cout << dye::black_on_grey(" ");
+					}
+					else if (INT_Random == 11)
+					{
+						cout << dye::black_on_green(" ");
+					}
+					else if (INT_Random == 12)
+					{
+						cout << dye::black_on_light_green(" ");
+					}
+				}
+				else if ((j + 1) < 15)
+				{
+					if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][(j + 1)] == 'X')
+					{
+						int INT_Random = (rand() % 12) + 1;
+						if (INT_Random == 1)
+						{
+							cout << dye::black_on_red(" ");
+						}
+						else if (INT_Random == 2)
+						{
+							cout << dye::black_on_light_red(" ");
+						}
+						else if (INT_Random == 3)
+						{
+							cout << dye::black_on_blue(" ");
+						}
+						else if (INT_Random == 4)
+						{
+							cout << dye::black_on_light_blue(" ");
+						}
+						else if (INT_Random == 5)
+						{
+							cout << dye::black_on_light_yellow(" ");
+						}
+						else if (INT_Random == 6)
+						{
+							cout << dye::black_on_yellow(" ");
+						}
+						else if (INT_Random == 7)
+						{
+							cout << dye::black_on_purple(" ");
+						}
+						else if (INT_Random == 8)
+						{
+							cout << dye::black_on_light_purple(" ");
+						}
+						else if (INT_Random == 9)
+						{
+							cout << dye::black_on_white(" ");
+						}
+						else if (INT_Random == 10)
+						{
+							cout << dye::black_on_grey(" ");
+						}
+						else if (INT_Random == 11)
+						{
+							cout << dye::black_on_green(" ");
+						}
+						else if (INT_Random == 12)
+						{
+							cout << dye::black_on_light_green(" ");
+						}
+					}
+					else
+					{
+						cout << " ";
+					}
+				}
+			}
+			else if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == '!' || this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == '?')
+			{
+				cout << dye::red(this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j]) << " ";
+			}
+			else if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == '*')
+			{
+				cout << dye::yellow("*") << " ";
+			}
+			else
+			{
+				cout << this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] << " ";
+			}
+			if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == '+')
+			{
+				this->setPosX(j);
+				this->setPosY(i);
+			}
+			if (i == 1 && j == 14)
+			{
+				cout << "   " << dye::black_on_bright_white(" 1 ") << " Open Inventory";
+			}
+			if (i == 3 && j == 14)
+			{
+				cout << "   " << dye::black_on_bright_white(" 2 ") << " View Stats";
+			}
+			if (i == 5 && j == 14)
+			{
+				cout << "   " << dye::black_on_bright_white(" 3 ") << " Quick Travel";
+			}
+			if (i == 7 && j == 14)
+			{
+				cout << "   " << dye::black_on_bright_white(" 4 ") << " Save Game";
+			}
+			if (i == 9 && j == 14)
+			{
+				cout << "   " << dye::black_on_bright_white(" 5 ") << " Exit Game";
+			}
+		}
+		cout << "\n";
+	}
+	cout << "\n\n\n";
+}
 
 Enemy DungeonDomain::newEnemy()
 {

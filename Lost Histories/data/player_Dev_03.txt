@@ -11,11 +11,11 @@ Dev_03
 Domain
 15
 Special Passage
-7
+1
 Magma Fields
 1
 Facility
-10
+1
 Atlantis Ruins
 1
 Glacier Wasteland
@@ -63,16 +63,23 @@ Test
 1
 1
 skill
-Healadia
+Decaying Chucks
 Test Item 7
 Support skill for UI test
 1
 1
 consumable
-MAG
+ATK/MAG
 3.5
-Magic boost
+damage boost
 hi lukas
+1
+99
+consumable
+HP
+9999
+health boost
+hi lukas (again)
 1
 99
 *

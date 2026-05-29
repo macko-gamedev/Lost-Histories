@@ -65,6 +65,7 @@ public:
 	void getPlayerElements();
 	void addItem(Item* ITEM_Item);
 	void setItems(vector<Item*> nItems);
+	void showBattleStats();
 	void loadData(vector<string> N_Data);
 	vector<string> saveData(vector<Dungeon*> N_Visited_Dungeons);
 	void update();

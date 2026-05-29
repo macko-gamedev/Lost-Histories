@@ -257,6 +257,82 @@ DungeonFacility::DungeonFacility(string N_Name)
 	};
 }
 
+void DungeonFacility::displayDungeon()
+{
+	system("CLS");
+	cout << "\n   " << dye::black_on_white(" ") << dye::black_on_white(this->getDungeonName()) << dye::black_on_white(" ") << dye::black_on_white(this->getDungeonRoom()) << dye::black_on_white("F \n\n");
+	for (int i = 0; i < 15; i++)
+	{
+		cout << "   ";
+		for (int j = 0; j < 15; j++)
+		{
+			if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == 'S')
+			{
+				cout << dye::aqua("S") << " ";
+			}
+			else if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == 'X')
+			{
+				cout << dye::black_on_grey(" ");
+				if ((j + 1) == 15 && this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == 'X')
+				{
+					cout << dye::black_on_grey(" ");
+				}
+				else if ((j + 1) < 15)
+				{
+					if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][(j + 1)] == 'X')
+					{
+						cout << dye::black_on_grey(" ");
+					}
+					else
+					{
+						cout << " ";
+					}
+				}
+			}
+			else if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == '!' || this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == '?')
+			{
+				cout << dye::red(this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j]) << " ";
+			}
+			else if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == '*')
+			{
+				cout << dye::yellow("*") << " ";
+			}
+			else
+			{
+				cout << this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] << " ";
+			}
+			if (this->getDungeonMap()[(this->getDungeonRoom() - 1)][i][j] == '+')
+			{
+				this->setPosX(j);
+				this->setPosY(i);
+			}
+			if (i == 1 && j == 14)
+			{
+				cout << "   " << dye::black_on_bright_white(" 1 ") << " Open Inventory";
+			}
+			if (i == 3 && j == 14)
+			{
+				cout << "   " << dye::black_on_bright_white(" 2 ") << " View Stats";
+			}
+			if (i == 5 && j == 14)
+			{
+				cout << "   " << dye::black_on_bright_white(" 3 ") << " Quick Travel";
+			}
+			if (i == 7 && j == 14)
+			{
+				cout << "   " << dye::black_on_bright_white(" 4 ") << " Save Game";
+			}
+			if (i == 9 && j == 14)
+			{
+				cout << "   " << dye::black_on_bright_white(" 5 ") << " Exit Game";
+			}
+		}
+		cout << "\n";
+	}
+	cout << "\n\n\n";
+}
+
+
 Enemy DungeonFacility::newEnemy()
 {
 	if (this->getDungeonRoom() == 1)
